@@ -21,17 +21,32 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-September 14, 2017 & Geneva Smith & Initial outline \\
+September 14, 2017 & Geneva Smith & First draft \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-Creating new equations for an application -> common information that needs to be known is what the range of the equation is given the domain of the input variables
+The Companion Cube Calculator (CCC) is a tool for calculating the range of a 
+mathematical equation based on its input variables. Users will be able to 
+specify input domains for variables that are known, and the tool will determine 
+the domains for unspecified input variables. For example, the equation $y = x + 
+5$ should return $y \in (-\inf, \inf), x \in (-\inf, \inf)$ whereas the 
+constrained equation of $y = x + 5, x \geq 0$ should return $y \in 
+[5, \inf)$. For the initial version of the CCC tool, the possible values will 
+be limited to the domain of real numbers ($\Re$). In the special case of 
+piece-wise equations, the ideal tool would be able to accept the full equation 
+set as a single input. However, if this is beyond the scope of the initial 
+version, piece-wise equations can be entered as individual equations will 
+constrained input domains.
 
-Want to create an application that will accept an equation as input, determine what the variable domains could be (if they are not provided) and output the range of the equation given those input variables. For example, the unconstrained equation of $y = x + 5$ should return $y \in (-\inf, \inf)$ whereas the constrained equation of $y = x + 5, x \geq 0$ should return $y \in [5, \inf)$
-
-Will be limited to the domain of real numbers ($\Re$)
-
-Piece-wise equations can be treated as separate equations with constrained input variable domains; better program would be able to accept all pieces of the equation at once
+Computerized models of creature behaviours is a type of artificial intelligence 
+(AI) that is frequently used by game designers to define Non-Player Characters 
+(NPCs) in their games. While many academic approaches to AI are typically too 
+resource intensive or exact for this application, the methodical and 
+research-based approach to defining behaviour equations can be used to create 
+the desired effects. This also enables the benefits related to testing and 
+maintainability that such an approach offers. Even though this project is 
+targeted at game designers, it can be used for any project that requires the 
+development of mathematical equations.
 
 \end{document}
