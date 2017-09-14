@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+\title{CAS 741: Problem Statement\\Companion Cube Calculator (CCC)}
+
+\author{Geneva Smith (\texttt{smithgm})}
+
+\date{\today}
+
+\input{../Comments}
+
+\begin{document}
+
+\maketitle
+
+\begin{table}[hp]
+\caption{Revision History} \label{TblRevisionHistory}
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
+\midrule
+September 14, 2017 & Geneva Smith & Initial outline \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Creating new equations for an application -> common information that needs to be known is what the range of the equation is given the domain of the input variables
+
+Want to create an application that will accept an equation as input, determine what the variable domains could be (if they are not provided) and output the range of the equation given those input variables. For example, the unconstrained equation of $y = x + 5$ should return $y \in (-\inf, \inf)$ whereas the constrained equation of $y = x + 5, x \geq 0$ should return $y \in [5, \inf)$
+
+Will be limited to the domain of real numbers ($\Re$)
+
+Piece-wise equations can be treated as separate equations with constrained input variable domains; better program would be able to accept all pieces of the equation at once
+
+\end{document}
