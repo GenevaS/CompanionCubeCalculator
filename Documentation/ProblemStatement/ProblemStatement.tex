@@ -3,6 +3,9 @@
 \usepackage{tabularx}
 \usepackage{booktabs}
 
+\usepackage[backend=bibtex,style=ieee]{biblatex}
+\bibliography{ProblemStatement_Refs}
+
 \title{CAS 741: Problem Statement\\Companion Cube Calculator (CCC)}
 
 \author{Geneva Smith (\texttt{smithgm})}
@@ -21,32 +24,55 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
+September 15, 2017 & Geneva Smith & Added an additional environment constraint; 
+clarified the purpose of the project \\
 September 14, 2017 & Geneva Smith & First draft \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-The Companion Cube Calculator (CCC) is a tool for calculating the range of a 
-mathematical equation based on its input variables. Users will be able to 
-specify input domains for variables that are known, and the tool will determine 
-the domains for unspecified input variables. For example, the equation $y = x + 
-5$ should return $y \in (-\inf, \inf), x \in (-\inf, \inf)$ whereas the 
-constrained equation of $y = x + 5, x \geq 0$ should return $y \in 
-[5, \inf)$. For the initial version of the CCC tool, the possible values will 
-be limited to the domain of real numbers ($\Re$). In the special case of 
-piece-wise equations, the ideal tool would be able to accept the full equation 
-set as a single input. However, if this is beyond the scope of the initial 
-version, piece-wise equations can be entered as individual equations with 
-constrained input domains.
+The GLaDOS architecture\cite{glados} is a specialized game engine that enables 
+game designers to create Non-Player Characters (NPCs) that react to their 
+environment by using models of emotion from psychology. A key component of the 
+architecture is the primary appraisal module, where inputs from the environment 
+are converted into emotion values. The equations currently used for this task 
+are not well informed by any scientific research, and will be incrementally 
+revised as more information is collected. These new equations are required to 
+conform to the same mathematical range as the currently implemented equations. 
+Ensuring that this requirement is maintained over consecutive iterations of the 
+equations will become tedious and time consuming, distracting from the main 
+task of developing more rigorous and explainable emotion equations. To help 
+streamline this task, I propose the development of the Companion Cube 
+Calculator (CCC).
 
-Computerized models of creature behaviours is a type of artificial intelligence 
-(AI) that is frequently used by game designers to define Non-Player Characters 
-(NPCs) in their games. While many academic approaches to AI are typically too 
-resource intensive or exact for this application, the methodical and 
-research-based approach to defining behaviour equations can be used to create 
-the desired effects. This also enables the benefits related to testing and 
-maintainability that such an approach offers. Even though this project is 
-targeted at game designers, it can be used for any project that requires the 
-development of mathematical equations.
+The CCC is a tool for calculating the range of a mathematical equation based on 
+its input variables. Users will be able to specify input domains for variables 
+that are known, and the tool will determine the domains for unspecified input 
+variables. For example, the equation $y = x + 5$ should return $y \in (-\inf, 
+\inf), x \in (-\inf, \inf)$ whereas the constrained equation of $y = x + 5, x 
+\geq 0$ should return $y \in [5, \inf)$. For the initial version of the CCC 
+tool, the possible values will be limited to the domain of real numbers 
+($\Re$). In the special case of piece-wise equations, the ideal tool would be 
+able to accept the full equation set as a single input. However, if this is 
+beyond the scope of the initial version, piece-wise equations can be entered as 
+individual equations with constrained input domains. This project can be 
+implemented as a command line tool. However, one of the only ways to ensure 
+that there are no user input errors is to create a Graphical User Interface 
+(GUI) that will only allow syntactically correct inputs. If this requirement is 
+implemented, the initial version of the CCC tool will only be available for 
+Windows operating systems.
+
+%Computerized models of creature behaviours is a type of artificial 
+%intelligence 
+%(AI) that is frequently used by game designers to define  in their games. 
+%While many academic approaches to AI are typically too 
+%resource intensive or exact for this application, the methodical and 
+%research-based approach to defining behaviour equations can be used to create 
+%the desired effects. This also enables the benefits related to testing and 
+%maintainability that such an approach offers. Even though this project is 
+%targeted at game designers, it can be used for any project that requires the 
+%development of mathematical equations.
+
+\printbibliography
 
 \end{document}
