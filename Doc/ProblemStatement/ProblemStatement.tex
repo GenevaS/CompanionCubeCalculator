@@ -3,8 +3,7 @@
 \usepackage{tabularx}
 \usepackage{booktabs}
 
-\usepackage[backend=bibtex,style=ieee]{biblatex}
-\bibliography{ProblemStatement_Refs}
+\usepackage[round]{natbib}
 
 \title{CAS 741: Problem Statement\\Companion Cube Calculator (CCC)}
 
@@ -31,7 +30,9 @@ September 14, 2017 & Geneva Smith & First draft \\
 \end{tabularx}
 \end{table}
 
-The GLaDOS architecture\cite{glados} is a specialized game engine that enables 
+The GLaDOS architecture described by \citet{glados} is a specialized game 
+engine that 
+enables 
 game designers to create Non-Player Characters (NPCs) that react to their 
 environment by using models of emotion from psychology. A key component of the 
 architecture is the primary appraisal module, where inputs from the environment 
@@ -73,6 +74,7 @@ Windows operating systems.
 %targeted at game designers, it can be used for any project that requires the 
 %development of mathematical equations.
 
-\printbibliography
+\bibliographystyle {plainnat}
+\bibliography{../../ReferenceMaterial/ProblemStatement_Refs}
 
 \end{document}
