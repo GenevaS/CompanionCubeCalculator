@@ -16,6 +16,7 @@
 \usepackage{caption}
 \usepackage{pdflscape}
 \usepackage{afterpage}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 
 \usepackage[round]{natbib}
 
@@ -24,10 +25,11 @@
 \hypersetup{
     bookmarks=true,         % show bookmarks bar?
       colorlinks=true,       % false: boxed links; true: colored links
-    linkcolor=red,          % color of internal links (change box color with linkbordercolor)
-    citecolor=green,        % color of links to bibliography
-    filecolor=magenta,      % color of file links
-    urlcolor=cyan           % color of external links
+    linkcolor=Purple,          % color of internal links (change box color with 
+    %linkbordercolor)
+    citecolor=ForestGreen,        % color of links to bibliography
+    filecolor=WildStrawberry,      % color of file links
+    urlcolor=Cerulean           % color of external links
 }
 
 \input{../Comments}
@@ -72,14 +74,15 @@
 \newcommand{\lthelcnum}{LC\thelcnum}
 \newcommand{\lcref}[1]{LC\ref{#1}}
 
-\newcommand{\progname}{ProgName} % PUT YOUR PROGRAM NAME HERE
+\newcommand{\progname}{Companion Cube Calculator } % PUT YOUR PROGRAM NAME HERE
+\newcommand{\prognameAbbrv}{CCC }
 
 \usepackage{fullpage}
 
 \begin{document}
 
-\title{Project Title} 
-\author{Author Name}
+\title{Companion Cube Calculator} 
+\author{Geneva Smith}
 \date{\today}
 	
 \maketitle
@@ -92,12 +95,12 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+September 25, 2017 & 1.0 & Notes\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
+\newpage
 \section{Reference Material}
 
 This section records information for easy reference.
@@ -156,28 +159,37 @@ which heat is transferred in
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{l l} 
   \toprule		
-  \textbf{symbol} & \textbf{description}\\
+  \textbf{Text} & \textbf{Description}\\
   \midrule 
   A & Assumption\\
+  CRPG & Computer Role-Playing Game\\
   DD & Data Definition\\
   GD & General Definition\\
   GS & Goal Statement\\
   IM & Instance Model\\
   LC & Likely Change\\
+  NPC & Non-Player Character\\
   PS & Physical System Description\\
   R & Requirement\\
   SRS & Software Requirements Specification\\
-  \progname{} & \wss{put your program name here}\\
+  \prognameAbbrv{} & \progname\\
   T & Theoretical Model\\
   \bottomrule
 \end{tabular}\\
 
-\wss{Add any other abbreviations or acronyms that you add}
+\wss{Add any other abbreviations or acronyms that you 
+add}
 
 \newpage
 \pagenumbering{arabic}
 
 \section{Introduction}
+This document is an SRS for the \progname (\prognameAbbrv), a mathematical 
+tool which determines the range of a user-specified equation given the domains 
+of the equation's variables. This tool is being developed to aid in the 
+specification and refinement of GLaDOS, an emotion engine for Non-Player 
+Characters (NPCs) in Computer Role-Playing Games (CRPG) as described by 
+\citet{glados}.
 
 \wss{This SRS template is based on \citet{SmithAndLai2005, SmithEtAl2007}.  It
   will get you started, but you will have to make changes.  Any changes to
@@ -185,22 +197,32 @@ which heat is transferred in
   deviation from the template.  Although the bits shown below do not include
   type information, you may need to add this information for your problem.}
 
-\wss{Feel free to change the appearance of the report by modifying the LaTeX
-  commands.}
-
-\wss{If you are documenting a family of models, you can start from this same
-  template, but you will have to add a section for variabilities.  For program
-  families you should look at \cite{Smith2006, SmithMcCutchanAndCarette2017}.
-  You should be able to do one document that captures the commonality analysis
-  and the requirements.}
-
 \subsection{Purpose of Document}
+This document outlines the requirements identified for the development of the 
+\prognameAbbrv tool, including the product goals, product scope, and the 
+mathematical models driving the design. It also describes the mathematical 
+assumptions, theories, and models used to create the tool. The purpose of 
+documenting this information is to aid in future use, maintenance, and 
+development of the \prognameAbbrv tool.
+
+This document is intended for two reader types -- those who wish to use the 
+tool and those who wish to expand the tool. Even though the \progname was 
+created to aid in the development of a specific system (GLaDOS), the tested 
+equations do not have any specific units. This means that it can be used for 
+any equation that exists in the domain of real numbers ($\Re$). Therefore, this 
+document can be used by a user who wishes to use the \prognameAbbrv tool to 
+determine the range of a specified mathematical equation. Since the initial 
+development of the \prognameAbbrv tool will be limited to arithmetic operators, 
+this document includes information that will be useful to a developer looking 
+to expand the abilities of the \prognameAbbrv with additional mathematical 
+models such as trigonometry to suit their project.
 
 \subsection{Scope of Requirements} 
 
 \subsection{Characteristics of Intended Reader} 
 
 \subsection{Organization of Document}
+
 
 \section{General System Description}
 
@@ -757,7 +779,8 @@ instance models, requirements, and data constraints on each other.
 \newpage
 
 \bibliographystyle {plainnat}
-\bibliography {../../ReferenceMaterial/References}
+\bibliography 
+{../../ReferenceMaterial/References,../../ReferenceMaterial/ProblemStatement_Refs}
 
 \newpage
 
@@ -768,7 +791,9 @@ show the values of the symbolic parameters introduced in the report.}
 
 \subsection{Symbolic Parameters}
 
-\wss{The definition of the requirements will likely call for SYMBOLIC\_CONSTANTS.
-Their values are defined in this section for easy maintenance.}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l l} 		
+	$\Re$ & Domain of real numbers\\
+\end{tabular}\\
 
 \end{document}
