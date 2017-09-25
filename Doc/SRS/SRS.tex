@@ -74,8 +74,8 @@
 \newcommand{\lthelcnum}{LC\thelcnum}
 \newcommand{\lcref}[1]{LC\ref{#1}}
 
-\newcommand{\progname}{Companion Cube Calculator } % PUT YOUR PROGRAM NAME HERE
-\newcommand{\prognameAbbrv}{CCC }
+\newcommand{\progname}{Companion Cube Calculator} % PUT YOUR PROGRAM NAME HERE
+\newcommand{\prognameAbbrv}{CCC}
 
 \usepackage{fullpage}
 
@@ -177,47 +177,64 @@ which heat is transferred in
   \bottomrule
 \end{tabular}\\
 
-\wss{Add any other abbreviations or acronyms that you 
-add}
-
 \newpage
 \pagenumbering{arabic}
 
 \section{Introduction}
-This document is an SRS for the \progname (\prognameAbbrv), a mathematical 
+This document is an SRS for the \progname{} (\prognameAbbrv{}), a mathematical 
 tool which determines the range of a user-specified equation given the domains 
 of the equation's variables. This tool is being developed to aid in the 
 specification and refinement of GLaDOS, an emotion engine for Non-Player 
 Characters (NPCs) in Computer Role-Playing Games (CRPG) as described by 
 \citet{glados}.
 
-\wss{This SRS template is based on \citet{SmithAndLai2005, SmithEtAl2007}.  It
-  will get you started, but you will have to make changes.  Any changes to
-  section headings should be approved by the instructor, since that implies a
-  deviation from the template.  Although the bits shown below do not include
-  type information, you may need to add this information for your problem.}
-
 \subsection{Purpose of Document}
 This document outlines the requirements identified for the development of the 
-\prognameAbbrv tool, including the product goals, product scope, and the 
+\prognameAbbrv{} tool, including the product goals, product scope, and the 
 mathematical models driving the design. It also describes the mathematical 
 assumptions, theories, and models used to create the tool. The purpose of 
 documenting this information is to aid in future use, maintenance, and 
-development of the \prognameAbbrv tool.
+development of the \prognameAbbrv{} tool.
 
 This document is intended for two reader types -- those who wish to use the 
-tool and those who wish to expand the tool. Even though the \progname was 
+tool and those who wish to expand the tool. Even though the \progname{} was 
 created to aid in the development of a specific system (GLaDOS), the tested 
 equations do not have any specific units. This means that it can be used for 
 any equation that exists in the domain of real numbers ($\Re$). Therefore, this 
-document can be used by a user who wishes to use the \prognameAbbrv tool to 
+document can be used by a user who wishes to use the \prognameAbbrv{} tool to 
 determine the range of a specified mathematical equation. Since the initial 
-development of the \prognameAbbrv tool will be limited to arithmetic operators, 
-this document includes information that will be useful to a developer looking 
-to expand the abilities of the \prognameAbbrv with additional mathematical 
-models such as trigonometry to suit their project.
+development of the \prognameAbbrv{} tool will be limited to arithmetic 
+operators, this document includes information that will be useful to a 
+developer looking to expand the abilities of the \prognameAbbrv{} with 
+additional mathematical models such as trigonometry to suit their project.
 
 \subsection{Scope of Requirements} 
+The \progname{} calculates the mathematical range of a user-defined equation 
+using the defined variable domains for that equation. In the cases where a 
+variable domain is not provided, it will be assumed that the range is 
+$(-\infty, \infty)$. For the initial version of this product, the mathematical 
+operations allowed in an equation will be limited to the four arithmetic 
+operators ($+$, $-$, $\times$, $\div$). Future iterations can expand this list 
+to include trigonometric functions ($\sin$, $\cos$, $\tan$, $\arcsin$, 
+$\arccos$, $\arctan$), partial equations, and other useful operations and 
+functions.
+
+The purpose of this product is to aid in the design and tuning of the GLaDOS 
+architecture, a specialized game engine enables game designers to create 
+Non-Player Characters (NPCs) that react to their environment by using models of 
+emotion from psychology. One module in the architecture converts information 
+from the environment into an internal representation that directs an NPC's 
+decision-making. This task requires the specification of numerical equations 
+with multiple variables which must be normalized to a range of $[-1,1]$. In 
+order to normalize the engine's calculation, the range of the equation must be 
+known. Currently, the encoded equations are not well-informed by observation or 
+scientific research and must be subjected to an iterative process in order to 
+address this problem. An automated method of calculating the range of a 
+proposed equation will make this process faster and less error-prone.
+
+Although this product is being designed for a specific project, the concepts 
+involved can be used in similar projects because it does not contain any 
+project-specific concepts or models.
 
 \subsection{Characteristics of Intended Reader} 
 
