@@ -5,3 +5,5 @@
 *.blg
 *.xml
 *-blx.bib
+*.toc
+*.out
