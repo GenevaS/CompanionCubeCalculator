@@ -95,7 +95,8 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-September 25, 2017 & 1.0 & Notes\\
+September 25, 2017 & 1.0 & Completed the first draft of the Introduction 
+(Section \ref{intro})\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -172,7 +173,7 @@ which heat is transferred in
   PS & Physical System Description\\
   R & Requirement\\
   SRS & Software Requirements Specification\\
-  \prognameAbbrv{} & \progname\\
+  \prognameAbbrv{} & \progname{}\\
   T & Theoretical Model\\
   \bottomrule
 \end{tabular}\\
@@ -181,6 +182,8 @@ which heat is transferred in
 \pagenumbering{arabic}
 
 \section{Introduction}
+\label{intro}
+
 This document is an SRS for the \progname{} (\prognameAbbrv{}), a mathematical 
 tool which determines the range of a user-specified equation given the domains 
 of the equation's variables. This tool is being developed to aid in the 
@@ -214,7 +217,8 @@ using the defined variable domains for that equation. In the cases where a
 variable domain is not provided, it will be assumed that the range is 
 $(-\infty, \infty)$. For the initial version of this product, the mathematical 
 operations allowed in an equation will be limited to the four arithmetic 
-operators ($+$, $-$, $\times$, $\div$). Future iterations can expand this list 
+operators ($+$, $-$, $\times$, $\div$, exponents). Future iterations can expand 
+this list 
 to include trigonometric functions ($\sin$, $\cos$, $\tan$, $\arcsin$, 
 $\arccos$, $\arctan$), partial equations, and other useful operations and 
 functions.
@@ -236,7 +240,12 @@ Although this product is being designed for a specific project, the concepts
 involved can be used in similar projects because it does not contain any 
 project-specific concepts or models.
 
-\subsection{Characteristics of Intended Reader} 
+\subsection{Characteristics of Intended Reader}
+The intended reader of this document must understand elementary algebra, 
+especially notation and equations, in the domain of real numbers ($\Re$). They 
+must also have an understanding of domain and range with respect to an equation 
+in order to understand the outputs of the product and how it relates to its 
+inputs.
 
 \subsection{Organization of Document}
 This document begins by describing the general description of the \progname{} 
