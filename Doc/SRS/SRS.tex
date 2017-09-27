@@ -75,7 +75,7 @@
 \newcommand{\lcref}[1]{LC\ref{#1}}
 
 \newcommand{\progname}{Companion Cube Calculator} % PUT YOUR PROGRAM NAME HERE
-\newcommand{\prognameAbbrv}{CCC}
+\newcommand{\prognameAbbrv}{$C^{3}$}
 
 \usepackage{fullpage}
 
@@ -95,6 +95,8 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
+September 26, 2017 & 1.1 & Completed the first draft of the General System 
+Description (Section \ref{general})\\
 September 25, 2017 & 1.0 & Completed the first draft of the Introduction 
 (Section \ref{intro})\\
 \bottomrule
@@ -108,30 +110,7 @@ This section records information for easy reference.
 
 \subsection{Table of Units}
 
-Throughout this document SI (Syst\`{e}me International d'Unit\'{e}s) is employed
-as the unit system.  In addition to the basic units, several derived units are
-used as described below.  For each unit, the symbol is given followed by a
-description of the unit and the SI name.
-~\newline
-
-\renewcommand{\arraystretch}{1.2}
-%\begin{table}[ht]
-  \noindent \begin{tabular}{l l l} 
-    \toprule		
-    \textbf{symbol} & \textbf{unit} & \textbf{SI}\\
-    \midrule 
-    \si{\metre} & length & metre\\
-    \si{\kilogram} & mass	& kilogram\\
-    \si{\second} & time & second\\
-    \si{\celsius} & temperature & centigrade\\
-    \si{\joule} & energy & Joule\\
-    \si{\watt} & power & Watt (W = \si{\joule\per\second})\\
-    \bottomrule
-  \end{tabular}
-  %	\caption{Provide a caption}
-%\end{table}
-
-\wss{Only include the units that your SRS actually uses}
+The tasks performed by the \prognameAbbrv{} tool are unitless.
 
 \subsection{Table of Symbols}
 
@@ -167,6 +146,7 @@ which heat is transferred in
   DD & Data Definition\\
   GD & General Definition\\
   GS & Goal Statement\\
+  GUI & Graphical User Interface\\
   IM & Instance Model\\
   LC & Likely Change\\
   NPC & Non-Player Character\\
@@ -183,7 +163,6 @@ which heat is transferred in
 
 \section{Introduction}
 \label{intro}
-
 This document is an SRS for the \progname{} (\prognameAbbrv{}), a mathematical 
 tool which determines the range of a user-specified equation given the domains 
 of the equation's variables. This tool is being developed to aid in the 
@@ -218,8 +197,7 @@ variable domain is not provided, it will be assumed that the range is
 $(-\infty, \infty)$. For the initial version of this product, the mathematical 
 operations allowed in an equation will be limited to the four arithmetic 
 operators ($+$, $-$, $\times$, $\div$, exponents). Future iterations can expand 
-this list 
-to include trigonometric functions ($\sin$, $\cos$, $\tan$, $\arcsin$, 
+this list to include trigonometric functions ($\sin$, $\cos$, $\tan$, $\arcsin$,
 $\arccos$, $\arctan$), partial equations, and other useful operations and 
 functions.
 
@@ -241,6 +219,7 @@ involved can be used in similar projects because it does not contain any
 project-specific concepts or models.
 
 \subsection{Characteristics of Intended Reader}
+\label{intro_reader}
 The intended reader of this document must understand elementary algebra, 
 especially notation and equations, in the domain of real numbers ($\Re$). They 
 must also have an understanding of domain and range with respect to an equation 
@@ -268,31 +247,56 @@ This section identifies the interfaces between the system and its environment,
 describes the user characteristics and lists the system constraints.
 
 \subsection{System Context}
+The \progname{} tool is a stand-alone application for calculating the range of 
+a user-provided equation given the known domains of the equation's component 
+variables. Therefore it is independent and self-contained with respect to 
+external organizations, products, and technologies.
 
-\wss{Your system context will likely include an explicit list of user and system
-  responsibilities}
+The user interface of the \prognameAbbrv{} tool facilitates communication 
+between the product and the user, and must contain the ability to exchange user 
+inputs and system outputs. In general, the user is responsible for ensuring 
+that they have provided a semantically correct equation and that their inputs 
+do not contain mathematical operations that are not implemented in the tool. 
+The \progname{} is responsible for providing an information exchange interface 
+between itself and the user, performing mathematical calculations, and 
+detecting syntactic errors in the system inputs.
 
 \begin{itemize}
-\item User Responsibilities:
-\begin{itemize}
-\item 
-\end{itemize}
-\item \progname{} Responsibilities:
-\begin{itemize}
-\item Detect data type mismatch, such as a string of characters instead of a
-  floating point number
-\item 
-\end{itemize}
+	\item User Responsibilities:
+	\begin{itemize}
+		\item Provide an equation from the domain of real numbers ($\Re$) that 
+		only contains mathematical operations that are recognized by the system
+		\item Provide the mathematical domains of the equation's variables if 
+		they are known
+		\item Ensure that the equation given to the tool does not contain 
+		semantic errors
+	\end{itemize}
+	\item \progname{} Responsibilities:
+	\begin{itemize}
+		\item Allow the user to enter their equation and known variable domains 
+		as system inputs
+		\item For variables with unknown domains, provide default values to be 
+		used in calculations
+		\item Detect data type mismatch, such as a string of characters instead 
+		of a floating point number
+		\item Detect bracket mismatches
+		\item Calculate and output the mathematical range corresponding to the 
+		user's inputs; if a result cannot be calculated, communicate this to 
+		the user
+	\end{itemize}
 \end{itemize}
 
 \subsection{User Characteristics} \label{SecUserCharacteristics}
-
-The end user of \progname{} should have an understanding of undergraduate Level
-1 Calculus and Physics.
+The end user of \progname{} is also the intended reader (Section 
+\ref{intro_reader}) of this document.
 
 \subsection{System Constraints}
-
-\wss{You may not have any system constraints}
+The use of a Graphical User Interface (GUI) is useful for the \prognameAbbrv{} 
+tool because it can help the user visualize their equation during design time 
+and debugging. This has implications on the types of languages that this tool 
+will be developed in and target platform choices. If a GUI is included in the 
+\prognameAbbrv{} design, only Windows platforms will be supported in the 
+initial release.
 
 \section{Specific System Description}
 \label{specific}
