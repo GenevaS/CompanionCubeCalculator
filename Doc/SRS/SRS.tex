@@ -122,10 +122,9 @@ systems.  The symbols are listed in alphabetical order.
 \renewcommand{\arraystretch}{1.2}
 %\noindent \begin{tabularx}{1.0\textwidth}{l l X}
 \noindent \begin{longtable*}{l l p{12cm}} \toprule
-\textbf{symbol} & \textbf{unit} & \textbf{description}\\
+\textbf{Symbol} & \textbf{Unit} & \textbf{Description}\\
 \midrule 
-$A_C$ & \si[per-mode=symbol] {\square\metre} & coil surface area
-\\
+$\Re$ & - & The set of real numbers\\
 $A_\text{in}$ & \si[per-mode=symbol] {\square\metre} & surface area over 
 which heat is transferred in
 \\ 
@@ -270,6 +269,8 @@ detecting syntactic errors in the system inputs.
 		they are known
 		\item Ensure that the equation given to the tool does not contain 
 		semantic errors
+		\item Ensure that the products outputs are semantically correct with 
+		respect to the target application
 	\end{itemize}
 	\item \progname{} Responsibilities:
 	\begin{itemize}
@@ -300,16 +301,29 @@ initial release.
 
 \section{Specific System Description}
 \label{specific}
-
 This section first presents the problem description, which gives a high-level
-view of the problem to be solved.  This is followed by the solution characteristics
-specification, which presents the assumptions, theories, definitions and finally
-the instance models.  \wss{Add any project specific details that are relevant
-  for the section overview.}
+view of the problem to be solved.  This is followed by the solution 
+characteristics specification, which presents the assumptions, theories, 
+definitions and finally the instance models.  \wss{Add any project specific 
+details that are relevant for the section overview.}
 
 \subsection{Problem Description} \label{Sec_pd}
+The GLaDOS architecture described by \citet{glados} is a specialized game 
+engine that enables game designers to create Non-Player Characters (NPCs) that 
+react to their environment by using models of emotion from psychology. A key 
+component of the architecture is the primary appraisal module, where inputs 
+from the environment are converted into emotion values. The equations currently 
+used for this task are not well informed by any scientific research, and will 
+be incrementally revised as more information is collected. These new equations 
+are required to conform to the same mathematical range as the currently 
+implemented equations. Ensuring that this requirement is maintained over 
+consecutive iterations of the equations will become tedious and time consuming, 
+distracting from the main task of developing more rigorous and explainable 
+emotion equations.
 
-\progname{} is \wss{what problem does your program solve?}
+The \progname{} is a tool for calculating the range of a mathematical equation 
+based on its input variables, which will help make the equation design process 
+faster and less error-prone when compared to doing it by hand. 
 
 \subsubsection{Terminology and  Definitions}
 
@@ -325,8 +339,8 @@ easier to correctly understand the requirements:
 
 \subsubsection{Physical System Description}
 
-The physical system of \progname{}, as shown in Figure~?,
-includes the following elements:
+The physical system of \progname{}, as shown in Figure~?, includes the 
+following elements:
 
 \begin{itemize}
 
