@@ -124,6 +124,7 @@ systems.  The symbols are listed in alphabetical order.
 \noindent \begin{longtable*}{l l p{12cm}} \toprule
 \textbf{Symbol} & \textbf{Unit} & \textbf{Description}\\
 \midrule 
+$f(X)$ & - & A function of a variable set $X$\\
 $\Re$ & - & The set of real numbers\\
 $A_\text{in}$ & \si[per-mode=symbol] {\square\metre} & surface area over 
 which heat is transferred in
@@ -163,8 +164,8 @@ which heat is transferred in
 \section{Introduction}
 \label{intro}
 This document is an SRS for the \progname{} (\prognameAbbrv{}), a mathematical 
-tool which determines the range of a user-specified equation given the domains 
-of the equation's variables. This tool is being developed to aid in the 
+tool which determines the range of a user-specified function given the domains 
+of the function's variables. This tool is being developed to aid in the 
 specification and refinement of GLaDOS, an emotion engine for Non-Player 
 Characters (NPCs) in Computer Role-Playing Games (CRPG) as described by 
 \citet{glados}.
@@ -180,24 +181,24 @@ development of the \prognameAbbrv{} tool.
 This document is intended for two reader types -- those who wish to use the 
 tool and those who wish to expand the tool. Even though the \progname{} was 
 created to aid in the development of a specific system (GLaDOS), the tested 
-equations do not have any specific units. This means that it can be used for 
-any equation that exists in the domain of real numbers ($\Re$). Therefore, this 
+functions do not have any specific units. This means that it can be used for 
+any function that exists in the domain of real numbers ($\Re$). Therefore, this 
 document can be used by a user who wishes to use the \prognameAbbrv{} tool to 
-determine the range of a specified mathematical equation. Since the initial 
+determine the range of a specified mathematical function. Since the initial 
 development of the \prognameAbbrv{} tool will be limited to arithmetic 
 operators, this document includes information that will be useful to a 
 developer looking to expand the abilities of the \prognameAbbrv{} with 
 additional mathematical models such as trigonometry to suit their project.
 
 \subsection{Scope of Requirements} 
-The \progname{} calculates the mathematical range of a user-defined equation 
-using the defined variable domains for that equation. In the cases where a 
+The \progname{} calculates the mathematical range of a user-defined function 
+using the defined variable domains for that function. In the cases where a 
 variable domain is not provided, it will be assumed that the range is 
 $(-\infty, \infty)$. For the initial version of this product, the mathematical 
-operations allowed in an equation will be limited to the four arithmetic 
+operations allowed in an function will be limited to the four arithmetic 
 operators ($+$, $-$, $\times$, $\div$, exponents). Future iterations can expand 
 this list to include trigonometric functions ($\sin$, $\cos$, $\tan$, $\arcsin$,
-$\arccos$, $\arctan$), partial equations, and other useful operations and 
+$\arccos$, $\arctan$), partial functions, and other useful operations and 
 functions.
 
 The purpose of this product is to aid in the design and tuning of the GLaDOS 
@@ -205,13 +206,13 @@ architecture, a specialized game engine enables game designers to create
 Non-Player Characters (NPCs) that react to their environment by using models of 
 emotion from psychology. One module in the architecture converts information 
 from the environment into an internal representation that directs an NPC's 
-decision-making. This task requires the specification of numerical equations 
+decision-making. This task requires the specification of numerical functions 
 with multiple variables which must be normalized to a range of $[-1,1]$. In 
-order to normalize the engine's calculation, the range of the equation must be 
-known. Currently, the encoded equations are not well-informed by observation or 
+order to normalize the engine's calculation, the range of the function must be 
+known. Currently, the encoded functions are not well-informed by observation or 
 scientific research and must be subjected to an iterative process in order to 
 address this problem. An automated method of calculating the range of a 
-proposed equation will make this process faster and less error-prone.
+proposed function will make this process faster and less error-prone.
 
 Although this product is being designed for a specific project, the concepts 
 involved can be used in similar projects because it does not contain any 
@@ -220,8 +221,8 @@ project-specific concepts or models.
 \subsection{Characteristics of Intended Reader}
 \label{intro_reader}
 The intended reader of this document must understand elementary algebra, 
-especially notation and equations, in the domain of real numbers ($\Re$). They 
-must also have an understanding of domain and range with respect to an equation 
+especially notation and functions, in the domain of real numbers ($\Re$). They 
+must also have an understanding of domain and range with respect to a function 
 in order to understand the outputs of the product and how it relates to its 
 inputs.
 
@@ -247,14 +248,14 @@ describes the user characteristics and lists the system constraints.
 
 \subsection{System Context}
 The \progname{} tool is a stand-alone application for calculating the range of 
-a user-provided equation given the known domains of the equation's component 
+a user-provided function given the known domains of the function's component 
 variables. Therefore it is independent and self-contained with respect to 
 external organizations, products, and technologies.
 
 The user interface of the \prognameAbbrv{} tool facilitates communication 
 between the product and the user, and must contain the ability to exchange user 
 inputs and system outputs. In general, the user is responsible for ensuring 
-that they have provided a semantically correct equation and that their inputs 
+that they have provided a semantically correct function and that their inputs 
 do not contain mathematical operations that are not implemented in the tool. 
 The \progname{} is responsible for providing an information exchange interface 
 between itself and the user, performing mathematical calculations, and 
@@ -263,18 +264,18 @@ detecting syntactic errors in the system inputs.
 \begin{itemize}
 	\item User Responsibilities:
 	\begin{itemize}
-		\item Provide an equation from the domain of real numbers ($\Re$) that 
+		\item Provide an function from the domain of real numbers ($\Re$) that 
 		only contains mathematical operations that are recognized by the system
-		\item Provide the mathematical domains of the equation's variables if 
+		\item Provide the mathematical domains of the function's variables if 
 		they are known
-		\item Ensure that the equation given to the tool does not contain 
+		\item Ensure that the function given to the tool does not contain 
 		semantic errors
 		\item Ensure that the products outputs are semantically correct with 
 		respect to the target application
 	\end{itemize}
 	\item \progname{} Responsibilities:
 	\begin{itemize}
-		\item Allow the user to enter their equation and known variable domains 
+		\item Allow the user to enter their function and known variable domains 
 		as system inputs
 		\item For variables with unknown domains, provide default values to be 
 		used in calculations
@@ -293,7 +294,7 @@ The end user of \progname{} is also the intended reader (Section
 
 \subsection{System Constraints}
 The use of a Graphical User Interface (GUI) is useful for the \prognameAbbrv{} 
-tool because it can help the user visualize their equation during design time 
+tool because it can help the user visualize their function during design time 
 and debugging. This has implications on the types of languages that this tool 
 will be developed in and target platform choices. If a GUI is included in the 
 \prognameAbbrv{} design, only Windows platforms will be supported in the 
@@ -312,17 +313,17 @@ The GLaDOS architecture described by \citet{glados} is a specialized game
 engine that enables game designers to create Non-Player Characters (NPCs) that 
 react to their environment by using models of emotion from psychology. A key 
 component of the architecture is the primary appraisal module, where inputs 
-from the environment are converted into emotion values. The equations currently 
+from the environment are converted into emotion values. The functions currently 
 used for this task are not well informed by any scientific research, and will 
-be incrementally revised as more information is collected. These new equations 
+be incrementally revised as more information is collected. These new functions 
 are required to conform to the same mathematical range as the currently 
-implemented equations. Ensuring that this requirement is maintained over 
-consecutive iterations of the equations will become tedious and time consuming, 
+implemented functions. Ensuring that this requirement is maintained over 
+consecutive iterations of the functions will become tedious and time consuming, 
 distracting from the main task of developing more rigorous and explainable 
-emotion equations.
+emotion functions.
 
-The \progname{} is a tool for calculating the range of a mathematical equation 
-based on its input variables, which will help make the equation design process 
+The \progname{} is a tool for calculating the range of a mathematical function 
+based on its input variables, which will help make the function design process 
 faster and less error-prone when compared to doing it by hand. 
 
 \subsubsection{Terminology and  Definitions}
@@ -364,25 +365,25 @@ following elements:
 
 \subsubsection{Goal Statements}
 
-\noindent Given the \wss{inputs}, the goal statements are:
+\noindent Given an function and a set of variables, the goal statements are:
 
 \begin{itemize}
 
-\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] \wss{One
-    sentence description of the goal.  There may be more than one.  Each Goal
-    should have a meaningful label.}
+\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_range}:] 
+Calculate the range of an input $f(X)$.
+
+\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_unknownDomain}:] 
+If a variable's domain is not provided, calculate the domain.
 
 \end{itemize}
 
 \subsection{Solution Characteristics Specification}
-
 The instance models that govern \progname{} are presented in
-Subsection~\ref{sec_instance}.  The information to understand the meaning of the
+Subsection~\ref{sec_instance}. The information to understand the meaning of the
 instance models and their derivation is also presented, so that the instance
 models can be verified.
 
 \subsubsection{Assumptions}
-
 This section simplifies the original problem and helps in developing the
 theoretical model by filling in the missing information for the physical
 system. The numbers given in the square brackets refer to the theoretical model
@@ -391,10 +392,7 @@ likely change [LC], in which the respective assumption is used.
 
 \begin{itemize}
 
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_meaningfulLabel}:]
-  \wss{Short description of each assumption.  Each assumption
-    should have a meaningful label.  Use cross-references to identify the
-    appropriate traceability to T, GD, DD etc., using commands like dref, ddref etc.}
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_set}:] $f(X) \in \Re$.
 
 \end{itemize}
 
