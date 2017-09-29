@@ -17,6 +17,7 @@
 \usepackage{pdflscape}
 \usepackage{afterpage}
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{txfonts}
 
 \usepackage[round]{natbib}
 
@@ -124,8 +125,10 @@ systems.  The symbols are listed in alphabetical order.
 \noindent \begin{longtable*}{l l p{12cm}} \toprule
 \textbf{Symbol} & \textbf{Unit} & \textbf{Description}\\
 \midrule 
+$D(x)$ & - & Domain of $x$\\
 $f(X)$ & - & A function of a variable set $X$\\
-$\Re$ & - & The set of real numbers\\
+$R(f(X))$ & - & Range of $f(X)$\\
+$\varmathbb{R}$ & - & The set of real numbers\\
 $A_\text{in}$ & \si[per-mode=symbol] {\square\metre} & surface area over 
 which heat is transferred in
 \\ 
@@ -156,7 +159,7 @@ which heat is transferred in
   \prognameAbbrv{} & \progname{}\\
   T & Theoretical Model\\
   \bottomrule
-\end{tabular}\\
+\end{tabular}
 
 \newpage
 \pagenumbering{arabic}
@@ -182,13 +185,14 @@ This document is intended for two reader types -- those who wish to use the
 tool and those who wish to expand the tool. Even though the \progname{} was 
 created to aid in the development of a specific system (GLaDOS), the tested 
 functions do not have any specific units. This means that it can be used for 
-any function that exists in the domain of real numbers ($\Re$). Therefore, this 
-document can be used by a user who wishes to use the \prognameAbbrv{} tool to 
-determine the range of a specified mathematical function. Since the initial 
-development of the \prognameAbbrv{} tool will be limited to arithmetic 
-operators, this document includes information that will be useful to a 
-developer looking to expand the abilities of the \prognameAbbrv{} with 
-additional mathematical models such as trigonometry to suit their project.
+any function that exists in the domain of real numbers ($\varmathbb{R}$). 
+Therefore, this document can be used by a user who wishes to use the 
+\prognameAbbrv{} tool to determine the range of a specified mathematical 
+function. Since the initial development of the \prognameAbbrv{} tool will be 
+limited to arithmetic operators, this document includes information that will 
+be useful to a developer looking to expand the abilities of the 
+\prognameAbbrv{} with additional mathematical models such as trigonometry to 
+suit their project.
 
 \subsection{Scope of Requirements} 
 The \progname{} calculates the mathematical range of a user-defined function 
@@ -221,9 +225,10 @@ project-specific concepts or models.
 \subsection{Characteristics of Intended Reader}
 \label{intro_reader}
 The intended reader of this document must understand elementary algebra, 
-especially notation and functions, in the domain of real numbers ($\Re$). They 
-must also have an understanding of domain and range with respect to a function 
-in order to understand the outputs of the product and how it relates to its 
+especially notation and functions, in the domain of real numbers 
+($\varmathbb{R}$). They must also have an understanding of domain and range 
+with respect to a function in order to understand the outputs of the product 
+and how it relates to its 
 inputs.
 
 \subsection{Organization of Document}
@@ -264,8 +269,9 @@ detecting syntactic errors in the system inputs.
 \begin{itemize}
 	\item User Responsibilities:
 	\begin{itemize}
-		\item Provide an function from the domain of real numbers ($\Re$) that 
-		only contains mathematical operations that are recognized by the system
+		\item Provide an function from the domain of real numbers 
+		($\varmathbb{R}$) that only contains mathematical operations that are 
+		recognized by the system
 		\item Provide the mathematical domains of the function's variables if 
 		they are known
 		\item Ensure that the function given to the tool does not contain 
@@ -309,22 +315,29 @@ definitions and finally the instance models.  \wss{Add any project specific
 details that are relevant for the section overview.}
 
 \subsection{Problem Description} \label{Sec_pd}
-The GLaDOS architecture described by \citet{glados} is a specialized game 
-engine that enables game designers to create Non-Player Characters (NPCs) that 
-react to their environment by using models of emotion from psychology. A key 
-component of the architecture is the primary appraisal module, where inputs 
-from the environment are converted into emotion values. The functions currently 
-used for this task are not well informed by any scientific research, and will 
-be incrementally revised as more information is collected. These new functions 
-are required to conform to the same mathematical range as the currently 
-implemented functions. Ensuring that this requirement is maintained over 
-consecutive iterations of the functions will become tedious and time consuming, 
-distracting from the main task of developing more rigorous and explainable 
-emotion functions.
+The GLaDOS architecture is a specialized game engine that enables game 
+designers to create Non-Player Characters (NPCs) that react to their 
+environment by using models of emotion from psychology. A key component of the 
+architecture is the primary appraisal module, where inputs from the environment 
+are converted into emotion values. The functions currently used for this task 
+are not well informed by any scientific research, and will be incrementally 
+revised as more information is collected. These new functions are required to 
+conform to the same mathematical range as the currently implemented functions. 
+Ensuring that this requirement is maintained over consecutive iterations of the 
+functions will become tedious and time consuming, distracting from the main 
+task of developing more rigorous and explainable emotion functions.
 
 The \progname{} is a tool for calculating the range of a mathematical function 
 based on its input variables, which will help make the function design process 
-faster and less error-prone when compared to doing it by hand. 
+faster and less error-prone when compared to doing it by hand.
+
+\subsubsection{A Primer on Interval Arithmetic}
+Interval arithmetic is a method of determining bounds on some $x \in 
+\varmathbb{R}$, where the exact value of $x$ cannot be determined. Although it 
+was developed to calculate bounds on rounding and measurement errors, its 
+principles can be applied to the specification and design of the 
+\prognameAbbrv{} tool, which aims to find the bounds on a function $f(X) \in 
+\varmathbb{R}$.
 
 \subsubsection{Terminology and  Definitions}
 
@@ -334,34 +347,22 @@ easier to correctly understand the requirements:
 
 \begin{itemize}
 
-\item 
+\item Closed interval: A bounded set that includes its end points; this is 
+expressed $[a,b]$
+\item Connected set: a set of values that does not contain any disjoint members
+\item Domain ($D(x)$): the set of values for a variable $x$ that are valid in 
+$f(X)$
+\item Open interval: A bounded set of values that does not contain its end 
+points; this is expressed $(a,b)$
+\item Range ($R(f(X))$): the set of values that are produced by $f(X)$
+\item Real interval: a closed, connected set of real numbers
 
 \end{itemize}
 
 \subsubsection{Physical System Description}
 
-The physical system of \progname{}, as shown in Figure~?, includes the 
-following elements:
-
-\begin{itemize}
-
-\item[PS1:] 
-
-\item[PS2:] ...
-
-\end{itemize}
-
-\wss{A figure here may make sense for most SRS documents}
-
-% \begin{figure}[h!]
-% \begin{center}
-% %\rotatebox{-90}
-% {
-%  \includegraphics[width=0.5\textwidth]{<FigureName>}
-% }
-% \caption{\label{<Label>} <Caption>}
-% \end{center}
-% \end{figure}
+The \progname{} tool does not have a physical system component because it 
+exists independently of the context of $f(X)$. 
 
 \subsubsection{Goal Statements}
 
@@ -370,10 +371,10 @@ following elements:
 \begin{itemize}
 
 \item[GS\refstepcounter{goalnum}\thegoalnum \label{G_range}:] 
-Calculate the range of an input $f(X)$.
+Calculate $R(f(X))$.
 
 \item[GS\refstepcounter{goalnum}\thegoalnum \label{G_unknownDomain}:] 
-If a variable's domain is not provided, calculate the domain.
+For any $x \in X$, calculate $D(x)$ if it is not part of the input set.
 
 \end{itemize}
 
@@ -392,7 +393,18 @@ likely change [LC], in which the respective assumption is used.
 
 \begin{itemize}
 
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_set}:] $f(X) \in \Re$.
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_domain}:] $\forall x 
+\in X | D(x) \in \varmathbb{R}$.
+
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_range}:] $R(f(X)) \in 
+\varmathbb{R}$.
+
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_operators}:] The 
+mathematical operators used in $f(X)$ can be found in the set $\{+, -, 
+\times, \div, \string^ \}$.
+
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_interval}:] $R(f(X))$ 
+is a real interval.
 
 \end{itemize}
 
@@ -410,11 +422,11 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
   \hline
   \rowcolor[gray]{0.9}
-  Number& T\refstepcounter{theorynum}\thetheorynum \label{T_COE}\\
+  Number& T\refstepcounter{theorynum}\thetheorynum \label{T_addition}\\
   \hline
-  Label&\bf Conservation of thermal energy\\
+  Label&\bf Addition on Real Intervals\\
   \hline
-  Equation&  $-{\bf \nabla \cdot q} + g$ = $\rho C \frac{\partial T}{\partial t}$\\
+  Equation&  $X + Y = \{x + y | x \in X \wedge y \in Y\}$\\
   \hline
   Description & 
                 The above equation gives the conservation of energy for transient heat transfer in a material
@@ -427,13 +439,164 @@ on.  \wss{Modify the examples below for your problem, and add additional models
                 of energy, such as mechanical energy, are assumed to be negligible in the
                 system (\aref{A_OnlyThermalEnergy}).  In general, the material properties ($\rho$ and $C$) depend on temperature.\\
   \hline
-  Source &
-           \url{http://www.efunda.com/formulae/heat_transfer/conduction/overview_cond.cfm}\\
-  % The above web link should be replaced with a proper citation to a publication
+  Source & \citet{intervalarithmetic}\\
   \hline
   Ref.\ By & \dref{ROCT}\\
   \hline
 \end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& T\refstepcounter{theorynum}\thetheorynum \label{T_subtraction}\\
+		\hline
+		Label&\bf Subtraction on Real Intervals\\
+		\hline
+		Equation&  $X - Y = \{x - y | x \in X \wedge y \in Y\}$\\
+		\hline
+		Description & 
+		The above equation gives the conservation of energy for transient heat 
+		transfer in a material
+		of specific heat capacity $C$ (\si{\joule\per\kilogram\per\celsius}) 
+		and density $\rho$ 
+		(\si{\kilogram\per\cubic\metre}), where $\bf q$ is the thermal flux 
+		vector (\si{\watt\per\square\metre}),
+		$g$ is the volumetric heat generation
+		(\si{\watt\per\cubic\metre}), $T$ is the temperature
+		(\si{\celsius}),  $t$ is time (\si{\second}), and $\nabla$ is
+		the gradient operator.  For this equation to apply, other forms
+		of energy, such as mechanical energy, are assumed to be negligible in 
+		the
+		system (\aref{A_OnlyThermalEnergy}).  In general, the material 
+		properties ($\rho$ and $C$) depend on temperature.\\
+		\hline
+		Source & \citet{intervalarithmetic}\\
+		\hline
+		Ref.\ By & \dref{ROCT}\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& T\refstepcounter{theorynum}\thetheorynum 
+		\label{T_multiplication}\\
+		\hline
+		Label&\bf Multiplication on Real Intervals\\
+		\hline
+		Equation&  $X \times Y = \{x \times y | x \in X \wedge y \in Y\}$\\
+		\hline
+		Description & 
+		The above equation gives the conservation of energy for transient heat 
+		transfer in a material
+		of specific heat capacity $C$ (\si{\joule\per\kilogram\per\celsius}) 
+		and density $\rho$ 
+		(\si{\kilogram\per\cubic\metre}), where $\bf q$ is the thermal flux 
+		vector (\si{\watt\per\square\metre}),
+		$g$ is the volumetric heat generation
+		(\si{\watt\per\cubic\metre}), $T$ is the temperature
+		(\si{\celsius}),  $t$ is time (\si{\second}), and $\nabla$ is
+		the gradient operator.  For this equation to apply, other forms
+		of energy, such as mechanical energy, are assumed to be negligible in 
+		the
+		system (\aref{A_OnlyThermalEnergy}).  In general, the material 
+		properties ($\rho$ and $C$) depend on temperature.\\
+		\hline
+		Source & \citet{intervalarithmetic}\\
+		\hline
+		Ref.\ By & \dref{ROCT}\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& T\refstepcounter{theorynum}\thetheorynum 
+		\label{T_division}\\
+		\hline
+		Label&\bf Division on Real Intervals\\
+		\hline
+		Equation&  $X \div Y = \{z | \exists x \in X, y \in Y \wedge y \neq 0, 
+		z 
+		= x \div y\}$\\
+		\hline
+		Description & 
+		The above equation gives the conservation of energy for transient heat 
+		transfer in a material
+		of specific heat capacity $C$ (\si{\joule\per\kilogram\per\celsius}) 
+		and density $\rho$ 
+		(\si{\kilogram\per\cubic\metre}), where $\bf q$ is the thermal flux 
+		vector (\si{\watt\per\square\metre}),
+		$g$ is the volumetric heat generation
+		(\si{\watt\per\cubic\metre}), $T$ is the temperature
+		(\si{\celsius}),  $t$ is time (\si{\second}), and $\nabla$ is
+		the gradient operator.  For this equation to apply, other forms
+		of energy, such as mechanical energy, are assumed to be negligible in 
+		the
+		system (\aref{A_OnlyThermalEnergy}).  In general, the material 
+		properties ($\rho$ and $C$) depend on temperature.\\
+		\hline
+		Source & \citet{intervalarithmetic}\\
+		\hline
+		Ref.\ By & \dref{ROCT}\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& T\refstepcounter{theorynum}\thetheorynum 
+		\label{T_exponents}\\
+		\hline
+		Label&\bf Exponents on Real Intervals\\
+		\hline
+		Equation&  $X^Y = $\\
+		\hline
+		Description & 
+		The above equation gives the conservation of energy for transient heat 
+		transfer in a material
+		of specific heat capacity $C$ (\si{\joule\per\kilogram\per\celsius}) 
+		and density $\rho$ 
+		(\si{\kilogram\per\cubic\metre}), where $\bf q$ is the thermal flux 
+		vector (\si{\watt\per\square\metre}),
+		$g$ is the volumetric heat generation
+		(\si{\watt\per\cubic\metre}), $T$ is the temperature
+		(\si{\celsius}),  $t$ is time (\si{\second}), and $\nabla$ is
+		the gradient operator.  For this equation to apply, other forms
+		of energy, such as mechanical energy, are assumed to be negligible in 
+		the
+		system (\aref{A_OnlyThermalEnergy}).  In general, the material 
+		properties ($\rho$ and $C$) depend on temperature.\\
+		\hline
+		Source & \citet{intervalarithmetic}\\
+		\hline
+		Ref.\ By & \dref{ROCT}\\
+		\hline
+	\end{tabular}
 \end{minipage}\\
 
 ~\newline
@@ -838,7 +1001,7 @@ instance models, requirements, and data constraints on each other.
 
 \bibliographystyle {plainnat}
 \bibliography 
-{../../ReferenceMaterial/References,../../ReferenceMaterial/ProblemStatement_Refs}
+{../../ReferenceMaterial/SRS_Refs,../../ReferenceMaterial/ProblemStatement_Refs}
 
 \newpage
 
@@ -851,7 +1014,7 @@ show the values of the symbolic parameters introduced in the report.}
 
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{l l} 		
-	$\Re$ & Domain of real numbers\\
+	$\varmathbb{R}$ & Domain of real numbers\\
 \end{tabular}\\
 
 \end{document}
