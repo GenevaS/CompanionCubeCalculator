@@ -345,7 +345,8 @@ $f(X)$
 $\pm \infty$
 \item Open interval: A bounded set of values that does not contain its end 
 points; this is expressed $(a,b)$
-\item Range ($R(f(X))$): the set of values that are produced by $f(X)$
+\item Range ($R(f(X))$): the set of values that are produced by a function 
+$f(X)$ with a set of input variables $X$
 \item Real interval: a closed, connected set of real numbers
 
 \end{itemize}
@@ -365,7 +366,7 @@ exists independently of the context of $f(X)$.
 Calculate $R(f(X))$.
 
 \item[GS\refstepcounter{goalnum}\thegoalnum \label{G_unknownDomain}:] 
-For any $x \in X$, calculate $D(x)$ if it is not part of the input set.
+For any $x \in X$, determine $D(x)$ if it is not part of the input set.
 
 \end{itemize}
 
@@ -384,11 +385,11 @@ likely change [LC], in which the respective assumption is used.
 
 \begin{itemize}
 
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_domain}:] $\forall x 
-\in X | D(x) \in \varmathbb{R}$.
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_domain}:] $D(x)$ is a 
+closed, real interval.
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_interval}:] $R(f(X))$ 
-is a real interval.
+is a closed, real interval.
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_operators}:] The 
 mathematical operators used in $f(X)$ can be found in the set $\{+, -, 
@@ -416,11 +417,12 @@ on.  \wss{Modify the examples below for your problem, and add additional models
   \hline
   Equation&  $X + Y = \{x + y | x \in X \wedge y \in Y\}$\\
   \hline
-  Description & \\
+  Description & The summation interval of two closed, real intervals $X$ and 
+  $Y$ is equal to the set of sums for each pairwise element $x$ and $y$.\\
   \hline
   Source & \citet{intervalarithmetic}\\
   \hline
-  Ref.\ By & \dref{ROCT}\\
+  Ref.\ By & \iref{I_addition}\\
   \hline
 \end{tabular}
 \end{minipage}\\
@@ -439,11 +441,14 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 		\hline
 		Equation&  $X - Y = \{x - y | x \in X \wedge y \in Y\}$\\
 		\hline
-		Description & \\
+		Description & The difference interval of two closed, real intervals $X$ 
+		and $Y$ is equal to the set of differences for each pairwise element 
+		$x$ and 
+		$y$.\\
 		\hline
 		Source & \citet{intervalarithmetic}\\
 		\hline
-		Ref.\ By & \dref{ROCT}\\
+		Ref.\ By & \iref{I_subtraction}\\
 		\hline
 	\end{tabular}
 \end{minipage}\\
@@ -463,11 +468,13 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 		\hline
 		Equation&  $X \times Y = \{x \times y | x \in X \wedge y \in Y\}$\\
 		\hline
-		Description & \\
+		Description & The product interval of two closed, real intervals $X$ 
+		and $Y$ is equal to the set of products for each pairwise element $x$ 
+		and $y$.\\
 		\hline
 		Source & \citet{intervalarithmetic}\\
 		\hline
-		Ref.\ By & \dref{ROCT}\\
+		Ref.\ By & \iref{I_multiplication}\\
 		\hline
 	\end{tabular}
 \end{minipage}\\
@@ -486,14 +493,16 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 		Label&\bf Division on Real Intervals\\
 		\hline
 		Equation&  $X \div Y = \{z | \exists x \in X, y \in Y \wedge y \neq 0, 
-		z 
-		= x \div y\}$\\
+		z = x \div y\}$\\
 		\hline
-		Description & \\
+		Description & The quotient interval of two closed, real intervals $X$ 
+		and $Y$ is equal to the set of quotients for each pairwise element $x$ 
+		and $y$ where $y \neq 0$. If $0 \in Y$, the quotient is not a closed, 
+		real interval which contradicts \aref{A_interval}.\\
 		\hline
 		Source & \citet{intervalarithmetic}\\
 		\hline
-		Ref.\ By & \dref{ROCT}\\
+		Ref.\ By & \iref{I_division}\\
 		\hline
 	\end{tabular}
 \end{minipage}\\
@@ -513,11 +522,13 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 		\hline
 		Equation&  $b^X = \{b^x | x \in X \wedge b > 1\}$\\
 		\hline
-		Description & \\
+		Description & The product interval of a constant number $b$ raised to 
+		the power of an interval $X$ is equal to the set of products $b^x$ for 
+		each interval element $x$.\\
 		\hline
 		Source & \url{https://en.wikipedia.org/wiki/Interval_arithmetic}\\
 		\hline
-		Ref.\ By & \dref{ROCT}\\
+		Ref.\ By & \ddref{DD_base}, \iref{I_exponents}\\
 		\hline
 	\end{tabular}
 \end{minipage}\\
@@ -540,20 +551,37 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 			\{x^n | x \in X \wedge n 
 			\in \varmathbb{N}\} & \text{n is odd}\\
 			\{[x_{1}^n,...,x_{z}^n] | x \in X \wedge n 
-			\in \varmathbb{N}\} & \text{n is even, }x_{z} \geq x_{z+1}\\
+			\in \varmathbb{N}\} & \text{n is even}\wedge x_{z} \geq x_{z+1} 
+			\wedge x_{1} > 0\\
 			\{[x_{z}^n,...,x_{1}^n] | x \in X \wedge n 
-			\in \varmathbb{N}\} & \text{n is even, }x_{z} < x_{z+1}\\
+			\in \varmathbb{N}\} & \text{n is even} \wedge x_{z} < x_{z+1} 
+			\wedge x_{Z} < 0\\
 			\{[0,...,max\{x_{1}^n,x_{z}^n\}] | x \in X \wedge n 
 			\in \varmathbb{N}\} & \text{ELSE}\\
 		\end{cases}$
 		\newline
 		\\
 		\hline
-		Description & \\
+		Description & The product interval of a closed, real interval $X$ 
+		raised to the power of a constant, natural number $n$ depends on the 
+		properties of $X$ and $n$:
+		\begin{itemize}
+			\item When $n$ is an odd number, the product interval is equal to 
+			the set of products $x^n$ for each element $x$
+			\item When $n$ is even, the function is monotonically decreasing, 
+			and $x_{1} > 0$, the product interval is equal to the set of 
+			products $x^n$ for each element $x$
+			\item When $n$ is even, the function is monotonically increasing, 
+			and $x_{Z} < 0$, the product interval is equal to the set of 
+			products $x^n$ for each element $x$ and ordered in the opposite 
+			direction of the original interval $X$
+			\item Otherwise, the product interval is bounded by $0$ and the 
+			maximum product of the first and last elements in the interval set
+		\end{itemize}\\
 		\hline
 		Source & \url{https://en.wikipedia.org/wiki/Interval_arithmetic}\\
 		\hline
-		Ref.\ By & \dref{ROCT}\\
+		Ref.\ By & \ddref{DD_power}, \iref{I_expbase}\\
 		\hline
 	\end{tabular}
 \end{minipage}\\
@@ -561,60 +589,12 @@ on.  \wss{Modify the examples below for your problem, and add additional models
 ~\newline
 
 \subsubsection{General Definitions}\label{sec_gendef}
-
-This section collects the laws and equations that will be used in deriving the
-data definitions, which in turn are used to build the instance models.
-\wss{Some projects may not have any content for this section, but the section
-  heading should be kept.}  \wss{Modify the examples below for your problem, and
-  add additional definitions as appropriate.}
-
-~\newline
-
-\noindent
-\begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-\hline
-\rowcolor[gray]{0.9}
-Number& GD\refstepcounter{defnum}\thedefnum \label{NL}\\
-\hline
-Label &\bf Newton's law of cooling \\
-\hline
-% Units&$MLt^{-3}T^0$\\
-% \hline
-SI Units&\si{\watt\per\square\metre}\\
-\hline
-Equation&$ q(t) = h \Delta T(t)$  \\
-\hline
-Description &
-Newton's law of cooling describes convective cooling from a surface.  The law is
-stated as: the rate of heat loss from a body is proportional to the difference
-in temperatures between the body and its surroundings.
-\\
-& $q(t)$ is the thermal flux (\si{\watt\per\square\metre}).\\
-& $h$ is the heat transfer coefficient, assumed independent of $T$ (\aref{A_hcoeff})
-	(\si{\watt\per\square\metre\per\celsius}).\\
-&$\Delta T(t)$= $T(t) - T_{\text{env}}(t)$ is the time-dependent thermal gradient
-between the environment and the object (\si{\celsius}).
-\\
-\hline
-  Source &~\cite[p.\ 8]{Incropera2007}\\
-  \hline
-  Ref.\ By & \ddref{FluxCoil}, \ddref{FluxPCM}\\
-  \hline
-\end{tabular}
-\end{minipage}\\
-
-\subsubsection*{Detailed derivation of simplified rate of change of temperature}
-
-\wss{This may be necessary when the necessary information does not fit in the
-  description field.} 
+No additional information is required to build the data definitions. 
 
 \subsubsection{Data Definitions}\label{sec_datadef}
 
 This section collects and defines all the data needed to build the instance
-models. The dimension of each quantity is also given.  \wss{Modify the examples
-  below for your problem, and add additional definitions as appropriate.}
+models. The dimension of each quantity is also given.
 
 ~\newline
 
@@ -624,35 +604,91 @@ models. The dimension of each quantity is also given.  \wss{Modify the examples
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
 \hline
 \rowcolor[gray]{0.9}
-Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{FluxCoil}\\
+Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{DD_interval}\\
 \hline
-Label& \bf Heat flux out of coil\\
+Label& \bf Representation of a Closed, Real Interval\\
 \hline
-Symbol &$q_C$\\
+Symbol &$[x, y]$\\
 \hline
 % Units& $Mt^{-3}$\\
 % \hline
-  SI Units & \si{\watt\per\square\metre}\\
+  SI Units & -\\
   \hline
-  Equation&$q_C(t) = h_C (T_C - T_W(t))$, over area $A_C$\\
+  Equation& -\\
   \hline
-  Description & 
-                $T_C$ is the temperature of the coil (\si{\celsius}).  $T_W$ is the temperature of the water (\si{\celsius}).  
-                The heat flux out of the coil, $q_C$ (\si{\watt\per\square\metre}), is found by
-                assuming that Newton's Law 
-                of Cooling applies (\aref{A_Newt_coil}).  This law (\dref{NL}) is used on the surface of
-                the coil, which has area $A_C$ (\si{\square\metre}) and heat 
-                transfer coefficient $h_C$
-                (\si{\watt\per\square\metre\per\celsius}).  This equation
-                assumes that the temperature of the coil is constant over time (\aref{A_tcoil}) and that it does not vary along the length
-                of the coil (\aref{A_tlcoil}).
+  Description & The definition $[x,y]$ represents a closed, real interval 
+  (\aref{A_domain}, \aref{A_interval}) with endpoints $x$ and $y$.
   \\
   \hline
-  Sources&~\cite{Lightstone2012}  \\
+  Sources& - \\
   \hline
-  Ref.\ By & \iref{ewat}\\
+  Ref.\ By & \iref{I_addition}, \iref{I_subtraction}, \iref{I_multiplication}, 
+  \iref{I_division}, \iref{I_exponents}, \iref{I_expbase}\\
   \hline
 \end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{DD_base}\\
+		\hline
+		Label& \bf Representation of a Base Number\\
+		\hline
+		Symbol &$b$\\
+		\hline
+		% Units& $Mt^{-3}$\\
+		% \hline
+		SI Units & -\\
+		\hline
+		Equation& -\\
+		\hline
+		Description & A constant real number ($\varmathbb{R}$) such that $b > 
+		1$
+		(\tref{I_exponents}).
+		\\
+		\hline
+		Sources& - \\
+		\hline
+		Ref.\ By & \iref{I_exponents}\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{DD_power}\\
+		\hline
+		Label& \bf Representation of a Power\\
+		\hline
+		Symbol &$n$\\
+		\hline
+		% Units& $Mt^{-3}$\\
+		% \hline
+		SI Units & -\\
+		\hline
+		Equation& -\\
+		\hline
+		Description & A constant natural number ($\varmathbb{N}$)
+		(\tref{I_expbase}).
+		\\
+		\hline
+		Sources& - \\
+		\hline
+		Ref.\ By & \iref{I_exponents}\\
+		\hline
+	\end{tabular}
 \end{minipage}\\
 
 \subsubsection{Instance Models} \label{sec_instance}    
@@ -669,42 +705,216 @@ The goals \wss{reference your goals} are solved by \wss{reference your instance
 
 ~\newline
 
-%Instance Model 1
-
 \noindent
 \begin{minipage}{\textwidth}
 \renewcommand*{\arraystretch}{1.5}
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
   \hline
   \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
+  Number& IM\refstepcounter{instnum}\theinstnum \label{I_addition}\\
   \hline
-  Label& \bf Energy balance on water to find $T_W$\\
+  Label& \bf Addition of intervals\\
   \hline
-  Input&$m_W$, $C_W$, $h_C$, $A_C$, $h_P$, $A_P$, $t_\text{final}$, $T_C$, 
-  $T_\text{init}$, $T_P(t)$ from \iref{epcm}\\
-  & The input is constrained so that $T_\text{init} \leq T_C$ (\aref{A_charge})\\
+  Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
   \hline
-  Output&$T_W(t)$, $0\leq t \leq t_\text{final}$, such that\\
-  &$\frac{dT_W}{dt} = \frac{1}{\tau_W}[(T_C - T_W(t)) + {\eta}(T_P(t) - T_W(t))]$,\\
-  &$T_W(0) = T_P(0) = T_\text{init}$ (\aref{A_InitTemp}) and $T_P(t)$ from \iref{epcm} \\
+  Output&$[x_{sum}, y_{sum}]$ such that\\
+  &$x_{sum} = x_{1} + x_{2}$, $y_{sum} = y_{1} + y_{2}$,\\
+  &$[x_{sum}, y_{sum}]$ is a closed, real interval (\aref{A_interval}) \\
   \hline
-  Description&$T_W$ is the water temperature (\si{\celsius}).\\
-  &$T_P$ is the PCM temperature (\si{\celsius}).\\
-  &$T_C$ is the coil temperature (\si{\celsius}).\\
-  &$\tau_W = \frac{m_W C_W}{h_C A_C}$ is a constant (\si{\second}).\\
-  &$\eta = \frac{h_P A_P}{h_C A_C}$ is a constant (dimensionless).\\
-  & The above equation applies as long as the water is in liquid form,
-  $0<T_W<100^o\text{C}$, where $0^o\text{C}$ and $100^o\text{C}$ are the melting
-  and boiling points of water, respectively (\aref{A_OpRange}, \aref{A_Pressure}).
+  Description&
   \\
   \hline
-  Sources&~\cite{Lightstone2012} \ \\
+  Sources& ~\cite{intervalarithmetic} \ \\
   \hline
-  Ref.\ By & \iref{epcm}\\
+  Ref.\ By & -\\
   \hline
 \end{tabular}
 \end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum \label{I_subtraction}\\
+		\hline
+		Label& \bf Subtraction of intervals\\
+		\hline
+		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
+		\hline
+		Output&$[x_{sub}, y_{sub}]$ such that\\
+		&$x_{sub} = x_{1} - x_{2}$, $y_{sub} = y_{1} - y_{2}$,\\
+		&$[x_{sub}, y_{sub}]$ is a closed, real interval (\aref{A_interval}) \\
+		\hline
+		Description&
+		\\
+		\hline
+		Sources& ~\cite{intervalarithmetic} \ \\
+		\hline
+		Ref.\ By & -\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum \label{I_multiplication}\\
+		\hline
+		Label& \bf Multiplication of intervals\\
+		\hline
+		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
+		\hline
+		Output&$[x_{mul}, y_{mul}]$ such that\\
+		&$x_{sub} = x_{1} \times x_{2}$, $y_{sub} = y_{1} \times y_{2}$,\\
+		&$[x_{sub}, y_{sub}]$ is a closed, real interval (\aref{A_interval}) \\
+		\hline
+		Description&
+		\\
+		\hline
+		Sources& ~\cite{intervalarithmetic} \ \\
+		\hline
+		Ref.\ By & -\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum \label{I_division}\\
+		\hline
+		Label& \bf Division of intervals\\
+		\hline
+		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
+		\hline
+		Output&$[x_{div}, y_{div}]$ such that\\
+		&\\
+		&$[x_{div}, y_{div}]$ is a closed, real interval (\aref{A_interval}) \\
+		\hline
+		Description&
+		\\
+		\hline
+		Sources& \ \\
+		\hline
+		Ref.\ By & -\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum \label{I_exponents}\\
+		\hline
+		Label& \bf Intervals as Exponents\\
+		\hline
+		Input&$b$, $[x, y]$ from \ddref{DD_interval}\\
+		\hline
+		Output&$[x_{exp}, y_{exp}]$ such that\\
+		&\\
+		&$[x_{exp}, y_{exp}]$ is a closed, real interval (\aref{A_interval}) \\
+		\hline
+		Description&
+		\\
+		\hline
+		Sources& \ \\
+		\hline
+		Ref.\ By & -\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum \label{I_expbase}\\
+		\hline
+		Label& \bf Powers of Intervals\\
+		\hline
+		Input&$[x, y]$ from \ddref{DD_interval}, $n$ from \ddref{DD_power}\\
+		\hline
+		Output&$[x_{pow}, y_{pow}]$ such that\\
+		&\\
+		&$[x_{pow}, y_{pow}]$ is a closed, real interval (\aref{A_interval}) \\
+		\hline
+		Description&
+		\\
+		\hline
+		Sources& \ \\
+		\hline
+		Ref.\ By & -\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+%~\newline
+%
+%%Instance Model 1
+%
+%\noindent
+%\begin{minipage}{\textwidth}
+%	\renewcommand*{\arraystretch}{1.5}
+%	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+%		\hline
+%		\rowcolor[gray]{0.9}
+%		Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
+%		\hline
+%		Label& \bf Energy balance on water to find $T_W$\\
+%		\hline
+%		Input&$m_W$, $C_W$, $h_C$, $A_C$, $h_P$, $A_P$, $t_\text{final}$, 
+%		$T_C$, 
+%		$T_\text{init}$, $T_P(t)$ from \iref{epcm}\\
+%		& The input is constrained so that $T_\text{init} \leq T_C$ 
+%		(\aref{A_charge})\\
+%		\hline
+%		Output&$T_W(t)$, $0\leq t \leq t_\text{final}$, such that\\
+%		&$\frac{dT_W}{dt} = \frac{1}{\tau_W}[(T_C - T_W(t)) + {\eta}(T_P(t) - 
+%		T_W(t))]$,\\
+%		&$T_W(0) = T_P(0) = T_\text{init}$ (\aref{A_InitTemp}) and $T_P(t)$ 
+%		from \iref{epcm} \\
+%		\hline
+%		Description&$T_W$ is the water temperature (\si{\celsius}).\\
+%		&$T_P$ is the PCM temperature (\si{\celsius}).\\
+%		&$T_C$ is the coil temperature (\si{\celsius}).\\
+%		&$\tau_W = \frac{m_W C_W}{h_C A_C}$ is a constant (\si{\second}).\\
+%		&$\eta = \frac{h_P A_P}{h_C A_C}$ is a constant (dimensionless).\\
+%		& The above equation applies as long as the water is in liquid form,
+%		$0<T_W<100^o\text{C}$, where $0^o\text{C}$ and $100^o\text{C}$ are the 
+%		melting
+%		and boiling points of water, respectively (\aref{A_OpRange}, 
+%		\aref{A_Pressure}).
+%		\\
+%		\hline
+%		Sources&~\cite{Lightstone2012} \ \\
+%		\hline
+%		Ref.\ By & \iref{epcm}\\
+%		\hline
+%	\end{tabular}
+%\end{minipage}\\
 
 %~\newline
 
