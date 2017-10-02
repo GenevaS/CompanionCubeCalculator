@@ -402,7 +402,11 @@ mathematical operators used in $f(X)$ can be found in the set $\{+, -,
 \subsubsection{Theoretical Models}\label{sec_theoretical}
 
 This section focuses on the general equations and laws from interval arithmetic 
-that the \progname{} is based on. 
+that the \progname{} is based on. The models presented here are for real 
+intervals, which can be constrained to closed, real intervals using 
+\ddref{DD_interval} to satisfy \aref{A_domain} and \aref{A_interval}. 
+Additional models exist for interval arithmetic, but only the models named in 
+\aref{A_operators} are mentioned.
 
 ~\newline
 
@@ -418,7 +422,7 @@ that the \progname{} is based on.
   \hline
   Equation&  $X + Y = \{x + y | x \in X \wedge y \in Y\}$\\
   \hline
-  Description & The summation interval of two closed, real intervals $X$ and 
+  Description & The summation interval of two real intervals $X$ and 
   $Y$ is equal to the set of sums for each pairwise element $x$ and $y$.\\
   \hline
   Source & \citet{intervalarithmetic}\\
@@ -442,7 +446,7 @@ that the \progname{} is based on.
 		\hline
 		Equation&  $X - Y = \{x - y | x \in X \wedge y \in Y\}$\\
 		\hline
-		Description & The difference interval of two closed, real intervals $X$ 
+		Description & The difference interval of two real intervals $X$ 
 		and $Y$ is equal to the set of differences for each pairwise element 
 		$x$ and 
 		$y$.\\
@@ -469,7 +473,7 @@ that the \progname{} is based on.
 		\hline
 		Equation&  $X \times Y = \{x \times y | x \in X \wedge y \in Y\}$\\
 		\hline
-		Description & The product interval of two closed, real intervals $X$ 
+		Description & The product interval of two real intervals $X$ 
 		and $Y$ is equal to the set of products for each pairwise element $x$ 
 		and $y$.\\
 		\hline
@@ -496,10 +500,10 @@ that the \progname{} is based on.
 		Equation&  $X \div Y = \{z | \exists x \in X, y \in Y \wedge y \neq 0, 
 		z = x \div y\}$\\
 		\hline
-		Description & The quotient interval of two closed, real intervals $X$ 
-		and $Y$ is equal to the set of quotients for each pairwise element $x$ 
-		and $y$ where $y \neq 0$. If $0 \in Y$, the quotient is not a closed, 
-		real interval which contradicts \aref{A_interval}.\\
+		Description & The quotient interval of two real intervals $X$ and $Y$ 
+		is equal to the set of quotients for each pairwise element $x$ and $y$ 
+		where $y \neq 0$. If $0 \in Y$, the quotient is not a real interval 
+		which contradicts \aref{A_interval}.\\
 		\hline
 		Source & \citet{intervalarithmetic}\\
 		\hline
@@ -524,7 +528,8 @@ that the \progname{} is based on.
 		Equation&  $b^X = \{b^x | x \in X \wedge b > 1\}$\\
 		\hline
 		Description & The product interval of a constant number $b$ raised to 
-		the power of an interval $X$ is equal to the set of products $b^x$ for 
+		the power of a real interval $X$ is equal to the set of products $b^x$ 
+		for 
 		each interval element $x$.\\
 		\hline
 		Source & \url{https://en.wikipedia.org/wiki/Interval_arithmetic}\\
@@ -563,7 +568,7 @@ that the \progname{} is based on.
 		\newline
 		\\
 		\hline
-		Description & The product interval of a closed, real interval $X$ 
+		Description & The product interval of a real interval $X$ 
 		raised to the power of a constant, natural number $n$ depends on the 
 		properties of $X$ and $n$:
 		\begin{itemize}
@@ -595,7 +600,10 @@ No additional information is required to build the data definitions.
 \subsubsection{Data Definitions}\label{sec_datadef}
 
 This section collects and defines all the data needed to build the instance
-models. The dimension of each quantity is also given.
+models. No dimensions are required because the tasks performed by \progname{} 
+are unitless. These definitions are used to constrain the theoretical models to 
+such that thay can be translated into instance models on closed, real intervals 
+to satisfy \aref{A_domain} and \aref{A_interval}.
 
 ~\newline
 
@@ -624,7 +632,8 @@ Symbol &$[x, y]$\\
   Sources& - \\
   \hline
   Ref.\ By & \iref{I_addition}, \iref{I_subtraction}, \iref{I_multiplication}, 
-  \iref{I_division}, \iref{I_exponents}, \iref{I_expbase}\\
+  \iref{I_positivedivision}, \iref{I_negativedivision}, \iref{I_exponents}, 
+  \iref{I_expbase}\\
   \hline
 \end{tabular}
 \end{minipage}\\
@@ -687,7 +696,7 @@ Symbol &$[x, y]$\\
 		\hline
 		Sources& - \\
 		\hline
-		Ref.\ By & \iref{I_exponents}\\
+		Ref.\ By & \iref{I_expbase}\\
 		\hline
 	\end{tabular}
 \end{minipage}\\
@@ -721,7 +730,7 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
   \rowcolor[gray]{0.9}
   Number& IM\refstepcounter{instnum}\theinstnum \label{I_addition}\\
   \hline
-  Label& \bf Addition of intervals\\
+  Label& \bf Addition of closed, real intervals\\
   \hline
   Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
   \hline
@@ -755,7 +764,7 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\rowcolor[gray]{0.9}
 		Number& IM\refstepcounter{instnum}\theinstnum \label{I_subtraction}\\
 		\hline
-		Label& \bf Subtraction of intervals\\
+		Label& \bf Subtraction of closed, real intervals\\
 		\hline
 		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
 		\hline
@@ -789,7 +798,7 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\rowcolor[gray]{0.9}
 		Number& IM\refstepcounter{instnum}\theinstnum \label{I_multiplication}\\
 		\hline
-		Label& \bf Multiplication of intervals\\
+		Label& \bf Multiplication of closed, real intervals\\
 		\hline
 		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
 		\hline
@@ -831,7 +840,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		Number& IM\refstepcounter{instnum}\theinstnum 
 		\label{I_positivedivision}\\
 		\hline
-		Label& \bf Division of intervals (Divisor is a positive interval)\\
+		Label& \bf Division of closed, real intervals (Divisor is a positive 
+		interval)\\
 		\hline
 		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval} where 
 		$0 \leq x_{2} \leq y_{2}$ and $x_{2} \neq 0$\\
@@ -881,7 +891,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		Number& IM\refstepcounter{instnum}\theinstnum 
 		\label{I_negativedivision}\\
 		\hline
-		Label& \bf Division of intervals (Divisor is a negative interval)\\
+		Label& \bf Division of closed, real intervals (Divisor is a negative 
+		interval)\\
 		\hline
 		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval} where 
 		$x_{2} \leq y_{2} \leq 0$ and $y_{2} \neq 0$\\
@@ -930,7 +941,7 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\rowcolor[gray]{0.9}
 		Number& IM\refstepcounter{instnum}\theinstnum \label{I_exponents}\\
 		\hline
-		Label& \bf Intervals as Exponents\\
+		Label& \bf  Closed, real intervals as Exponents\\
 		\hline
 		Input&$b$, $[x, y]$ from \ddref{DD_interval}\\
 		\hline
@@ -958,7 +969,7 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\rowcolor[gray]{0.9}
 		Number& IM\refstepcounter{instnum}\theinstnum \label{I_expbase}\\
 		\hline
-		Label& \bf Powers of Intervals\\
+		Label& \bf Powers of  closed, real intervals\\
 		\hline
 		Input&$[x, y]$ from \ddref{DD_interval}, $n$ from \ddref{DD_power}\\
 		\hline
@@ -1136,7 +1147,7 @@ qualities that the software is expected to exhibit.
 intervals are supported, which will also remove all restrictions on division 
 (\aref{A_domain}, \aref{A_interval})
 
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_unkownDomain}:] Determine 
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_unknownDomain}:] Determine 
 $D(x)$ for any $x \in X$ if it is not part of the input set (\aref{A_domain}, 
 \aref{A_interval})
 
@@ -1155,18 +1166,16 @@ operators and trigonometric functions whose range includes $\pm\infty$
 The purpose of the traceability matrices is to provide easy references on what
 has to be additionally modified if a certain component is changed.  Every time a
 component is changed, the items in the column of that component that are marked
-with an ``X'' may have to be modified as well.  Table~\ref{Table:trace} shows the
-dependencies of theoretical models, general definitions, data definitions, and
-instance models with each other. Table~\ref{Table:R_trace} shows the
-dependencies of instance models, requirements, and data constraints on each
-other. Table~\ref{Table:A_trace} shows the dependencies of theoretical models,
-general definitions, data definitions, instance models, and likely changes on
-the assumptions.
+with an ``X'' may have to be modified as well.  Table~\ref{Table:trace} shows 
+the dependencies of theoretical models, data definitions, and instance models 
+with each other. Table~\ref{Table:R_trace} shows the dependencies of instance 
+models, requirements, and data constraints on each other. 
+Table~\ref{Table:A_trace} shows the dependencies of theoretical models, 
+data definitions, instance models, and likely changes on the assumptions. Since 
+there is only one goal statement (\gsref{G_range}) in this specification, it 
+can be assumed that changing the goal will impact every item contained within 
+this document.
 
-\wss{You will have to modify these tables for your problem.}
-
-\afterpage{
-\begin{landscape}
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|}
@@ -1174,85 +1183,93 @@ the assumptions.
 	& \aref{A_domain} & \aref{A_interval} & \aref{A_operators} 
 	\\
 \hline
-\tref{T_addition} & X & X & \\ \hline
-\tref{T_subtraction} & X & X & \\ \hline
-\tref{T_multiplication} & X & X & \\ \hline
-\tref{T_division} & X & X & \\ \hline
-\tref{T_exponents} & X & X & \\ \hline
-\tref{T_expbase} & X & X & \\ \hline
-\dref{NL} & & & \\ \hline
-\dref{ROCT} & & & \\ \hline
-\ddref{FluxCoil} & & &  \\ \hline
-\ddref{FluxPCM} & & &  \\ \hline
-\ddref{D_HOF} & & &  \\ \hline
-\ddref{D_MF} & & &  \\ \hline
-\iref{ewat}         & & &  \\ \hline
-\iref{epcm}         & & &  \\ \hline
-\iref{I_HWAT}       & & &  \\ \hline
-\iref{I_HPCM}       & & &  \\ \hline
-\lcref{LC_tpcm}     & & &  \\ \hline
-\lcref{LC_tcoil}    & & &  \\ \hline
-\lcref{LC_tlcoil}   & & &  \\ \hline
-\lcref{LC_charge}   & & &  \\ \hline
-\lcref{LC_InitTemp} & & &  \\ \hline
-\lcref{LC_htank}    & & &  \\
+\tref{T_addition} &  &  & \\ \hline
+\tref{T_subtraction} &  &  & \\ \hline
+\tref{T_multiplication} &  &  & \\ \hline
+\tref{T_division} &  &  & \\ \hline
+\tref{T_exponents} &  &  & \\ \hline
+\tref{T_expbase} &  &  & \\ \hline
+\ddref{DD_interval} & X & X &  \\ \hline
+\ddref{DD_base} & & &  \\ \hline
+\ddref{DD_power} & & &  \\ \hline
+\iref{I_addition} & X & X &  \\ \hline
+\iref{I_subtraction} & X & X &  \\ \hline
+\iref{I_multiplication} & X & X &  \\ \hline
+\iref{I_positivedivision} & X & X &  \\ \hline
+\iref{I_negativedivision} & X & X &  \\ \hline
+\iref{I_exponents} & X & X &  \\ \hline
+\iref{I_expbase} & X & X &  \\ \hline
+\lcref{LC_openinterval} & X & X &  \\ \hline
+\lcref{LC_unknownDomain} & X & X &  \\ \hline
+\lcref{LC_trig} & X & & X  \\ \hline
+\lcref{LC_infinity} & X & X & X  \\ 
 \hline
 \end{tabular}
 \caption{Traceability Matrix Showing the Connections Between Assumptions and Other Items}
 \label{Table:A_trace}
+\end{table}
+
+\afterpage{
+\begin{landscape}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline        
+	& \tref{T_addition}& \tref{T_subtraction}& \tref{T_multiplication}& 
+	\tref{T_division}& \tref{T_exponents} & \tref{T_expbase}& 
+	\ddref{DD_interval} & \ddref{DD_base}& \ddref{DD_power}& \iref{I_addition}& 
+	\iref{I_subtraction}& \iref{I_multiplication}& 
+	\iref{I_positivedivision}& \iref{I_negativedivision} & \iref{I_exponents} & 
+	\iref{I_expbase}\\
+\hline
+\tref{T_addition} & & & & & & & & & & & & & & && \\ \hline
+\tref{T_subtraction} & & & & & & & & & & & & & && &\\ \hline
+\tref{T_multiplication} & & & & & & & & & & & & && & &\\ \hline
+\tref{T_division} & & & & & & & & & & & & && & &\\ \hline
+\tref{T_exponents} & & & & & & & & & & & && & & &\\ \hline
+\tref{T_expbase} & & & & & & & & & & & & &&& &\\ \hline
+\ddref{DD_interval}  & & & & & & & & & & & && && & \\ \hline
+\ddref{DD_base}    & & & & & & & & & & & & & && &\\ \hline
+\ddref{DD_power}     & & & & & & & & & & & & && & &\\ \hline
+\iref{I_addition}      & X & & & & & & & & & & && & & &\\ \hline
+\iref{I_subtraction}      & & X & & & & & & & & && & &  & &\\ \hline
+\iref{I_multiplication}    & & & X & & & & & & & & && && & \\ \hline
+\iref{I_positivedivision}    & & & & X & & & & & && & & && & \\\hline
+\iref{I_negativedivision}    & & & & X &  & & & & && & & && & \\\hline
+\iref{I_exponents}    & & & & & X & & & X & & & & &&& & \\\hline
+\iref{I_expbase}    & & & & & & X & & & X & & & && && \\
+\hline
+\end{tabular}
+\caption{Traceability Matrix Showing the Connections Between Items of Different Sections}
+\label{Table:trace}
 \end{table}
 \end{landscape}
 }
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
-\hline        
-	& \tref{T_addition}& \tref{T_subtraction}& \tref{T_multiplication}& 
-	\tref{T_division}& \tref{T_exponents} & \tref{T_expbase}& \ddref{FluxPCM} & 
-	\ddref{D_HOF}& \ddref{D_MF}& \iref{ewat}& \iref{epcm}& \iref{I_HWAT}& 
-	\iref{I_HPCM} \\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
-\tref{T_addition} & & & & & & & & & & & & & \\ \hline
-\tref{T_subtraction} & & & X& & & & & & & & & & \\ \hline
-\tref{T_multiplication} & & & & & & & & & & & & & \\ \hline
-\tref{T_division} & & & & & & & & & & & & & \\ \hline
-\tref{T_exponents} & X& & & & & & & & & & & & \\ \hline
-\tref{T_expbase} & & & & X& & & & & & & & & \\ \hline
-\ddref{FluxPCM}  & & & & X& & & & & & & & & \\ \hline
-\ddref{D_HOF}    & & & & & & & & & & & & & \\ \hline
-\ddref{D_MF}     & & & & & & & & X& & & & & \\ \hline
-\iref{ewat}      & & & & & X& X& X& & & & X& & \\ \hline
-\iref{epcm}      & & & & & X& & X& & X& X& & & X \\ \hline
-\iref{I_HWAT}    & & X& & & & & & & & & & & \\ \hline
-\iref{I_HPCM}    & & X& X& & & & X& X& X& & X& & \\
+	& \iref{I_addition}& \iref{I_subtraction}& \iref{I_multiplication}& 
+	\iref{I_positivedivision}& \iref{I_negativedivision}& \iref{I_exponents}& 
+	\iref{I_expbase}& \ref{sec_DataConstraints}& \rref{R_RawInputs}& 
+	\rref{R_MassInputs} \\
 \hline
-\end{tabular}
-\caption{Traceability Matrix Showing the Connections Between Items of Different Sections}
-\label{Table:trace}
-\end{table}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
-\hline
-	& \iref{ewat}& \iref{epcm}& \iref{I_HWAT}& \iref{I_HPCM}& \ref{sec_DataConstraints}& \rref{R_RawInputs}& \rref{R_MassInputs} \\
-\hline
-\iref{ewat}            & & X& & & & X& X \\ \hline
-\iref{epcm}            & X& & & X& & X& X \\ \hline
-\iref{I_HWAT}          & & & & & & X& X \\ \hline
-\iref{I_HPCM}          & & X& & & & X& X \\ \hline
-\rref{R_RawInputs}     & & & & & & & \\ \hline
-\rref{R_MassInputs}    & & & & & & X& \\ \hline
-\rref{R_CheckInputs}   & & & & & X& & \\ \hline
-\rref{R_OutputInputs}  & X& X& & & & X& X \\ \hline
-\rref{R_TempWater}     & X& & & & & & \\ \hline 
-\rref{R_TempPCM}       & & X& & & & & \\ \hline
-\rref{R_EnergyWater}   & & & X& & & & \\ \hline
-\rref{R_EnergyPCM}     & & & & X& & & \\ \hline
-\rref{R_VerifyOutput}  & & & X& X& & & \\ \hline
-\rref{R_timeMeltBegin} & & X& & & & & \\ \hline
-\rref{R_timeMeltEnd}   & & X& & & & & \\ 
+\iref{I_addition}            & & & & & & & &&& \\ \hline
+\iref{I_subtraction}            & & & & & & &  &&&\\ \hline
+\iref{I_multiplication}          & & & & & & &  &&&\\ \hline
+\iref{I_positivedivision}          & & & & & & & &&& \\ \hline
+\iref{I_negativedivision}     & & & & & & & &&&\\ \hline
+\iref{I_exponents}    & & & & & & & &&&\\ \hline
+\iref{I_expbase}   & & & & & & & &&&\\ \hline
+\rref{R_OutputInputs}  & & & & & & &  &&&\\ \hline
+\rref{R_TempWater}     & & & & & & & &&&\\ \hline 
+\rref{R_TempPCM}       & & & & & & & &&&\\ \hline
+\rref{R_EnergyWater}   & & & & & & & &&&\\ \hline
+\rref{R_EnergyPCM}     & & & & & & & &&&\\ \hline
+\rref{R_VerifyOutput}  & & & & & & & &&&\\ \hline
+\rref{R_timeMeltBegin} & & & & & & & &&&\\ \hline
+\rref{R_timeMeltEnd}   & & & & & & & &&&\\ 
 \hline
 \end{tabular}
 \caption{Traceability Matrix Showing the Connections Between Requirements and Instance Models}
