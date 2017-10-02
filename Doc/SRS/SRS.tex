@@ -222,7 +222,7 @@ project-specific concepts or models.
 \subsection{Characteristics of Intended Reader}
 \label{intro_reader}
 The intended reader of this document must understand elementary algebra, 
-especially notation and functions, in the domain of real numbers 
+especially interval arithmetic, in the domain of real numbers 
 ($\varmathbb{R}$). They must also have an understanding of domain and range 
 with respect to a function in order to understand the outputs of the product 
 and how it relates to its 
@@ -306,10 +306,9 @@ initial release.
 \section{Specific System Description}
 \label{specific}
 This section first presents the problem description, which gives a high-level
-view of the problem to be solved.  This is followed by the solution 
-characteristics specification, which presents the assumptions, theories, 
-definitions and finally the instance models.  \wss{Add any project specific 
-details that are relevant for the section overview.}
+view of the motivation behind the \progname{}. This is followed by the solution 
+characteristics specification, presenting the assumptions, theories, 
+definitions, and instance models, which are grounded in interval arithmetic. 
 
 \subsection{Problem Description} \label{Sec_pd}
 The GLaDOS architecture is a specialized game engine that enables game 
@@ -366,7 +365,7 @@ exists independently of the context of $f(X)$.
 Calculate $R(f(X))$.
 
 \item[GS\refstepcounter{goalnum}\thegoalnum \label{G_unknownDomain}:] 
-For any $x \in X$, determine $D(x)$ if it is not part of the input set.
+Determine $D(x)$ for any $x \in X$ if it is not part of the input set.
 
 \end{itemize}
 
@@ -399,9 +398,8 @@ mathematical operators used in $f(X)$ can be found in the set $\{+, -,
 
 \subsubsection{Theoretical Models}\label{sec_theoretical}
 
-This section focuses on the general equations and laws that \progname{} is based
-on.  \wss{Modify the examples below for your problem, and add additional models
-  as appropriate.}
+This section focuses on the general equations and laws from interval arithmetic 
+that the \progname{} is based on. 
 
 ~\newline
 
@@ -1027,8 +1025,15 @@ qualities that the software is expected to exhibit.
 
 \noindent \begin{itemize}
 
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_meaningfulLabel}:] \wss{Give
-    the likely changes, with a reference to the related assumption (aref), as appropriate.}
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_openinterval}:] Open, real 
+intervals are supported (\aref{A_domain}, \aref{A_interval})
+
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_trig}:] Addition of the 
+trigonometric functions $\sin(x)$ and $\cos(x)$ (\aref{A_operators})
+
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_infinity}:] Addition of 
+operators and trigonometric functions whose range includes $\pm\infty$ 
+(\aref{A_domain}, \aref{A_interval}, \aref{A_operators})
 
 \end{itemize}
 
