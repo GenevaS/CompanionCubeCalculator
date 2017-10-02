@@ -503,7 +503,7 @@ that the \progname{} is based on.
 		\hline
 		Source & \citet{intervalarithmetic}\\
 		\hline
-		Ref.\ By & \iref{I_division}\\
+		Ref.\ By & \iref{I_positivedivision}, \iref{I_negativedivision}\\
 		\hline
 	\end{tabular}
 \end{minipage}\\
@@ -828,26 +828,92 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
 		\hline
 		\rowcolor[gray]{0.9}
-		Number& IM\refstepcounter{instnum}\theinstnum \label{I_division}\\
+		Number& IM\refstepcounter{instnum}\theinstnum 
+		\label{I_positivedivision}\\
 		\hline
-		Label& \bf Division of intervals\\
+		Label& \bf Division of intervals (Divisor is a positive interval)\\
 		\hline
-		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
+		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval} where 
+		$0 \leq x_{2} \leq y_{2}$ and $x_{2} \neq 0$\\
 		\hline
 		Output&$[x_{div}, y_{div}]$ such that\\
-		&$x_{sub} = x_{1} \div x_{2}$, $y_{sub} = y_{1} \div y_{2}$,\\
+		&\vspace*{-10mm}\begin{center}
+			\begin{tabular}{lll}
+				$x_{div} = x_{1} \div y_{2}$, & $y_{div} = y_{1} \div x_{2}$ & 
+				$0 < x_{1} \leq y_{1}$  \\
+				$x_{div} = 0$, & $y_{div} = y_{1} \div x_{2}$ & $x_{1} = 0 
+				\wedge x_{1} \leq y_{1}$ \\
+				$x_{div} = x_{1} \div x_{2}$, & $y_{div} = y_{1} \div x_{2}$ & 
+				$x_{1} < 0 < y_{1}$ \\
+				$x_{div} = x_{1} \div x_{2}$, & $y_{div} = 0$ & $y_{1} = 0, 
+				x_{1} \leq y_{1}$\\
+				$x_{div} = x_{1} \div x_{2}$, & $y_{div} = y_{1} \div y_{2}$ & 
+				$x_{1} \leq y_{1} < 0$
+			\end{tabular}
+		\end{center} \\
 		&$[x_{div}, y_{div}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
 		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of 
 		two variables in the user's input function $f(X)$. \\
-		&The combined boundary values $x_{div}$ and  $y_{div}$ are determined 
-		using basic arithmetic division.\\
+		&The boundary values $x_{div}$ and  $y_{div}$ are determined by the 
+		monotonicity of the interval represented by $[x_{1}, y_{1}]$ and 
+		whether or not that interval contains $0$.\\
 		& The result, $[x_{div}, y_{div}]$, is guaranteed to be a closed, real 
 		interval (\aref{A_interval}) due to the closed, real interval 
 		constraint on $[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ (\aref{A_domain}).
 		\\
 		\hline
-		Sources& \ \\
+		Sources& ~\cite{intervalarithmetic} \\
+		\hline
+		Ref.\ By & -\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
+
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum 
+		\label{I_negativedivision}\\
+		\hline
+		Label& \bf Division of intervals (Divisor is a negative interval)\\
+		\hline
+		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval} where 
+		$x_{2} \leq y_{2} \leq 0$ and $y_{2} \neq 0$\\
+		\hline
+		Output&$[x_{div}, y_{div}]$ such that\\
+		&\vspace*{-10mm}\begin{center}
+			\begin{tabular}{lll}
+				$x_{div} = y_{1} \div y_{2}$, & $y_{div} = x_{1} \div x_{2}$ & 
+				$0 < x_{1} \leq y_{1}$  \\
+				$x_{div} = y_{1} \div y_{2}$, & $y_{div} = 0$ & $x_{1} = 0 
+				\wedge x_{1} \leq y_{1}$ \\
+				$x_{div} = y_{1} \div y_{2}$, & $y_{div} = x_{1} \div y_{2}$ & 
+				$x_{1} < 0 < y_{1}$ \\
+				$x_{div} = 0$, & $y_{div} = x_{1} \div y_{2}$ & $y_{1} = 0, 
+				x_{1} \leq y_{1}$\\
+				$x_{div} = y_{1} \div x_{2}$, & $y_{div} = x_{1} \div y_{2}$ & 
+				$x_{1} \leq y_{1} < 0$
+			\end{tabular}
+		\end{center} \\
+		&$[x_{div}, y_{div}]$ is a closed, real interval (\aref{A_interval}) \\
+		\hline
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of 
+		two variables in the user's input function $f(X)$. \\
+		&The boundary values $x_{div}$ and  $y_{div}$ are determined by the 
+		monotonicity of the interval represented by $[x_{1}, y_{1}]$ and 
+		whether or not that interval contains $0$.\\
+		& The result, $[x_{div}, y_{div}]$, is guaranteed to be a closed, real 
+		interval (\aref{A_interval}) due to the closed, real interval 
+		constraint on $[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ (\aref{A_domain}).
+		\\
+		\hline
+		Sources& ~\cite{intervalarithmetic} \\
 		\hline
 		Ref.\ By & -\\
 		\hline
