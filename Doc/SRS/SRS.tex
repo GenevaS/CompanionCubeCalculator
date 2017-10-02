@@ -364,8 +364,8 @@ exists independently of the context of $f(X)$.
 \item[GS\refstepcounter{goalnum}\thegoalnum \label{G_range}:] 
 Calculate $R(f(X))$.
 
-\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_unknownDomain}:] 
-Determine $D(x)$ for any $x \in X$ if it is not part of the input set.
+%\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_unknownDomain}:] 
+%Determine $D(x)$ for any $x \in X$ if it is not part of the input set.
 
 \end{itemize}
 
@@ -696,10 +696,14 @@ one which is expressed in mathematical terms. It uses concrete symbols defined
 in Section~\ref{sec_datadef} to replace the abstract symbols in the models 
 identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
 
-The goals \wss{reference your goals} are solved by \wss{reference your instance
-  models}.  \wss{other details, with cross-references where appropriate.}
-\wss{Modify the examples below for your problem, and add additional models as
-  appropriate.}
+The goal \gsref{G_range} is solved by recursively combining instance models 
+\iref{I_addition}, \iref{I_subtraction}, \iref{I_multiplication}, 
+\iref{I_division}, \iref{I_exponents}, and \iref{I_expbase}. For example, if 
+the user provided an equation of the form $a + b \times c$, it is decomposed 
+into $a + B$ where $B = b \times c$. This approach is identical to a 
+hand-written evaluation except a mechanized approach must explicitly state the 
+intermediary steps, which are commonly omitted by humans, in order to complete 
+the computational task.
 
 ~\newline
 
@@ -719,7 +723,8 @@ The goals \wss{reference your goals} are solved by \wss{reference your instance
   &$x_{sum} = x_{1} + x_{2}$, $y_{sum} = y_{1} + y_{2}$,\\
   &$[x_{sum}, y_{sum}]$ is a closed, real interval (\aref{A_interval}) \\
   \hline
-  Description&
+  Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of two 
+  variables in the user's input function $f(X)$.
   \\
   \hline
   Sources& ~\cite{intervalarithmetic} \ \\
@@ -1027,6 +1032,10 @@ qualities that the software is expected to exhibit.
 
 \item[LC\refstepcounter{lcnum}\thelcnum\label{LC_openinterval}:] Open, real 
 intervals are supported (\aref{A_domain}, \aref{A_interval})
+
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_unkownDomain}:] Determine 
+$D(x)$ for any $x \in X$ if it is not part of the input set (\aref{A_domain}, 
+\aref{A_interval})
 
 \item[LC\refstepcounter{lcnum}\thelcnum\label{LC_trig}:] Addition of the 
 trigonometric functions $\sin(x)$ and $\cos(x)$ (\aref{A_operators})
