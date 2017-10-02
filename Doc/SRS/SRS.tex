@@ -337,6 +337,9 @@ easier to correctly understand the requirements:
 
 \item Closed interval: A bounded set that includes its end points; this is 
 expressed $[a,b]$
+\item Closed interval method: A mathematical method for determining the local 
+maximum and minimum values of a function $f(x)$ using a closed domain interval 
+$[a,b]$
 \item Connected set: a set of values that does not contain any disjoint members
 \item Domain ($D(x)$): the set of values for a variable $x$ that are valid in 
 $f(X)$
@@ -385,7 +388,7 @@ likely change [LC], in which the respective assumption is used.
 \begin{itemize}
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_domain}:] $D(x)$ is a 
-closed, real interval.
+closed, real interval. 
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_interval}:] $R(f(X))$ 
 is a closed, real interval.
@@ -705,6 +708,9 @@ hand-written evaluation except a mechanized approach must explicitly state the
 intermediary steps, which are commonly omitted by humans, in order to complete 
 the computational task.
 
+These models can also be used as a specification for the closed interval method 
+because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
+
 ~\newline
 
 \noindent
@@ -724,7 +730,12 @@ the computational task.
   &$[x_{sum}, y_{sum}]$ is a closed, real interval (\aref{A_interval}) \\
   \hline
   Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of two 
-  variables in the user's input function $f(X)$.
+  variables in the user's input function $f(X)$.\\
+  &The combined boundary values $x_{sum}$ and  $y_{sum}$ are determined 
+  using basic arithmetic addition.\\
+  & The result, $[x_{sum}, y_{sum}]$, is guaranteed to be a closed, real 
+  interval (\aref{A_interval}) due to the closed, real interval constraint on 
+  $[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ (\aref{A_domain}).
   \\
   \hline
   Sources& ~\cite{intervalarithmetic} \ \\
@@ -752,7 +763,13 @@ the computational task.
 		&$x_{sub} = x_{1} - x_{2}$, $y_{sub} = y_{1} - y_{2}$,\\
 		&$[x_{sub}, y_{sub}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of 
+		two variables in the user's input function $f(X)$. \\
+		&The combined boundary values $x_{sub}$ and  $y_{sub}$ are determined 
+		using basic arithmetic subtraction.\\
+		& The result, $[x_{sub}, y_{sub}]$, is guaranteed to be a closed, real 
+		interval (\aref{A_interval}) due to the closed, real interval 
+		constraint on $[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ (\aref{A_domain}).
 		\\
 		\hline
 		Sources& ~\cite{intervalarithmetic} \ \\
@@ -777,10 +794,23 @@ the computational task.
 		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
 		\hline
 		Output&$[x_{mul}, y_{mul}]$ such that\\
-		&$x_{sub} = x_{1} \times x_{2}$, $y_{sub} = y_{1} \times y_{2}$,\\
-		&$[x_{sub}, y_{sub}]$ is a closed, real interval (\aref{A_interval}) \\
+		&$x_{mul} = \min(M)$, $y_{mul} = \max(M)$, where $M = \{x_{1} \times 
+		x_{2}, x_{1} \times y_{2}, y_{1} \times x_{2}, y_{1} \times y_{2}\}$\\
+		&$[x_{mul}, y_{mul}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of 
+		two variables in the user's input function $f(X)$. \\
+		&The combined boundary value $x_{mul}$ is determined by taking the 
+		minimum of all possible products calculated from the sets $[x_{1}, 
+		y_{1}]$ and $[x_{2}, y_{2}]$, where $[x_{1}, y_{1}]$ is the 
+		multiplier set and $[x_{2}, y_{2}]$ is the multiplicand set\\
+		&The combined boundary value $y_{mul}$ is determined by taking the 
+		maximum of all possible products calculated from the sets $[x_{1}, 
+		y_{1}]$ and $[x_{2}, y_{2}]$, where $[x_{1}, y_{1}]$ is the 
+		multiplier set and $[x_{2}, y_{2}]$ is the multiplicand set\\
+		& The result, $[x_{mul}, y_{mul}]$, is guaranteed to be a closed, real 
+		interval (\aref{A_interval}) due to the closed, real interval 
+		constraint on $[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ (\aref{A_domain}).
 		\\
 		\hline
 		Sources& ~\cite{intervalarithmetic} \ \\
@@ -805,10 +835,16 @@ the computational task.
 		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
 		\hline
 		Output&$[x_{div}, y_{div}]$ such that\\
-		&\\
+		&$x_{sub} = x_{1} \div x_{2}$, $y_{sub} = y_{1} \div y_{2}$,\\
 		&$[x_{div}, y_{div}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of 
+		two variables in the user's input function $f(X)$. \\
+		&The combined boundary values $x_{div}$ and  $y_{div}$ are determined 
+		using basic arithmetic division.\\
+		& The result, $[x_{div}, y_{div}]$, is guaranteed to be a closed, real 
+		interval (\aref{A_interval}) due to the closed, real interval 
+		constraint on $[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ (\aref{A_domain}).
 		\\
 		\hline
 		Sources& \ \\
