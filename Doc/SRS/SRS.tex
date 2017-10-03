@@ -125,12 +125,12 @@ systems.  The symbols are listed in alphabetical order.
 \noindent \begin{longtable*}{l l p{12cm}} \toprule
 \textbf{Symbol} & \textbf{Unit} & \textbf{Description}\\
 \midrule 
-$b^x$ & - & Base number $b$ raised to the power of variable $x$\\
+$b$ & - & Base number; used to represent exponential functions (e.g. $b^2$)\\
 $D(x)$ & - & Domain of $x$\\
 $f(X)$ & - & A function of a variable set $X$\\
 $R(f(X))$ & - & Range of $f(X)$\\
 $\varmathbb{R}$ & - & The set of real numbers\\
-$x^n$ & - & Variable $x$ raised to the power of constant $n$ \\
+$n$ & - & Power; used to represent exponential functions (e.g. $2^n$) \\
 \bottomrule
 \end{longtable*}
 
@@ -537,7 +537,7 @@ Additional models exist for interval arithmetic, but only the models named in
 		\hline
 		Source & \url{https://en.wikipedia.org/wiki/Interval_arithmetic}\\
 		\hline
-		Ref.\ By & \ddref{DD_base}, \iref{I_exponents}\\
+		Ref.\ By & \iref{I_exponents}\\
 		\hline
 	\end{tabular}
 \end{minipage}\\
@@ -590,7 +590,7 @@ Additional models exist for interval arithmetic, but only the models named in
 		\hline
 		Source & \url{https://en.wikipedia.org/wiki/Interval_arithmetic}\\
 		\hline
-		Ref.\ By & \ddref{DD_power}, \iref{I_expbase}\\
+		Ref.\ By & \iref{I_expbase}\\
 		\hline
 	\end{tabular}
 \end{minipage}\\
@@ -639,69 +639,6 @@ Symbol &$[x, y]$\\
   \iref{I_expbase}\\
   \hline
 \end{tabular}
-\end{minipage}\\
-
-~\newline
-
-\noindent
-\begin{minipage}{\textwidth}
-	\renewcommand*{\arraystretch}{1.5}
-	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-		\hline
-		\rowcolor[gray]{0.9}
-		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{DD_base}\\
-		\hline
-		Label& \bf Representation of a Base Number\\
-		\hline
-		Symbol &$b$\\
-		\hline
-		% Units& $Mt^{-3}$\\
-		% \hline
-		SI Units & -\\
-		\hline
-		Equation& -\\
-		\hline
-		Description & A constant real number ($\varmathbb{R}$) such that $b > 
-		1$
-		(\tref{I_exponents}).
-		\\
-		\hline
-		Sources& - \\
-		\hline
-		Ref.\ By & \iref{I_exponents}\\
-		\hline
-	\end{tabular}
-\end{minipage}\\
-
-~\newline
-
-\noindent
-\begin{minipage}{\textwidth}
-	\renewcommand*{\arraystretch}{1.5}
-	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-		\hline
-		\rowcolor[gray]{0.9}
-		Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{DD_power}\\
-		\hline
-		Label& \bf Representation of a Power\\
-		\hline
-		Symbol &$n$\\
-		\hline
-		% Units& $Mt^{-3}$\\
-		% \hline
-		SI Units & -\\
-		\hline
-		Equation& -\\
-		\hline
-		Description & A constant natural number ($\varmathbb{N}$)
-		(\tref{I_expbase}).
-		\\
-		\hline
-		Sources& - \\
-		\hline
-		Ref.\ By & \iref{I_expbase}\\
-		\hline
-	\end{tabular}
 \end{minipage}\\
 
 \subsubsection{Instance Models} \label{sec_instance}    
@@ -947,7 +884,7 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\hline
 		Label& \bf  Closed, real intervals as Exponents\\
 		\hline
-		Input&$[x, y]$ from \ddref{DD_interval}, $b$ from \ddref{DD_base}\\
+		Input&$[x, y]$ from \ddref{DD_interval}, $b$\\
 		\hline
 		Output&$[x_{exp}, y_{exp}]$ such that\\
 		&$x_{exp} = b^x$, $y_{exp} = b^y$\\
@@ -955,7 +892,7 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\hline
 		Description&$[x, y]$ is the domain of one variable in the user's input 
 		function $f(X)$ which is used as an exponent on a constant base number 
-		$b$, which is subject to the data constraints of \ddref{DD_base}. \\
+		$b$. \\
 		&The combined boundary values $x_{exp}$ and  $y_{exp}$ are determined 
 		using basic arithmetic exponents.\\
 		& The result, $[x_{exp}, y_{exp}]$, is guaranteed to be a closed, real 
@@ -982,7 +919,7 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\hline
 		Label& \bf Powers of  closed, real intervals\\
 		\hline
-		Input&$[x, y]$ from \ddref{DD_interval}, $n$ from \ddref{DD_power}\\
+		Input&$[x, y]$ from \ddref{DD_interval}, $n$\\
 		\hline
 		Output&$[x_{pow}, y_{pow}]$ such that\\
 		&\vspace*{-10mm}\begin{center}
@@ -998,8 +935,7 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		&$[x_{pow}, y_{pow}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
 		Description&$[x, y]$ is the domain of one variable in the user's input 
-		function $f(X)$ raised to a constant power $n$, which is subject to the 
-		data constraints of \ddref{DD_power}. \\
+		function $f(X)$ raised to a constant power $n$. \\
 		&The combined boundary values $x_{pow}$ and $y_{pow}$ are determined 
 		by the divisibility of $n$ by two and the monotonicity of $[x,y]$:
 		\begin{itemize}
@@ -1027,53 +963,6 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 	\end{tabular}
 \end{minipage}\\
 
-%~\newline
-%
-%%Instance Model 1
-%
-%\noindent
-%\begin{minipage}{\textwidth}
-%	\renewcommand*{\arraystretch}{1.5}
-%	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-%		\hline
-%		\rowcolor[gray]{0.9}
-%		Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
-%		\hline
-%		Label& \bf Energy balance on water to find $T_W$\\
-%		\hline
-%		Input&$m_W$, $C_W$, $h_C$, $A_C$, $h_P$, $A_P$, $t_\text{final}$, 
-%		$T_C$, 
-%		$T_\text{init}$, $T_P(t)$ from \iref{epcm}\\
-%		& The input is constrained so that $T_\text{init} \leq T_C$ 
-%		(\aref{A_charge})\\
-%		\hline
-%		Output&$T_W(t)$, $0\leq t \leq t_\text{final}$, such that\\
-%		&$\frac{dT_W}{dt} = \frac{1}{\tau_W}[(T_C - T_W(t)) + {\eta}(T_P(t) - 
-%		T_W(t))]$,\\
-%		&$T_W(0) = T_P(0) = T_\text{init}$ (\aref{A_InitTemp}) and $T_P(t)$ 
-%		from \iref{epcm} \\
-%		\hline
-%		Description&$T_W$ is the water temperature (\si{\celsius}).\\
-%		&$T_P$ is the PCM temperature (\si{\celsius}).\\
-%		&$T_C$ is the coil temperature (\si{\celsius}).\\
-%		&$\tau_W = \frac{m_W C_W}{h_C A_C}$ is a constant (\si{\second}).\\
-%		&$\eta = \frac{h_P A_P}{h_C A_C}$ is a constant (dimensionless).\\
-%		& The above equation applies as long as the water is in liquid form,
-%		$0<T_W<100^o\text{C}$, where $0^o\text{C}$ and $100^o\text{C}$ are the 
-%		melting
-%		and boiling points of water, respectively (\aref{A_OpRange}, 
-%		\aref{A_Pressure}).
-%		\\
-%		\hline
-%		Sources&~\cite{Lightstone2012} \ \\
-%		\hline
-%		Ref.\ By & \iref{epcm}\\
-%		\hline
-%	\end{tabular}
-%\end{minipage}\\
-
-%~\newline
-
 \subsubsection{Data Constraints} \label{sec_DataConstraints}  
 The inputs to the \prognameAbbrv{} tool are subject to the following data 
 constraints:
@@ -1081,10 +970,8 @@ constraints:
 \begin{itemize}
 	\item The function $f(X)$ contains only the mathematical operators in 
 	the set $\{+, -, \times, \div, b^x, x^n \}$ (\aref{A_operators})
-	\item If $f(X)$ contains $b^x$, then $b > 1 \in \varmathbb{R}$ 
-	(\ddref{DD_base})
-	\item If $f(X)$ contains $x^n$, then $n \in \varmathbb{N}$ 
-	(\ddref{DD_power})
+	\item If $f(X)$ contains $b^x$, then $b > 1 \in \varmathbb{R}$
+	\item If $f(X)$ contains $x^n$, then $n \in \varmathbb{N}$
 	\item For every variable $x \in X$, $D(x)$ is defined and is a closed, real 
 	interval (\aref{A_domain})
 \end{itemize}
@@ -1097,93 +984,6 @@ constraint:
 	\item The interval $R(f(X))$ is defined and is a closed, real interval 
 	(\aref{A_interval})
 \end{itemize}
-  
-%AUTHORS NOTE:
-% The table format did not make sense for my project because there is no 
-%physical system that it exists in; opted to use the same organization as the 
-%medical imaging example
-%Tables~\ref{TblInputVar} and \ref{TblOutputVar} show the data constraints on 
-%the
-%input and output variables, respectively.  The column for physical constraints 
-%gives the physical limitations on the range of values that can be taken by the
-%variable. Since the \prognameAbbrv{} does not have a physical system 
-%component, 
-%so these table values do not apply. The column for software constraints 
-%restricts the range of inputs to reasonable values. The constraints are 
-%conservative, to give the user of the model the flexibility to experiment with 
-%unusual situations.  The column of typical values is intended to provide a 
-%feel 
-%for a common scenario. The uncertainty column provides an estimate of the 
-%confidence with which the physical quantities can be measured. This 
-%information 
-%would be part of the input if one were performing an uncertainty 
-%quantification 
-%exercise. Since the \progname{} tool is designed to test new equations on 
-%given 
-%bounds, the uncertainty cannot be quantified without knowing the input 
-%function. Therefore, this information cannot be provided at this time.
-%
-%%The specification parameters in Table~\ref{TblInputVar} are listed in
-%%Table~\ref{TblSpecParams}.
-%
-%\begin{table}[!h]
-%  \caption{Input Variables} \label{TblInputVar}
-%  %\renewcommand{\arraystretch}{1.2}
-%\noindent \begin{longtable*}{m{0.05\textwidth} m{0.23\textwidth} 
-%m{0.28\textwidth} m{0.15\textwidth} m{0.13\textwidth}} 
-%  \toprule
-%  \textbf{Var} & \textbf{Physical Constraints} & \textbf{Software Constraints} 
-%&
-%                             \textbf{Typical Value} & \textbf{Uncertainty}\\
-%  \midrule 
-%  $f(X)$ & - & $op \in f(X)$\newline$\wedge op \in \{+, -, \times, \div, b^x, 
-%  x^n\}$ \newline(by 
-%  \aref{A_operators}) & $2 \times (a + b)$ & -\\
-%  $[x,y]$ & - & $[x,y] \in X $\newline$\wedge x \neq \pm\infty \wedge x \in 
-%  [x,y] $\newline$ \wedge y \neq \pm\infty \wedge y \in [x,y] $\newline$\wedge 
-%  (x \wedge y \in \varmathbb{R})$ (by \aref{A_domain}) & $[-1,1]$ & -\\
-%  $b$ & - & $b \neq \pm\infty, \in \varmathbb{R}, b > 1$ (\ddref{DD_base}) & 
-%  $3$ & -\\
-%  $n$ & - & $x \neq \pm\infty, \in \in \varmathbb{N}$ (\ddref{DD_power}) & $2$ 
-%  & -
-%  \\
-%  \bottomrule
-%\end{longtable*}
-%\end{table}
-%
-%%\noindent 
-%%\begin{description}
-%%\item[(*)] \wss{you might need to add some notes or clarifications}
-%%\end{description}
-%
-%%\begin{table}[!h]
-%%\caption{Specification Parameter Values} \label{TblSpecParams}
-%%\renewcommand{\arraystretch}{1.2}
-%%\noindent \begin{longtable*}{l l} 
-%%  \toprule
-%%  \textbf{Var} & \textbf{Value} \\
-%%  \midrule 
-%%  $L_\text{min}$ & 0.1 \si{\metre}\\
-%%  \bottomrule
-%%\end{longtable*}
-%%\end{table}
-%
-%\begin{table}[!h]
-%\caption{Output Variables} \label{TblOutputVar}
-%\renewcommand{\arraystretch}{1.2}
-%\noindent \begin{longtable*}{m{0.2\textwidth} m{0.3\textwidth}} 
-%  \toprule
-%  \textbf{Var} & \textbf{Software Constraints} \\
-%  \midrule 
-%  $[x_{out},y_{out}]$ & $x_{out} \neq \pm\infty \wedge x_{out} \in 
-%  [x_{out},y_{out}] $\newline$ \wedge y_{out} \neq \pm\infty \wedge y_{out} 
-%\in 
-%  [x_{out},y_{out}] $\newline$\wedge (x_{out} \wedge y_{out} \in 
-%  \varmathbb{R})$ (by~\aref{A_interval})
-%  \\
-%  \bottomrule
-%\end{longtable*}
-%\end{table}
 
 \subsubsection{Properties of a Correct Solution} \label{sec_CorrectSolution}
 
@@ -1282,8 +1082,6 @@ this document.
 \tref{T_exponents} &  &  & \\ \hline
 \tref{T_expbase} &  &  & \\ \hline
 \ddref{DD_interval} & X & X &  \\ \hline
-\ddref{DD_base} & & &  \\ \hline
-\ddref{DD_power} & & &  \\ \hline
 \iref{I_addition} & X & X &  \\ \hline
 \iref{I_subtraction} & X & X &  \\ \hline
 \iref{I_multiplication} & X & X &  \\ \hline
@@ -1337,31 +1135,29 @@ this document.
 \begin{landscape}
 \begin{table}[h!]
 \centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline        
 	& \tref{T_addition}& \tref{T_subtraction}& \tref{T_multiplication}& 
 	\tref{T_division}& \tref{T_exponents} & \tref{T_expbase}& 
-	\ddref{DD_interval} & \ddref{DD_base}& \ddref{DD_power}& \iref{I_addition}& 
+	\ddref{DD_interval} & \iref{I_addition}& 
 	\iref{I_subtraction}& \iref{I_multiplication}& 
 	\iref{I_positivedivision}& \iref{I_negativedivision} & \iref{I_exponents} & 
 	\iref{I_expbase}\\
 \hline
-\tref{T_addition}         &   &   &   &   &   &   &   & & & & & & & && \\ \hline
-\tref{T_subtraction}      &   &   & & & & & & & & & & & && &\\ \hline
-\tref{T_multiplication}   &   &   & & & & & & & & & & && & &\\ \hline
-\tref{T_division}         &   &   & & & & & & & & & & && & &\\ \hline
-\tref{T_exponents}        &   &   & & & & & & & & & && & & &\\ \hline
-\tref{T_expbase}          &   &   & & & & & & & & & & &&& &\\ \hline
-\ddref{DD_interval}       &   &   & & & & & & & & & && && & \\ \hline
-\ddref{DD_base}           &   &   & & & X & & & & & & & & && &\\ \hline
-\ddref{DD_power}          &   &   & & & & X & & & & & & && & &\\ \hline
-\iref{I_addition}         & X &   & & & & & X & & & & && & & &\\ \hline
-\iref{I_subtraction}      &   & X & & & & & X & & & && & &  & &\\ \hline
-\iref{I_multiplication}   &   &   & X & & & & X & & & & && && & \\ \hline
-\iref{I_positivedivision} &   &   & & X & & & X & & && & & && & \\\hline
-\iref{I_negativedivision} &   &   & & X &  & & X & & && & & && & \\\hline
-\iref{I_exponents}        &   &   & & & X & & X & X & & & & &&& & \\\hline
-\iref{I_expbase}          &   &   & & & & X & X & & X & & & && && \\
+\tref{T_addition}         &   &   &   &   &   &   &   & & & & & & & \\ \hline
+\tref{T_subtraction}      &   &   & & & & & & & & & & &  &\\ \hline
+\tref{T_multiplication}   &   &   & & & & & & & & & &  & &\\ \hline
+\tref{T_division}         &   &   & & & & & & & & & &  & &\\ \hline
+\tref{T_exponents}        &   &   & & & & & & & & &  & & &\\ \hline
+\tref{T_expbase}          &   &   & & & & & & & & & & & &\\ \hline
+\ddref{DD_interval}       &   &   & & & & & & & & & &&  & \\ \hline
+\iref{I_addition}         & X &   & & & & & X & & & &  & & &\\ \hline
+\iref{I_subtraction}      &   & X & & & & & X & & &  & &  & &\\ \hline
+\iref{I_multiplication}   &   &   & X & & & & X & & & &  && & \\ \hline
+\iref{I_positivedivision} &   &   & & X & & & X & &  & & && & \\\hline
+\iref{I_negativedivision} &   &   & & X &  & & X & &  & & && & \\\hline
+\iref{I_exponents}        &   &   & & & X & & X &  & & & & & & \\\hline
+\iref{I_expbase}          &   &   & & & & X & X & &  & & &  && \\
 \hline
 \end{tabular}
 \caption{Traceability Matrix Showing the Connections Between Items of Different Sections}
