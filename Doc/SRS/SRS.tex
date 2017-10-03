@@ -1070,70 +1070,126 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 
 %~\newline
 
-\subsubsection{Data Constraints} \label{sec_DataConstraints}    
+\subsubsection{Data Constraints} \label{sec_DataConstraints}  
+The inputs to the \prognameAbbrv{} tool are subject to the following data 
+constraints:
 
-Tables~\ref{TblInputVar} and \ref{TblOutputVar} show the data constraints on the
-input and output variables, respectively.  The column for physical constraints gives
-the physical limitations on the range of values that can be taken by the
-variable.  The column for software constraints restricts the range of inputs to
-reasonable values.  The constraints are conservative, to give the user of the
-model the flexibility to experiment with unusual situations.  The column of
-typical values is intended to provide a feel for a common scenario.  The
-uncertainty column provides an estimate of the confidence with which the
-physical quantities can be measured.  This information would be part of the
-input if one were performing an uncertainty quantification exercise.
+\begin{itemize}
+	\item The function $f(X)$ contains only the mathematical operators in 
+	the set $\{+, -, \times, \div, b^x, x^n \}$ (\aref{A_operators})
+	\item If $f(X)$ contains $b^x$, then $b > 1 \in \varmathbb{R}$ 
+	(\ddref{DD_base})
+	\item If $f(X)$ contains $x^n$, then $n \in \varmathbb{N}$ 
+	(\ddref{DD_power})
+	\item For every variable $x \in X$, $D(x)$ is defined and is a closed, real 
+	interval (\aref{A_domain})
+\end{itemize}
 
-The specification parameters in Table~\ref{TblInputVar} are listed in
-Table~\ref{TblSpecParams}.
+\noindent
+The output of the \prognameAbbrv{} tool is subject to the following data 
+constraint:
 
-\begin{table}[!h]
-  \caption{Input Variables} \label{TblInputVar}
-  \renewcommand{\arraystretch}{1.2}
-\noindent \begin{longtable*}{l l l l c} 
-  \toprule
-  \textbf{Var} & \textbf{Physical Constraints} & \textbf{Software Constraints} &
-                             \textbf{Typical Value} & \textbf{Uncertainty}\\
-  \midrule 
-  $L$ & $L > 0$ & $L_{\text{min}} \leq L \leq L_{\text{max}}$ & 1.5 \si[per-mode=symbol] {\metre} & 10\%
-  \\
-  \bottomrule
-\end{longtable*}
-\end{table}
-
-\noindent 
-\begin{description}
-\item[(*)] \wss{you might need to add some notes or clarifications}
-\end{description}
-
-\begin{table}[!h]
-\caption{Specification Parameter Values} \label{TblSpecParams}
-\renewcommand{\arraystretch}{1.2}
-\noindent \begin{longtable*}{l l} 
-  \toprule
-  \textbf{Var} & \textbf{Value} \\
-  \midrule 
-  $L_\text{min}$ & 0.1 \si{\metre}\\
-  \bottomrule
-\end{longtable*}
-\end{table}
-
-\begin{table}[!h]
-\caption{Output Variables} \label{TblOutputVar}
-\renewcommand{\arraystretch}{1.2}
-\noindent \begin{longtable*}{l l} 
-  \toprule
-  \textbf{Var} & \textbf{Physical Constraints} \\
-  \midrule 
-  $T_W$ & $T_\text{init} \leq T_W \leq T_C$ (by~\aref{A_charge})
-  \\
-  \bottomrule
-\end{longtable*}
-\end{table}
+\begin{itemize}
+	\item The interval $R(f(X))$ is defined and is a closed, real interval 
+	(\aref{A_interval})
+\end{itemize}
+  
+%AUTHORS NOTE:
+% The table format did not make sense for my project because there is no 
+%physical system that it exists in; opted to use the same organization as the 
+%medical imaging example
+%Tables~\ref{TblInputVar} and \ref{TblOutputVar} show the data constraints on 
+%the
+%input and output variables, respectively.  The column for physical constraints 
+%gives the physical limitations on the range of values that can be taken by the
+%variable. Since the \prognameAbbrv{} does not have a physical system 
+%component, 
+%so these table values do not apply. The column for software constraints 
+%restricts the range of inputs to reasonable values. The constraints are 
+%conservative, to give the user of the model the flexibility to experiment with 
+%unusual situations.  The column of typical values is intended to provide a 
+%feel 
+%for a common scenario. The uncertainty column provides an estimate of the 
+%confidence with which the physical quantities can be measured. This 
+%information 
+%would be part of the input if one were performing an uncertainty 
+%quantification 
+%exercise. Since the \progname{} tool is designed to test new equations on 
+%given 
+%bounds, the uncertainty cannot be quantified without knowing the input 
+%function. Therefore, this information cannot be provided at this time.
+%
+%%The specification parameters in Table~\ref{TblInputVar} are listed in
+%%Table~\ref{TblSpecParams}.
+%
+%\begin{table}[!h]
+%  \caption{Input Variables} \label{TblInputVar}
+%  %\renewcommand{\arraystretch}{1.2}
+%\noindent \begin{longtable*}{m{0.05\textwidth} m{0.23\textwidth} 
+%m{0.28\textwidth} m{0.15\textwidth} m{0.13\textwidth}} 
+%  \toprule
+%  \textbf{Var} & \textbf{Physical Constraints} & \textbf{Software Constraints} 
+%&
+%                             \textbf{Typical Value} & \textbf{Uncertainty}\\
+%  \midrule 
+%  $f(X)$ & - & $op \in f(X)$\newline$\wedge op \in \{+, -, \times, \div, b^x, 
+%  x^n\}$ \newline(by 
+%  \aref{A_operators}) & $2 \times (a + b)$ & -\\
+%  $[x,y]$ & - & $[x,y] \in X $\newline$\wedge x \neq \pm\infty \wedge x \in 
+%  [x,y] $\newline$ \wedge y \neq \pm\infty \wedge y \in [x,y] $\newline$\wedge 
+%  (x \wedge y \in \varmathbb{R})$ (by \aref{A_domain}) & $[-1,1]$ & -\\
+%  $b$ & - & $b \neq \pm\infty, \in \varmathbb{R}, b > 1$ (\ddref{DD_base}) & 
+%  $3$ & -\\
+%  $n$ & - & $x \neq \pm\infty, \in \in \varmathbb{N}$ (\ddref{DD_power}) & $2$ 
+%  & -
+%  \\
+%  \bottomrule
+%\end{longtable*}
+%\end{table}
+%
+%%\noindent 
+%%\begin{description}
+%%\item[(*)] \wss{you might need to add some notes or clarifications}
+%%\end{description}
+%
+%%\begin{table}[!h]
+%%\caption{Specification Parameter Values} \label{TblSpecParams}
+%%\renewcommand{\arraystretch}{1.2}
+%%\noindent \begin{longtable*}{l l} 
+%%  \toprule
+%%  \textbf{Var} & \textbf{Value} \\
+%%  \midrule 
+%%  $L_\text{min}$ & 0.1 \si{\metre}\\
+%%  \bottomrule
+%%\end{longtable*}
+%%\end{table}
+%
+%\begin{table}[!h]
+%\caption{Output Variables} \label{TblOutputVar}
+%\renewcommand{\arraystretch}{1.2}
+%\noindent \begin{longtable*}{m{0.2\textwidth} m{0.3\textwidth}} 
+%  \toprule
+%  \textbf{Var} & \textbf{Software Constraints} \\
+%  \midrule 
+%  $[x_{out},y_{out}]$ & $x_{out} \neq \pm\infty \wedge x_{out} \in 
+%  [x_{out},y_{out}] $\newline$ \wedge y_{out} \neq \pm\infty \wedge y_{out} 
+%\in 
+%  [x_{out},y_{out}] $\newline$\wedge (x_{out} \wedge y_{out} \in 
+%  \varmathbb{R})$ (by~\aref{A_interval})
+%  \\
+%  \bottomrule
+%\end{longtable*}
+%\end{table}
 
 \subsubsection{Properties of a Correct Solution} \label{sec_CorrectSolution}
 
 \noindent
-A correct solution must exhibit \wss{fill in the details}
+The interval of $R(f(X))$ produced by the \prognameAbbrv{} tool must exhibit 
+the properties of a closed, real interval (\aref{A_interval}). This can be 
+verified mathematically by checking if $R(f(X)) = [a,b]$ satisfies $\forall x 
+\in \varmathbb{R} | a \leq x \leq 
+b$.
+
 
 \section{Requirements}
 \label{requirements}
@@ -1347,18 +1403,19 @@ instance models, requirements, and data constraints on each other.
 \bibliography 
 {../../ReferenceMaterial/SRS_Refs,../../ReferenceMaterial/ProblemStatement_Refs}
 
-\newpage
-
-\section{Appendix}
-
-\wss{Your report may require an appendix.  For instance, this is a good point to
-show the values of the symbolic parameters introduced in the report.}
-
-\subsection{Symbolic Parameters}
-
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{l l} 		
-	$\varmathbb{R}$ & Domain of real numbers\\
-\end{tabular}\\
+%\newpage
+%
+%\section{Appendix}
+%
+%\wss{Your report may require an appendix.  For instance, this is a good point 
+%to
+%show the values of the symbolic parameters introduced in the report.}
+%
+%\subsection{Symbolic Parameters}
+%
+%\renewcommand{\arraystretch}{1.2}
+%\begin{tabular}{l l} 		
+%	$\varmathbb{R}$ & Domain of real numbers\\
+%\end{tabular}\\
 
 \end{document}
