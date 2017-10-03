@@ -527,10 +527,9 @@ Additional models exist for interval arithmetic, but only the models named in
 		\hline
 		Equation&  $b^X = \{b^x | x \in X \wedge b > 1\}$\\
 		\hline
-		Description & The product interval of a constant number $b$ raised to 
-		the power of a real interval $X$ is equal to the set of products $b^x$ 
-		for 
-		each interval element $x$.\\
+		Description & The product interval of a constant number $b > 1$ raised 
+		to the power of a real interval $X$ is equal to the set of products 
+		$b^x$ for each interval element $x$.\\
 		\hline
 		Source & \url{https://en.wikipedia.org/wiki/Interval_arithmetic}\\
 		\hline
@@ -710,12 +709,13 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
 
 The goal \gsref{G_range} is solved by recursively combining instance models 
 \iref{I_addition}, \iref{I_subtraction}, \iref{I_multiplication}, 
-\iref{I_division}, \iref{I_exponents}, and \iref{I_expbase}. For example, if 
+\iref{I_positivedivision}, \iref{I_negativedivision}, \iref{I_exponents}, and 
+\iref{I_expbase}. For example, if 
 the user provided an equation of the form $a + b \times c$, it is decomposed 
 into $a + B$ where $B = b \times c$. This approach is identical to a 
-hand-written evaluation except a mechanized approach must explicitly state the 
+hand-written evaluation because a mechanized approach must explicitly state the 
 intermediary steps, which are commonly omitted by humans, in order to complete 
-the computational task.
+the computational task. 
 
 These models can also be used as a specification for the closed interval method 
 because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
@@ -943,16 +943,23 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\hline
 		Label& \bf  Closed, real intervals as Exponents\\
 		\hline
-		Input&$b$, $[x, y]$ from \ddref{DD_interval}\\
+		Input&$[x, y]$ from \ddref{DD_interval}, $b$ from \ddref{DD_base}\\
 		\hline
 		Output&$[x_{exp}, y_{exp}]$ such that\\
-		&\\
+		&$x_{exp} = b^x$, $y_{exp} = b^y$\\
 		&$[x_{exp}, y_{exp}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&
+		Description&$[x, y]$ is the domain of one variable in the user's input 
+		function $f(X)$ which is used as an exponent on a constant base number 
+		$b$, which is subject to the data constraints of \ddref{DD_base}. \\
+		&The combined boundary values $x_{exp}$ and  $y_{exp}$ are determined 
+		using basic arithmetic exponents.\\
+		& The result, $[x_{exp}, y_{exp}]$, is guaranteed to be a closed, real 
+		interval (\aref{A_interval}) due to the closed, real interval 
+		constraint on $[x, y]$ and the data constraint on $b$ (\aref{A_domain}).
 		\\
 		\hline
-		Sources& \ \\
+		Sources& \url{https://en.wikipedia.org/wiki/Interval_arithmetic} \\
 		\hline
 		Ref.\ By & -\\
 		\hline
@@ -974,13 +981,42 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		Input&$[x, y]$ from \ddref{DD_interval}, $n$ from \ddref{DD_power}\\
 		\hline
 		Output&$[x_{pow}, y_{pow}]$ such that\\
-		&\\
+		&\vspace*{-10mm}\begin{center}
+			\begin{tabular}{lll}
+				$x_{pow} = x^n$, & $y_{pow} = y^n$ & $n$ is odd  \\
+				$x_{pow} = x^n$, & $y_{pow} = y^n$ & $n$ is even $\wedge (0 
+				\leq x < y)$ \\
+				$x_{pow} = y^n$, & $y_{pow} = x^n$ & $n$ is even $\wedge (0 
+				\geq x > y)$ \\
+				$x_{pow} = 0$, & $y_{pow} = \max(x^n, y^n)$ & ELSE
+			\end{tabular}
+		\end{center}\\
 		&$[x_{pow}, y_{pow}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&
+		Description&$[x, y]$ is the domain of one variable in the user's input 
+		function $f(X)$ raised to a constant power $n$, which is subject to the 
+		data constraints of \ddref{DD_power}. \\
+		&The combined boundary values $x_{pow}$ and $y_{pow}$ are determined 
+		by the divisibility of $n$ by two and the monotonicity of $[x,y]$:
+		\begin{itemize}
+			\item For odd values of $n$ and any interval $[x,y]$, and even 
+			values of $n$ when $[x,y]$ is monotonically increasing, $[x_{pow}, 
+			y_{pow}]$ are determined by simply raising each of $x$ and $y$ to 
+			the power of $n$
+			\item For even values of $n$ and $[x,y]$ is monotonically 
+			decreasing, the boundary values of $x$ and $y$ are reversed before 
+			being raised to the power of $n$
+			\item For all other cases, the interval is bounded by $0$ and the 
+			maximum of the input bounds raised to the power of $n$
+		\end{itemize}
+		\\
+		&\vspace*{-10mm} The result, $[x_{exp}, y_{exp}]$, is guaranteed to be 
+		a closed, real interval (\aref{A_interval}) due to the closed, real 
+		interval constraint on $[x, y]$ and the data constraint on $n$ 
+		(\aref{A_domain}).
 		\\
 		\hline
-		Sources& \ \\
+		Sources& \url{https://en.wikipedia.org/wiki/Interval_arithmetic} \\
 		\hline
 		Ref.\ By & -\\
 		\hline
@@ -1033,10 +1069,6 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 %\end{minipage}\\
 
 %~\newline
-
-\subsubsection*{Derivation of ...}
-
-\wss{May be necessary to include this subsection in some cases.}
 
 \subsubsection{Data Constraints} \label{sec_DataConstraints}    
 
@@ -1176,7 +1208,7 @@ there is only one goal statement (\gsref{G_range}) in this specification, it
 can be assumed that changing the goal will impact every item contained within 
 this document.
 
-\begin{table}[h!]
+\begin{table}[H]
 \centering
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -1207,6 +1239,38 @@ this document.
 \end{tabular}
 \caption{Traceability Matrix Showing the Connections Between Assumptions and Other Items}
 \label{Table:A_trace}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		& \iref{I_addition}& \iref{I_subtraction}& \iref{I_multiplication}& 
+		\iref{I_positivedivision}& \iref{I_negativedivision}& 
+		\iref{I_exponents}& 
+		\iref{I_expbase}& \ref{sec_DataConstraints}& \rref{R_RawInputs}& 
+		\rref{R_MassInputs} \\
+		\hline
+		\iref{I_addition}            & & & & & & & &&& \\ \hline
+		\iref{I_subtraction}            & & & & & & &  &&&\\ \hline
+		\iref{I_multiplication}          & & & & & & &  &&&\\ \hline
+		\iref{I_positivedivision}          & & & & & & & &&& \\ \hline
+		\iref{I_negativedivision}     & & & & & & & &&&\\ \hline
+		\iref{I_exponents}    & & & & & & & &&&\\ \hline
+		\iref{I_expbase}   & & & & & & & &&&\\ \hline
+		\rref{R_OutputInputs}  & & & & & & &  &&&\\ \hline
+		\rref{R_TempWater}     & & & & & & & &&&\\ \hline 
+		\rref{R_TempPCM}       & & & & & & & &&&\\ \hline
+		\rref{R_EnergyWater}   & & & & & & & &&&\\ \hline
+		\rref{R_EnergyPCM}     & & & & & & & &&&\\ \hline
+		\rref{R_VerifyOutput}  & & & & & & & &&&\\ \hline
+		\rref{R_timeMeltBegin} & & & & & & & &&&\\ \hline
+		\rref{R_timeMeltEnd}   & & & & & & & &&&\\ 
+		\hline
+	\end{tabular}
+	\caption{Traceability Matrix Showing the Connections Between Requirements 
+	and Instance Models}
+	\label{Table:R_trace}
 \end{table}
 
 \afterpage{
@@ -1245,36 +1309,6 @@ this document.
 \end{table}
 \end{landscape}
 }
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
-\hline
-	& \iref{I_addition}& \iref{I_subtraction}& \iref{I_multiplication}& 
-	\iref{I_positivedivision}& \iref{I_negativedivision}& \iref{I_exponents}& 
-	\iref{I_expbase}& \ref{sec_DataConstraints}& \rref{R_RawInputs}& 
-	\rref{R_MassInputs} \\
-\hline
-\iref{I_addition}            & & & & & & & &&& \\ \hline
-\iref{I_subtraction}            & & & & & & &  &&&\\ \hline
-\iref{I_multiplication}          & & & & & & &  &&&\\ \hline
-\iref{I_positivedivision}          & & & & & & & &&& \\ \hline
-\iref{I_negativedivision}     & & & & & & & &&&\\ \hline
-\iref{I_exponents}    & & & & & & & &&&\\ \hline
-\iref{I_expbase}   & & & & & & & &&&\\ \hline
-\rref{R_OutputInputs}  & & & & & & &  &&&\\ \hline
-\rref{R_TempWater}     & & & & & & & &&&\\ \hline 
-\rref{R_TempPCM}       & & & & & & & &&&\\ \hline
-\rref{R_EnergyWater}   & & & & & & & &&&\\ \hline
-\rref{R_EnergyPCM}     & & & & & & & &&&\\ \hline
-\rref{R_VerifyOutput}  & & & & & & & &&&\\ \hline
-\rref{R_timeMeltBegin} & & & & & & & &&&\\ \hline
-\rref{R_timeMeltEnd}   & & & & & & & &&&\\ 
-\hline
-\end{tabular}
-\caption{Traceability Matrix Showing the Connections Between Requirements and Instance Models}
-\label{Table:R_trace}
-\end{table}
 
 The purpose of the traceability graphs is also to provide easy references on
 what has to be additionally modified if a certain component is changed.  The
