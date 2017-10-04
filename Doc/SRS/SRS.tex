@@ -1001,33 +1001,52 @@ b$.
 \label{requirements}
 
 This section provides the functional requirements, the business tasks that the
-software is expected to complete, and the nonfunctional requirements, the
-qualities that the software is expected to exhibit.
+\prognameAbbrv{} tool is expected to complete, and the non-functional 
+requirements, the qualities that the \prognameAbbrv{} tool is expected to 
+exhibit.
 
 \subsection{Functional Requirements}
 
 \noindent \begin{itemize}
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] \wss{Requirements
-    for the inputs that are supplied by the user.  This information has to be
-    explicit.}
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] The 
+\prognameAbbrv{} tool must accept an equation $f(X)$ from the user and a domain 
+for each $x \in X$. These inputs can be entered directly into the tool or read 
+from a file.
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_OutputInputs}:] \wss{It isn't
-    always required, but often echoing the inputs as part of the output is a
-    good idea.}
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_conditionX}:] The 
+\prognameAbbrv{} tool must convert each domain $x \in X$ into interval form 
+(\ddref{DD_interval}).
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_Calculate}:] \wss{Calculation
-    related requirements.}
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_conditionfx}:] The 
+\prognameAbbrv{} tool must decompose $f(X)$ into a series of two-operand 
+equations following the standard order of operations rules.
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_VerifyOutput}:]
-  \wss{Verification related requirements.}
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_verifyinputs}:] The 
+\prognameAbbrv{} tool must verify that the user inputs satisfy the input data 
+constraints from \ref{sec_DataConstraints}.
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_Output}:] \wss{Output related
-    requirements.}
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Calculate}:] The 
+\prognameAbbrv{} tool must solve each equation identified in 
+\rref{R_conditionfx} using \iref{I_addition}, \iref{I_subtraction}, 
+\iref{I_multiplication}, \iref{I_positivedivision}, \iref{I_negativedivision}, 
+\iref{I_exponents}, and \iref{I_expbase}.
+
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_VerifyOutput}:] The 
+\prognameAbbrv{} tool must verify that the program produces a $R(f(X))$ in 
+interval notation (\ddref{DD_interval}).
+
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_VerifyOutputConstraints}:] 
+The 
+\prognameAbbrv{} tool must verify that the program output satisfies the output 
+data constraints from \ref{sec_DataConstraints}.
+
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Output}:] The 
+\prognameAbbrv{} tool must show the verified $R(f(X))$ to the user.
 
 \end{itemize}
 
-\subsection{Nonfunctional Requirements}
+\subsection{Non-functional Requirements}
 
 \wss{List your nonfunctional requirements.  You may consider using a fit
   criterion to make them verifiable.}
