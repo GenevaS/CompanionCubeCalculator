@@ -122,7 +122,7 @@ systems.  The symbols are listed in alphabetical order.
 
 \renewcommand{\arraystretch}{1.2}
 %\noindent \begin{tabularx}{1.0\textwidth}{l l X}
-\noindent \begin{longtable*}{l l p{12cm}} \toprule
+\noindent \begin{longtable*}{m{1.5cm} m{1cm} m{12cm}} \toprule
 \textbf{Symbol} & \textbf{Unit} & \textbf{Description}\\
 \midrule 
 $b$ & - & Base number; used to represent exponential functions (e.g. $b^2$)\\
@@ -1038,19 +1038,20 @@ qualities that the software is expected to exhibit.
 \noindent \begin{itemize}
 
 \item[LC\refstepcounter{lcnum}\thelcnum\label{LC_openinterval}:] Open, real 
-intervals are supported, which will also remove all restrictions on division 
-(\aref{A_domain}, \aref{A_interval})
+intervals are supported (\aref{A_domain}, \aref{A_interval})
 
 \item[LC\refstepcounter{lcnum}\thelcnum\label{LC_unknownDomain}:] Determine 
 $D(x)$ for any $x \in X$ if it is not part of the input set (\aref{A_domain}, 
 \aref{A_interval})
 
 \item[LC\refstepcounter{lcnum}\thelcnum\label{LC_trig}:] Addition of the 
-trigonometric functions $\sin(x)$ and $\cos(x)$ (\aref{A_operators})
+trigonometric functions $\sin(x)$ and $\cos(x)$ (\aref{A_domain}, 
+\aref{A_commonfunctions})
 
 \item[LC\refstepcounter{lcnum}\thelcnum\label{LC_infinity}:] Addition of 
 operators and trigonometric functions whose range includes $\pm\infty$ 
-(\aref{A_domain}, \aref{A_interval}, \aref{A_operators})
+(\aref{A_domain}, \aref{A_interval}, \aref{A_operators}, 
+\aref{A_commonfunctions})
 
 \end{itemize}
 
@@ -1072,33 +1073,68 @@ this document.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|}
 \hline
-	& \aref{A_domain} & \aref{A_interval} & \aref{A_operators} 
+	& \aref{A_domain} & \aref{A_interval} & \aref{A_operators} & 
+	\aref{A_commonfunctions}
 	\\
 \hline
-\tref{T_addition} &  &  & \\ \hline
-\tref{T_subtraction} &  &  & \\ \hline
-\tref{T_multiplication} &  &  & \\ \hline
-\tref{T_division} &  &  & \\ \hline
-\tref{T_exponents} &  &  & \\ \hline
-\tref{T_expbase} &  &  & \\ \hline
-\ddref{DD_interval} & X & X &  \\ \hline
-\iref{I_addition} & X & X &  \\ \hline
-\iref{I_subtraction} & X & X &  \\ \hline
-\iref{I_multiplication} & X & X &  \\ \hline
-\iref{I_positivedivision} & X & X &  \\ \hline
-\iref{I_negativedivision} & X & X &  \\ \hline
-\iref{I_exponents} & X & X &  \\ \hline
-\iref{I_expbase} & X & X &  \\ \hline
-\lcref{LC_openinterval} & X & X &  \\ \hline
-\lcref{LC_unknownDomain} & X & X &  \\ \hline
-\lcref{LC_trig} & X & & X  \\ \hline
-\lcref{LC_infinity} & X & X & X  \\ 
+\tref{T_addition}         &   &   &   &  \\ \hline
+\tref{T_subtraction}      &   &   &   &  \\ \hline
+\tref{T_multiplication}   &   &   &   &  \\ \hline
+\tref{T_division}         &   &   &   &  \\ \hline
+\tref{T_exponents}        &   &   &   &  \\ \hline
+\tref{T_expbase}          &   &   &   &  \\ \hline
+\ddref{DD_interval}       & X & X &   &  \\ \hline
+\iref{I_addition}         & X & X &   &  \\ \hline
+\iref{I_subtraction}      & X & X &   &  \\ \hline
+\iref{I_multiplication}   & X & X &   &  \\ \hline
+\iref{I_positivedivision} & X & X &   &  \\ \hline
+\iref{I_negativedivision} & X & X &   &  \\ \hline
+\iref{I_exponents}        & X & X &   &  \\ \hline
+\iref{I_expbase}          & X & X &   &  \\ \hline
+\lcref{LC_openinterval}   & X & X &   &  \\ \hline
+\lcref{LC_unknownDomain}  & X & X &   &  \\ \hline
+\lcref{LC_trig}           & X &   &   & X \\ \hline
+\lcref{LC_infinity}       & X & X & X & X \\ 
 \hline
 \end{tabular}
 \caption{Traceability Matrix Showing the Connections Between Assumptions and Other Items}
 \label{Table:A_trace}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline        
+		& \tref{T_addition}& \tref{T_subtraction}& \tref{T_multiplication}& 
+		\tref{T_division}& \tref{T_exponents} & \tref{T_expbase}& 
+		\ddref{DD_interval} & \iref{I_addition}& 
+		\iref{I_subtraction}& \iref{I_multiplication}& 
+		\iref{I_positivedivision}& \iref{I_negativedivision} & 
+		\iref{I_exponents} & 
+		\iref{I_expbase}\\
+		\hline
+		\tref{T_addition}         &   &   &   &   &   &   &   & & & & & & & \\ 
+		\hline
+		\tref{T_subtraction}      &   &   & & & & & & & & & & &  &\\ \hline
+		\tref{T_multiplication}   &   &   & & & & & & & & & &  & &\\ \hline
+		\tref{T_division}         &   &   & & & & & & & & & &  & &\\ \hline
+		\tref{T_exponents}        &   &   & & & & & & & & &  & & &\\ \hline
+		\tref{T_expbase}          &   &   & & & & & & & & & & & &\\ \hline
+		\ddref{DD_interval}       &   &   & & & & & & & & & &&  & \\ \hline
+		\iref{I_addition}         & X &   & & & & & X & & & &  & & &\\ \hline
+		\iref{I_subtraction}      &   & X & & & & & X & & &  & &  & &\\ \hline
+		\iref{I_multiplication}   &   &   & X & & & & X & & & &  && & \\ \hline
+		\iref{I_positivedivision} &   &   & & X & & & X & &  & & && & \\\hline
+		\iref{I_negativedivision} &   &   & & X &  & & X & &  & & && & \\\hline
+		\iref{I_exponents}        &   &   & & & X & & X &  & & & & & & \\\hline
+		\iref{I_expbase}          &   &   & & & & X & X & &  & & &  && \\
+		\hline
+	\end{tabular}
+	\caption{Traceability Matrix Showing the Connections Between Items of 
+	Different Sections}
+	\label{Table:trace}
 \end{table}
 
 \begin{table}[H]
@@ -1132,41 +1168,6 @@ this document.
 	and Instance Models}
 	\label{Table:R_trace}
 \end{table}
-
-\afterpage{
-\begin{landscape}
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
-\hline        
-	& \tref{T_addition}& \tref{T_subtraction}& \tref{T_multiplication}& 
-	\tref{T_division}& \tref{T_exponents} & \tref{T_expbase}& 
-	\ddref{DD_interval} & \iref{I_addition}& 
-	\iref{I_subtraction}& \iref{I_multiplication}& 
-	\iref{I_positivedivision}& \iref{I_negativedivision} & \iref{I_exponents} & 
-	\iref{I_expbase}\\
-\hline
-\tref{T_addition}         &   &   &   &   &   &   &   & & & & & & & \\ \hline
-\tref{T_subtraction}      &   &   & & & & & & & & & & &  &\\ \hline
-\tref{T_multiplication}   &   &   & & & & & & & & & &  & &\\ \hline
-\tref{T_division}         &   &   & & & & & & & & & &  & &\\ \hline
-\tref{T_exponents}        &   &   & & & & & & & & &  & & &\\ \hline
-\tref{T_expbase}          &   &   & & & & & & & & & & & &\\ \hline
-\ddref{DD_interval}       &   &   & & & & & & & & & &&  & \\ \hline
-\iref{I_addition}         & X &   & & & & & X & & & &  & & &\\ \hline
-\iref{I_subtraction}      &   & X & & & & & X & & &  & &  & &\\ \hline
-\iref{I_multiplication}   &   &   & X & & & & X & & & &  && & \\ \hline
-\iref{I_positivedivision} &   &   & & X & & & X & &  & & && & \\\hline
-\iref{I_negativedivision} &   &   & & X &  & & X & &  & & && & \\\hline
-\iref{I_exponents}        &   &   & & & X & & X &  & & & & & & \\\hline
-\iref{I_expbase}          &   &   & & & & X & X & &  & & &  && \\
-\hline
-\end{tabular}
-\caption{Traceability Matrix Showing the Connections Between Items of Different Sections}
-\label{Table:trace}
-\end{table}
-\end{landscape}
-}
 
 The purpose of the traceability graphs is also to provide easy references on
 what has to be additionally modified if a certain component is changed.  The
