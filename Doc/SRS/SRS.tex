@@ -1063,16 +1063,19 @@ has to be additionally modified if a certain component is changed.  Every time a
 component is changed, the items in the column of that component that are marked
 with an ``X'' may have to be modified as well.  Table~\ref{Table:trace} shows 
 the dependencies of theoretical models, data definitions, and instance models 
-with each other. Table~\ref{Table:R_trace} shows the dependencies of instance 
-models, requirements, and data constraints on each other. 
-Table~\ref{Table:A_trace} shows the dependencies of theoretical models, 
-data definitions, instance models, and likely changes on the assumptions. Since 
-there is only one goal statement (\gsref{G_range}) in this specification, it 
-can be assumed that changing the goal will impact every item contained within 
-this document.
+with each other. Items from the likely changes section are not included in this 
+table because implementing the likely changes will require the creation of new 
+models and cannot be adequately addressed by changing the existing models. 
+Table~\ref{Table:R_trace} shows the dependencies of instance models, 
+requirements, and data constraints on each other. Table~\ref{Table:A_trace} 
+shows the dependencies of theoretical models, data definitions, instance 
+models, and likely changes on the assumptions. Since there is only one goal 
+statement (\gsref{G_range}) in this specification, it can be assumed that 
+changing the goal will impact every item contained within this document.
 
 \begin{table}[H]
 \centering
+\scalebox{0.9}{
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 	& \aref{A_domain} & \aref{A_interval} & \aref{A_operators} & 
@@ -1086,19 +1089,20 @@ this document.
 \tref{T_exponents}        &   &   &   &  \\ \hline
 \tref{T_expbase}          &   &   &   &  \\ \hline
 \ddref{DD_interval}       & X & X &   &  \\ \hline
-\iref{I_addition}         & X & X &   &  \\ \hline
-\iref{I_subtraction}      & X & X &   &  \\ \hline
-\iref{I_multiplication}   & X & X &   &  \\ \hline
-\iref{I_positivedivision} & X & X &   &  \\ \hline
-\iref{I_negativedivision} & X & X &   &  \\ \hline
-\iref{I_exponents}        & X & X &   &  \\ \hline
-\iref{I_expbase}          & X & X &   &  \\ \hline
+\iref{I_addition}         &   &   &   &  \\ \hline
+\iref{I_subtraction}      &   &   &   &  \\ \hline
+\iref{I_multiplication}   &   &   &   &  \\ \hline
+\iref{I_positivedivision} &   &   &   &  \\ \hline
+\iref{I_negativedivision} &   &   &   &  \\ \hline
+\iref{I_exponents}        &   &   &   &  \\ \hline
+\iref{I_expbase}          &   &   &   &  \\ \hline
 \lcref{LC_openinterval}   & X & X &   &  \\ \hline
 \lcref{LC_unknownDomain}  & X & X &   &  \\ \hline
 \lcref{LC_trig}           & X &   &   & X \\ \hline
 \lcref{LC_infinity}       & X & X & X & X \\ 
 \hline
 \end{tabular}
+}
 \caption{Traceability Matrix Showing the Connections Between Assumptions and Other Items}
 \label{Table:A_trace}
 \end{table}
@@ -1174,20 +1178,21 @@ what has to be additionally modified if a certain component is changed.  The
 arrows in the graphs represent dependencies. The component at the tail of an
 arrow is depended on by the component at the head of that arrow. Therefore, if a
 component is changed, the components that it points to should also be
-changed. Figure~\ref{Fig_ATrace} shows the dependencies of theoretical models,
-general definitions, data definitions, instance models, likely changes, and
+changed. Figure~\ref{Fig_ATrace} shows the dependencies of theoretical models, 
+data definitions, instance models, likely changes, and
 assumptions on each other. Figure~\ref{Fig_RTrace} shows the dependencies of
 instance models, requirements, and data constraints on each other.
 
-% \begin{figure}[h!]
-% 	\begin{center}
-% 		%\rotatebox{-90}
-% 		{
-% 			\includegraphics[width=\textwidth]{ATrace.png}
-% 		}
-% 		\caption{\label{Fig_ATrace} Traceability Matrix Showing the Connections Between Items of Different Sections}
-% 	\end{center}
-% \end{figure}
+ \begin{figure}[h!]
+ 	\begin{center}
+ 		%\rotatebox{-90}
+ 		{
+ 			\includegraphics[width=0.99\textwidth]{figures/ATrace.png}
+ 		}
+ 		\caption{\label{Fig_ATrace} Traceability Matrix Showing the Connections 
+ 		Between Items of Different Sections}
+ 	\end{center}
+ \end{figure}
 
 
 % \begin{figure}[h!]
