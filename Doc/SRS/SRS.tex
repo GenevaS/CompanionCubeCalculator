@@ -999,17 +999,17 @@ exhibit.
 \noindent \begin{itemize}
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] The 
-\prognameAbbrv{} tool must accept an equation $f(X)$ from the user and a domain 
-for each $x \in X$. These inputs can be entered directly into the tool or read 
-from a file.
+\prognameAbbrv{} tool must accept a $f(X)$ and a $D(x)$ for each $x \in X$ from 
+the user. These inputs can be entered directly into the tool or read from a 
+file.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_conditionX}:] The 
-\prognameAbbrv{} tool must convert each domain $x \in X$ into interval form 
+\prognameAbbrv{} tool must convert each $D(x)$ into interval form 
 (\ddref{DD_interval}).
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_conditionfx}:] The 
 \prognameAbbrv{} tool must decompose $f(X)$ into a series of two-operand 
-equations following the standard order of operations rules.
+equations following the standard order of operations rules (BEDMAS).
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_verifyinputs}:] The 
 \prognameAbbrv{} tool must verify that the user inputs satisfy the input data 
@@ -1023,62 +1023,66 @@ constraints from \ref{sec_DataConstraints}.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_VerifyOutput}:] The 
 \prognameAbbrv{} tool must verify that the program produces a $R(f(X))$ in 
-interval notation (\ddref{DD_interval}).
+interval form (\ddref{DD_interval}).
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_VerifyOutputConstraints}:] 
-The 
-\prognameAbbrv{} tool must verify that the program output satisfies the output 
-data constraints from \ref{sec_DataConstraints}.
+The \prognameAbbrv{} tool must verify that the program output satisfies the 
+output data constraints from \ref{sec_DataConstraints}.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_Output}:] The 
-\prognameAbbrv{} tool must show the verified $R(f(X))$ to the user.
+\prognameAbbrv{} tool must show the verified $R(f(X))$ to the user. If this is 
+not possible, communicate the reason to the user.
 
 \end{itemize}
 
-\subsection{Non-functional Requirements}
+\subsection{Non-Functional Requirements}
 
 \subsubsection*{Correctness}
 \begin{itemize}
 	\item The \prognameAbbrv{} tool must be correct in its decomposition of 
 	$f(X)$ into smaller equations.\\ \textbf{Fit Criterion}: The decomposition 
-	process can be proven using mathematical induction.
+	process must be proven using mathematical induction.
 \end{itemize}
 
 \subsubsection*{Reliability}
 \begin{itemize}
-	\item The \prognameAbbrv{} tool must calculate the value of $R(f(X))$ with 
+	\item The \prognameAbbrv{} tool must calculate the interval $R(f(X))$ with 
 	an error rate relative to the floating point precision available on the 
 	host machine. \\ \textbf{Fit Criterion}: Given the floating point error on 
 	a test machine, verify that the output produced by the program is within 
-	the error range when compared to a manually calculated result.
+	the range of a manually calculated result $\pm$ the floating point error.
 \end{itemize}
 
 \subsubsection*{Robustness}
 \begin{itemize}
 	\item The \prognameAbbrv{} tool must be able to recognize violated data 
 	constraints (\ref{sec_DataConstraints}) and report them to the user.
+	\item The \prognameAbbrv{} tool must inform the user when it encounters any 
+	unspecified state.
 \end{itemize}
 
 \subsubsection*{Performance}
-Time and space performance is not a priority because the intended users will be 
-using the \prognameAbbrv{} tool in an environment with unrestricted time 
-resources and the space required to perform its calculations will be relatively 
-small in reasonable implementations.
+Time and space performance is not a priority in the \prognameAbbrv{} tool 
+specification. It is predicted that the intended users will be using the tool 
+in an environment with unrestricted time resources and the space required to 
+perform its calculations will be relatively small in reasonable implementations.
 
 \subsubsection*{Verifiability}
 \begin{itemize}
 	\item The \prognameAbbrv{} tool must be verifiable with respect to the 
 	correctness of its calculations.\\ \textbf{Fit Criterion}: The calculation 
-	procedures used by the \prognameAbbrv{} tool must be written such that they 
-	can be verified using mathematical proofs.
+	procedures used by the \prognameAbbrv{} tool must be implemented such that 
+	they can be verified using mathematical proofs.
 \end{itemize}
 
 \subsubsection*{Usability}
 \begin{itemize}
-	\item The user must be able to enter $f(X)$ using the standard mathematical 
-	format.
+	\item The user must be able to enter $f(X)$ using standard mathematical 
+	notation.
 	\item The user must be able to enter values for $D(x)$ using standard 
 	interval notation.
+	\item If the user provides a file as input, they must be able to include 
+	both $f(X)$ and each $D(x), x \in X$ in the same file.
 	\item The program must output the value $R(f(X))$ using standard interval 
 	notation.
 	\item If the design of the tool includes a GUI (\ref{sec_sysconstraints}), 
@@ -1091,28 +1095,27 @@ small in reasonable implementations.
 \subsubsection*{Maintainability}
 \begin{itemize}
 	\item The evolvability of the \prognameAbbrv{} tool must allow the addition 
-	of open, real intervals identified in \lcref{LC_openinterval}.
+	of open, real intervals (\lcref{LC_openinterval}).
 	\item The evolvability of the \prognameAbbrv{} tool must allow the addition 
-	of mathematical operators and special functions identified in 
-	\lcref{LC_trig} and \lcref{LC_infinity}.
+	of mathematical operators and special functions (\lcref{LC_trig}, 
+	\lcref{LC_infinity}).
 \end{itemize}
 
 \subsubsection*{Reusability}
 Reusability is not a priority because there are currently no future products 
-that will rely on elements from the \prognameAbbrv{} tool.
+that will rely on \prognameAbbrv{} tool components.
 
 \subsubsection*{Portability}
 The portability of the \prognameAbbrv{} tool is not a priority because it is 
-expected that the intended users of the product will not expect it to run on 
-many different platforms. One commonly used platform is sufficient.
+expected that the intended users will use Windows platforms for their analysis.
 
 \section{Likely Changes}    
 \label{changes}
 
 \noindent \begin{itemize}
 
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_openinterval}:] Open, real 
-intervals are supported (\aref{A_domain}, \aref{A_interval})
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_openinterval}:] Support for 
+open, real intervals (\aref{A_domain}, \aref{A_interval})
 
 \item[LC\refstepcounter{lcnum}\thelcnum\label{LC_unknownDomain}:] Determine 
 $D(x)$ for any $x \in X$ if it is not part of the input set (\aref{A_domain}, 
@@ -1143,9 +1146,11 @@ models and cannot be adequately addressed by changing the existing models.
 Table~\ref{Table:R_trace} shows the dependencies of instance models, 
 requirements, and data constraints on each other. Table~\ref{Table:A_trace} 
 shows the dependencies of theoretical models, data definitions, instance 
-models, and likely changes on the assumptions. Since there is only one goal 
-statement (\gsref{G_range}) in this specification, it can be assumed that 
-changing the goal will impact every item contained within this document.
+models, and likely changes on the assumptions. 
+
+Since there is only one goal statement (\gsref{G_range}) in this specification, 
+it can be assumed that changing the goal will impact every item contained 
+within this document.
 
 \begin{table}[H]
 \centering
@@ -1248,10 +1253,10 @@ changing the goal will impact every item contained within this document.
 	\label{Table:R_trace}
 \end{table}
 
-The purpose of the traceability graphs is also to provide easy references on
-what has to be additionally modified if a certain component is changed.  The
-arrows in the graphs represent dependencies. The component at the tail of an
-arrow is depended on by the component at the head of that arrow. Therefore, if a
+The purpose of the traceability graphs is to provide an alternate visualization 
+of the information presented in the traceability tables. The arrows in the 
+graphs represent dependencies where the component at the tail of an arrow is 
+depended on by the component at the head of that arrow. Therefore, if a 
 component is changed, the components that it points to should also be
 changed. Figure~\ref{Fig_ATrace} is a companion to Table~\ref{Table:A_trace} 
 and \ref{Table:trace}, showing the dependencies of theoretical models, data 
