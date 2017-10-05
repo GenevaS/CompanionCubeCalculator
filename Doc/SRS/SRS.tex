@@ -96,10 +96,7 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-September 26, 2017 & 1.1 & Completed the first draft of the General System 
-Description (Section \ref{general})\\
-September 25, 2017 & 1.0 & Completed the first draft of the Introduction 
-(Section \ref{intro})\\
+October 4, 2017 & 1.0 & Completed the initial SRS documentation\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -115,24 +112,27 @@ The tasks performed by the \prognameAbbrv{} tool are unitless.
 
 \subsection{Table of Symbols}
 
-The table that follows summarizes the symbols used in this document along with
-their units.  The choice of symbols was made to be consistent with the heat
-transfer literature and with existing documentation for solar water heating
-systems.  The symbols are listed in alphabetical order.
+The table that follows summarizes the symbols used in this document. The choice 
+of symbols was made to be consistent with mathematical notations of functions, 
+sets, and intervals. The symbols are listed in alphabetical order.
 
 \renewcommand{\arraystretch}{1.2}
 %\noindent \begin{tabularx}{1.0\textwidth}{l l X}
-\noindent \begin{longtable*}{m{1.5cm} m{1cm} m{12cm}} \toprule
-\textbf{Symbol} & \textbf{Unit} & \textbf{Description}\\
+\noindent \begin{longtable*}{m{1.5cm} m{12cm}} \toprule
+\textbf{Symbol}  & \textbf{Description}\\
 \midrule 
-$b$ & - & Base number; used to represent exponential functions (e.g. $b^2$)\\
-$D(x)$ & - & Domain of $x$\\
-$f(X)$ & - & A function of a variable set $X$\\
-$\varmathbb{N}$ & - & The set of natural numbers; assumes that $0$ is included 
+$[a,b]$ & Closed interval with endpoints $a$ and $b$\\
+$(a,b)$ & Open interval with endpoints $a$ and $b$\\
+$b$  & Base number; used to represent exponential functions (e.g. $b^2$)\\
+$D(x)$  & Domain of $x$\\
+$f(X)$  & A function of a variable set $X$\\
+$\varmathbb{N}$  & The set of natural numbers; assumes that $0$ is included 
 in this specification\\
-$\varmathbb{R}$ & - & The set of real numbers\\
-$R(f(X))$ & - & Range of $f(X)$\\
-$n$ & - & Power; used to represent exponential functions (e.g. $2^n$) \\
+$\varmathbb{R}$  & The set of real numbers\\
+$R(f(X))$  & Range of $f(X)$\\
+$n$  & Power; used to represent exponential functions (e.g. $2^n$) \\
+$X$ & Set of variables $x$\\
+$Y$ & Set of variables $Y$\\
 \bottomrule
 \end{longtable*}
 
@@ -151,7 +151,7 @@ $n$ & - & Power; used to represent exponential functions (e.g. $2^n$) \\
   GUI & Graphical User Interface\\
   IM & Instance Model\\
   LC & Likely Change\\
-  NPC & Non-Player Character\\
+  NPC & Non-Player Character (Games)\\
   PS & Physical System Description\\
   R & Requirement\\
   SRS & Software Requirements Specification\\
@@ -166,89 +166,90 @@ $n$ & - & Power; used to represent exponential functions (e.g. $2^n$) \\
 \section{Introduction}
 \label{intro}
 This document is an SRS for the \progname{} (\prognameAbbrv{}), a mathematical 
-tool which determines the range of a user-specified function given the domains 
-of the function's variables. This tool is being developed to aid in the 
-specification and refinement of GLaDOS, an emotion engine for Non-Player 
-Characters (NPCs) in Computer Role-Playing Games (CRPG) as described by 
-\citet{glados}.
+tool which determines the range, $R(f(X))$, of a user-specified function, 
+$f(X)$, given the domains of the function's variables, $D(X)$. This tool will 
+aid in the specification and refinement of GLaDOS, an emotion engine for 
+Non-Player Characters (NPCs) in Computer Role-Playing Games (CRPGs) as 
+described by \citet{glados}.
 
 \subsection{Purpose of Document}
 This document outlines the requirements identified for the development of the 
 \prognameAbbrv{} tool, including the product goals, product scope, and the 
-mathematical models driving the design. It also describes the mathematical 
-assumptions, theories, and models used to create the tool. The purpose of 
-documenting this information is to aid in future use, maintenance, and 
-development of the \prognameAbbrv{} tool.
+concrete mathematical models driving the design. It also describes the 
+assumptions and theoretical models used to influence the concrete models. The 
+purpose of documenting this information is to aid in future use, maintenance, 
+and development of the \prognameAbbrv{} tool.
 
 This document is intended for two reader types -- those who wish to use the 
-tool and those who wish to expand the tool. Even though the \progname{} was 
-created to aid in the development of a specific system (GLaDOS), the tested 
-functions do not have any specific units. This means that it can be used for 
-any function that exists in the domain of real numbers ($\varmathbb{R}$). 
-Therefore, this document can be used by a user who wishes to use the 
-\prognameAbbrv{} tool to determine the range of a specified mathematical 
-function. Since the initial development of the \prognameAbbrv{} tool will be 
-limited to arithmetic operators, this document includes information that will 
-be useful to a developer looking to expand the abilities of the 
-\prognameAbbrv{} with additional mathematical models such as trigonometry to 
-suit their project.
+tool and those who wish to refine and expand the tool. Even though the 
+\progname{} was created specifically to aid in the development of the GLaDOS 
+architecture, the user specified $f(X)$ does not have specific units. This 
+means that the tool can be used for any $f(X)$ as long as any applicable units 
+referred to in $X$ are comparable in a non-unitless context.
+
+Since the initial development of the \prognameAbbrv{} tool will be limited to 
+arithmetic operators, this document includes information that is useful to a 
+developer looking to expand the abilities of the \prognameAbbrv{} with 
+additional mathematical models to suit their project, such as those proposed in 
+\lcref{LC_trig} and \lcref{LC_infinity}. 
 
 \subsection{Scope of Requirements} 
-The \progname{} calculates the mathematical range of a user-defined function 
-using the defined variable domains for that function. In the cases where a 
-variable domain is not provided, it will be assumed that the range is 
-$(-\infty, \infty)$. For the initial version of this product, the mathematical 
-operations allowed in an function will be limited to the four arithmetic 
-operators ($+$, $-$, $\times$, $\div$, exponents). Future iterations can expand 
-this list to include trigonometric functions ($\sin$, $\cos$, $\tan$, $\arcsin$,
-$\arccos$, $\arctan$), partial functions, and other useful operations and 
-functions.
+The \prognameAbbrv{} calculates $R(f(X))$ of a user-defined $f(X)$ and $D(x), x 
+\in X$. Each $D(x)$ must be specified by the user in the initial version of 
+this tool, otherwise the unsupported interval $(-\infty, \infty)$ will be 
+assumed (\aref{A_domain}). 
+
+For the initial version of this product, the mathematical operations allowed in 
+an function will be limited to brackets ($()$) and the arithmetic operators 
+($+$, $-$, $\times$, $\div$, exponentiation). Future iterations can expand this 
+list to include trigonometric functions ($\sin$, $\cos$, $\tan$, $\arcsin$,
+$\arccos$, $\arctan$), partial functions, and other useful mathematical 
+constructs.
 
 The purpose of this product is to aid in the design and tuning of the GLaDOS 
-architecture, a specialized game engine enables game designers to create 
-Non-Player Characters (NPCs) that react to their environment by using models of 
-emotion from psychology. One module in the architecture converts information 
-from the environment into an internal representation that directs an NPC's 
-decision-making. This task requires the specification of numerical functions 
-with multiple variables which must be normalized to a range of $[-1,1]$. In 
-order to normalize the engine's calculation, the range of the function must be 
-known. Currently, the encoded functions are not well-informed by observation or 
-scientific research and must be subjected to an iterative process in order to 
-address this problem. An automated method of calculating the range of a 
-proposed function will make this process faster and less error-prone.
-
-Although this product is being designed for a specific project, the concepts 
-involved can be used in similar projects because it does not contain any 
-project-specific concepts or models.
+architecture, a specialized game engine enables game designers to create NPCs 
+that react to their environment by using models of emotion from psychology. One 
+module in the architecture converts information from the environment into an 
+internal representation that directs an NPC's decision-making. This task 
+requires the specification of several $f(X)$, each with a different $X$. Each 
+$f(X)$ must be normalized to a range of $[-1,1]$, which can only be 
+done if its $R(f(X))$ is known. The currently implemented $f(X)$ are not 
+well-informed by observation or scientific research and must be subjected to an 
+iterative process to address this problem. An automated method of calculating 
+$R(f(X))$ for a proposed $f(X)$ will make this process faster and less 
+error-prone. Although this product is being designed for a specific project, 
+the concepts involved can be used in similar projects because it does not 
+contain any GLaDOS-specific concepts or models.
 
 \subsection{Characteristics of Intended Reader}
 \label{intro_reader}
 The intended reader of this document must understand elementary algebra, 
 especially interval arithmetic, in the domain of real numbers 
-($\varmathbb{R}$). They must also have an understanding of domain and range 
-with respect to a function in order to understand the outputs of the product 
-and how it relates to its 
-inputs.
+($\varmathbb{R}$). An understanding of set notation is also required to 
+understand the models presented in this document. They must also have an 
+understanding of domain and range with respect to a function in order to 
+understand the outputs of the product 
+and how it relates to its inputs.
 
 \subsection{Organization of Document}
-This document begins by describing the general description of the \progname{} 
-tool (Section \ref{general}), which includes the system context, constraints, 
-and the intended users' characteristics. This is followed by a description of 
-the problem to be solved, including the models and assumptions that are used to 
-solve it (Section \ref{specific}). This description is followed by the 
-functional and non-functional requirements of the \prognameAbbrv{} tool 
-(Section \ref{requirements}) and the potential changes that will be made to 
-them in future iterations (Section \ref{changes}). The last section in this 
-document, traceability matrices and graphs, visually describes the dependencies 
-between different document components (Section \ref{trace}). This information 
-should be used by making changes to the decisions made for this version of the 
-tool.
+This document begins by describing the general description of the 
+\prognameAbbrv{} tool (Section \ref{general}), which includes the system 
+context, constraints, and the intended users' characteristics. This is followed 
+by a description of the problem to be solved, including the models and 
+assumptions that are used to address it (Section \ref{specific}). This 
+description is followed by the functional and non-functional requirements of 
+the \prognameAbbrv{} tool (Section \ref{requirements}) and suggested 
+refinements and expansions for future iterations (Section \ref{changes}). The 
+last section in this document, traceability matrices and graphs (Section 
+\ref{trace}), visually describes the dependencies between different document 
+components. This information can be referenced when making changes to the 
+tool's core specifications.
 
 \section{General System Description}
 \label{general}
 
 This section identifies the interfaces between the system and its environment,
-describes the user characteristics and lists the system constraints.
+describes the user characteristics, and lists the system constraints.
 
 \subsection{System Context}
 The \progname{} tool is a stand-alone application for calculating the range of 
