@@ -207,19 +207,8 @@ $\arccos$, $\arctan$), partial functions, and other useful mathematical
 constructs.
 
 The purpose of this product is to aid in the design and tuning of the GLaDOS 
-architecture, a specialized game engine enables game designers to create NPCs 
-that react to their environment by using models of emotion from psychology. One 
-module in the architecture converts information from the environment into an 
-internal representation that directs an NPC's decision-making. This task 
-requires the specification of several $f(X)$, each with a different $X$. Each 
-$f(X)$ must be normalized to a range of $[-1,1]$, which can only be 
-done if its $R(f(X))$ is known. The currently implemented $f(X)$ are not 
-well-informed by observation or scientific research and must be subjected to an 
-iterative process to address this problem. An automated method of calculating 
-$R(f(X))$ for a proposed $f(X)$ will make this process faster and less 
-error-prone. Although this product is being designed for a specific project, 
-the concepts involved can be used in similar projects because it does not 
-contain any GLaDOS-specific concepts or models.
+architecture (Section~\ref{Sec_pd}), but it can be used in similar projects 
+because it does not contain any GLaDOS-specific concepts or models.
 
 \subsection{Characteristics of Intended Reader}
 \label{intro_reader}
@@ -252,84 +241,77 @@ This section identifies the interfaces between the system and its environment,
 describes the user characteristics, and lists the system constraints.
 
 \subsection{System Context}
-The \progname{} tool is a stand-alone application for calculating the range of 
-a user-provided function given the known domains of the function's component 
-variables. Therefore it is independent and self-contained with respect to 
-external organizations, products, and technologies.
+The \prognameAbbrv{} tool is a stand-alone application for calculating 
+$R(f(X))$ for a user-defined $f(X)$ given the known $D(x), x\in X$. Therefore 
+it is independent and self-contained with respect to external organizations, 
+products, and technologies.
 
 The user interface of the \prognameAbbrv{} tool facilitates communication 
 between the product and the user, and must contain the ability to exchange user 
 inputs and system outputs. In general, the user is responsible for ensuring 
 that they have provided a semantically correct function and that their inputs 
-do not contain mathematical operations that are not implemented in the tool. 
-The \progname{} is responsible for providing an information exchange interface 
+do not contain unsupported mathematical operations or special functions. The 
+\prognameAbbrv{} is responsible for providing an information exchange interface 
 between itself and the user, performing mathematical calculations, and 
 detecting syntactic errors in the system inputs.
 
 \begin{itemize}
 	\item User Responsibilities:
 	\begin{itemize}
-		\item Provide an function from the domain of real numbers 
-		($\varmathbb{R}$) that only contains mathematical operations that are 
-		recognized by the system
-		\item Provide the mathematical domains of the function's variables if 
-		they are known
-		\item Ensure that the function given to the tool does not contain 
-		semantic errors
-		\item Ensure that the products outputs are semantically correct with 
-		respect to the target application
+		\item Provide $f(X)$ that only contains numerical values and supported 
+		mathematical operations and symbols
+		\item Provide $D(x), \forall x\in X$
+		\item Ensure that $f(X)$ does not contain semantic errors
+		\item Ensure that the \prognameAbbrv{} outputs are semantically correct 
+		with respect to the target application
 	\end{itemize}
-	\item \progname{} Responsibilities:
+	\item \prognameAbbrv{} Responsibilities:
 	\begin{itemize}
-		\item Allow the user to enter their function and known variable domains 
-		as system inputs
-		\item For variables with unknown domains, provide default values to be 
-		used in calculations
+		\item Allow the user to enter $f(X)$ and $D(x), \forall x\in X$	as 
+		system inputs
 		\item Detect data type mismatch, such as a string of characters instead 
 		of a floating point number
-		\item Detect bracket mismatches
-		\item Calculate and output the mathematical range corresponding to the 
-		user's inputs; if a result cannot be calculated, communicate this to 
-		the user
+		\item Detect bracket mismatches in $f(X)$
+		\item Calculate and output $R(f(X))$ using the user-provided $f(X)$ and 
+		$D(x), \forall x\in X$; if a result cannot be calculated, communicate 
+		this to the user
 	\end{itemize}
 \end{itemize}
 
 \subsection{User Characteristics} \label{SecUserCharacteristics}
-The end user of \progname{} is also the intended reader (Section 
+The end user of \prognameAbbrv{} is also the intended reader (Section 
 \ref{intro_reader}) of this document.
 
 \subsection{System Constraints}
 \label{sec_sysconstraints}
 The use of a Graphical User Interface (GUI) is useful for the \prognameAbbrv{} 
-tool because it can help the user visualize their function during design time 
-and debugging. This has implications on the types of languages that this tool 
-will be developed in and target platform choices. If a GUI is included in the 
-\prognameAbbrv{} design, only Windows platforms will be supported in the 
-initial release.
+tool because it can help the user visualize $f(X)$ during design time and 
+debugging. This has implications on the development languages and target 
+platform selections. If a GUI is included in the \prognameAbbrv{} design, only 
+Windows platforms will be supported in the initial release.
 
 \section{Specific System Description}
 \label{specific}
-This section first presents the problem description, which gives a high-level
-view of the motivation behind the \progname{}. This is followed by the solution 
-characteristics specification, presenting the assumptions, theories, 
-definitions, and instance models, which are grounded in interval arithmetic. 
+This section presents the problem description, which gives a high-level
+view of the motivation behind the \prognameAbbrv{} tool. This is followed by 
+the solution characteristics specification, presenting the assumptions, 
+theories, definitions, and instance models. The solution characteristics are 
+based in interval arithmetic and presented using set notation. 
 
-\subsection{Problem Description} \label{Sec_pd}
-The GLaDOS architecture is a specialized game engine that enables game 
-designers to create Non-Player Characters (NPCs) that react to their 
-environment by using models of emotion from psychology. A key component of the 
-architecture is the primary appraisal module, where inputs from the environment 
-are converted into emotion values. The functions currently used for this task 
-are not well informed by any scientific research, and will be incrementally 
-revised as more information is collected. These new functions are required to 
-conform to the same mathematical range as the currently implemented functions. 
-Ensuring that this requirement is maintained over consecutive iterations of the 
-functions will become tedious and time consuming, distracting from the main 
-task of developing more rigorous and explainable emotion functions.
-
-The \progname{} is a tool for calculating the range of a mathematical function 
-based on its input variables, which will help make the function design process 
-faster and less error-prone when compared to doing it by hand.
+\subsection{Problem Description} 
+\label{Sec_pd}
+The purpose of this product is to aid in the design and tuning of the GLaDOS 
+architecture, a specialized game engine enables game designers to create NPCs 
+that react to their environment by using models of emotion from psychology. One 
+module in the architecture converts information from the environment into an 
+internal representation that directs an NPC's decision-making. This task 
+requires the specification of several $f(X)$, each with a different $X$. Each 
+$f(X)$ must be normalized to a range of $[-1,1]$, which can only be 
+done if its $R(f(X))$ is known. The currently implemented $f(X)$ are not 
+well-informed by observation or scientific research and must be subjected to an 
+iterative process to address this problem. An automated method of calculating 
+$R(f(X))$ for a proposed $f(X)$ will make this process faster and less 
+error-prone.
 
 \subsubsection{Terminology and  Definitions}
 
@@ -344,30 +326,32 @@ expressed $[a,b]$
 \item Closed interval method: A mathematical method for determining the local 
 maximum and minimum values of a function $f(x)$ using a closed domain interval 
 $[a,b]$
-\item Connected set: a set of values that does not contain any disjoint members
-\item Domain ($D(x)$): the set of values for a variable $x$ that are valid in 
-$f(X)$
-\item Extended real interval: the set of all real numbers that also contains 
+\item Connected set: A set of values that does not contain any disjoint members
+\item Domain: A set of values for a variable $x$ that are valid in $f(X)$
+\item Extended real interval: The set of all $\varmathbb{R}$ that also contains 
 $\pm \infty$
+\item Monotonic function: A function whose first derivative does not change its 
+mathematical sign
 \item Open interval: A bounded set of values that does not contain its end 
 points; this is expressed $(a,b)$
 \item Order of Operations: Describes the precedence of mathematical operations 
 when solving an equation (Brackets, Exponents, Division/Multiplication, 
-Addition/Subtraction)
-\item Range ($R(f(X))$): the set of values that are produced by a function 
-$f(X)$ with a set of input variables $X$
-\item Real interval: a closed, connected set of real numbers
+Addition/Subtraction [BEDMAS])
+\item Range: The set of values that are produced by a function $f(X)$ with a 
+set of input variables $X$
+\item Real interval: A closed, connected set of real numbers
 
 \end{itemize}
 
 \subsubsection{Physical System Description}
 
-The \progname{} tool does not have a physical system component because it 
+The \prognameAbbrv{} tool does not have a physical system component because it 
 exists independently of the context of $f(X)$. 
 
 \subsubsection{Goal Statements}
 
-\noindent Given an function and a set of variables, the goal statements are:
+\noindent Given $f(X)$ and $D(x), x \in X$, the goal of the \prognameAbbrv{} 
+tool is:
 
 \begin{itemize}
 
@@ -380,40 +364,42 @@ Calculate $R(f(X))$.
 \end{itemize}
 
 \subsection{Solution Characteristics Specification}
-The instance models that govern \progname{} are presented in
-Subsection~\ref{sec_instance}. The information to understand the meaning of the
-instance models and their derivation is also presented, so that the instance
-models can be verified.
+The instance models that govern \prognameAbbrv{} tool are presented in
+Subsection~\ref{sec_instance}. The information required to understand the 
+meaning of the instance models and their derivation is also presented, so that 
+the instance models can be verified.
 
 \subsubsection{Assumptions}
-This section simplifies the original problem and helps in developing the
-theoretical model by filling in the missing information for the physical
-system. The numbers given in the square brackets refer to the theoretical model
-[T], general definition [GD], data definition [DD], instance model [IM], or
-likely change [LC], in which the respective assumption is used.
+This section reduces the scope the original problem to help specify the 
+theoretical models (Section~\ref{sec_theoretical}). The numbers given in the 
+square brackets refer to the theoretical model [T], general definition [GD], 
+data definition [DD], instance model [IM], or likely change [LC], in which the 
+respective assumption is used.
 
 \begin{itemize}
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_domain}:] $D(x)$ is a 
-closed, real interval. 
+closed, real interval [\ddref{DD_interval}, \lcref{LC_openinterval}, 
+\lcref{LC_unknownDomain}, \lcref{LC_trig}, \lcref{LC_infinity}]. 
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_interval}:] $R(f(X))$ 
-is a closed, real interval.
+is a closed, real interval [\ddref{DD_interval}, \lcref{LC_openinterval}, 
+\lcref{LC_unknownDomain}, \lcref{LC_infinity}].
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_operators}:] The 
 mathematical operators used in $f(X)$ can be found in the set $\{+, -, 
-\times, \div, b^x, x^n \}$.
+\times, \div, b^x, x^n \}$ [\lcref{LC_infinity}].
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_commonfunctions}:] 
 Special mathematical functions (e.g. $\sin(x)$, $\cos(x)$, $\log(x)$, ...) are 
-not in $f(X)$.
+not in $f(X)$ [\lcref{LC_unknownDomain}, \lcref{LC_infinity}].
 
 \end{itemize}
 
 \subsubsection{Theoretical Models}\label{sec_theoretical}
 
 This section focuses on the general equations and laws from interval arithmetic 
-that the \progname{} is based on. The models presented here are for real 
+that the \prognameAbbrv{} is based on. The models presented here are for real 
 intervals, which can be constrained to closed, real intervals using 
 \ddref{DD_interval} to satisfy \aref{A_domain} and \aref{A_interval}. 
 Additional models exist for interval arithmetic, but only the models named in 
@@ -513,8 +499,8 @@ Additional models exist for interval arithmetic, but only the models named in
 		\hline
 		Description & The quotient interval of two real intervals $X$ and $Y$ 
 		is equal to the set of quotients for each pairwise element $x$ and $y$ 
-		where $y \neq 0$. If $0 \in Y$, the quotient is not a real interval 
-		which contradicts \aref{A_interval}.\\
+		where $y \neq 0$. If $0 \in Y$, the quotient itself might not be an 
+		interval.\\
 		\hline
 		Source & \citet{intervalarithmetic}\\
 		\hline
@@ -610,10 +596,10 @@ No additional information is required to build the data definitions.
 \subsubsection{Data Definitions}\label{sec_datadef}
 
 This section collects and defines all the data needed to build the instance
-models. No dimensions are required because the tasks performed by \progname{} 
-are unitless. These definitions are used to constrain the theoretical models to 
-such that thay can be translated into instance models on closed, real intervals 
-to satisfy \aref{A_domain} and \aref{A_interval}.
+models. No dimensions are required because the tasks performed by 
+\prognameAbbrv{} are unitless. These definitions are used to constrain the 
+theoretical models so that they can be translated into instance models on 
+closed, real intervals to satisfy \aref{A_domain} and \aref{A_interval}.
 
 ~\newline
 
@@ -653,17 +639,15 @@ Symbol &$[x, y]$\\
 This section transforms the problem defined in Section~\ref{Sec_pd} into 
 one which is expressed in mathematical terms. It uses concrete symbols defined 
 in Section~\ref{sec_datadef} to replace the abstract symbols in the models 
-identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
+identified in \ref{sec_theoretical}.
 
-The goal \gsref{G_range} is solved by recursively combining instance models 
+The goal \gsref{G_range} is solved by recursively solving instance models 
 \iref{I_addition}, \iref{I_subtraction}, \iref{I_multiplication}, 
 \iref{I_positivedivision}, \iref{I_negativedivision}, \iref{I_exponents}, and 
-\iref{I_expbase}. For example, if 
-the user provided an equation of the form $a + b \times c$, it is decomposed 
-into $a + B$ where $B = b \times c$. This approach is identical to a 
-hand-written evaluation because a mechanized approach must explicitly state the 
-intermediary steps, which are commonly omitted by humans, in order to complete 
-the computational task. 
+\iref{I_expbase} and combining the results. For example, if the user provided 
+an equation of the form $a + b \times c$, it is decomposed into $a + B$ where 
+$B = b \times c$. This approach is identical to a hand-written evaluation where 
+the intermediary decomposition stages are commonly omitted by humans. 
 
 These models can also be used as a specification for the closed interval method 
 because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
@@ -686,8 +670,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
   &$x_{sum} = x_{1} + x_{2}$, $y_{sum} = y_{1} + y_{2}$,\\
   &$[x_{sum}, y_{sum}]$ is a closed, real interval (\aref{A_interval}) \\
   \hline
-  Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of two 
-  variables in the user's input function $f(X)$.\\
+  Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(x)$ for two 
+  $x \in X$ in the user's input function $f(X)$.\\
   &The combined boundary values $x_{sum}$ and  $y_{sum}$ are determined 
   using basic arithmetic addition.\\
   & The result, $[x_{sum}, y_{sum}]$, is guaranteed to be a closed, real 
@@ -720,8 +704,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		&$x_{sub} = x_{1} - x_{2}$, $y_{sub} = y_{1} - y_{2}$,\\
 		&$[x_{sub}, y_{sub}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of 
-		two variables in the user's input function $f(X)$. \\
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the the $D(x)$ 
+		for two $x \in X$ in the user's input function $f(X)$. \\
 		&The combined boundary values $x_{sub}$ and  $y_{sub}$ are determined 
 		using basic arithmetic subtraction.\\
 		& The result, $[x_{sub}, y_{sub}]$, is guaranteed to be a closed, real 
@@ -755,8 +739,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		x_{2}, x_{1} \times y_{2}, y_{1} \times x_{2}, y_{1} \times y_{2}\}$\\
 		&$[x_{mul}, y_{mul}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of 
-		two variables in the user's input function $f(X)$. \\
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(x)$ for 
+		two $x \in X$ in the user's input function $f(X)$. \\
 		&The combined boundary value $x_{mul}$ is determined by taking the 
 		minimum of all possible products calculated from the sets $[x_{1}, 
 		y_{1}]$ and $[x_{2}, y_{2}]$, where $[x_{1}, y_{1}]$ is the 
@@ -811,8 +795,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\end{center} \\
 		&$[x_{div}, y_{div}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of 
-		two variables in the user's input function $f(X)$. \\
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(x)$ for 
+		two $x \in X$ in the user's input function $f(X)$. \\
 		&The boundary values $x_{div}$ and  $y_{div}$ are determined by the 
 		monotonicity of the interval represented by $[x_{1}, y_{1}]$ and 
 		whether or not that interval contains $0$.\\
@@ -862,8 +846,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\end{center} \\
 		&$[x_{div}, y_{div}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the domains of 
-		two variables in the user's input function $f(X)$. \\
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(x)$ for 
+		two $x \in X$ in the user's input function $f(X)$. \\
 		&The boundary values $x_{div}$ and  $y_{div}$ are determined by the 
 		monotonicity of the interval represented by $[x_{1}, y_{1}]$ and 
 		whether or not that interval contains $0$.\\
@@ -897,7 +881,7 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		&$x_{exp} = b^x$, $y_{exp} = b^y$\\
 		&$[x_{exp}, y_{exp}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x, y]$ is the domain of one variable in the user's input 
+		Description&$[x, y]$ is the $D(x)$ for a $x \in X$ in the user's input 
 		function $f(X)$ which is used as an exponent on a constant base number 
 		$b$. \\
 		&The combined boundary values $x_{exp}$ and  $y_{exp}$ are determined 
@@ -941,7 +925,7 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\end{center}\\
 		&$[x_{pow}, y_{pow}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x, y]$ is the domain of one variable in the user's input 
+		Description&$[x, y]$ is the $D(x)$ for a $x \in X$ in the user's input 
 		function $f(X)$ raised to a constant power $n$. \\
 		&The combined boundary values $x_{pow}$ and $y_{pow}$ are determined 
 		by the divisibility of $n$ by two and the monotonicity of $[x,y]$:
@@ -998,9 +982,8 @@ constraint:
 \noindent
 The interval of $R(f(X))$ produced by the \prognameAbbrv{} tool must exhibit 
 the properties of a closed, real interval (\aref{A_interval}). This can be 
-verified mathematically by checking if $R(f(X)) = [a,b]$ satisfies $\forall x 
-\in \varmathbb{R} | a \leq x \leq 
-b$.
+verified mathematically by checking if $R(f(X)) = [a,b]$ satisfies $\{\forall x 
+\in \varmathbb{R} | a \leq x \leq b\}$.
 
 
 \section{Requirements}
