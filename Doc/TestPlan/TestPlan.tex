@@ -1,23 +1,33 @@
 \documentclass[12pt, titlepage]{article}
 
+\usepackage{amsmath, mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{txfonts}
+\usepackage[nocenter]{qtree}
+
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks,
-    citecolor=black,
-    filecolor=black,
-    linkcolor=red,
-    urlcolor=blue
+    citecolor=ForestGreen,
+    filecolor=WildStrawberry,
+    linkcolor=Purple,
+    urlcolor=Cerulean
 }
 \usepackage[round]{natbib}
 
 \input{../Comments}
 
+\newcommand{\progname}{Companion Cube Calculator} % PUT YOUR PROGRAM NAME HERE
+\newcommand{\prognameAbbrv}{$C^{3}$}
+
 \begin{document}
 
-\title{Project Title} 
-\author{Author Name}
+\title{Test Plan for the \progname{} (\prognameAbbrv{}) Tool} 
+\author{Geneva Smith}
 \date{\today}
 	
 \maketitle
@@ -29,8 +39,7 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+ & 1.0 & Initial draft completed\\
 \bottomrule
 \end{tabularx}
 
@@ -43,6 +52,7 @@ Date 2 & 1.1 & Notes\\
   \toprule		
   \textbf{symbol} & \textbf{description}\\
   \midrule 
+  SRS & Software Requirements Specification\\
   T & Test\\
   \bottomrule
 \end{tabular}\\
@@ -77,7 +87,7 @@ This document ...
 
 \subsection{Test Team}
 
-\wss{Probably just you.  :-)}
+The test team assigned to implement this plan is Geneva Smith.
 
 \subsection{Automated Testing Approach}
 
@@ -97,46 +107,201 @@ This document ...
   execution etc.  Enter not applicable if that is the case.}
 
 \section{System Test Description}
+The system testing of the \prognameAbbrv{} tool will focus on inspecting and 
+conditioning user inputs and ensuring that the \prognameAbbrv{} tool is able to 
+produce descriptive outputs for both valid and invalid inputs. 
+
+The goal of user input inspection and conditioning tests is to be sure that the 
+\prognameAbbrv{} tool is able to identify and reject values that violate the 
+assumptions. If the tool determines that the values do not violate the 
+assumptions, it should be able to convert those values into the internal 
+representations identified in the SRS document. For the purposes of this test 
+plan, it is assumed that the user function $f(X)$ is represented internally as 
+a parse tree.
+
+Even if the user inputs are validated and conditioned correctly, it is still 
+possible for the \prognameAbbrv{} tool to encounter invalid operations in an 
+intermediary step while calculating a result. This makes it necessary to create 
+a series of tests to determine how the tool will react to both supported and 
+unsupported operations.
 	
 \subsection{Tests for Functional Requirements}
 
-\subsubsection{Area of Testing1}
+\subsubsection{Getting User Inputs}
+This test suite is designed to determine if the \ref{R_Inputs} functional 
+requirement is satisfied.
+
+\paragraph{User Inputs (As Expected)}
+
+\begin{enumerate}
+	
+	\item{test-directinput}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x + y, x = [2,4], y = [2,4]$
+	
+	Output: Input received from direct input
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-fileinput}
+
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: File containing: $f(X) = x + y, x = [2,4], y = [2,4]$
+	
+	Output: Input received from file
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-badFileInput}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: File that cannot be read
+	
+	Output: Error -- File cannot be read
+	
+	How test will be performed: Unit Test\\
+\end{enumerate}
+	
+\paragraph{User Inputs (Function is a Constant Value)}
+
+\begin{enumerate}	
+	\item{test-input\_functionAsConstant}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = 34$
+	
+	Output: N/A
+	
+	How test will be performed: Unit Test\\
+\end{enumerate}
+	
+\paragraph{User Inputs (Extraneous Information)}
+	
+\begin{enumerate}
+	\item{test-input\_variableNotInFunction}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = 34$, $x = [2,4]$
+	
+	Output: Warning -- Function $f(X)$ does not contain name $x$ found in 
+	variable list
+	
+	How test will be performed: Unit Test\\
+	
+\end{enumerate}
 		
-\paragraph{Title for Test}
+\paragraph{User Inputs (Missing Values)}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{test-input\_noFunction}
 
-Type: Functional, Dynamic, Manual, Static etc.
-					
-Initial State: 
-					
-Input: 
-					
-Output: 
-					
-How test will be performed: 
-					
-\item{test-id2\\}
+Type: Functional
 
-Type: Functional, Dynamic, Manual, Static etc.
+Initial State: New Session
+
+Input: $x = [2,4], y = [2,4]$
+
+Output: Error -- Could not find function $f(X)$ with variables $x, y$
+
+How test will be performed: Unit Test\\
+
+\item{test-input\_noDomain}
+
+Type: Functional
 					
-Initial State: 
+Initial State: New Session
 					
-Input: 
+Input: $f(X) = x + y$, $x = [2,4]$
 					
-Output: 
+Output: Error -- No domain for variable $y$
 					
-How test will be performed: 
+How test will be performed: Unit Test\\
 
 \end{enumerate}
 
-\subsubsection{Area of Testing2}
+\paragraph{User Inputs (Incomplete Values)}
 
-...
+\begin{enumerate}
+	
+	\item{test-input\_missingFunctionValue}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x +$, $x = [2,4], y = [3,5]$
+	
+	Output: Error -- Function $f(X)$ is missing an operand for $+$
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-input\_missingMinDomainValue}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x + y$, $x = [,4], y = [3,5]$
+	
+	Output: Error -- Missing min domain value for $x$
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-input\_missingMaxDomainValue}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $\{f(X) = x + y, x = [2,4], y = [3,]\}$, $\{f(X) = x + y, x = 
+	[2,4], y = [3]\}$
+	
+	Output: Error -- Missing max domain value for $y$
+	
+	How test will be performed: Unit Test
+	
+\end{enumerate}
 
-\subsection{Tests for Nonfunctional Requirements}
+\subsubsection{Conditioning User Inputs}
+This test suite is designed to determine if the \ref{R_conditionX} and 
+\ref{R_conditionfx} functional requirements are satisfied.
+
+\paragraph{User Inputs (Single Operators)}
+
+\begin{enumerate}
+	
+	\item{test-directinput\_addition\\}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x + y$, $x = [2,4], y = [3,5]$
+	
+	Output: \Tree[.$+$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
+	
+	How test will be performed: Unit Testing
+	
+\end{enumerate}
+
+\subsection{Tests for Non-Functional Requirements}
 
 \subsubsection{Area of Testing1}
 		
