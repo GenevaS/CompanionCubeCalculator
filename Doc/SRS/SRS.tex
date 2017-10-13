@@ -16,7 +16,7 @@
 \usepackage{caption}
 \usepackage{pdflscape}
 \usepackage{afterpage}
-\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage[usenames,dvipsnames,table]{xcolor}
 \usepackage{txfonts}
 
 \usepackage[round]{natbib}
@@ -82,6 +82,9 @@
 
 \begin{document}
 
+\wss{To get your SRS to compile, I had to delete svgnames from the xcolor
+  options}
+
 \title{Companion Cube Calculator} 
 \author{Geneva Smith}
 \date{\today}
@@ -136,6 +139,9 @@ $X$ & Set of variables $x$\\
 $Y$ & Set of variables $Y$\\
 \bottomrule
 \end{longtable*}
+
+\wss{Type information would make your SRS easier to understand.  That is, giving
+the type of $X$, $f(X)$ etc.  The type of $x$ is really unclear.  Is it reals?}
 
 \subsection{Abbreviations and Acronyms}
 
@@ -198,7 +204,9 @@ additional mathematical models to suit their project, such as those proposed in
 The \prognameAbbrv{} calculates $R(f(X))$ of a user-defined $f(X)$ and $D(x), x 
 \in X$. Each $D(x)$ must be specified by the user in the initial version of 
 this tool, otherwise the unsupported interval $(-\infty, \infty)$ will be 
-assumed (\aref{A_domain}). 
+assumed (\aref{A_domain}).  \wss{This is confusing.  I would guess if the
+  assumption were violated that the program would not calculate a result, but
+  you seem to be suggesting otherwise.}
 
 For the initial version of this product, the mathematical operations allowed in 
 an function will be limited to brackets ($()$) and the arithmetic operators 
@@ -365,6 +373,10 @@ Calculate $R(f(X))$.
 %\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_unknownDomain}:] 
 %Determine $D(x)$ for any $x \in X$ if it is not part of the input set.
 
+\wss{Your goal statement is more mathematical than usual.  It is nice if the
+  goal statement can be written with a minimal amount of mathematical notation,
+  so that as large an audience as possible can understand it.}
+
 \end{itemize}
 
 \subsection{Solution Characteristics Specification}
@@ -399,6 +411,17 @@ Special mathematical functions (e.g. $\sin(x)$, $\cos(x)$, $\log(x)$, ...) are
 not in $f(X)$ [\lcref{LC_unknownDomain}, \lcref{LC_infinity}].
 
 \end{itemize}
+
+\wss{The notation selected for representing variables and sets is confusing.  At
+  first, I thought that $x$ was an element of the interval $X$, but it turns out
+  that $x$ is a variable and $X$ is a set of variables.  Each of the variables
+  has a function $D$ defined that returns its domain.  It would be more direct
+  to say that $f$ is a function of sequence of intervals and introduce a type of
+  intervals.  Slides 11 and 13 of
+  \url{http://homes.esat.kuleuven.be/~optec/events/20090622_kozma.pdf} seems
+  like a good place for inspiration.  This is also why I suggested  using types
+  in the table of symbols.  Type information would also help with your theories,
+  data definitions and instance models.}
 
 \subsubsection{Theoretical Models}\label{sec_theoretical}
 
@@ -513,6 +536,10 @@ Additional models exist for interval arithmetic, but only the models named in
 	\end{tabular}
 \end{minipage}\\
 
+\wss{T1 to T4 are very similar.  You could consider combining them and
+  abstracting out the binary operator.  You could add a constraint for the case
+  where the binary operator is division.}
+
 ~\newline
 
 \noindent
@@ -591,6 +618,10 @@ Additional models exist for interval arithmetic, but only the models named in
 		\hline
 	\end{tabular}
 \end{minipage}\\
+
+\wss{This does not make sense to me.  It does not match what I see at the
+  wikipedia page.  Is $X$ an interval, or is $X$ a set of intervals, or is $X$ a
+  set of variables?  What is the subscript $z$?}
 
 ~\newline
 
@@ -958,6 +989,14 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 	\end{tabular}
 \end{minipage}\\
 
+\wss{You don't actually have an instance model to calculate the range of $f$.
+  Something like slide 13 of the previously mentioned slides might be appropriate?}
+
+\wss{You haven't mentioned directed rounding.  Is that relevant for your
+  problem.  Of course it isn't a concern for real numbers and exact arithmetic,
+  but mentioning the assumed differences from floating point arithmetic makes
+  sense to me.}
+
 \subsubsection{Data Constraints} \label{sec_DataConstraints}  
 The inputs to the \prognameAbbrv{} tool are subject to the following data 
 constraints:
@@ -1038,6 +1077,15 @@ output data constraints from \ref{sec_DataConstraints}.
 not possible, communicate the reason to the user.
 
 \end{itemize}
+
+\wss{It isn't clear how $D(x)$ will be entered.  Why not have your input just be
+  the input variables of type interval.  The way you have written it, it appears
+  that there are variables $x$ and a function that returns the domain of a given
+  $x$.  If all you are looking for is upper and lower bounds for each variable,
+  that would be easy to say.  You talk about converting to interval form in R2,
+  so maybe I'm missing something.  Either way, it is confusing.  R8 is
+  ambiguous.  Why wouldn't it be possible to verify $R$.  What are the potential
+reasons that would be communicated to the user?}
 
 \subsection{Non-Functional Requirements}
 
