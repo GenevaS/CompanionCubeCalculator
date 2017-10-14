@@ -327,11 +327,11 @@ How test will be performed: Unit Test\\
 This test suite is designed to determine if the \ref{R_conditionX} and 
 \ref{R_conditionfx} functional requirements are satisfied.
 
-\paragraph{User Inputs (Single Operators)}
+\paragraph{Parsing User Inputs (Single Operators)}
 
 \begin{enumerate}
 	
-	\item{test-directinput\_addition\\}
+	\item{test-parse\_addition\\}
 	
 	Type: Functional
 	
@@ -340,6 +340,66 @@ This test suite is designed to determine if the \ref{R_conditionX} and
 	Input: $f(X) = x + y$, $x = [2,4], y = [3,5]$
 	
 	Output: \Tree[.$+$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
+	
+	How test will be performed: Unit Testing
+	
+	\item{test-parse\_subtraction\\}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x - y$, $x = [2,4], y = [3,5]$
+	
+	Output: \Tree[.$-$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
+	
+	How test will be performed: Unit Testing
+	
+	\item{test-parse\_multiplication\\}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x \times y$, $x = [2,4], y = [3,5]$
+	
+	Output: \Tree[.$\times$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
+	
+	How test will be performed: Unit Testing
+	
+	\item{test-parse\_division\\}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x \div y$, $x = [2,4], y = [3,5]$
+	
+	Output: \Tree[.$\div$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
+	
+	How test will be performed: Unit Testing
+	
+	\item{test-parse\_divisionMixedInterval\\}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x + y$, $x = [2,4], y = [-3,5]$
+	
+	Output: Error -- Cannot perform division with a mixed interval divisor
+	
+	How test will be performed: Unit Testing
+	
+	\item{test-parse\_intervalAsExponents\\}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = 2^x$, $x = [2,4]$
+	
+	Output: %\Tree[.$\^$ [.$2$ ] [.$x$ $[2,4]$ ] ]
 	
 	How test will be performed: Unit Testing
 	
