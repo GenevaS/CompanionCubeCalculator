@@ -82,29 +82,29 @@
 
 \begin{document}
 
-\wss{To get your SRS to compile, I had to delete svgnames from the xcolor
-  options}
-
 \title{Companion Cube Calculator} 
 \author{Geneva Smith}
 \date{\today}
 	
 \maketitle
 
-\pagenumbering{roman}
-\tableofcontents
+~\newpage
 
-\begin{table}[bp]
-\caption{\bf Revision History}
+\pagenumbering{roman}
+
+\section{Revision History}
+
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
+October 14, 2017 & 1.0.1 & Added type information to the Table of Units; 
+updated document template \\
 October 4, 2017 & 1.0 & Completed the initial SRS documentation\\
 \bottomrule
 \end{tabularx}
-\end{table}
 
-\newpage
+~\newpage
+
 \section{Reference Material}
 
 This section records information for easy reference.
@@ -121,22 +121,30 @@ sets, and intervals. The symbols are listed in alphabetical order.
 
 \renewcommand{\arraystretch}{1.2}
 %\noindent \begin{tabularx}{1.0\textwidth}{l l X}
-\noindent \begin{longtable*}{m{1.5cm} m{12cm}} \toprule
-\textbf{Symbol}  & \textbf{Description}\\
+\noindent \begin{longtable*}{m{1.5cm} m{5.3cm} m{8.2cm}} \toprule
+\textbf{Symbol}  & \textbf{Type} & \textbf{Description}\\
 \midrule 
-$[a,b]$ & Closed interval with endpoints $a$ and $b$\\
-$(a,b)$ & Open interval with endpoints $a$ and $b$\\
-$b$  & Base number; used to represent exponential functions (e.g. $b^2$)\\
-$D(x)$  & Domain of $x$\\
-$f(X)$  & A function of a variable set $X$\\
-$M$ & A temporary variable for aiding in the readability of equations\\
-$\varmathbb{N}$  & The set of natural numbers; assumes that $0$ is included 
+$[a,b]$ & $[\varmathbb{R}, \varmathbb{R}]$ & Closed interval with endpoints $a$ 
+and $b$\\
+$(a,b)$ & $(\varmathbb{R}, \varmathbb{R})$ & Open interval with endpoints $a$ 
+and $b$\\
+$b$ & $\varmathbb{R}$ & Base number; used to represent 
+exponential functions (e.g. $b^2$)\\
+$D(x)$ & $[\varmathbb{R}, \varmathbb{R}]$ & Closed domain of a variable $x$\\
+$f(X)$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
+\varmathbb{R}]_n\} \rightarrow [\varmathbb{R}, 
+\varmathbb{R}]$ & A function of $X$ that produces a closed interval\\
+$M$ & - & A temporary variable for aiding in the readability of equations\\
+$\varmathbb{N}$ & - & The set of natural numbers; assumes that $0$ is included 
 in this specification\\
-$\varmathbb{R}$  & The set of real numbers\\
-$R(f(X))$  & Range of $f(X)$\\
-$n$  & Power; used to represent exponential functions (e.g. $2^n$) \\
-$X$ & Set of variables $x$\\
-$Y$ & Set of variables $Y$\\
+$\varmathbb{R}$ & - & The set of real numbers\\
+$R(f(X))$ & $[\varmathbb{R}, \varmathbb{R}]$ & Closed range of $f(X)$\\
+$n$ & $\varmathbb{N}$ & Power; used to represent exponential functions (e.g. 
+$2^n$) \\
+$X$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
+\varmathbb{R}]_n\}$ & Set of $D(x)$ for variables $x$\\
+$Y$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
+\varmathbb{R}]_n\}$ & Set of $D(y)$ for variables $y$\\
 \bottomrule
 \end{longtable*}
 
@@ -168,6 +176,11 @@ the type of $X$, $f(X)$ etc.  The type of $x$ is really unclear.  Is it reals?}
 \end{tabular}
 
 \newpage
+
+\tableofcontents
+
+~\newpage
+
 \pagenumbering{arabic}
 
 \section{Introduction}
