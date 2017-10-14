@@ -266,18 +266,6 @@ Output: Error -- Could not find function $f(X)$ with variables $x, y$
 
 How test will be performed: Unit Test\\
 
-\item{test-input\_noDomain}
-
-Type: Functional
-					
-Initial State: New Session
-					
-Input: $f(X) = x + y$, $x = [2,4]$
-					
-Output: Error -- No domain for variable $y$
-					
-How test will be performed: Unit Test\\
-
 \end{enumerate}
 
 \paragraph{User Inputs (Incomplete Values)}
@@ -323,6 +311,24 @@ How test will be performed: Unit Test\\
 	
 \end{enumerate}
 
+\paragraph{User Inputs (Non-Numerical Value in Domains)}
+
+\begin{enumerate}
+	
+	\item{test-input\_nonNumberInDomain}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x + y$, $x = [2,4], y = [a,5]$
+	
+	Output: Error -- Non-numerical value found in the domain for variable $y$
+	
+	How test will be performed: Unit Test\\
+	
+\end{enumerate}
+
 \subsubsection{Conditioning User Inputs}
 This test suite is designed to determine if the \ref{R_conditionX} and 
 \ref{R_conditionfx} functional requirements are satisfied.
@@ -331,7 +337,7 @@ This test suite is designed to determine if the \ref{R_conditionX} and
 
 \begin{enumerate}
 	
-	\item{test-parse\_addition\\}
+	\item{test-parse\_addition}
 	
 	Type: Functional
 	
@@ -341,9 +347,9 @@ This test suite is designed to determine if the \ref{R_conditionX} and
 	
 	Output: \Tree[.$+$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_subtraction\\}
+	\item{test-parse\_subtraction}
 	
 	Type: Functional
 	
@@ -353,9 +359,9 @@ This test suite is designed to determine if the \ref{R_conditionX} and
 	
 	Output: \Tree[.$-$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_multiplication\\}
+	\item{test-parse\_multiplication}
 	
 	Type: Functional
 	
@@ -365,9 +371,9 @@ This test suite is designed to determine if the \ref{R_conditionX} and
 	
 	Output: \Tree[.$\times$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_division\\}
+	\item{test-parse\_division}
 	
 	Type: Functional
 	
@@ -377,21 +383,33 @@ This test suite is designed to determine if the \ref{R_conditionX} and
 	
 	Output: \Tree[.$\div$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_divisionMixedInterval\\}
+	\item{test-parse\_divisionMixedIntervalQuotient}
 	
 	Type: Functional
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x + y$, $x = [2,4], y = [-3,5]$
+	Input: $f(X) = x \div y$, $x = [-2,4], y = [3,5]$
+	
+	Output: \Tree[.$\div$ [.$x$ $[-2,4]$ ] [.$y$ $[3,5]$ ] ]
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_divisionMixedIntervalDivisor}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x \div y$, $x = [2,4], y = [-3,5]$
 	
 	Output: Error -- Cannot perform division with a mixed interval divisor
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_intervalAsExponents\\}
+	\item{test-parse\_intervalAsExponents}
 	
 	Type: Functional
 	
@@ -399,9 +417,127 @@ This test suite is designed to determine if the \ref{R_conditionX} and
 	
 	Input: $f(X) = 2^x$, $x = [2,4]$
 	
-	Output: %\Tree[.$\^$ [.$2$ ] [.$x$ $[2,4]$ ] ]
+	Output: \Tree[.\^{} [.$2$ ] [.$x$ $[2,4]$ ] ]
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_intervalWithExponent}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x^2$, $x = [2,4]$
+	
+	Output: \Tree[.\^{} [.$x$ $[2,4]$ ] [.$2$ ]  ]
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_intervalsOnlyExponentiation}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x^y$, $x = [2,4], y = [3,5]$
+	
+	Output: Error -- Cannot perform exponentiation when the base number and the 
+	exponent are intervals
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_multipleOperatorsInFX}
+	
+	Type: Static
+	
+	Initial State: New Session
+	
+	Input: $R(f(X)) = R(f_1(X)) <op> R(f_2(X))$, where $R(f_1(X)), R(f_2(X))$ 
+	exist
+	
+	Output: True
+	
+	How test will be performed: Induction\\
+	
+	\item{test-parse\_multipleOperatorsInFX}
+	
+	Type: Static
+	
+	Initial State: New Session
+	
+	Input: $R(f(X)) = R(f_1(X)) <op> R(f_2(X))$, where $R(f_1(X))$ or 
+	$R(f_2(X))$ do not exist
+	
+	Output: Error -- Calculation path encountered an unsupported interval 
+	operation
+	
+	How test will be performed: Induction\\
+	
+\end{enumerate}
+
+\subsubsection{Verifying Data Constraints}
+This test suite is designed to determine if the \ref{R_verifyinputs} functional 
+requirement is satisfied.
+
+\paragraph{Domain Constraints}
+
+\begin{enumerate}
+	
+	\item{test-input\_noDomain}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x + y$, $x = [2,4]$
+	
+	Output: Error -- No domain for variable $y$
+	
+	How test will be performed: Unit Test\\
+\end{enumerate}
+
+\paragraph{Exponentiation Constraints}
+
+\begin{enumerate}	
+	\item{test-parse\_intervalAsExponentsInvalidBase}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = 1^x$, $x = [2,4]$
+	
+	Output: Error -- Cannot perform operation with an interval exponent when 
+	the base number ($b$) $\leq 1$
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_intervalWithInvalidExponent1}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x^{2.1}$, $x = [2,4]$
+	
+	Output: Warning -- Cannot perform operation with an exponent that is not a 
+	whole number; the exponent has been rounded to 2\\
+	\Tree[.\^{} [.$x$ $[2,4]$ ] [.$2$ ]  ]
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_intervalWithInvalidExponent2}
+	
+	Type: Functional
+	
+	Initial State: New Session
+	
+	Input: $f(X) = x^{-1}$, $x = [2,4]$
+	
+	Output: Error -- Cannot perform operation exponentiation with an exponent 
+	$< 0$
+	
+	How test will be performed: Unit Testing\\
 	
 \end{enumerate}
 
