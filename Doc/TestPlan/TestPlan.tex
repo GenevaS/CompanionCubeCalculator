@@ -23,6 +23,7 @@
 
 \newcommand{\progname}{Companion Cube Calculator} % PUT YOUR PROGRAM NAME HERE
 \newcommand{\prognameAbbrv}{$C^{3}$}
+\newcommand{\srsVersion}{1.0.1}
 
 \begin{document}
 
@@ -75,15 +76,16 @@
 \section{General Information}
 This document is a software test plan for the \progname{} (\prognameAbbrv{}), a 
 mathematical tool which determines the range, $R(f(X))$, of a user-specified 
-function, $f(X)$, given the domains of the function's variables, $D(X)$.
+function, $f(X)$, given the domains of the function's variables, $D(X)$. The 
+calculations are performed using interval arithmetic.
 
 \subsection{Purpose}
 This document describes the software test plan for the \prognameAbbrv{} tool 
-and is informed by its SRS documentation (version 1.0), including a description 
-of automated testing approach, tools, and black box test cases. The purpose of 
-documenting this information is to guide the product testing for the initial 
-product release and to provide a basis for regression testing as further 
-developments are made to the \prognameAbbrv{} tool.
+and is informed by its SRS documentation (version \srsVersion{}), including a 
+description of automated testing approach, tools, and black box test cases. The 
+purpose of documenting this information is to guide the product testing for the 
+initial product release and to provide a basis for regression testing as 
+further developments are made to the \prognameAbbrv{} tool.
 
 This document is intended for readers who wish to test the initial version of 
 the product, as well as those who want to refine and expand the tool. As 
@@ -93,15 +95,37 @@ the product do not affect its original purpose or core functionality.
 
 This test plan is intended to be used for version 1.0 of the \prognameAbbrv{} 
 tool, and will only contain test information related to the product description 
-in the product's SRS documentation (version 1.0). Any functionality defined 
-beyond the scope of the SRS document are not included in this version of the 
-test plan.
+in the product's SRS documentation (version \srsVersion{}). Any functionality 
+defined beyond the scope of the SRS document are not included in this version 
+of the test plan.
 
 \subsection{Scope}
+The \prognameAbbrv{} tool relies on interval arithmetic in the domain of real 
+numbers ($\varmathbb{R}$), which means that many of its functions can be 
+empirically tested. The tool has not yet been built, so the plan will mainly 
+focus on black box testing approaches. However, some white box tests might be 
+specified because the models and equations that are used to calculate $R(f(X))$ 
+have been explicitly defined in the SRS documentation.
+
+The purpose of this plan is to guide the modularization of the \prognameAbbrv{} 
+tool design so that it is easy to test and maintain. It also forms the 
+foundation of the kinds of behaviours that the tool should exhibit when it 
+encounters malformed  user inputs and unexpected values during its calculations.
 
 \subsection{Overview of Document}
+This document presents a general description of the \prognameAbbrv{} tool to 
+establish the context of the test plan and a list of team members responsible 
+for executing it. This background information is followed by a high-level 
+description of the test plan, including the automated testing approach, 
+verification tools, and non-testing based verification methods that will be 
+used. The general plan outline is followed by a description of the system test 
+which is designed to determine if the requirements from the associated SRS 
+document are satisfied. The final section describes how unit testing will be 
+implemented when the internal workings of the \prognameAbbrv{} tool are 
+established.
 
 \section{Plan}
+\label{testplan_highlevel}
 	
 \subsection{Software Description}
 
