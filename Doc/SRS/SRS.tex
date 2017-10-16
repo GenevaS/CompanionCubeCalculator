@@ -216,10 +216,8 @@ additional mathematical models to suit their project, such as those proposed in
 \subsection{Scope of Requirements} 
 The \prognameAbbrv{} calculates $R(f(X))$ of a user-defined $f(X)$ and $D(x), x 
 \in X$. Each $D(x)$ must be specified by the user in the initial version of 
-this tool, otherwise the unsupported interval $(-\infty, \infty)$ will be 
-assumed (\aref{A_domain}).  \wss{This is confusing.  I would guess if the
-  assumption were violated that the program would not calculate a result, but
-  you seem to be suggesting otherwise.}
+this tool, otherwise the tool will assume that the user input set is incomplete 
+and treat it as an error.
 
 For the initial version of this product, the mathematical operations allowed in 
 an function will be limited to brackets ($()$) and the arithmetic operators 
