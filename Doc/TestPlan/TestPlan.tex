@@ -51,7 +51,7 @@
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{l l} 
   \toprule		
-  \textbf{symbol} & \textbf{description}\\
+  \textbf{Symbol} & \textbf{Description}\\
   \midrule 
   \prognameAbbrv{} & \progname{}\\
   SRS & Software Requirements Specification\\
@@ -102,10 +102,10 @@ of the test plan.
 \subsection{Scope}
 The \prognameAbbrv{} tool relies on interval arithmetic in the domain of real 
 numbers ($\varmathbb{R}$), which means that many of its functions can be 
-empirically tested. The tool has not yet been built, so the plan will mainly 
-focus on black box testing approaches. However, some white box tests might be 
-specified because the models and equations that are used to calculate $R(f(X))$ 
-have been explicitly defined in the SRS documentation.
+empirically tested. The tool has not yet been built, so the plan not include 
+implementation-specific tests. Instead, this plan will outline black box tests 
+that abstracts the tool into modules based on the requirements identified in 
+the SRS documentation.
 
 The purpose of this plan is to guide the modularization of the \prognameAbbrv{} 
 tool design so that it is easy to test and maintain. It also forms the 
@@ -126,8 +126,26 @@ established.
 
 \section{Plan}
 \label{testplan_highlevel}
+This section describes the test plan for the \prognameAbbrv{} tool from a 
+high-level perspective, outlining the methodologies and tools that will be used 
+during the verification process, and the team responsible for executing the 
+plan.
 	
 \subsection{Software Description}
+The \prognameAbbrv{} tool is a stand-alone application for calculating 
+the mathematical range of a user-defined function given the domains of the 
+function's component variables. Function ranges and variable domains are 
+represented by intervals, where intervals are defined as a sequence of 
+continuous values bounded by a minimum and maximum value. The minimum and 
+maximum values for any given interval must be defined. To perform its 
+calculations, the \prognameAbbrv{} tool uses interval mathematics.
+
+The purpose of this product is to produce accurate results when they can be 
+found. If a result cannot be found, the tool is expected to communicate the 
+reason back to the user. Calculations must be accurate within an error range of 
+the host machine's floating point error. These tasks must be completed while 
+presenting all communications to the user in standard function and interval 
+notation.
 
 \subsection{Test Team}
 
