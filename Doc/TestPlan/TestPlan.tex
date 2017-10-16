@@ -54,6 +54,7 @@
   \textbf{Symbol} & \textbf{Description}\\
   \midrule 
   \prognameAbbrv{} & \progname{}\\
+  GUI & Graphical User Interface\\
   SRS & Software Requirements Specification\\
   T & Test\\
   \bottomrule
@@ -152,21 +153,36 @@ notation.
 The test team assigned to implement this plan is Geneva Smith.
 
 \subsection{Automated Testing Approach}
+The \prognameAbbrv{} tool will almost exclusively rely on automated test 
+approaches for its verification process, with the notable exceptions of the 
+non-functional requirements for correctness, verifiability, usability and 
+maintainability described in the SRS document (version \srsVersion{}). The 
+verification of correctness cannot be tested by a machine because it relies on 
+mathematical proofs and the remaining non-functional requirements of 
+verifiability, usability, and maintainability are intended for a 
+human audience. These types of verifications are best handled by manual tests 
+and user studies.
+
+The functional requirements tests (Section \ref{testplan_functional}) focus on 
+the behaviour that is expected at each stage of the \prognameAbbrv{} tools work 
+flow. Since these behaviours are internal to the tool with no user guidance, 
+these behaviours can be tested automatically using a series of black box unit 
+tests. Some of the non-functional requirements such as reliability and 
+robustness (Section \ref{testplan_nonfunctional}), can also be tested using 
+automated approaches.
 
 \subsection{Verification Tools}
+A programming language has not been selected for this project yet, but the 
+options have been limited to Java and C\# because of their GUI building 
+capabilities. Both languages have tools for unit testing which will be used 
+extensively during the verification process. 
 
-\wss{Thoughts on what tools to use, such as the following: unit testing
-  framework, valgrind, static analyzer, make, continuous integration, test
-  coverage tool, etc.}
-
-% \subsection{Testing Schedule}
-		
-% See Gantt Chart at the following url ...
+\todo{Look into static analysis tools, continuous integration, test/code 
+coverage tools}
 
 \subsection{Non-Testing Based Verification}
 
-\wss{List any approaches like code inspection, code walkthrough, symbolic
-  execution etc.  Enter not applicable if that is the case.}
+There are no non-testing based verification approaches in this test plan.
 
 \section{System Test Description}
 The system testing of the \prognameAbbrv{} tool will focus on inspecting and 
@@ -188,6 +204,7 @@ a series of tests to determine how the tool will react to both supported and
 unsupported operations.
 	
 \subsection{Tests for Functional Requirements}
+\label{testplan_functional}
 
 \subsubsection{Getting User Inputs}
 This test suite is designed to determine if the \ref{R_Inputs} functional 
@@ -560,6 +577,7 @@ requirement is satisfied.
 \end{enumerate}
 
 \subsection{Tests for Non-Functional Requirements}
+\label{testplan_nonfunctional}
 
 \subsubsection{Area of Testing1}
 		
