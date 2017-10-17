@@ -55,6 +55,7 @@
   \midrule 
   \prognameAbbrv{} & \progname{}\\
   GUI & Graphical User Interface\\
+  IDE & Integrated Development Environment\\
   SRS & Software Requirements Specification\\
   T & Test\\
   \bottomrule
@@ -174,11 +175,23 @@ automated approaches.
 \subsection{Verification Tools}
 A programming language has not been selected for this project yet, but the 
 options have been limited to Java and C\# because of their GUI building 
-capabilities. Both languages have tools for unit testing which will be used 
-extensively during the verification process. 
+capabilities. Each language has an IDE with a number of built-in or plug-in 
+based test tools. Even though a number of tools are mentioned for each 
+language, they might not all be used in the verification process of the 
+\prognameAbbrv{} tool.
 
-\todo{Look into static analysis tools, continuous integration, test/code 
-coverage tools}
+The Eclipse Oxygen IDE for Java Developers would be used if Java is selected as 
+the implementation language. This includes unit testing with JUnit4, code 
+coverage with JaCoCo, and performance profiling. There is also the potential 
+for coded GUI testing with Eclipse plugins such as WindowTester and Squish.
+
+The Visual Studio 2017 (Enterprise Edition) IDE, which would be used if C\# is 
+chosen as the implementation language, also comes with a number of test tools 
+which could be utilised during the \prognameAbbrv{} tool verification. These 
+tools include a unit testing framework and management system, coded GUI 
+testing, and code coverage tools. Unit testing in this IDE can also be 
+performed ``live" such that code is checked for test coverage and conformity as 
+code is written.
 
 \subsection{Non-Testing Based Verification}
 
