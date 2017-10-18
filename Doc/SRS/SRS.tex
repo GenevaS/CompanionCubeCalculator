@@ -128,19 +128,22 @@ $[a,b]$ & $[\varmathbb{R}, \varmathbb{R}]$ & Closed interval with endpoints $a$
 and $b$\\
 $(a,b)$ & $(\varmathbb{R}, \varmathbb{R})$ & Open interval with endpoints $a$ 
 and $b$\\
-$b$ & $\varmathbb{R}$ & Base number; used to represent 
-exponential functions (e.g. $b^2$)\\
-$D(x)$ & $[\varmathbb{R}, \varmathbb{R}]$ & Closed domain of a variable $x$\\
-$f(X)$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
+$b$ & $\varmathbb{R}$ & Base number in exponentiation (e.g. $b^2$)\\
+$D(v)$ & $[\varmathbb{R}, \varmathbb{R}]$ & The domain of a variable $v$ 
+represented as a closed, real interval $x$\\
+$f(V)$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
 \varmathbb{R}]_n\} \rightarrow [\varmathbb{R}, 
-\varmathbb{R}]$ & A function of $X$ that produces a closed interval\\
+\varmathbb{R}]$ & A function of domains for a set of variables $V$ that 
+produces a closed, real interval\\
 $M$ & - & A temporary variable for aiding in the readability of equations\\
 $\varmathbb{N}$ & - & The set of natural numbers; assumes that $0$ is included 
 in this specification\\
 $\varmathbb{R}$ & - & The set of real numbers\\
-$R(f(X))$ & $[\varmathbb{R}, \varmathbb{R}]$ & Closed range of $f(X)$\\
-$n$ & $\varmathbb{N}$ & Power; used to represent exponential functions (e.g. 
-$2^n$) \\
+$R(f(V))$ & $[\varmathbb{R}, \varmathbb{R}]$ & The range of $f(V)$ represented 
+as a closed, real interval\\
+$N$ & $\varmathbb{N}$ & Power in exponentiation (e.g. $2^N$) \\
+$V$ & - & A set of variable names\\
+$v$ & - & A variable name\\
 $X$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
 \varmathbb{R}]_n\}$ & Set of $D(x)$ for variables $x$\\
 $Y$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
@@ -186,10 +189,10 @@ the type of $X$, $f(X)$ etc.  The type of $x$ is really unclear.  Is it reals?}
 \section{Introduction}
 \label{intro}
 This document is an SRS for the \progname{} (\prognameAbbrv{}), a mathematical 
-tool which determines the range, $R(f(X))$, of a user-specified function, 
-$f(X)$, given the domains of the function's variables, $D(X)$. This tool will 
-aid in the specification and refinement of GLaDOS, an emotion engine for 
-Non-Player Characters (NPCs) in Computer Role-Playing Games (CRPGs) as 
+tool which determines the range, $R(f(V))$, of a user-specified function, 
+$f(V)$, given the domains of the function's variables, $D(v), v \in V$. This 
+tool will aid in the specification and refinement of GLaDOS, an emotion engine 
+for Non-Player Characters (NPCs) in Computer Role-Playing Games (CRPGs) as 
 described by \citet{glados}.
 
 \subsection{Purpose of Document}
@@ -203,9 +206,9 @@ and development of the \prognameAbbrv{} tool.
 This document is intended for two reader types -- those who wish to use the 
 tool and those who wish to refine and expand the tool. Even though the 
 \progname{} was created specifically to aid in the development of the GLaDOS 
-architecture, the user specified $f(X)$ is unitless. This means that the tool 
-can be used for any $f(X)$ as long as any applicable units referred to in $X$ 
-are compatible.
+architecture, the user specified $f(V)$ is unitless. This means that the tool 
+can be used for any $f(V)$ as long as any applicable units referred to in 
+$D(v), v \in V$ are compatible.
 
 Since the initial development of the \prognameAbbrv{} tool will be limited to 
 arithmetic operators, this document includes information that is useful to a 
@@ -214,10 +217,10 @@ additional mathematical models to suit their project, such as those proposed in
 \lcref{LC_trig} and \lcref{LC_infinity}. 
 
 \subsection{Scope of Requirements} 
-The \prognameAbbrv{} calculates $R(f(X))$ of a user-defined $f(X)$ and $D(x), x 
-\in X$. Each $D(x)$ must be specified by the user in the initial version of 
-this tool, otherwise the tool will assume that the user input set is incomplete 
-and treat it as an error.
+The \prognameAbbrv{} calculates $R(f(V))$ of a user-defined $f(V)$ and variable 
+domains $D(v), v \in V$. Each $D(v)$ must be specified by the user in the 
+initial version of this tool, otherwise the tool will assume that the user 
+input set is incomplete and treat it as an error.
 
 For the initial version of this product, the mathematical operations allowed in 
 an function will be limited to brackets ($()$) and the arithmetic operators 
@@ -262,7 +265,7 @@ describes the user characteristics, and lists the system constraints.
 
 \subsection{System Context}
 The \prognameAbbrv{} tool is a stand-alone application for calculating 
-$R(f(X))$ for a user-defined $f(X)$ given the known $D(x), x\in X$. Therefore 
+$R(f(V))$ for a user-defined $f(V)$ given the known $D(v), v\in V$. Therefore 
 it is independent and self-contained with respect to external organizations, 
 products, and technologies.
 
@@ -278,10 +281,10 @@ detecting syntactic errors in the system inputs.
 \begin{itemize}
 	\item User Responsibilities:
 	\begin{itemize}
-		\item Provide $f(X)$ that only contains numerical values and supported 
+		\item Provide $f(V)$ that only contains numerical values and supported 
 		mathematical operations and symbols
-		\item Provide $D(x), \forall x\in X$
-		\item Ensure that $f(X)$ does not contain semantic errors
+		\item Provide $D(v), \forall v\in V$
+		\item Ensure that $f(V)$ does not contain semantic errors
 		\item Determine if the \prognameAbbrv{} outputs are appropriate for 
 		the intended application and make adjustments to the program inputs as 
 		required
@@ -289,14 +292,14 @@ detecting syntactic errors in the system inputs.
 	\newpage
 	\item \prognameAbbrv{} Responsibilities:
 	\begin{itemize}
-		\item Allow the user to enter $f(X)$ and $D(x), \forall x\in X$	as 
+		\item Allow the user to enter $f(V)$ and $D(v), \forall v\in V$	as 
 		system inputs
 		\item Detect data type mismatch, such as a string of characters instead 
 		of a floating point number, and communicate this to the user
-		\item Detect bracket mismatches in $f(X)$ and communicate this to the 
+		\item Detect bracket mismatches in $f(V)$ and communicate this to the 
 		user
-		\item Calculate and output $R(f(X))$ using the user-provided $f(X)$ and 
-		$D(x), \forall x\in X$; if a result cannot be calculated, communicate 
+		\item Calculate and output $R(f(V))$ using the user-provided $f(V)$ and 
+		$D(v), \forall v\in V$; if a result cannot be calculated, communicate 
 		this to the user
 	\end{itemize}
 \end{itemize}
@@ -308,7 +311,7 @@ The end user of \prognameAbbrv{} is also the intended reader (Section
 \subsection{System Constraints}
 \label{sec_sysconstraints}
 The use of a Graphical User Interface (GUI) is useful for the \prognameAbbrv{} 
-tool because it can help the user visualize $f(X)$ during design time and 
+tool because it can help the user visualize $f(V)$ during design time and 
 debugging. This has implications on the development languages and target 
 platform selections. If a GUI is included in the \prognameAbbrv{} design, only 
 Windows platforms will be supported in the initial release.
@@ -328,12 +331,12 @@ architecture, a specialized game engine enables game designers to create NPCs
 that react to their environment by using models of emotion from psychology. One 
 module in the architecture converts information from the environment into an 
 internal representation that directs an NPC's decision-making. This task 
-requires the specification of several $f(X)$, each with a different $X$. Each 
-$f(X)$ must be normalized to a range of $[-1,1]$, which can only be 
-done if its $R(f(X))$ is known. The currently implemented $f(X)$ are not 
+requires the specification of several $f(V)$, each with a different $V$. Each 
+$f(V)$ must be normalized to a range of $[-1,1]$, which can only be 
+done if its $R(f(V))$ is known. The currently implemented $f(V)$ are not 
 well-informed by observation or scientific research and must be subjected to an 
 iterative process to address this problem. An automated method of calculating 
-$R(f(X))$ for a proposed $f(X)$ will make this process faster and less 
+$R(f(V))$ for a proposed $f(V)$ will make this process faster and less 
 error-prone.
 
 \subsubsection{Terminology and  Definitions}
@@ -350,7 +353,7 @@ expressed $[a,b]$
 maximum and minimum values of a function $f(x)$ using a closed domain interval 
 $[a,b]$
 \item Connected set: A set of values that does not contain any disjoint members
-\item Domain: A set of values for a variable $x$ that are valid in $f(X)$
+\item Domain: A set of values for a variable $x$ that are valid in $f(x)$
 \item Extended real interval: The set of all $\varmathbb{R}$ that also contains 
 $\pm \infty$
 \item Monotonic function: A function whose first derivative does not change its 
@@ -360,8 +363,8 @@ points; this is expressed $(a,b)$
 \item Order of Operations: Describes the precedence of mathematical operations 
 when solving an equation (Brackets, Exponents, Division/Multiplication, 
 Addition/Subtraction [BEDMAS])
-\item Range: The set of values that are produced by a function $f(X)$ with a 
-set of input variables $X$
+\item Range: The set of values that are produced by a function $f(x)$ with 
+input variable $x$
 \item Real interval: A closed, connected set of real numbers
 
 \end{itemize}
@@ -369,17 +372,17 @@ set of input variables $X$
 \subsubsection{Physical System Description}
 
 The \prognameAbbrv{} tool does not have a physical system component because it 
-exists independently of the context of $f(X)$. 
+exists independently of the context of $f(V)$. 
 
 \subsubsection{Goal Statements}
 
-\noindent Given $f(X)$ and $D(x), x \in X$, the goal of the \prognameAbbrv{} 
+\noindent Given $f(V)$ and $D(v), v \in V$, the goal of the \prognameAbbrv{} 
 tool is:
 
 \begin{itemize}
 
 \item[GS\refstepcounter{goalnum}\thegoalnum \label{G_range}:] 
-Calculate $R(f(X))$.
+Calculate $R(f(V))$.
 
 %\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_unknownDomain}:] 
 %Determine $D(x)$ for any $x \in X$ if it is not part of the input set.
@@ -405,21 +408,22 @@ respective assumption is used.
 
 \begin{itemize}
 
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_domain}:] $D(x)$ is a 
-closed, real interval [\ddref{DD_interval}, \lcref{LC_openinterval}, 
-\lcref{LC_unknownDomain}, \lcref{LC_trig}, \lcref{LC_infinity}]. 
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_domain}:] $D(v), 
+\forall v \in V$ is a closed, real interval [\ddref{DD_interval}, 
+\lcref{LC_openinterval}, \lcref{LC_unknownDomain}, \lcref{LC_trig}, 
+\lcref{LC_infinity}]. 
 
-\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_interval}:] $R(f(X))$ 
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{A_interval}:] $R(f(V))$ 
 is a closed, real interval [\ddref{DD_interval}, \lcref{LC_openinterval}, 
 \lcref{LC_unknownDomain}, \lcref{LC_infinity}].
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_operators}:] The 
-mathematical operators used in $f(X)$ can be found in the set $\{+, -, 
-\times, \div, b^x, x^n \}$ [\lcref{LC_infinity}].
+mathematical operators used in $f(V)$ can be found in the set $\{+, -, 
+\times, \div, b^x, x^N \}$ [\lcref{LC_infinity}].
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_commonfunctions}:] 
 Special mathematical functions (e.g. $\sin(x)$, $\cos(x)$, $\log(x)$, ...) are 
-not in $f(X)$ [\lcref{LC_unknownDomain}, \lcref{LC_infinity}].
+not in $f(V)$ [\lcref{LC_unknownDomain}, \lcref{LC_infinity}].
 
 \end{itemize}
 
@@ -591,33 +595,33 @@ Additional models exist for interval arithmetic, but only the models named in
 		Label&\bf Constant Exponents on a Real Interval Base 
 		Number\\
 		\hline
-		Equations &  $X^n = \begin{cases}
-			\{x^n | x \in X \wedge n 
-			\in \varmathbb{N}\} & \text{n is odd}\\
-			\{[x_{1}^n,...,x_{z}^n] | x \in X \wedge n 
-			\in \varmathbb{N}\} & \text{n is even}\wedge x_{z} \geq x_{z+1} 
+		Equations &  $X^N = \begin{cases}
+			\{x^N | x \in X \wedge N 
+			\in \varmathbb{N}\} & \text{N is odd}\\
+			\{[x_{1}^N,...,x_{z}^N] | x \in X \wedge N 
+			\in \varmathbb{N}\} & \text{N is even}\wedge x_{z} \geq x_{z+1} 
 			\wedge x_{1} > 0\\
-			\{[x_{z}^n,...,x_{1}^n] | x \in X \wedge n 
-			\in \varmathbb{N}\} & \text{n is even} \wedge x_{z} < x_{z+1} 
+			\{[x_{z}^N,...,x_{1}^N] | x \in X \wedge N 
+			\in \varmathbb{N}\} & \text{N is even} \wedge x_{z} < x_{z+1} 
 			\wedge x_{Z} < 0\\
-			\{[0,...,max\{x_{1}^n,x_{z}^n\}] | x \in X \wedge n 
+			\{[0,...,max\{x_{1}^N,x_{z}^N\}] | x \in X \wedge N 
 			\in \varmathbb{N}\} & \text{ELSE}\\
 		\end{cases}$
 		\newline
 		\\
 		\hline
 		Description & The product interval of a real interval $X$ 
-		raised to the power of a constant, natural number $n$ depends on the 
-		properties of $X$ and $n$:
+		raised to the power of a constant, natural number $N$ depends on the 
+		properties of $X$ and $N$:
 		\begin{itemize}
-			\item When $n$ is an odd number, the product interval is equal to 
-			the set of products $x^n$ for each element $x$
-			\item When $n$ is even, the function is monotonically decreasing, 
+			\item When $N$ is an odd number, the product interval is equal to 
+			the set of products $x^N$ for each element $x$
+			\item When $N$ is even, the function is monotonically decreasing, 
 			and $x_{1} > 0$, the product interval is equal to the set of 
-			products $x^n$ for each element $x$
-			\item When $n$ is even, the function is monotonically increasing, 
+			products $x^N$ for each element $x$
+			\item When $N$ is even, the function is monotonically increasing, 
 			and $x_{Z} < 0$, the product interval is equal to the set of 
-			products $x^n$ for each element $x$ and ordered in the opposite 
+			products $x^N$ for each element $x$ and ordered in the opposite 
 			direction of the original interval $X$
 			\item Otherwise, the product interval is bounded by $0$ and the 
 			maximum product of the first and last elements in the interval set
@@ -696,7 +700,8 @@ $B = b \times c$. This approach is identical to a hand-written evaluation where
 the intermediary decomposition stages are commonly omitted by humans. 
 
 These models can also be used as a specification for the closed interval method 
-because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
+because of the closed, real interval assumption on $D(v), \forall v \in V$ 
+(\aref{A_domain}).
 
 ~\newline
 
@@ -716,8 +721,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
   &$x_{sum} = x_{1} + x_{2}$, $y_{sum} = y_{1} + y_{2}$,\\
   &$[x_{sum}, y_{sum}]$ is a closed, real interval (\aref{A_interval}) \\
   \hline
-  Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(x)$ for two 
-  $x \in X$ in the user's input function $f(X)$.\\
+  Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(v)$ for two 
+  $v \in V$ in the user's input function $f(V)$.\\
   &The combined boundary values $x_{sum}$ and  $y_{sum}$ are determined 
   using basic arithmetic addition.\\
   & The result, $[x_{sum}, y_{sum}]$, is guaranteed to be a closed, real 
@@ -750,8 +755,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		&$x_{sub} = x_{1} - x_{2}$, $y_{sub} = y_{1} - y_{2}$,\\
 		&$[x_{sub}, y_{sub}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the the $D(x)$ 
-		for two $x \in X$ in the user's input function $f(X)$. \\
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the the $D(v)$ 
+		for two $v \in V$ in the user's input function $f(V)$. \\
 		&The combined boundary values $x_{sub}$ and  $y_{sub}$ are determined 
 		using basic arithmetic subtraction.\\
 		& The result, $[x_{sub}, y_{sub}]$, is guaranteed to be a closed, real 
@@ -785,8 +790,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		x_{2}, x_{1} \times y_{2}, y_{1} \times x_{2}, y_{1} \times y_{2}\}$\\
 		&$[x_{mul}, y_{mul}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(x)$ for 
-		two $x \in X$ in the user's input function $f(X)$. \\
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(v)$ for 
+		two $v \in V$ in the user's input function $f(V)$. \\
 		&The combined boundary value $x_{mul}$ is determined by taking the 
 		minimum of all possible products calculated from the sets $[x_{1}, 
 		y_{1}]$ and $[x_{2}, y_{2}]$, where $[x_{1}, y_{1}]$ is the 
@@ -841,8 +846,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\end{center} \\
 		&$[x_{div}, y_{div}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(x)$ for 
-		two $x \in X$ in the user's input function $f(X)$. \\
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(v)$ for 
+		two $v \in V$ in the user's input function $f(V)$. \\
 		&The boundary values $x_{div}$ and  $y_{div}$ are determined by the 
 		monotonicity of the interval represented by $[x_{1}, y_{1}]$ and 
 		whether or not that interval contains $0$.\\
@@ -892,8 +897,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\end{center} \\
 		&$[x_{div}, y_{div}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(x)$ for 
-		two $x \in X$ in the user's input function $f(X)$. \\
+		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(v)$ for 
+		two $v \in V$ in the user's input function $f(V)$. \\
 		&The boundary values $x_{div}$ and  $y_{div}$ are determined by the 
 		monotonicity of the interval represented by $[x_{1}, y_{1}]$ and 
 		whether or not that interval contains $0$.\\
@@ -927,8 +932,8 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		&$x_{exp} = b^x$, $y_{exp} = b^y$\\
 		&$[x_{exp}, y_{exp}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x, y]$ is the $D(x)$ for a $x \in X$ in the user's input 
-		function $f(X)$ which is used as an exponent on a constant base number 
+		Description&$[x, y]$ is the $D(v)$ for a $v \in V$ in the user's input 
+		function $f(V)$ which is used as an exponent on a constant base number 
 		$b$. \\
 		&The combined boundary values $x_{exp}$ and  $y_{exp}$ are determined 
 		using basic arithmetic exponents.\\
@@ -956,41 +961,41 @@ because of the closed, real interval assumption on $D(x)$ (\aref{A_domain}).
 		\hline
 		Label& \bf Powers of  closed, real intervals\\
 		\hline
-		Input&$[x, y]$ from \ddref{DD_interval}, $n$\\
+		Input&$[x, y]$ from \ddref{DD_interval}, $N$\\
 		\hline
 		Output&$[x_{pow}, y_{pow}]$ such that\\
 		&\vspace*{-10mm}\begin{center}
 			\begin{tabular}{lll}
-				$x_{pow} = x^n$, & $y_{pow} = y^n$ & $n$ is odd  \\
-				$x_{pow} = x^n$, & $y_{pow} = y^n$ & $n$ is even $\wedge (0 
+				$x_{pow} = x^N$, & $y_{pow} = y^N$ & $N$ is odd  \\
+				$x_{pow} = x^N$, & $y_{pow} = y^N$ & $N$ is even $\wedge (0 
 				\leq x < y)$ \\
-				$x_{pow} = y^n$, & $y_{pow} = x^n$ & $n$ is even $\wedge (0 
+				$x_{pow} = y^N$, & $y_{pow} = x^N$ & $N$ is even $\wedge (0 
 				\geq x > y)$ \\
-				$x_{pow} = 0$, & $y_{pow} = \max(x^n, y^n)$ & ELSE
+				$x_{pow} = 0$, & $y_{pow} = \max(x^N, y^N)$ & ELSE
 			\end{tabular}
 		\end{center}\\
 		&$[x_{pow}, y_{pow}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x, y]$ is the $D(x)$ for a $x \in X$ in the user's input 
-		function $f(X)$ raised to a constant power $n$. \\
+		Description&$[x, y]$ is the $D(v)$ for a $v \in V$ in the user's input 
+		function $f(V)$ raised to a constant power $N$. \\
 		&The combined boundary values $x_{pow}$ and $y_{pow}$ are determined 
-		by the divisibility of $n$ by two and the monotonicity of $[x,y]$:
+		by the divisibility of $N$ by two and the monotonicity of $[x,y]$:
 		\begin{itemize}
-			\item For odd values of $n$ and any interval $[x,y]$, and even 
-			values of $n$ when $[x,y]$ is monotonically increasing, $[x_{pow}, 
+			\item For odd values of $N$ and any interval $[x,y]$, and even 
+			values of $N$ when $[x,y]$ is monotonically increasing, $[x_{pow}, 
 			y_{pow}]$ are determined by simply raising each of $x$ and $y$ to 
-			the power of $n$
-			\item For even values of $n$ and $[x,y]$ is monotonically 
+			the power of $N$
+			\item For even values of $N$ and $[x,y]$ is monotonically 
 			decreasing, the boundary values of $x$ and $y$ are reversed before 
-			being raised to the power of $n$
+			being raised to the power of $N$
 			\item For all other cases, the interval is bounded by $0$ and the 
-			maximum of the input bounds raised to the power of $n$
+			maximum of the input bounds raised to the power of $N$
 		\end{itemize}
 		\\
 		&\vspace*{-10mm} The result, $[x_{exp}, y_{exp}]$, is guaranteed to be 
 		a closed, real interval (\aref{A_interval}) due to the closed, real 
-		interval constraint on $[x, y]$ and the data constraint on $n$ 
-		(\aref{A_domain}).
+		interval constraint on $[x, y]$ (\aref{A_domain}) and the data 
+		constraint on $N$ (\ref{sec_DataConstraints}).
 		\\
 		\hline
 		Sources& \url{https://en.wikipedia.org/wiki/Interval_arithmetic} \\
@@ -1013,11 +1018,11 @@ The inputs to the \prognameAbbrv{} tool are subject to the following data
 constraints:
 
 \begin{itemize}
-	\item The function $f(X)$ contains only the mathematical operators in 
-	the set $\{()\} \cup \{+, -, \times, \div, b^x, x^n \}$ (\aref{A_operators})
-	\item If $f(X)$ contains $b^x$, then $b > 1 \in \varmathbb{R}$
-	\item If $f(X)$ contains $x^n$, then $n \in \varmathbb{N}$
-	\item For every variable $x \in X$, $D(x)$ is defined and is a closed, real 
+	\item The function $f(V)$ contains only the mathematical operators in 
+	the set $\{()\} \cup \{+, -, \times, \div, b^x, x^N \}$ (\aref{A_operators})
+	\item If $f(V)$ contains $b^x$, then $b > 1 \in \varmathbb{R}$
+	\item If $f(V)$ contains $x^N$, then $N \in \varmathbb{N}$
+	\item For every variable $v \in V$, $D(v)$ is defined and is a closed, real 
 	interval (\aref{A_domain})
 \end{itemize}
 
@@ -1026,7 +1031,7 @@ The output of the \prognameAbbrv{} tool is subject to the following data
 constraint:
 
 \begin{itemize}
-	\item The interval $R(f(X))$ is defined and is a closed, real interval 
+	\item The interval $R(f(V))$ is defined and is a closed, real interval 
 	(\aref{A_interval})
 \end{itemize}
 
@@ -1034,10 +1039,10 @@ constraint:
 \label{sec_CorrectSolution}
 
 \noindent
-The interval of $R(f(X))$ produced by the \prognameAbbrv{} tool must exhibit 
+The interval of $R(f(V))$ produced by the \prognameAbbrv{} tool must exhibit 
 the properties of a closed, real interval (\aref{A_interval}). This can be 
-verified mathematically by checking if $R(f(X)) = [a,b]$ satisfies $\{\forall x 
-\in \varmathbb{R} | a \leq x \leq b\}$.
+verified mathematically by checking if $R(f(V)) = [a,b]$ satisfies $\{\forall v 
+\in V | a \leq D(v) \leq b \wedge D(v) \in \varmathbb{R}\}$.
 
 
 \section{Requirements}
@@ -1053,16 +1058,16 @@ exhibit.
 \noindent \begin{itemize}
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] The 
-\prognameAbbrv{} tool must accept a $f(X)$ and a $D(x)$ for each $x \in X$ from 
+\prognameAbbrv{} tool must accept a $f(V)$ and a $D(v)$ for each $v \in V$ from 
 the user. These inputs can be entered directly into the tool or read from a 
 file.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_conditionX}:] The 
-\prognameAbbrv{} tool must convert each $D(x)$ into interval form 
+\prognameAbbrv{} tool must convert each $D(v)$ into interval form 
 (\ddref{DD_interval}).
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_conditionfx}:] The 
-\prognameAbbrv{} tool must decompose $f(X)$ into a series of two-operand 
+\prognameAbbrv{} tool must decompose $f(V)$ into a series of two-operand 
 equations following the standard order of operations rules (BEDMAS).
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_verifyinputs}:] The 
@@ -1076,7 +1081,7 @@ constraints from \ref{sec_DataConstraints}.
 \iref{I_exponents}, and \iref{I_expbase}.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_VerifyOutput}:] The 
-\prognameAbbrv{} tool must verify that the program produces a $R(f(X))$ in 
+\prognameAbbrv{} tool must verify that the program produces a $R(f(V))$ in 
 interval form (\ddref{DD_interval}).
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_VerifyOutputConstraints}:] 
@@ -1084,7 +1089,7 @@ The \prognameAbbrv{} tool must verify that the program output satisfies the
 output data constraints from \ref{sec_DataConstraints}.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_Output}:] The 
-\prognameAbbrv{} tool must show the verified $R(f(X))$ to the user. If this is 
+\prognameAbbrv{} tool must show the verified $R(f(V))$ to the user. If this is 
 not possible, communicate the reason to the user.
 
 \end{itemize}
@@ -1103,13 +1108,13 @@ reasons that would be communicated to the user?}
 \subsubsection*{Correctness}
 \begin{itemize}
 	\item The \prognameAbbrv{} tool must be correct in its decomposition of 
-	$f(X)$ into smaller equations.\\ \textbf{Fit Criterion}: The decomposition 
+	$f(V)$ into smaller equations.\\ \textbf{Fit Criterion}: The decomposition 
 	process must be proven using mathematical induction.
 \end{itemize}
 
 \subsubsection*{Reliability}
 \begin{itemize}
-	\item The \prognameAbbrv{} tool must calculate the interval $R(f(X))$ with 
+	\item The \prognameAbbrv{} tool must calculate the interval $R(f(V))$ with 
 	an error rate relative to the floating point precision available on the 
 	host machine. \\ \textbf{Fit Criterion}: Given the floating point error on 
 	a test machine, verify that the output produced by the program is within 
@@ -1140,13 +1145,14 @@ perform its calculations will be relatively small in reasonable implementations.
 
 \subsubsection*{Usability}
 \begin{itemize}
-	\item The user must be able to enter $f(X)$ using standard mathematical 
+	\item The user must be able to enter $f(V)$ using standard mathematical 
 	notation.
-	\item The user must be able to enter values for $D(x)$ using standard 
+	\item The user must be able to enter values for $D(v), v \in V$ using 
+	standard 
 	interval notation.
 	\item If the user provides a file as input, they must be able to include 
-	both $f(X)$ and each $D(x), x \in X$ in the same file.
-	\item The program must output the value $R(f(X))$ using standard interval 
+	both $f(V)$ and each $D(v), v \in V$ in the same file.
+	\item The program must output the value $R(f(V))$ using standard interval 
 	notation.
 	\item If the design of the tool includes a GUI (\ref{sec_sysconstraints}), 
 	it must be organized such that it aids in the user's understanding of the 
@@ -1181,7 +1187,7 @@ expected that the intended users will use Windows platforms for their analysis.
 open, real intervals (\aref{A_domain}, \aref{A_interval})
 
 \item[LC\refstepcounter{lcnum}\thelcnum\label{LC_unknownDomain}:] Determine 
-$D(x)$ for any $x \in X$ if it is not part of the input set (\aref{A_domain}, 
+$D(v)$ for any $v \in V$ if it is not part of the input set (\aref{A_domain}, 
 \aref{A_interval})
 
 \item[LC\refstepcounter{lcnum}\thelcnum\label{LC_trig}:] Addition of the 
