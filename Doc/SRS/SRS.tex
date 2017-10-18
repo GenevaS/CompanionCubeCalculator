@@ -128,7 +128,7 @@ $[a,b]$ & $[\varmathbb{R}, \varmathbb{R}]$ & Closed interval with endpoints $a$
 and $b$\\
 $(a,b)$ & $(\varmathbb{R}, \varmathbb{R})$ & Open interval with endpoints $a$ 
 and $b$\\
-$b$ & $\varmathbb{R}$ & Base number in exponentiation (e.g. $b^2$)\\
+$B$ & $\varmathbb{R}$ & Base number in exponentiation (e.g. $B^2$)\\
 $D(v)$ & $[\varmathbb{R}, \varmathbb{R}]$ & The domain of a variable $v$ 
 represented as a closed, real interval $x$\\
 $f(V)$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
@@ -419,7 +419,7 @@ is a closed, real interval [\ddref{DD_interval}, \lcref{LC_openinterval},
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_operators}:] The 
 mathematical operators used in $f(V)$ can be found in the set $\{+, -, 
-\times, \div, b^x, x^N \}$ [\lcref{LC_infinity}].
+\times, \div, B^x, x^N \}$ [\lcref{LC_infinity}].
 
 \item[A\refstepcounter{assumpnum}\theassumpnum \label{A_commonfunctions}:] 
 Special mathematical functions (e.g. $\sin(x)$, $\cos(x)$, $\log(x)$, ...) are 
@@ -568,11 +568,11 @@ Additional models exist for interval arithmetic, but only the models named in
 		\hline
 		Label&\bf Real Interval Exponents on a Constant Base Number\\
 		\hline
-		Equation&  $b^X = \{b^x | x \in X \wedge b > 1\}$\\
+		Equation&  $B^X = \{B^x | x \in X \wedge B > 1\}$\\
 		\hline
-		Description & The product interval of a constant number $b > 1$ raised 
+		Description & The product interval of a constant number $B > 1$ raised 
 		to the power of a real interval $X$ is equal to the set of products 
-		$b^x$ for each interval element $x$.\\
+		$B^x$ for each interval element $x$.\\
 		\hline
 		Source & \url{https://en.wikipedia.org/wiki/Interval_arithmetic}\\
 		\hline
@@ -926,20 +926,20 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		\hline
 		Label& \bf  Closed, real intervals as Exponents\\
 		\hline
-		Input&$[x, y]$ from \ddref{DD_interval}, $b$\\
+		Input&$[x, y]$ from \ddref{DD_interval}, $B$\\
 		\hline
 		Output&$[x_{exp}, y_{exp}]$ such that\\
-		&$x_{exp} = b^x$, $y_{exp} = b^y$\\
+		&$x_{exp} = B^x$, $y_{exp} = B^y$\\
 		&$[x_{exp}, y_{exp}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
 		Description&$[x, y]$ is the $D(v)$ for a $v \in V$ in the user's input 
 		function $f(V)$ which is used as an exponent on a constant base number 
-		$b$. \\
+		$B$. \\
 		&The combined boundary values $x_{exp}$ and  $y_{exp}$ are determined 
 		using basic arithmetic exponents.\\
 		& The result, $[x_{exp}, y_{exp}]$, is guaranteed to be a closed, real 
 		interval (\aref{A_interval}) due to the closed, real interval 
-		constraint on $[x, y]$ and the data constraint on $b$ (\aref{A_domain}).
+		constraint on $[x, y]$ and the data constraint on $B$ (\aref{A_domain}).
 		\\
 		\hline
 		Sources& \url{https://en.wikipedia.org/wiki/Interval_arithmetic} \\
@@ -1019,8 +1019,8 @@ constraints:
 
 \begin{itemize}
 	\item The function $f(V)$ contains only the mathematical operators in 
-	the set $\{()\} \cup \{+, -, \times, \div, b^x, x^N \}$ (\aref{A_operators})
-	\item If $f(V)$ contains $b^x$, then $b > 1 \in \varmathbb{R}$
+	the set $\{()\} \cup \{+, -, \times, \div, B^x, x^N \}$ (\aref{A_operators})
+	\item If $f(V)$ contains $B^x$, then $B > 1 \in \varmathbb{R}$
 	\item If $f(V)$ contains $x^N$, then $N \in \varmathbb{N}$
 	\item For every variable $v \in V$, $D(v)$ is defined and is a closed, real 
 	interval (\aref{A_domain})
