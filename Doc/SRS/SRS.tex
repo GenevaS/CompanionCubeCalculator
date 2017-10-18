@@ -124,6 +124,8 @@ sets, and intervals. The symbols are listed in alphabetical order.
 \noindent \begin{longtable*}{m{1.5cm} m{5.3cm} m{8.2cm}} \toprule
 \textbf{Symbol}  & \textbf{Type} & \textbf{Description}\\
 \midrule 
+$a$ & $\varmathbb{R}$ & The minimum bound in an interval\\
+$b$ & $\varmathbb{R}$ & The maximum bound in an interval\\
 $[a,b]$ & $[\varmathbb{R}, \varmathbb{R}]$ & Closed interval with endpoints $a$ 
 and $b$\\
 $(a,b)$ & $(\varmathbb{R}, \varmathbb{R})$ & Open interval with endpoints $a$ 
@@ -131,6 +133,8 @@ and $b$\\
 $B$ & $\varmathbb{R}$ & Base number in exponentiation (e.g. $B^2$)\\
 $D(v)$ & $[\varmathbb{R}, \varmathbb{R}]$ & The domain of a variable $v$ 
 represented as a closed, real interval $x$\\
+$f(x)$ & $<$Numerical Type$>$ & A mathematical function on a variable $x$; the 
+function type is determined by the type of $x$\\
 $f(V)$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
 \varmathbb{R}]_n\} \rightarrow [\varmathbb{R}, 
 \varmathbb{R}]$ & A function of domains for a set of variables $V$ that 
@@ -138,16 +142,22 @@ produces a closed, real interval\\
 $M$ & - & A temporary variable for aiding in the readability of equations\\
 $\varmathbb{N}$ & - & The set of natural numbers; assumes that $0$ is included 
 in this specification\\
+$N$ & $\varmathbb{N}$ & Power in exponentiation (e.g. $2^N$) \\
+$n$ & $\varmathbb{N}$ & A variable subscript denoting placement in an ordered 
+set\\
 $\varmathbb{R}$ & - & The set of real numbers\\
 $R(f(V))$ & $[\varmathbb{R}, \varmathbb{R}]$ & The range of $f(V)$ represented 
 as a closed, real interval\\
-$N$ & $\varmathbb{N}$ & Power in exponentiation (e.g. $2^N$) \\
 $V$ & - & A set of variable names\\
 $v$ & - & A variable name\\
-$X$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
-\varmathbb{R}]_n\}$ & Set of $D(x)$ for variables $x$\\
-$Y$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
-\varmathbb{R}]_n\}$ & Set of $D(y)$ for variables $y$\\
+$X$ & $\{\varmathbb{R}_0, ..., \varmathbb{R}_n\}$ & A closed, connected set of 
+real values\\
+$x$ & $\varmathbb{R}$ & An element of $X$\\
+$Y$ & $\{\varmathbb{R}_0, ..., \varmathbb{R}_n\}$ & A closed, connected set of 
+real values\\
+$y$ & $\varmathbb{R}$ & An element of $y$\\
+$z$ & $\varmathbb{R}$ & A temporary value used in operations between $X$ and 
+$Y$\\
 \bottomrule
 \end{longtable*}
 
@@ -223,11 +233,11 @@ initial version of this tool, otherwise the tool will assume that the user
 input set is incomplete and treat it as an error.
 
 For the initial version of this product, the mathematical operations allowed in 
-an function will be limited to brackets ($()$) and the arithmetic operators 
-($+$, $-$, $\times$, $\div$, exponentiation). Future iterations can expand this 
-list to include trigonometric functions ($\sin$, $\cos$, $\tan$, $\arcsin$,
-$\arccos$, $\arctan$), partial functions, and other useful mathematical 
-constructs.
+an function will be limited to brackets ($()$) and the set of mathematical 
+operators $\{+, -, \times, \div, B^x, x^N\}$. Future iterations can expand this 
+list to include trigonometric functions ($\sin(x)$, $\cos(x)$, $\tan(x)$, 
+$\arcsin(x)$, $\arccos(x)$, $\arctan(x)$), partial functions, and other useful 
+mathematical constructs.
 
 The purpose of this product is to aid in the design and tuning of the GLaDOS 
 architecture (Section~\ref{Sec_pd}), but it can be used in similar projects 
@@ -331,13 +341,13 @@ architecture, a specialized game engine enables game designers to create NPCs
 that react to their environment by using models of emotion from psychology. One 
 module in the architecture converts information from the environment into an 
 internal representation that directs an NPC's decision-making. This task 
-requires the specification of several $f(V)$, each with a different $V$. Each 
-$f(V)$ must be normalized to a range of $[-1,1]$, which can only be 
-done if its $R(f(V))$ is known. The currently implemented $f(V)$ are not 
-well-informed by observation or scientific research and must be subjected to an 
-iterative process to address this problem. An automated method of calculating 
-$R(f(V))$ for a proposed $f(V)$ will make this process faster and less 
-error-prone.
+requires the specification of several $f(V)$, each with a different variable 
+set $V$ and $D(v), v \in V$. Each $f(V)$ must be normalized to a range of 
+$[-1,1]$, which can only be done if its $R(f(V))$ is known. The currently 
+implemented $f(V)$ are not well-informed by observation or scientific research 
+and must be subjected to an iterative process to address this problem. An 
+automated method of calculating $R(f(V))$ for a proposed $f(V)$ will make this 
+process faster and less error-prone.
 
 \subsubsection{Terminology and  Definitions}
 
@@ -363,8 +373,7 @@ points; this is expressed $(a,b)$
 \item Order of Operations: Describes the precedence of mathematical operations 
 when solving an equation (Brackets, Exponents, Division/Multiplication, 
 Addition/Subtraction [BEDMAS])
-\item Range: The set of values that are produced by a function $f(x)$ with 
-input variable $x$
+\item Range: The set of values that are produced by a function $f(x)$
 \item Real interval: A closed, connected set of real numbers
 
 \end{itemize}
@@ -598,13 +607,13 @@ Additional models exist for interval arithmetic, but only the models named in
 		Equations &  $X^N = \begin{cases}
 			\{x^N | x \in X \wedge N 
 			\in \varmathbb{N}\} & \text{N is odd}\\
-			\{[x_{1}^N,...,x_{z}^N] | x \in X \wedge N 
-			\in \varmathbb{N}\} & \text{N is even}\wedge x_{z} \geq x_{z+1} 
+			\{[x_{1}^N,...,x_{n}^N] | x \in X \wedge N 
+			\in \varmathbb{N}\} & \text{N is even}\wedge x_{n} \geq x_{n+1} 
 			\wedge x_{1} > 0\\
-			\{[x_{z}^N,...,x_{1}^N] | x \in X \wedge N 
-			\in \varmathbb{N}\} & \text{N is even} \wedge x_{z} < x_{z+1} 
-			\wedge x_{Z} < 0\\
-			\{[0,...,max\{x_{1}^N,x_{z}^N\}] | x \in X \wedge N 
+			\{[x_{n}^N,...,x_{1}^N] | x \in X \wedge N 
+			\in \varmathbb{N}\} & \text{N is even} \wedge x_{n+1} < x_{n+2} 
+			\wedge x_{n} < 0\\
+			\{[0,...,max\{x_{1}^N,x_{n}^N\}] | x \in X \wedge N 
 			\in \varmathbb{N}\} & \text{ELSE}\\
 		\end{cases}$
 		\newline
@@ -620,7 +629,7 @@ Additional models exist for interval arithmetic, but only the models named in
 			and $x_{1} > 0$, the product interval is equal to the set of 
 			products $x^N$ for each element $x$
 			\item When $N$ is even, the function is monotonically increasing, 
-			and $x_{Z} < 0$, the product interval is equal to the set of 
+			and $x_{n} < 0$, the product interval is equal to the set of 
 			products $x^N$ for each element $x$ and ordered in the opposite 
 			direction of the original interval $X$
 			\item Otherwise, the product interval is bounded by $0$ and the 
@@ -663,7 +672,7 @@ Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{DD_interval}\\
 \hline
 Label& \bf Representation of a Closed, Real Interval\\
 \hline
-Symbol &$[x, y]$\\
+Symbol &$[a, b]$\\
 \hline
 % Units& $Mt^{-3}$\\
 % \hline
@@ -671,8 +680,8 @@ Symbol &$[x, y]$\\
   \hline
   Equation& -\\
   \hline
-  Description & The definition $[x,y]$ represents a closed, real interval 
-  (\aref{A_domain}, \aref{A_interval}) with endpoints $x$ and $y$.
+  Description & The definition $[a,b]$ represents a closed, real interval 
+  (\aref{A_domain}, \aref{A_interval}) with endpoints $a$ and $b$.
   \\
   \hline
   Sources& - \\
@@ -695,8 +704,8 @@ The goal \gsref{G_range} is solved by recursively solving instance models
 \iref{I_addition}, \iref{I_subtraction}, \iref{I_multiplication}, 
 \iref{I_positivedivision}, \iref{I_negativedivision}, \iref{I_exponents}, and 
 \iref{I_expbase} and combining the results. For example, if the user provided 
-an equation of the form $a + b \times c$, it is decomposed into $a + B$ where 
-$B = b \times c$. This approach is identical to a hand-written evaluation where 
+an equation of the form $p + q \times r$, it is decomposed into $p + Q$ where 
+$Q = q \times r$. This approach is identical to a hand-written evaluation where 
 the intermediary decomposition stages are commonly omitted by humans. 
 
 These models can also be used as a specification for the closed interval method 
@@ -715,19 +724,19 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
   \hline
   Label& \bf Addition of closed, real intervals\\
   \hline
-  Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
+  Input&$[a_{1}, b_{1}]$, $[a_{2}, b_{2}]$ from \ddref{DD_interval}\\
   \hline
-  Output&$[x_{sum}, y_{sum}]$ such that\\
-  &$x_{sum} = x_{1} + x_{2}$, $y_{sum} = y_{1} + y_{2}$,\\
-  &$[x_{sum}, y_{sum}]$ is a closed, real interval (\aref{A_interval}) \\
+  Output&$[a_{sum}, b_{sum}]$ such that\\
+  &$a_{sum} = a_{1} + a_{2}$, $b_{sum} = b_{1} + b_{2}$,\\
+  &$[a_{sum}, b_{sum}]$ is a closed, real interval (\aref{A_interval}) \\
   \hline
-  Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(v)$ for two 
+  Description&$[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ are the $D(v)$ for two 
   $v \in V$ in the user's input function $f(V)$.\\
-  &The combined boundary values $x_{sum}$ and  $y_{sum}$ are determined 
+  &The combined boundary values $a_{sum}$ and  $b_{sum}$ are determined 
   using basic arithmetic addition.\\
-  & The result, $[x_{sum}, y_{sum}]$, is guaranteed to be a closed, real 
+  & The result, $[a_{sum}, b_{sum}]$, is guaranteed to be a closed, real 
   interval (\aref{A_interval}) due to the closed, real interval constraint on 
-  $[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ (\aref{A_domain}).
+  $[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ (\aref{A_domain}).
   \\
   \hline
   Sources& ~\cite{intervalarithmetic} \ \\
@@ -749,19 +758,19 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		\hline
 		Label& \bf Subtraction of closed, real intervals\\
 		\hline
-		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
+		Input&$[a_{1}, b_{1}]$, $[a_{2}, b_{2}]$ from \ddref{DD_interval}\\
 		\hline
-		Output&$[x_{sub}, y_{sub}]$ such that\\
-		&$x_{sub} = x_{1} - x_{2}$, $y_{sub} = y_{1} - y_{2}$,\\
-		&$[x_{sub}, y_{sub}]$ is a closed, real interval (\aref{A_interval}) \\
+		Output&$[a_{sub}, b_{sub}]$ such that\\
+		&$a_{sub} = a_{1} - a_{2}$, $b_{sub} = b_{1} - b_{2}$,\\
+		&$[a_{sub}, b_{sub}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the the $D(v)$ 
+		Description&$[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ are the the $D(v)$ 
 		for two $v \in V$ in the user's input function $f(V)$. \\
-		&The combined boundary values $x_{sub}$ and  $y_{sub}$ are determined 
+		&The combined boundary values $a_{sub}$ and  $b_{sub}$ are determined 
 		using basic arithmetic subtraction.\\
-		& The result, $[x_{sub}, y_{sub}]$, is guaranteed to be a closed, real 
+		& The result, $[a_{sub}, b_{sub}]$, is guaranteed to be a closed, real 
 		interval (\aref{A_interval}) due to the closed, real interval 
-		constraint on $[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ (\aref{A_domain}).
+		constraint on $[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ (\aref{A_domain}).
 		\\
 		\hline
 		Sources& ~\cite{intervalarithmetic} \ \\
@@ -783,26 +792,26 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		\hline
 		Label& \bf Multiplication of closed, real intervals\\
 		\hline
-		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval}\\
+		Input&$[a_{1}, b_{1}]$, $[a_{2}, b_{2}]$ from \ddref{DD_interval}\\
 		\hline
-		Output&$[x_{mul}, y_{mul}]$ such that\\
-		&$x_{mul} = \min(M)$, $y_{mul} = \max(M)$, where $M = \{x_{1} \times 
-		x_{2}, x_{1} \times y_{2}, y_{1} \times x_{2}, y_{1} \times y_{2}\}$\\
-		&$[x_{mul}, y_{mul}]$ is a closed, real interval (\aref{A_interval}) \\
+		Output&$[a_{mul}, b_{mul}]$ such that\\
+		&$a_{mul} = \min(M)$, $b_{mul} = \max(M)$, where $M = \{a_{1} \times 
+		a_{2}, a_{1} \times b_{2}, b_{1} \times a_{2}, b_{1} \times b_{2}\}$\\
+		&$[a_{mul}, b_{mul}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(v)$ for 
+		Description&$[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ are the $D(v)$ for 
 		two $v \in V$ in the user's input function $f(V)$. \\
-		&The combined boundary value $x_{mul}$ is determined by taking the 
-		minimum of all possible products calculated from the sets $[x_{1}, 
-		y_{1}]$ and $[x_{2}, y_{2}]$, where $[x_{1}, y_{1}]$ is the 
-		multiplier set and $[x_{2}, y_{2}]$ is the multiplicand set\\
-		&The combined boundary value $y_{mul}$ is determined by taking the 
-		maximum of all possible products calculated from the sets $[x_{1}, 
-		y_{1}]$ and $[x_{2}, y_{2}]$, where $[x_{1}, y_{1}]$ is the 
-		multiplier set and $[x_{2}, y_{2}]$ is the multiplicand set\\
-		& The result, $[x_{mul}, y_{mul}]$, is guaranteed to be a closed, real 
+		&The combined boundary value $a_{mul}$ is determined by taking the 
+		minimum of all possible products calculated from the sets $[a_{1}, 
+		b_{1}]$ and $[a_{2}, a_{2}]$, where $[a_{1}, b_{1}]$ is the 
+		multiplier set and $[a_{2}, b_{2}]$ is the multiplicand set\\
+		&The combined boundary value $b_{mul}$ is determined by taking the 
+		maximum of all possible products calculated from the sets $[a_{1}, 
+		b_{1}]$ and $[a_{2}, b_{2}]$, where $[a_{1}, b_{1}]$ is the 
+		multiplier set and $[a_{2}, b_{2}]$ is the multiplicand set\\
+		& The result, $[a_{mul}, b_{mul}]$, is guaranteed to be a closed, real 
 		interval (\aref{A_interval}) due to the closed, real interval 
-		constraint on $[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ (\aref{A_domain}).
+		constraint on $[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ (\aref{A_domain}).
 		\\
 		\hline
 		Sources& ~\cite{intervalarithmetic} \ \\
@@ -826,34 +835,34 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		Label& \bf Division of closed, real intervals (Divisor is a positive 
 		interval)\\
 		\hline
-		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval} where 
-		$0 \leq x_{2} \leq y_{2}$ and $x_{2} \neq 0$\\
+		Input&$[a_{1}, b_{1}]$, $[a_{2}, b_{2}]$ from \ddref{DD_interval} where 
+		$0 \leq a_{2} \leq b_{2}$ and $a_{2} \neq 0$\\
 		\hline
-		Output&$[x_{div}, y_{div}]$ such that\\
+		Output&$[a_{div}, b_{div}]$ such that\\
 		&\vspace*{-10mm}\begin{center}
 			\begin{tabular}{lll}
-				$x_{div} = x_{1} \div y_{2}$, & $y_{div} = y_{1} \div x_{2}$ & 
-				$0 < x_{1} \leq y_{1}$  \\
-				$x_{div} = 0$, & $y_{div} = y_{1} \div x_{2}$ & $x_{1} = 0 
-				\wedge x_{1} \leq y_{1}$ \\
-				$x_{div} = x_{1} \div x_{2}$, & $y_{div} = y_{1} \div x_{2}$ & 
-				$x_{1} < 0 < y_{1}$ \\
-				$x_{div} = x_{1} \div x_{2}$, & $y_{div} = 0$ & $y_{1} = 0, 
-				x_{1} \leq y_{1}$\\
-				$x_{div} = x_{1} \div x_{2}$, & $y_{div} = y_{1} \div y_{2}$ & 
-				$x_{1} \leq y_{1} < 0$
+				$a_{div} = a_{1} \div b_{2}$, & $b_{div} = b_{1} \div a_{2}$ & 
+				$0 < a_{1} \leq b_{1}$  \\
+				$a_{div} = 0$, & $b_{div} = b_{1} \div a_{2}$ & $a_{1} = 0 
+				\wedge a_{1} \leq b_{1}$ \\
+				$a_{div} = a_{1} \div a_{2}$, & $b_{div} = b_{1} \div a_{2}$ & 
+				$a_{1} < 0 < b_{1}$ \\
+				$a_{div} = a_{1} \div a_{2}$, & $b_{div} = 0$ & $b_{1} = 0, 
+				a_{1} \leq b_{1}$\\
+				$a_{div} = a_{1} \div a_{2}$, & $b_{div} = b_{1} \div b_{2}$ & 
+				$a_{1} \leq b_{1} < 0$
 			\end{tabular}
 		\end{center} \\
-		&$[x_{div}, y_{div}]$ is a closed, real interval (\aref{A_interval}) \\
+		&$[a_{div}, b_{div}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(v)$ for 
+		Description&$[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ are the $D(v)$ for 
 		two $v \in V$ in the user's input function $f(V)$. \\
-		&The boundary values $x_{div}$ and  $y_{div}$ are determined by the 
-		monotonicity of the interval represented by $[x_{1}, y_{1}]$ and 
+		&The boundary values $a_{div}$ and  $b_{div}$ are determined by the 
+		monotonicity of the interval represented by $[a_{1}, b_{1}]$ and 
 		whether or not that interval contains $0$.\\
-		& The result, $[x_{div}, y_{div}]$, is guaranteed to be a closed, real 
+		& The result, $[a_{div}, b_{div}]$, is guaranteed to be a closed, real 
 		interval (\aref{A_interval}) due to the closed, real interval 
-		constraint on $[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ (\aref{A_domain}).
+		constraint on $[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ (\aref{A_domain}).
 		\\
 		\hline
 		Sources& ~\cite{intervalarithmetic} \\
@@ -877,34 +886,34 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		Label& \bf Division of closed, real intervals (Divisor is a negative 
 		interval)\\
 		\hline
-		Input&$[x_{1}, y_{1}]$, $[x_{2}, y_{2}]$ from \ddref{DD_interval} where 
-		$x_{2} \leq y_{2} \leq 0$ and $y_{2} \neq 0$\\
+		Input&$[a_{1}, b_{1}]$, $[a_{2}, b_{2}]$ from \ddref{DD_interval} where 
+		$a_{2} \leq b_{2} \leq 0$ and $b_{2} \neq 0$\\
 		\hline
-		Output&$[x_{div}, y_{div}]$ such that\\
+		Output&$[a_{div}, b_{div}]$ such that\\
 		&\vspace*{-10mm}\begin{center}
 			\begin{tabular}{lll}
-				$x_{div} = y_{1} \div y_{2}$, & $y_{div} = x_{1} \div x_{2}$ & 
-				$0 < x_{1} \leq y_{1}$  \\
-				$x_{div} = y_{1} \div y_{2}$, & $y_{div} = 0$ & $x_{1} = 0 
-				\wedge x_{1} \leq y_{1}$ \\
-				$x_{div} = y_{1} \div y_{2}$, & $y_{div} = x_{1} \div y_{2}$ & 
-				$x_{1} < 0 < y_{1}$ \\
-				$x_{div} = 0$, & $y_{div} = x_{1} \div y_{2}$ & $y_{1} = 0, 
-				x_{1} \leq y_{1}$\\
-				$x_{div} = y_{1} \div x_{2}$, & $y_{div} = x_{1} \div y_{2}$ & 
-				$x_{1} \leq y_{1} < 0$
+				$a_{div} = b_{1} \div b_{2}$, & $b_{div} = a_{1} \div a_{2}$ & 
+				$0 < a_{1} \leq b_{1}$  \\
+				$a_{div} = b_{1} \div b_{2}$, & $b_{div} = 0$ & $a_{1} = 0 
+				\wedge a_{1} \leq b_{1}$ \\
+				$a_{div} = b_{1} \div b_{2}$, & $b_{div} = a_{1} \div b_{2}$ & 
+				$a_{1} < 0 < b_{1}$ \\
+				$a_{div} = 0$, & $b_{div} = a_{1} \div b_{2}$ & $b_{1} = 0, 
+				a_{1} \leq b_{1}$\\
+				$a_{div} = b_{1} \div a_{2}$, & $b_{div} = a_{1} \div b_{2}$ & 
+				$a_{1} \leq b_{1} < 0$
 			\end{tabular}
 		\end{center} \\
-		&$[x_{div}, y_{div}]$ is a closed, real interval (\aref{A_interval}) \\
+		&$[a_{div}, b_{div}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ are the $D(v)$ for 
+		Description&$[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ are the $D(v)$ for 
 		two $v \in V$ in the user's input function $f(V)$. \\
-		&The boundary values $x_{div}$ and  $y_{div}$ are determined by the 
-		monotonicity of the interval represented by $[x_{1}, y_{1}]$ and 
+		&The boundary values $a_{div}$ and  $b_{div}$ are determined by the 
+		monotonicity of the interval represented by $[a_{1}, b_{1}]$ and 
 		whether or not that interval contains $0$.\\
-		& The result, $[x_{div}, y_{div}]$, is guaranteed to be a closed, real 
+		& The result, $[a_{div}, b_{div}]$, is guaranteed to be a closed, real 
 		interval (\aref{A_interval}) due to the closed, real interval 
-		constraint on $[x_{1}, y_{1}]$ and $[x_{2}, y_{2}]$ (\aref{A_domain}).
+		constraint on $[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ (\aref{A_domain}).
 		\\
 		\hline
 		Sources& ~\cite{intervalarithmetic} \\
@@ -926,20 +935,20 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		\hline
 		Label& \bf  Closed, real intervals as Exponents\\
 		\hline
-		Input&$[x, y]$ from \ddref{DD_interval}, $B$\\
+		Input&$[a, b]$ from \ddref{DD_interval}, $B$\\
 		\hline
-		Output&$[x_{exp}, y_{exp}]$ such that\\
-		&$x_{exp} = B^x$, $y_{exp} = B^y$\\
-		&$[x_{exp}, y_{exp}]$ is a closed, real interval (\aref{A_interval}) \\
+		Output&$[a_{exp}, b_{exp}]$ such that\\
+		&$a_{exp} = B^a$, $b_{exp} = B^b$\\
+		&$[a_{exp}, b_{exp}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x, y]$ is the $D(v)$ for a $v \in V$ in the user's input 
+		Description&$[a, b]$ is the $D(v)$ for a $v \in V$ in the user's input 
 		function $f(V)$ which is used as an exponent on a constant base number 
 		$B$. \\
-		&The combined boundary values $x_{exp}$ and  $y_{exp}$ are determined 
+		&The combined boundary values $a_{exp}$ and $b_{exp}$ are determined 
 		using basic arithmetic exponents.\\
-		& The result, $[x_{exp}, y_{exp}]$, is guaranteed to be a closed, real 
+		& The result, $[a_{exp}, b_{exp}]$, is guaranteed to be a closed, real 
 		interval (\aref{A_interval}) due to the closed, real interval 
-		constraint on $[x, y]$ and the data constraint on $B$ (\aref{A_domain}).
+		constraint on $[a, b]$ and the data constraint on $B$ (\aref{A_domain}).
 		\\
 		\hline
 		Sources& \url{https://en.wikipedia.org/wiki/Interval_arithmetic} \\
@@ -961,40 +970,40 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		\hline
 		Label& \bf Powers of  closed, real intervals\\
 		\hline
-		Input&$[x, y]$ from \ddref{DD_interval}, $N$\\
+		Input&$[a, b]$ from \ddref{DD_interval}, $N$\\
 		\hline
-		Output&$[x_{pow}, y_{pow}]$ such that\\
+		Output&$[a_{pow}, b_{pow}]$ such that\\
 		&\vspace*{-10mm}\begin{center}
 			\begin{tabular}{lll}
-				$x_{pow} = x^N$, & $y_{pow} = y^N$ & $N$ is odd  \\
-				$x_{pow} = x^N$, & $y_{pow} = y^N$ & $N$ is even $\wedge (0 
-				\leq x < y)$ \\
-				$x_{pow} = y^N$, & $y_{pow} = x^N$ & $N$ is even $\wedge (0 
-				\geq x > y)$ \\
-				$x_{pow} = 0$, & $y_{pow} = \max(x^N, y^N)$ & ELSE
+				$a_{pow} = a^N$, & $b_{pow} = b^N$ & $N$ is odd  \\
+				$a_{pow} = a^N$, & $b_{pow} = b^N$ & $N$ is even $\wedge (0 
+				\leq a < b)$ \\
+				$a_{pow} = b^N$, & $b_{pow} = a^N$ & $N$ is even $\wedge (0 
+				\geq a > b)$ \\
+				$a_{pow} = 0$, & $b_{pow} = \max(a^N, b^N)$ & ELSE
 			\end{tabular}
 		\end{center}\\
-		&$[x_{pow}, y_{pow}]$ is a closed, real interval (\aref{A_interval}) \\
+		&$[a_{pow}, b_{pow}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
-		Description&$[x, y]$ is the $D(v)$ for a $v \in V$ in the user's input 
+		Description&$[a, b]$ is the $D(v)$ for a $v \in V$ in the user's input 
 		function $f(V)$ raised to a constant power $N$. \\
-		&The combined boundary values $x_{pow}$ and $y_{pow}$ are determined 
-		by the divisibility of $N$ by two and the monotonicity of $[x,y]$:
+		&The combined boundary values $a_{pow}$ and $b_{pow}$ are determined 
+		by the divisibility of $N$ by two and the monotonicity of $[a, b]$:
 		\begin{itemize}
-			\item For odd values of $N$ and any interval $[x,y]$, and even 
-			values of $N$ when $[x,y]$ is monotonically increasing, $[x_{pow}, 
-			y_{pow}]$ are determined by simply raising each of $x$ and $y$ to 
+			\item For odd values of $N$ and any interval $[a, b]$, and even 
+			values of $N$ when $[a, b]$ is monotonically increasing, $[a_{pow}, 
+			b_{pow}]$ are determined by simply raising each of $a$ and $b$ to 
 			the power of $N$
-			\item For even values of $N$ and $[x,y]$ is monotonically 
-			decreasing, the boundary values of $x$ and $y$ are reversed before 
+			\item For even values of $N$ and $[a, b]$ is monotonically 
+			decreasing, the boundary values of $a$ and $b$ are reversed before 
 			being raised to the power of $N$
 			\item For all other cases, the interval is bounded by $0$ and the 
 			maximum of the input bounds raised to the power of $N$
 		\end{itemize}
 		\\
-		&\vspace*{-10mm} The result, $[x_{exp}, y_{exp}]$, is guaranteed to be 
+		&\vspace*{-10mm} The result, $[a_{exp}, b_{exp}]$, is guaranteed to be 
 		a closed, real interval (\aref{A_interval}) due to the closed, real 
-		interval constraint on $[x, y]$ (\aref{A_domain}) and the data 
+		interval constraint on $[a, b]$ (\aref{A_domain}) and the data 
 		constraint on $N$ (\ref{sec_DataConstraints}).
 		\\
 		\hline
