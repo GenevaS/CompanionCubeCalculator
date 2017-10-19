@@ -552,15 +552,14 @@ Additional models exist for interval arithmetic, but only the models named in
 		Equations &  $X^N = \begin{cases}
 			\{x^N | x \in X \wedge N 
 			\in \varmathbb{N}\} & \text{N is odd}\\
-			\{[x_{1}^N,...,x_{n}^N] | x \in X \wedge N 
-			\in \varmathbb{N}\} & \text{N is even}\wedge x_{n} \geq x_{n+1} 
+			\{x^N | x \in X \wedge N \in \varmathbb{N}\}, (X^N, <) & \text{N is 
+			even}\wedge x_{n} \geq x_{n+1} 
 			\\&\hspace*{3mm}\wedge x_{1} > 0\\
-			\{[x_{n}^N,...,x_{1}^N] | x \in X \wedge N 
-			\in \varmathbb{N}\} & \text{N is even} \wedge x_{n+1} < x_{n+2} 
+			\{x^N | x \in X \wedge N \in \varmathbb{N}\}, (X^N, >) & \text{N is 
+			even} \wedge x_{n+1} < x_{n+2} 
 			\\&\hspace*{3mm}\wedge x_{n} < 0\\
 			\{x^N | 0 \leq x^N \leq \max(x_{1}^N,x_{n}^N) \wedge x \in X 
-			\wedge N 
-			\in \varmathbb{N}\} & \text{ELSE}\\
+			\wedge N \in \varmathbb{N}\} & \text{ELSE}\\
 		\end{cases}$
 		\newline
 		\\
