@@ -134,7 +134,7 @@ and $b$\\
 $B$ & $\varmathbb{R}$ & Base number in exponentiation (e.g. $B^2$)\\
 $D(v)$ & $[\varmathbb{R}, \varmathbb{R}]$ & The domain of a variable $v$ 
 represented as a closed, real interval $x$\\
-$f(x)$ & $<$Numerical Type$>$ & A mathematical function on a variable $x$; the 
+$f(x)$ & $Type$ & A mathematical function on a variable $x$; the 
 function type is determined by the type of $x$\\
 $f(V)$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
 \varmathbb{R}]_n\} \rightarrow [\varmathbb{R}, 
@@ -146,8 +146,9 @@ in this specification\\
 $N$ & $\varmathbb{N}$ & Power in exponentiation (e.g. $2^N$) \\
 $n$ & $\varmathbb{N}$ & A variable subscript denoting placement in an ordered 
 set\\
-$op$ & - & A temporary set of mathematical operators used to define equation 
-templates\\
+$op$ & $Type \rightarrow Type \rightarrow Type$ & A temporary set of 
+mathematical operators used to define equation templates; the type of the 
+equation is determined by the type of the input values\\
 $\varmathbb{R}$ & - & The set of real numbers\\
 $R(f(V))$ & $[\varmathbb{R}, \varmathbb{R}]$ & The range of $f(V)$ represented 
 as a closed, real interval\\
