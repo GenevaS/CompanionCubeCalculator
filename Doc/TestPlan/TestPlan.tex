@@ -215,7 +215,7 @@ The goal of user input inspection and conditioning tests is to be sure that the
 assumptions. If the tool determines that the values do not violate the 
 assumptions, it should be able to convert those values into the internal 
 representations identified in the SRS document. For the purposes of this test 
-plan, it is assumed that the user function $f(X)$ is represented internally as 
+plan, it is assumed that the user function is represented internally as 
 a parse tree.
 
 Even if the user inputs are validated and conditioned correctly, it is still 
@@ -229,7 +229,8 @@ unsupported operations.
 
 \subsubsection{Getting User Inputs}
 This test suite is designed to determine if the \ref{R_Inputs} functional 
-requirement is satisfied.
+requirement is satisfied and its associated data constraints from 
+\ref{R_verifyinputs} .
 
 \paragraph{User Inputs (As Expected)}
 
@@ -237,11 +238,11 @@ requirement is satisfied.
 	
 	\item{test-directinput}
 	
-	Type: Functional
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x + y, x = [2,4], y = [2,4]$
+	Input: $f(V) = x + y, x = [2,4], y = [3,5]$
 	
 	Output: Input received from direct input
 	
@@ -249,11 +250,11 @@ requirement is satisfied.
 	
 	\item{test-fileinput}
 
-	Type: Functional
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
-	Input: File containing: $f(X) = x + y, x = [2,4], y = [2,4]$
+	Input: File containing: $f(V) = x + y, x = [2,4], y = [3,5]$
 	
 	Output: Input received from file
 	
@@ -261,7 +262,7 @@ requirement is satisfied.
 	
 	\item{test-badFileInput}
 	
-	Type: Functional
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -277,13 +278,13 @@ requirement is satisfied.
 \begin{enumerate}	
 	\item{test-input\_functionAsConstant}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = 34$
+	Input: $f(V) = 34$
 	
-	Output: N/A
+	Output: Warning -- Function $f(V)$ does not contain any variables
 	
 	How test will be performed: Unit Test\\
 \end{enumerate}
@@ -293,13 +294,13 @@ requirement is satisfied.
 \begin{enumerate}
 	\item{test-input\_variableNotInFunction}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = 34$, $x = [2,4]$
+	Input: $f(V) = x + y, x = [2,4], y = [3,5], z = [6,7]$
 	
-	Output: Warning -- Function $f(X)$ does not contain name $x$ found in 
+	Output: Warning -- Function $f(V)$ does not contain name $z$ found in 
 	variable list
 	
 	How test will be performed: Unit Test\\
@@ -310,17 +311,29 @@ requirement is satisfied.
 
 \begin{enumerate}
 
-\item{test-input\_noFunction}
-
-Type: Functional
-
-Initial State: New Session
-
-Input: $x = [2,4], y = [2,4]$
-
-Output: Error -- Could not find function $f(X)$ with variables $x, y$
-
-How test will be performed: Unit Test\\
+	\item{test-input\_noFunction}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $x = [2,4], y = [3,5]$
+	
+	Output: Error -- Could not find function $f(V)$ with variables $x, y$
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-input\_noDomain}
+		
+	Type: Functional
+		
+	Initial State: New Session
+		
+	Input: $f(X) = x + y$, $x = [2,4]$
+		
+	Output: Error -- No domain for variable $y$
+		
+	How test will be performed: Unit Test\\
 
 \end{enumerate}
 
@@ -328,25 +341,37 @@ How test will be performed: Unit Test\\
 
 \begin{enumerate}
 	
-	\item{test-input\_missingFunctionValue}
+	\item{test-input\_missingFunctionValue1}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x +$, $x = [2,4], y = [3,5]$
+	Input: $f(V) = x +$, $x = [2,4], y = [3,5]$
 	
-	Output: Error -- Function $f(X)$ is missing an operand for $+$
+	Output: Error -- Function $f(V)$ is missing an operand for $+$
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-input\_missingFunctionValue2}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + * y$, $x = [2,4], y = [3,5]$
+	
+	Output: Error -- Function $f(V)$ is missing an operand between $+$ and $*$
 	
 	How test will be performed: Unit Test\\
 	
 	\item{test-input\_missingMinDomainValue}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x + y$, $x = [,4], y = [3,5]$
+	Input: $f(V) = x + y$, $x = [,4], y = [3,5]$
 	
 	Output: Error -- Missing min domain value for $x$
 	
@@ -354,11 +379,11 @@ How test will be performed: Unit Test\\
 	
 	\item{test-input\_missingMaxDomainValue}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $\{f(X) = x + y, x = [2,4], y = [3,]\}$, $\{f(X) = x + y, x = 
+	Input: $\{f(V) = x + y, x = [2,4], y = [3,]\}$, $\{f(V) = x + y, x = 
 	[2,4], y = [3]\}$
 	
 	Output: Error -- Missing max domain value for $y$
@@ -373,11 +398,11 @@ How test will be performed: Unit Test\\
 	
 	\item{test-input\_nonNumberInDomain}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x + y$, $x = [2,4], y = [a,5]$
+	Input: $f(V) = x + y$, $x = [2,4], y = [a,5]$
 	
 	Output: Error -- Non-numerical value found in the domain for variable $y$
 	
@@ -387,19 +412,20 @@ How test will be performed: Unit Test\\
 
 \subsubsection{Conditioning User Inputs}
 This test suite is designed to determine if the \ref{R_conditionX} and 
-\ref{R_conditionfx} functional requirements are satisfied.
+\ref{R_conditionfx} functional requirements and the associated data constraints 
+from \ref{R_verifyinputs} are satisfied.
 
-\paragraph{Parsing User Inputs (Single Operators)}
+\paragraph{Addition, Subtraction, and Multiplication}
 
 \begin{enumerate}
 	
 	\item{test-parse\_addition}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x + y$, $x = [2,4], y = [3,5]$
+	Input: $f(V) = x + y$, $x = [2,4], y = [3,5]$
 	
 	Output: \Tree[.$+$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
 	
@@ -407,11 +433,11 @@ This test suite is designed to determine if the \ref{R_conditionX} and
 	
 	\item{test-parse\_subtraction}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x - y$, $x = [2,4], y = [3,5]$
+	Input: $f(V) = x - y$, $x = [2,4], y = [3,5]$
 	
 	Output: \Tree[.$-$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
 	
@@ -419,162 +445,126 @@ This test suite is designed to determine if the \ref{R_conditionX} and
 	
 	\item{test-parse\_multiplication}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x \times y$, $x = [2,4], y = [3,5]$
+	Input: $f(V) = x * y$, $x = [2,4], y = [3,5]$
 	
-	Output: \Tree[.$\times$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
+	Output: \Tree[.$*$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
 	
 	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_division}
+\end{enumerate}
+
+\paragraph{Division}
+
+\begin{enumerate}
 	
-	Type: Functional
+	\item{test-parse\_divisionPositiveDivisor}
+	
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x \div y$, $x = [2,4], y = [3,5]$
+	Input: $f(V) = x / y$, $x = [2,4], y = [3,5]$
 	
-	Output: \Tree[.$\div$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
+	Output: \Tree[.$/$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
 	
 	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_divisionMixedIntervalQuotient}
-	
-	Type: Functional
-	
+	\item{test-parse\_divisionNegativeDivisor}
+
+	Type: Functional, Automatic, Integration
+
 	Initial State: New Session
-	
-	Input: $f(X) = x \div y$, $x = [-2,4], y = [3,5]$
-	
-	Output: \Tree[.$\div$ [.$x$ $[-2,4]$ ] [.$y$ $[3,5]$ ] ]
-	
+
+	Input: $f(V) = x / y$, $x = [2,4], y = [-3,-5]$
+
+	Output: \Tree[.$/$ [.$x$ $[2,4]$ ] [.$y$ $[-3,-5]$ ] ]
+
 	How test will be performed: Unit Testing\\
 	
 	\item{test-parse\_divisionMixedIntervalDivisor}
+
+	Type: Functional, Automatic, Integration
+
+	Initial State: New Session
+
+	Input: $f(V) = x / y$, $x = [2,4], y = [-3,5]$
+
+	Output: Error -- Cannot perform division with a mixed interval divisor
+
+	How test will be performed: Unit Testing\\
+
+	\item{test-parse\_divisionMixedIntervalQuotient}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x \div y$, $x = [2,4], y = [-3,5]$
+	Input: $f(V) = x / y$, $x = [-2,4], y = [3,5]$
 	
-	Output: Error -- Cannot perform division with a mixed interval divisor
+	Output: \Tree[.$/$ [.$x$ $[-2,4]$ ] [.$y$ $[3,5]$ ] ]
 	
 	How test will be performed: Unit Testing\\
 	
+\end{enumerate}
+
+\paragraph{Intervals as Exponents}
+
+\begin{enumerate}
+	
 	\item{test-parse\_intervalAsExponents}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = 2^x$, $x = [2,4]$
+	Input: $f(V) = 2^x$, $x = [2,4]$
 	
 	Output: \Tree[.\^{} [.$2$ ] [.$x$ $[2,4]$ ] ]
 	
 	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_intervalWithExponent}
-	
-	Type: Functional
-	
-	Initial State: New Session
-	
-	Input: $f(X) = x^2$, $x = [2,4]$
-	
-	Output: \Tree[.\^{} [.$x$ $[2,4]$ ] [.$2$ ]  ]
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_intervalsOnlyExponentiation}
-	
-	Type: Functional
-	
-	Initial State: New Session
-	
-	Input: $f(X) = x^y$, $x = [2,4], y = [3,5]$
-	
-	Output: Error -- Cannot perform exponentiation when the base number and the 
-	exponent are intervals
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_multipleOperatorsInFX}
-	
-	Type: Static
-	
-	Initial State: New Session
-	
-	Input: $R(f(X)) = R(f_1(X)) <op> R(f_2(X))$, where $R(f_1(X)), R(f_2(X))$ 
-	exist
-	
-	Output: True
-	
-	How test will be performed: Induction\\
-	
-	\item{test-parse\_multipleOperatorsInFX}
-	
-	Type: Static
-	
-	Initial State: New Session
-	
-	Input: $R(f(X)) = R(f_1(X)) <op> R(f_2(X))$, where $R(f_1(X))$ or 
-	$R(f_2(X))$ do not exist
-	
-	Output: Error -- Calculation path encountered an unsupported interval 
-	operation
-	
-	How test will be performed: Induction\\
-	
-\end{enumerate}
-
-\subsubsection{Verifying Data Constraints}
-This test suite is designed to determine if the \ref{R_verifyinputs} functional 
-requirement is satisfied.
-
-\paragraph{Domain Constraints}
-
-\begin{enumerate}
-	
-	\item{test-input\_noDomain}
-	
-	Type: Functional
-	
-	Initial State: New Session
-	
-	Input: $f(X) = x + y$, $x = [2,4]$
-	
-	Output: Error -- No domain for variable $y$
-	
-	How test will be performed: Unit Test\\
-\end{enumerate}
-
-\paragraph{Exponentiation Constraints}
-
-\begin{enumerate}	
 	\item{test-parse\_intervalAsExponentsInvalidBase}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = 1^x$, $x = [2,4]$
+	Input: $f(V) = 1^x$, $x = [2,4]$
 	
 	Output: Error -- Cannot perform operation with an interval exponent when 
 	the base number ($b$) $\leq 1$
 	
 	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_intervalWithInvalidExponent1}
+\end{enumerate}
+
+\paragraph{Intervals as Base Numbers}
+
+\begin{enumerate}
 	
-	Type: Functional
+	\item{test-parse\_intervalWithExponent}
+	
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x^{2.1}$, $x = [2,4]$
+	Input: $f(V) = x^2$, $x = [2,4]$
+	
+	Output: \Tree[.\^{} [.$x$ $[2,4]$ ] [.$2$ ]  ]
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_intervalWithInvalidExponent1}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x^{2.1}$, $x = [2,4]$
 	
 	Output: Warning -- Cannot perform operation with an exponent that is not a 
 	whole number; the exponent has been rounded to 2\\
@@ -584,14 +574,106 @@ requirement is satisfied.
 	
 	\item{test-parse\_intervalWithInvalidExponent2}
 	
-	Type: Functional
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(X) = x^{-1}$, $x = [2,4]$
+	Input: $f(V) = x^{-1}$, $x = [2,4]$
 	
 	Output: Error -- Cannot perform operation exponentiation with an exponent 
 	$< 0$
+	
+	How test will be performed: Unit Testing\\
+	
+\end{enumerate}
+
+\paragraph{Intervals-Only Exponentiation}
+
+\begin{enumerate}
+	
+	\item{test-parse\_intervalsOnlyExponentiation}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x^y$, $x = [2,4], y = [3,5]$
+	
+	Output: Error -- Cannot perform exponentiation when the base number and the 
+	exponent are intervals
+	
+	How test will be performed: Unit Testing\\
+	
+\end{enumerate}
+
+\subsubsection{Composing Operators}
+This test suite is designed to determine if the \ref{R_Calculate}, 
+\ref{R_VerifyOutput}, and \ref{R_VerifyOutputConstraints} functional 
+requirements.
+
+\paragraph{Composition of Operators}
+
+\begin{enumerate}
+	
+	\item{test-parse\_multipleOperatorsInFX}
+	
+	Type: Static, Manual, Unit
+	
+	Initial State: New Session
+	
+	Input: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$, where $R(f_1(V)), R(f_2(V))$ 
+	exist
+	
+	Output: True
+	
+	How test will be performed: Induction\\
+	
+	\item{test-parse\_multipleOperatorsInFX}
+	
+	Type: Static, Manual, Unit
+	
+	Initial State: New Session
+	
+	Input: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$, where $R(f_1(V))$ or 
+	$R(f_2(V))$ do not exist
+	
+	Output: Error -- Calculation path encountered an unsupported interval 
+	operation
+	
+	How test will be performed: Induction\\
+	
+\end{enumerate}
+
+\subsubsection{Composing Operators}
+This test suite is designed to determine if the \ref{R_Calculate}, 
+\ref{R_VerifyOutput}, and \ref{R_VerifyOutputConstraints} functional 
+requirements.
+
+\paragraph{Showing the Results to the User}
+
+\begin{enumerate}
+	
+	\item{test-parse\_simpleEquation}
+	
+	Type: Functional, Automatic, System
+	
+	Initial State: New Session
+	
+	Input: 
+	
+	Output: 
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_precedenceOfOperators1}
+	
+	Type: Functional, Automatic, System
+	
+	Initial State: New Session
+	
+	Input: 
+	
+	Output: 
 	
 	How test will be performed: Unit Testing\\
 	
