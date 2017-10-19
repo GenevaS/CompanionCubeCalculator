@@ -146,6 +146,8 @@ in this specification\\
 $N$ & $\varmathbb{N}$ & Power in exponentiation (e.g. $2^N$) \\
 $n$ & $\varmathbb{N}$ & A variable subscript denoting placement in an ordered 
 set\\
+$op$ & - & A temporary set of mathematical operators used to define equation 
+templates\\
 $\varmathbb{R}$ & - & The set of real numbers\\
 $R(f(V))$ & $[\varmathbb{R}, \varmathbb{R}]$ & The range of $f(V)$ represented 
 as a closed, real interval\\
@@ -461,8 +463,8 @@ Additional models exist for interval arithmetic, but only the models named in
   \hline
   Label&\bf Addition, Subtraction, and Multiplication on Real Intervals\\
   \hline
-  Equation&  $X <op> Y = \{x <op> y | x \in X \wedge y \in Y \wedge op \in \{+, 
-  -, \times\}\}$\\
+  Equation&  $X <op> Y = \{x <op> y | x \in X \wedge y \in Y\}$, where $op \in 
+  \{+, -, \times\}$\\
   \hline
   Description & The summation, subtraction, and multiplication interval of two 
   real intervals $X$ and $Y$ is equal to the set of sums, differences, and 
