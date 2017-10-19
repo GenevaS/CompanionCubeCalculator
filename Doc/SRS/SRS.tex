@@ -97,8 +97,7 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-October 14, 2017 & 1.0.1 & Added type information to the Table of Units; 
-updated document template \\
+October 18, 2017 & 1.0.1 & Revised table of units and documentation notations \\
 October 4, 2017 & 1.0 & Completed the initial SRS documentation\\
 \bottomrule
 \end{tabularx}
@@ -120,10 +119,10 @@ of symbols was made to be consistent with mathematical notations of functions,
 sets, and intervals. The symbols are listed in alphabetical order.
 
 \renewcommand{\arraystretch}{1.2}
-%\noindent \begin{tabularx}{1.0\textwidth}{l l X}
 \noindent \begin{longtable*}{m{1.5cm} m{5.3cm} m{8.2cm}} \toprule
 \textbf{Symbol}  & \textbf{Type} & \textbf{Description}\\
 \midrule 
+\endhead
 $a$ & $\varmathbb{R}$ & The minimum bound in an interval\\
 $b$ & $\varmathbb{R}$ & The maximum bound in an interval\\
 $[a,b]$ & $[\varmathbb{R}, \varmathbb{R}]$ & Closed interval with endpoints $a$ 
@@ -160,9 +159,6 @@ $z$ & $\varmathbb{R}$ & A temporary value used in operations between $X$ and
 $Y$\\
 \bottomrule
 \end{longtable*}
-
-\wss{Type information would make your SRS easier to understand.  That is, giving
-the type of $X$, $f(X)$ etc.  The type of $x$ is really unclear.  Is it reals?}
 
 \subsection{Abbreviations and Acronyms}
 
@@ -305,7 +301,7 @@ detecting syntactic errors in the system inputs.
 		the intended application and make adjustments to the program inputs as 
 		required
 	\end{itemize}
-	\newpage
+
 	\item \prognameAbbrv{} Responsibilities:
 	\begin{itemize}
 		\item Allow the user to enter $f(V)$ and $D(v), \forall v\in V$	as 
@@ -441,17 +437,6 @@ Special mathematical functions (e.g. $\sin(x)$, $\cos(x)$, $\log(x)$, ...) are
 not in $f(V)$ [\lcref{LC_unknownDomain}, \lcref{LC_infinity}].
 
 \end{itemize}
-
-\wss{The notation selected for representing variables and sets is confusing.  At
-  first, I thought that $x$ was an element of the interval $X$, but it turns out
-  that $x$ is a variable and $X$ is a set of variables.  Each of the variables
-  has a function $D$ defined that returns its domain.  It would be more direct
-  to say that $f$ is a function of sequence of intervals and introduce a type of
-  intervals.  Slides 11 and 13 of
-  \url{http://homes.esat.kuleuven.be/~optec/events/20090622_kozma.pdf} seems
-  like a good place for inspiration.  This is also why I suggested  using types
-  in the table of symbols.  Type information would also help with your theories,
-  data definitions and instance models.}
 
 \subsubsection{Theoretical Models}\label{sec_theoretical}
 
