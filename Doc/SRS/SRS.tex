@@ -97,6 +97,8 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
+ & 1.0.2 & Collapsed theoretical models for addition, subtraction, and 
+ multiplication into one model\\
 October 18, 2017 & 1.0.1 & Revised table of units and documentation notations \\
 October 4, 2017 & 1.0 & Completed the initial SRS documentation\\
 \bottomrule
@@ -455,72 +457,22 @@ Additional models exist for interval arithmetic, but only the models named in
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
   \hline
   \rowcolor[gray]{0.9}
-  Number& T\refstepcounter{theorynum}\thetheorynum \label{T_addition}\\
+  Number& T\refstepcounter{theorynum}\thetheorynum \label{T_add-sub-mul}\\
   \hline
-  Label&\bf Addition on Real Intervals\\
+  Label&\bf Addition, Subtraction, and Multiplication on Real Intervals\\
   \hline
-  Equation&  $X + Y = \{x + y | x \in X \wedge y \in Y\}$\\
+  Equation&  $X <op> Y = \{x <op> y | x \in X \wedge y \in Y \wedge op \in \{+, 
+  -, \times\}\}$\\
   \hline
-  Description & The summation interval of two real intervals $X$ and 
-  $Y$ is equal to the set of sums for each pairwise element $x$ and $y$.\\
+  Description & The summation, subtraction, and multiplication interval of two 
+  real intervals $X$ and $Y$ is equal to the set of sums, differences, and 
+  products for each pairwise element $x$ and $y$.\\
   \hline
   Source & \citet{intervalarithmetic}\\
   \hline
-  Ref.\ By & \iref{I_addition}\\
+  Ref.\ By & \iref{I_addition}, \iref{I_subtraction}, \iref{I_multiplication}\\
   \hline
 \end{tabular}
-\end{minipage}\\
-
-~\newline
-
-\noindent
-\begin{minipage}{\textwidth}
-	\renewcommand*{\arraystretch}{1.5}
-	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-		\hline
-		\rowcolor[gray]{0.9}
-		Number& T\refstepcounter{theorynum}\thetheorynum \label{T_subtraction}\\
-		\hline
-		Label&\bf Subtraction on Real Intervals\\
-		\hline
-		Equation&  $X - Y = \{x - y | x \in X \wedge y \in Y\}$\\
-		\hline
-		Description & The difference interval of two real intervals $X$ 
-		and $Y$ is equal to the set of differences for each pairwise element 
-		$x$ and 
-		$y$.\\
-		\hline
-		Source & \citet{intervalarithmetic}\\
-		\hline
-		Ref.\ By & \iref{I_subtraction}\\
-		\hline
-	\end{tabular}
-\end{minipage}\\
-
-~\newline
-
-\noindent
-\begin{minipage}{\textwidth}
-	\renewcommand*{\arraystretch}{1.5}
-	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-		\hline
-		\rowcolor[gray]{0.9}
-		Number& T\refstepcounter{theorynum}\thetheorynum 
-		\label{T_multiplication}\\
-		\hline
-		Label&\bf Multiplication on Real Intervals\\
-		\hline
-		Equation&  $X \times Y = \{x \times y | x \in X \wedge y \in Y\}$\\
-		\hline
-		Description & The product interval of two real intervals $X$ 
-		and $Y$ is equal to the set of products for each pairwise element $x$ 
-		and $y$.\\
-		\hline
-		Source & \citet{intervalarithmetic}\\
-		\hline
-		Ref.\ By & \iref{I_multiplication}\\
-		\hline
-	\end{tabular}
 \end{minipage}\\
 
 ~\newline
@@ -1230,9 +1182,7 @@ within this document.
 	\aref{A_commonfunctions}
 	\\
 \hline
-\tref{T_addition}         &   &   &   &  \\ \hline
-\tref{T_subtraction}      &   &   &   &  \\ \hline
-\tref{T_multiplication}   &   &   &   &  \\ \hline
+\tref{T_add-sub-mul}         &   &   &   &  \\ \hline
 \tref{T_division}         &   &   &   &  \\ \hline
 \tref{T_exponents}        &   &   &   &  \\ \hline
 \tref{T_expbase}          &   &   &   &  \\ \hline
@@ -1257,31 +1207,28 @@ within this document.
 
 \begin{table}[h!]
 	\centering
-	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 		\hline        
-		& \tref{T_addition}& \tref{T_subtraction}& \tref{T_multiplication}& 
-		\tref{T_division}& \tref{T_exponents} & \tref{T_expbase}& 
-		\ddref{DD_interval} & \iref{I_addition}& 
+		& \tref{T_add-sub-mul}& \tref{T_division}& \tref{T_exponents} & 
+		\tref{T_expbase}& \ddref{DD_interval} & \iref{I_addition}& 
 		\iref{I_subtraction}& \iref{I_multiplication}& 
 		\iref{I_positivedivision}& \iref{I_negativedivision} & 
 		\iref{I_exponents} & 
 		\iref{I_expbase}\\
 		\hline
-		\tref{T_addition}         &   &   &   &   &   &   &   & & & & & & & \\ 
+		\tref{T_add-sub-mul}         &     &   &   &   &   & & & & & & & \\ 
 		\hline
-		\tref{T_subtraction}      &   &   & & & & & & & & & & &  &\\ \hline
-		\tref{T_multiplication}   &   &   & & & & & & & & & &  & &\\ \hline
-		\tref{T_division}         &   &   & & & & & & & & & &  & &\\ \hline
-		\tref{T_exponents}        &   &   & & & & & & & & &  & & &\\ \hline
-		\tref{T_expbase}          &   &   & & & & & & & & & & & &\\ \hline
-		\ddref{DD_interval}       &   &   & & & & & & & & & &&  & \\ \hline
-		\iref{I_addition}         & X &   & & & & & X & & & &  & & &\\ \hline
-		\iref{I_subtraction}      &   & X & & & & & X & & &  & &  & &\\ \hline
-		\iref{I_multiplication}   &   &   & X & & & & X & & & &  && & \\ \hline
-		\iref{I_positivedivision} &   &   & & X & & & X & &  & & && & \\\hline
-		\iref{I_negativedivision} &   &   & & X &  & & X & &  & & && & \\\hline
-		\iref{I_exponents}        &   &   & & & X & & X &  & & & & & & \\\hline
-		\iref{I_expbase}          &   &   & & & & X & X & &  & & &  && \\
+		\tref{T_division}         &    & & & & & & & & &  & &\\ \hline
+		\tref{T_exponents}        &    & & & & & & & &  & & &\\ \hline
+		\tref{T_expbase}          &    & & & & & & & & & & &\\ \hline
+		\ddref{DD_interval}       &    & & & & & & & & &&  & \\ \hline
+		\iref{I_addition}         & X  & & & & X & & & &  & & &\\ \hline
+		\iref{I_subtraction}      & X  & & & & X & & &  & &  & &\\ \hline
+		\iref{I_multiplication}   & X   & & & & X & & & &  && & \\ \hline
+		\iref{I_positivedivision} &    & X & & & X & &  & & && & \\\hline
+		\iref{I_negativedivision} &    & X &  & & X & &  & & && & \\\hline
+		\iref{I_exponents}        &    & & X & & X &  & & & & & & \\\hline
+		\iref{I_expbase}          &    & & & X & X & &  & & &  && \\
 		\hline
 	\end{tabular}
 	\caption{Traceability Matrix Showing the Connections Between Items of 
