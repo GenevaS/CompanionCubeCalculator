@@ -23,7 +23,7 @@
 
 \newcommand{\progname}{Companion Cube Calculator} % PUT YOUR PROGRAM NAME HERE
 \newcommand{\prognameAbbrv}{$C^{3}$}
-\newcommand{\srsVersion}{1.0.1}
+\newcommand{\srsVersion}{1.0.2}
 
 \begin{document}
 
@@ -67,9 +67,9 @@
 
 \tableofcontents
 
-\listoftables
+%\listoftables
 
-\listoffigures
+%\listoffigures
 
 \newpage
 
@@ -77,9 +77,9 @@
 
 \section{General Information}
 This document is a software test plan for the \progname{} (\prognameAbbrv{}), a 
-mathematical tool which determines the range, $R(f(X))$, of a user-specified 
-function, $f(X)$, given the domains of the function's variables, $D(X)$. The 
-calculations are performed using interval arithmetic.
+mathematical tool which determines the range of a user-specified function given 
+the domains of the function's variables. The calculations are performed using 
+interval arithmetic.
 
 \subsection{Purpose}
 This document describes the software test plan for the \prognameAbbrv{} tool 
@@ -140,7 +140,7 @@ function's component variables. Function ranges and variable domains are
 represented by intervals, where intervals are defined as a sequence of 
 continuous values bounded by a minimum and maximum value. The minimum and 
 maximum values for any given interval must be defined. To perform its 
-calculations, the \prognameAbbrv{} tool uses interval mathematics.
+calculations, the \prognameAbbrv{} tool uses interval arithmetic.
 
 The purpose of this product is to produce accurate results when they can be 
 found. If a result cannot be found, the tool is expected to communicate the 
@@ -170,7 +170,22 @@ flow. Since these behaviours are internal to the tool with no user guidance,
 these behaviours can be tested automatically using a series of black box unit 
 tests. Some of the non-functional requirements such as reliability and 
 robustness (Section \ref{testplan_nonfunctional}), can also be tested using 
-automated approaches.
+automated approaches because they focus on floating-point error rates and data 
+constraints.
+
+Many of the unit tests are designed to be used as part of integration testing, 
+and the system will be progressively tested starting from gathering user inputs 
+and ending with the system's outputs. Outputs can be messages informing the 
+user of erroneous behaviours or malformed inputs, and calculated result if a no 
+errors are detected.
+
+The remaining unit tests are designed to test the correctness of the tool's 
+calculation. Some of the tests check simple, two variable equations to ensure 
+that the individual calculation types are behaving correctly. The remaining 
+tests will ensure that equations with multiple operators are being decomposed 
+correctly by comparing it to expected results. Once a set of equations has been 
+selected for this task, regression testing becomes available to check further 
+developments to the \prognameAbbrv{} tool.
 
 \subsection{Verification Tools}
 A programming language has not been selected for this project yet, but the 
