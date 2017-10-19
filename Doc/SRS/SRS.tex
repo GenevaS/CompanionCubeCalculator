@@ -392,20 +392,17 @@ exists independently of the context of $f(V)$.
 
 \subsubsection{Goal Statements}
 
-\noindent Given $f(V)$ and $D(v), v \in V$, the goal of the \prognameAbbrv{} 
-tool is:
+\noindent Given a user-defined function, which can contain any number of 
+variables, and the minimum and maximum values for each variable in the 
+user-defined function, the goal of the \prognameAbbrv{} tool is
 
 \begin{itemize}
 
-\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_range}:] 
-Calculate $R(f(V))$.
+\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_range}:] Determine the 
+minimum and maximum values that the user-defined function can achieve.
 
 %\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_unknownDomain}:] 
 %Determine $D(x)$ for any $x \in X$ if it is not part of the input set.
-
-\wss{Your goal statement is more mathematical than usual.  It is nice if the
-  goal statement can be written with a minimal amount of mathematical notation,
-  so that as large an audience as possible can understand it.}
 
 \end{itemize}
 
