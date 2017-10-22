@@ -6,6 +6,10 @@
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{txfonts}
 \usepackage[nocenter]{qtree}
+\usepackage{xr}
+\externaldocument{../SRS/SRS}
+\newcommand{\rref}[1]{R\ref{#1}}
+\newcommand{\ddref}[1]{DD\ref{#1}}
 
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -247,9 +251,15 @@ incorrectly processed if the tool does not parse them correctly.
 \label{testplan_functional}
 
 \subsubsection{Getting User Inputs}
-This test suite is designed to determine if the \ref{R_Inputs} functional 
+\label{tests_gettingInputs}
+This test suite is designed to determine if the \rref{R_Inputs} (Accepting 
+$f(V)$ and $D(v), v \in V$ as direct input or read from a file) functional 
 requirement is satisfied and its associated data constraints from 
-\ref{R_verifyinputs} .
+\rref{R_verifyinputs}.
+
+The initial test cases (User Inputs (As Expected)) are the white-box unit tests 
+that start the integration testing. The tests that follow these assume that 
+these tests have passed.
 
 \paragraph{User Inputs (As Expected)}
 
@@ -278,6 +288,11 @@ requirement is satisfied and its associated data constraints from
 	Output: Input received from file
 	
 	How test will be performed: Unit Test\\
+\end{enumerate}
+	
+\paragraph{User Inputs (Bad File I/O)}
+
+\begin{enumerate}
 	
 	\item{test-badFileInput}
 	
@@ -430,9 +445,15 @@ requirement is satisfied and its associated data constraints from
 \end{enumerate}
 
 \subsubsection{Conditioning User Inputs}
-This test suite is designed to determine if the \ref{R_conditionX} and 
-\ref{R_conditionfx} functional requirements and the associated data constraints 
-from \ref{R_verifyinputs} are satisfied.
+\label{tests_conditioningInputs}
+This test suite is designed to determine if the \rref{R_conditionX} (Converting 
+each $D(v)$ into \ddref{DD_interval}) and \rref{R_conditionfx} (Decomposing 
+$f(V)$ into two-operand equations following BEDMAS rules) functional 
+requirements and the associated data constraints from \rref{R_verifyinputs} are 
+satisfied.
+
+The tests that follow these assume that the user input tests 
+(\ref{tests_gettingInputs}) have passed.
 
 \paragraph{Addition, Subtraction, and Multiplication}
 
@@ -542,7 +563,7 @@ from \ref{R_verifyinputs} are satisfied.
 	
 	Input: $f(V) = 2^x$, $x = [2,4]$
 	
-	Output: \Tree[.\^{} [.$2$ ] [.$x$ $[2,4]$ ] ]
+	Output: \Tree[.$B^x$ [.$2$ ] [.$x$ $[2,4]$ ] ]
 	
 	How test will be performed: Unit Testing\\
 	
@@ -555,7 +576,7 @@ from \ref{R_verifyinputs} are satisfied.
 	Input: $f(V) = 1^x$, $x = [2,4]$
 	
 	Output: Error -- Cannot perform operation with an interval exponent when 
-	the base number ($b$) $\leq 1$
+	the base number ($B$) $\leq 1$
 	
 	How test will be performed: Unit Testing\\
 	
@@ -573,7 +594,7 @@ from \ref{R_verifyinputs} are satisfied.
 	
 	Input: $f(V) = x^2$, $x = [2,4]$
 	
-	Output: \Tree[.\^{} [.$x$ $[2,4]$ ] [.$2$ ]  ]
+	Output: \Tree[.$x^N$ [.$x$ $[2,4]$ ] [.$2$ ]  ]
 	
 	How test will be performed: Unit Testing\\
 	
@@ -587,7 +608,7 @@ from \ref{R_verifyinputs} are satisfied.
 	
 	Output: Warning -- Cannot perform operation with an exponent that is not a 
 	whole number; the exponent has been rounded to 2\\
-	\Tree[.\^{} [.$x$ $[2,4]$ ] [.$2$ ]  ]
+	\Tree[.$x^N$ [.$x$ $[2,4]$ ] [.$2$ ]  ]
 	
 	How test will be performed: Unit Testing\\
 	
@@ -600,7 +621,7 @@ from \ref{R_verifyinputs} are satisfied.
 	Input: $f(V) = x^{-1}$, $x = [2,4]$
 	
 	Output: Error -- Cannot perform operation exponentiation with an exponent 
-	$< 0$
+	($N$) $< 0$
 	
 	How test will be performed: Unit Testing\\
 	
@@ -618,19 +639,26 @@ from \ref{R_verifyinputs} are satisfied.
 	
 	Input: $f(V) = x^y$, $x = [2,4], y = [3,5]$
 	
-	Output: Error -- Cannot perform exponentiation when the base number and the 
-	exponent are intervals
+	Output: Error -- Cannot perform exponentiation when the base number ($B$) 
+	and the exponent ($N$) are intervals
 	
 	How test will be performed: Unit Testing\\
 	
 \end{enumerate}
 
 \subsubsection{Composing Operators}
-This test suite is designed to determine if the \ref{R_Calculate}, 
-\ref{R_VerifyOutput}, and \ref{R_VerifyOutputConstraints} functional 
-requirements.
+\label{tests_operatorComposition}
+This test suite is designed to determine if the \rref{R_Calculate} (Solving 
+each two-operand equation and composing the results) and \rref{R_VerifyOutput} 
+(Ensuring that the calculated result is represented in closed, interval form) 
+functional requirements, and the associated data constraints from 
+\rref{R_VerifyOutputConstraints} are satisfied.
 
-\paragraph{Composition of Operators}
+The tests that follow these assume that the user input tests 
+(\ref{tests_gettingInputs}) and input conditioning tests 
+(\ref{tests_conditioningInputs}) have passed.
+
+\paragraph{Correctness of Operator Composition}
 
 \begin{enumerate}
 	
@@ -663,36 +691,74 @@ requirements.
 	
 \end{enumerate}
 
-\subsubsection{Composing Operators}
-This test suite is designed to determine if the \ref{R_Calculate}, 
-\ref{R_VerifyOutput}, and \ref{R_VerifyOutputConstraints} functional 
-requirements.
+\subsubsection{Presentation of Calculations to the User}
+\label{tests_outputResults}
+This test suite is designed to test that the final functional requirement, 
+\rref{R_Output} (Showing the results to the user or an error if a result cannot 
+be found) is satisfied. It is assumed that any inputs that do not produce a 
+viable result have been caught previously and an appropriate error or warning 
+message was presented to the user.
+
+The tests that follow these assume that the user input tests 
+(\ref{tests_gettingInputs}), input conditioning tests 
+(\ref{tests_conditioningInputs}), and operator composition tests 
+(\ref{tests_operatorComposition}) have passed.
 
 \paragraph{Showing the Results to the User}
 
 \begin{enumerate}
 	
-	\item{test-parse\_simpleEquation}
+	\item{test-parse\_outputTest}
 	
-	Type: Functional, Automatic, System
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: 
+	Input: $f(V) = x + y, x = [2,4], y = [3,5]$
 	
-	Output: 
+	Output: $[5,9]$
+	
+	How test will be performed: Unit Testing\\
+	
+\end{enumerate}
+
+\paragraph{Regression Tests}
+
+\begin{enumerate}
+	
+	\item{test-parse\_simpleEquationWithDecimals}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + y, x = [2.5,4.33], y = [3.45,5.555]$
+	
+	Output: $[5.950,9.885]$
 	
 	How test will be performed: Unit Testing\\
 	
 	\item{test-parse\_precedenceOfOperators1}
 	
-	Type: Functional, Automatic, System
+	Type: Functional, Automatic, System, Regression
 	
 	Initial State: New Session
 	
-	Input: 
+	Input: $f(V) = x + y * z, x = [2,4], y = [3,5], z = [2,2]$
 	
-	Output: 
+	Output: $[8,14]$
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_precedenceOfOperators2}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $f(V) = (x + y) * z, x = [2,4], y = [3,5], z = [2,2]$
+	
+	Output: $[10,18]$
 	
 	How test will be performed: Unit Testing\\
 	
