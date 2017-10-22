@@ -240,6 +240,12 @@ list to include trigonometric functions ($\sin(x)$, $\cos(x)$, $\tan(x)$,
 $\arcsin(x)$, $\arccos(x)$, $\arctan(x)$), partial functions, and other useful 
 mathematical constructs.
 
+Division is a special case in the \prognameAbbrv{} tool because of its 
+behaviour around zero. Division by zero is an undefined term, but can be 
+represented by the open interval $(-\infty, \infty)$. This version of the 
+\prognameAbbrv{} tool can only process closed intervals (\aref{A_interval}), 
+meaning that a divisor interval that contains zero cannot be handled correctly. 
+
 The initial version of the tool is intended for use during the development of 
 the GLaDOS architecture. The values calculated by the architecture are 
 normalized, so any uncertainties in the bounds of $R(f(V))$ can be ignored in 
@@ -295,7 +301,7 @@ do not contain unsupported mathematical operations or special functions. The
 \prognameAbbrv{} is responsible for providing an information exchange interface 
 between itself and the user, performing mathematical calculations, and 
 detecting syntactic errors in the system inputs.
-
+\newpage
 \begin{itemize}
 	\item User Responsibilities:
 	\begin{itemize}
@@ -374,13 +380,16 @@ $[a,b]$
 \item Domain: A set of values for a variable $x$ that are valid in $f(x)$
 \item Extended real interval: The set of all $\varmathbb{R}$ that also contains 
 $\pm \infty$
+\item Mixed interval: An interval that satisfies the property $a < 0 < b$
 \item Monotonic function: A function whose first derivative does not change its 
 mathematical sign
+\item Negative interval: An interval that satisfies the property $a < b < 0$
 \item Open interval: A bounded set of values that does not contain its end 
 points; this is expressed $(a,b)$
 \item Order of Operations: Describes the precedence of mathematical operations 
 when solving an equation (Brackets, Exponents, Division/Multiplication, 
 Addition/Subtraction [BEDMAS])
+\item Positive interval: An interval that satisfies the property $0 < a < b$
 \item Range: The set of values that are produced by a function $f(x)$
 \item Real interval: A closed, connected set of real numbers
 
