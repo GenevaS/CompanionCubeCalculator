@@ -233,6 +233,15 @@ possible for the \prognameAbbrv{} tool to encounter invalid operations in an
 intermediary step while calculating a result. This makes it necessary to create 
 a series of tests to determine how the tool will react to both supported and 
 unsupported operations.
+
+This test plan is meant to be executed in stages. The first stage is a 
+white-box unit test of the functionality required to get raw inputs from the 
+user. The subsequent stages are both integration and unit tests, where the test 
+checks that the behaviour produced by the new modules is both working as 
+expected and can communicate with the modules above it. The final tests in this 
+chain, which show the calculations of the \prognameAbbrv{} tool, form the basis 
+of regression testing and contains mathematical functions that will be 
+incorrectly processed if the tool does not parse them correctly.
 	
 \subsection{Tests for Functional Requirements}
 \label{testplan_functional}
