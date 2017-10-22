@@ -194,16 +194,26 @@ IDE, Visual Studio 2017 (Enterprise Edition), comes with a number of built-in
 test tools, including:
 
 \begin{itemize}
-	\item A unit test framework and management system
-	\item Automated GUI testing
-	\item Code coverage tools that can be run ``live" as code is written
+	\item \textbf{A unit test framework and management system}\\
+	This forms the bulk of the automated testing approach and will be used for 
+	unit, integration, system, and regression testing.
+	\item \textbf{Automated GUI testing}\\
+	This version of Visual Studio allows developers to record a series of 
+	interactions with a GUI that can be played multiple times for testing. This 
+	can help save time by making traditionally manual test cases into automated 
+	ones. Depending on the complexity of the GUI, this tool might not be used.
+	\item \textbf{Code coverage tools that can be run ``live" as code is 
+	written}\\
+	The code coverage tools in Visual Studio is connected to the test 
+	management system and can help identify code that is not being run by any 
+	unit test. The IDE can be configured so that this code coverage check is 
+	run automatically while the program is being written.
 \end{itemize}
-
-Depending on the complexity of the GUI, the GUI testing tool might not be used.
 
 \subsection{Non-Testing Based Verification}
 
-There are no non-testing based verification approaches in this test plan.
+There are no non-testing based verification approaches in this test plan due to 
+time and team constraints.
 
 \section{System Test Description}
 The system testing of the \prognameAbbrv{} tool will focus on inspecting and 
