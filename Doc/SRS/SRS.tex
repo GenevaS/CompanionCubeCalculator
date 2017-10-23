@@ -1047,19 +1047,12 @@ The \prognameAbbrv{} tool must verify that the program output satisfies the
 output data constraints from \ref{sec_DataConstraints}.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_Output}:] The 
-\prognameAbbrv{} tool must show the verified $R(f(V))$ to the user. If this is 
-not possible, communicate the reason to the user.
+\prognameAbbrv{} tool must show the $R(f(V))$ to the user for the given $f(V)$ 
+and $D(v), v \in V$. If this is not possible, such as in the case of a violated 
+data constraint (\ref{sec_DataConstraints}), communicate the reason to the 
+user.
 
 \end{itemize}
-
-\wss{It isn't clear how $D(x)$ will be entered.  Why not have your input just be
-  the input variables of type interval.  The way you have written it, it appears
-  that there are variables $x$ and a function that returns the domain of a given
-  $x$.  If all you are looking for is upper and lower bounds for each variable,
-  that would be easy to say.  You talk about converting to interval form in R2,
-  so maybe I'm missing something.  Either way, it is confusing.  R8 is
-  ambiguous.  Why wouldn't it be possible to verify $R$.  What are the potential
-reasons that would be communicated to the user?}
 
 \subsection{Non-Functional Requirements}
 
