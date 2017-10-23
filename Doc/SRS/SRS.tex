@@ -228,6 +228,7 @@ additional mathematical models to suit their project, such as those proposed in
 \lcref{LC_trig} and \lcref{LC_infinity}. 
 
 \subsection{Scope of Requirements} 
+\label{sec_scope}
 The \prognameAbbrv{} calculates $R(f(V))$ of a user-defined $f(V)$ and variable 
 domains $D(v), v \in V$. Each $D(v)$ must be specified by the user in the 
 initial version of this tool, otherwise the tool will assume that the user 
@@ -652,10 +653,7 @@ identified in \ref{sec_theoretical}.
 The goal \gsref{G_range} is solved by recursively solving instance models 
 \iref{I_addition}, \iref{I_subtraction}, \iref{I_multiplication}, 
 \iref{I_positivedivision}, \iref{I_negativedivision}, \iref{I_exponents}, and 
-\iref{I_expbase} and combining the results. For example, if the user provided 
-an equation of the form $p + q \times r$, it is decomposed into $p + Q$ where 
-$Q = q \times r$. This approach is identical to a hand-written evaluation where 
-the intermediary decomposition stages are commonly omitted by humans. 
+\iref{I_expbase} and combining the results (\iref{I_compose}).
 
 These models can also be used as a specification for the closed interval method 
 because of the closed, real interval assumption on $D(v), \forall v \in V$ 
@@ -966,6 +964,54 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 \wss{You don't actually have an instance model to calculate the range of $f$.
   Something like slide 13 of the previously mentioned slides might be 
   appropriate?}
+~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+	\renewcommand*{\arraystretch}{1.5}
+	\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+		\hline
+		\rowcolor[gray]{0.9}
+		Number& IM\refstepcounter{instnum}\theinstnum \label{I_compose}\\
+		\hline
+		Label& \bf Composing Operations\\
+		\hline
+		Input&$[a_{1}, b_{1}], ..., [a_{n}, b_{n}]$ from \ddref{DD_interval}, 
+		$f(V)$\\
+		\hline
+		Output&$[a_{R}, b_{R}]$ such that\\
+		&\vspace*{-10mm}\begin{center}
+			\begin{tabular}{lll}
+				$[a_{R}, b_{R}]$ & $f(V) = [a_{i}, b_{i}]$ \\
+				$f(V)_{1} <op> f(V)_{2}$ & ELSE
+			\end{tabular}
+		\end{center}\\
+		&$<op>$ can be any supported operator (\aref{A_operators}) that 
+		requires two operands\\
+		&$[a_{R}, b_{R}]$ is a closed, real interval 
+		(\aref{A_interval}) and is the $R(f(V))$ for $f(V)$\\
+		\hline
+		Description&$[a_{1}, b_{1}], ..., [a_{n}, b_{n}]$ are the $D(v)$ for 
+		each $v \in V$ in the user's input function $f(V)$. \\
+		&An $f(V)$ that contains multiple operators is solved by recursively 
+		solving each of its component two-operand equations. For example, if 
+		the user provided an equation of the form $p + q \times r$, it is 
+		decomposed into $p + Q$ where $Q = q \times r$. This approach is 
+		identical to a hand-written evaluation where the intermediary 
+		decomposition stages are commonly omitted by humans. 
+		\\
+		&The result, $[a_{R}, b_{R}]$, might not be 
+		a closed, real interval (\aref{A_interval}) due to the mixed interval 
+		restriction on divisors (\ref{sec_scope}). In this case, the 
+		\prognameAbbrv{} tool returns an error.
+		\\
+		\hline
+		Sources& - \\
+		\hline
+		Ref.\ By & -\\
+		\hline
+	\end{tabular}
+\end{minipage}\\
 
 \subsubsection{Data Constraints} \label{sec_DataConstraints}  
 The inputs to the \prognameAbbrv{} tool are subject to the following data 
