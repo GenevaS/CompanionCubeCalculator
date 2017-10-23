@@ -863,81 +863,136 @@ The tests that follow these assume that the user input tests
 \subsection{Tests for Non-Functional Requirements}
 \label{testplan_nonfunctional}
 
-\subsubsection{Area of Testing1}
+Some of the non-functional requirements can be tested using the same tests as 
+their associated functional requirements. This includes correctness 
+and verifiability (\ref{tests_operatorComposition}), robustness (applicable at 
+every process stage), and reliability (\ref{tests_outputResults}). This leaves 
+the non-functional requirements of usability and maintainability to test 
+separately. 
+
+Due to the intended audience for the initial version of the \prognameAbbrv{} 
+tool and the size of the test team, maintainability testing will not be covered.
+
+\subsubsection{Usability}
 		
-\paragraph{Title for Test}
+\paragraph{Use of Standard Mathematical Notation}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{test-enteringFV}
 
-Type: 
+Type: Non-Functional, Manual, System
 					
-Initial State: 
+Initial State: New Session
 					
-Input/Condition: 
+Condition: The user is given a series of $f(V)$ to enter into the tool; the 
+$f(V)$ chosen will be taken from the functional requirement tests 
+(\ref{testplan_functional})
 					
-Output/Result: 
+Result: The user should be able to enter in the $f(V)$ with no guidance
 					
-How test will be performed: 
+How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
 					
-\item{test-id2\\}
+\item{test-enteringDv}
 
-Type: Functional, Dynamic, Manual, Static etc.
+Type: Non-Functional, Manual, System
 					
-Initial State: 
+Initial State: New Session
 					
-Input: 
+Condition: The user is given a series of $D(v)$ to enter into the tool; the 
+$D(v)$ chosen will be taken from the same functional requirement tests 
+(\ref{testplan_functional}) as the $f(V)$ usability test (Test ID: 
+test-enteringFV)
 					
-Output: 
+Result: The user should be able to enter in the $D(v)$ with no guidance
 					
-How test will be performed: 
+How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
 
 \end{enumerate}
 
-\subsubsection{Area of Testing2}
+\paragraph{GUI Presentation and Organization}
 
-...
+\begin{enumerate}
+	
+	\item{test-id1\\}
+	
+	Type: 
+	
+	Initial State: 
+	
+	Input/Condition: 
+	
+	Output/Result: 
+	
+	How test will be performed: 
+	
+	\item{test-id2\\}
+	
+	Type: Functional, Dynamic, Manual, Static etc.
+	
+	Initial State: 
+	
+	Input: 
+	
+	Output: 
+	
+	How test will be performed: 
+	
+\end{enumerate}
+
+%\subsubsection{Maintainability}
+%
+%\paragraph{Adding Open, Real Intervals}
+%
+%\begin{enumerate}
+%	
+%	\item{test-maintenance-addingOpenIntervals}
+%	
+%	Type: Non-Functional, Manual, System
+%	
+%	Initial State: N/A
+%	
+%	Condition: Developers are given available documentation
+%	
+%	Result: A list of modules to alter and an estimation of the number of man 
+%	hours required to make the change
+%	
+%	How test will be performed: Timed planning session\\
+%	
+%\end{enumerate}
+%
+%\paragraph{Adding New Operators and Special Function Support}
+%
+%\begin{enumerate}
+%	
+%	\item{test-id1\\}
+%	
+%	Type: 
+%	
+%	Initial State: 
+%	
+%	Input/Condition: 
+%	
+%	Output/Result: 
+%	
+%	How test will be performed: 
+%	
+%	\item{test-id2\\}
+%	
+%	Type: Functional, Dynamic, Manual, Static etc.
+%	
+%	Initial State: 
+%	
+%	Input: 
+%	
+%	Output: 
+%	
+%	How test will be performed: 
+%	
+%\end{enumerate}
 
 \subsection{Traceability Between Test Cases and Requirements}
 
-% \section{Tests for Proof of Concept}
-
-% \subsection{Area of Testing1}
-		
-% \paragraph{Title for Test}
-
-% \begin{enumerate}
-
-% \item{test-id1\\}
-
-% Type: Functional, Dynamic, Manual, Static etc.
-					
-% Initial State: 
-					
-% Input: 
-					
-% Output: 
-					
-% How test will be performed: 
-					
-% \item{test-id2\\}
-
-% Type: Functional, Dynamic, Manual, Static etc.
-					
-% Initial State: 
-					
-% Input: 
-					
-% Output: 
-					
-% How test will be performed: 
-
-% \end{enumerate}
-
-% \subsection{Area of Testing2}
-
-% ...
 				
 \section{Unit Testing Plan}
 		
@@ -955,8 +1010,50 @@ How test will be performed:
 This is where you can place additional information.
 
 
-\subsection{Usability Survey Questions?}
+\subsection{Usability Survey Questions}
 
-This is a section that would be appropriate for some teams.
+\subsubsection{User Questions for Entering Values into the \prognameAbbrv{} 
+Tool}
+\label{questions_inputs}
+
+\begin{enumerate}
+	\item (Likert Scale) I was able to enter in the equation $f(V)$ in a format 
+	that I was familiar with.
+	\item (Likert Scale) I was able to enter in the equation $f(V)$ in a format 
+	that I was expecting.
+	\item (Likert Scale) I found it easy to enter the $f(V)$ equations into the 
+	tool.
+	\item (Likert Scale) I was able to enter in the domains $D(v)$ in a format 
+	that I was familiar with.
+	\item (Likert Scale) I was able to enter in the domains $D(v)$ in a format 
+	that I was expecting.
+	\item (Likert Scale) I found it easy to enter the domains $D(v)$ into the 
+	tool.
+	\item (Open Response) Do you have any suggestions for improving the 
+	mathematical notation of the \prognameAbbrv{} tool?
+\end{enumerate}
+
+\subsubsection{User Questions for Using the \prognameAbbrv{} Tool GUI}
+\label{questions_GUI}
+
+\begin{enumerate}
+	\item (Likert Scale) I found it easy to find the input mechanism for 
+	entering $f(V)$ into the GUI.
+	\item (Likert Scale) I found it easy to enter the $f(V)$ equations into the 
+	GUI.
+	\item (Likert Scale) I found it easy to find the input mechanism for 
+	entering $D(v)$ into the GUI.
+	\item (Likert Scale) I found it easy to enter the domains $D(v)$ into the 
+	GUI.
+	\item (Likert Scale) I found it easy to find the program's result for 
+	$R(f(V))$ in the GUI.
+	\item (Likert Scale) I found it easy to understand the program's result for 
+	$R(f(V))$ in the GUI.
+	\item (Likert Scale) I found it easy to understand the sequence of steps 
+	required to use the \prognameAbbrv{} tool.
+	\item (Open Response) Do you have any suggestions for improving the 
+	process flow of the \prognameAbbrv{} tool?
+\end{enumerate}
+
 
 \end{document}
