@@ -874,6 +874,7 @@ Due to the intended audience for the initial version of the \prognameAbbrv{}
 tool and the size of the test team, maintainability testing will not be covered.
 
 \subsubsection{Usability}
+\label{tests_nonfunctional_usability}
 		
 \paragraph{Use of Standard Mathematical Notation}
 
@@ -914,29 +915,47 @@ How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
 
 \begin{enumerate}
 	
-	\item{test-id1\\}
+	\item{test-GUIPresentationInputs}
 	
-	Type: 
+	Type: Non-Functional, Manual, System
 	
-	Initial State: 
+	Initial State: New Session
 	
-	Input/Condition: 
+	Condition: The user will be given an input set $\{f(V), D(v) v \in V\}$ and 
+	asked to enter them into the GUI
 	
-	Output/Result: 
+	Result: The user should be able to find and enter the data into the GUI 
+	with no guidance
 	
-	How test will be performed: 
+	How test will be performed: Usability questionnaire (\ref{questions_GUI})\\
 	
-	\item{test-id2\\}
+	\item{test-GUIWorkflow}
 	
-	Type: Functional, Dynamic, Manual, Static etc.
+	Type: Non-Functional, Manual, System
 	
-	Initial State: 
+	Initial State: New Session
 	
-	Input: 
+	Condition: The user will be shown a GUI that has an input set $\{f(V), D(v) 
+	v \in V\}$ already entered and ask them to tell the tool to compute the 
+	result
 	
-	Output: 
+	Result: The user should be able to prompt the tool to begin processing with 
+	no guidance
 	
-	How test will be performed: 
+	How test will be performed: Usability questionnaire (\ref{questions_GUI})\\
+	
+	\item{test-GUIPresentationOutputs}
+	
+	Type: Non-Functional, Manual, System
+	
+	Initial State: End Session
+	
+	Condition: The user will be shown a GUI that has finished its calculations
+	
+	Result: The user should be able to find and understand the system's outputs 
+	from the GUI with no guidance
+	
+	How test will be performed: Usability questionnaire (\ref{questions_GUI})\\
 	
 \end{enumerate}
 
@@ -1005,14 +1024,11 @@ How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
 
 \newpage
 
-\section{Appendix}
+\section{Appendix: Usability Survey Questions}
+These surveys are designed to accompany the usability non-functional 
+requirements tests (\ref{tests_nonfunctional_usability}).
 
-This is where you can place additional information.
-
-
-\subsection{Usability Survey Questions}
-
-\subsubsection{User Questions for Entering Values into the \prognameAbbrv{} 
+\subsection{User Questions for Entering Values into the \prognameAbbrv{} 
 Tool}
 \label{questions_inputs}
 
@@ -1033,7 +1049,7 @@ Tool}
 	mathematical notation of the \prognameAbbrv{} tool?
 \end{enumerate}
 
-\subsubsection{User Questions for Using the \prognameAbbrv{} Tool GUI}
+\subsection{User Questions for Using the \prognameAbbrv{} Tool GUI}
 \label{questions_GUI}
 
 \begin{enumerate}
