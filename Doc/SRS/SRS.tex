@@ -556,37 +556,12 @@ Additional models exist for interval arithmetic, but only the models named in
 		Label&\bf Constant Exponents on a Real Interval Base 
 		Number\\
 		\hline
-		Equations &  $X^N = \begin{cases}
-			\{x^N | x \in X \wedge N 
-			\in \varmathbb{N}\} & \text{N is odd}\\
-			\{x^N | x \in X \wedge N \in \varmathbb{N}\}, (X^N, <) & \text{N is 
-			even}\wedge x_{n} \geq x_{n+1} 
-			\\&\hspace*{3mm}\wedge x_{1} > 0\\
-			\{x^N | x \in X \wedge N \in \varmathbb{N}\}, (X^N, >) & \text{N is 
-			even} \wedge x_{n+1} < x_{n+2} 
-			\\&\hspace*{3mm}\wedge x_{n} < 0\\
-			\{x^N | 0 \leq x^N \leq \max(x_{1}^N,x_{n}^N) \wedge x \in X 
-			\wedge N \in \varmathbb{N}\} & \text{ELSE}\\
-		\end{cases}$
-		\newline
+		Equations &  $X^N = \{x^N | x \in X \wedge N \in \varmathbb{N}\}$
 		\\
 		\hline
-		Description & The product interval of a real interval $X$ 
-		raised to the power of a constant, natural number $N$ depends on the 
-		properties of $X$ and $N$:
-		\begin{itemize}
-			\item When $N$ is an odd number, the product interval is equal to 
-			the set of products $x^N$ for each element $x$
-			\item When $N$ is even, the function is monotonically decreasing, 
-			and $x_{1} > 0$, the product interval is equal to the set of 
-			products $x^N$ for each element $x$
-			\item When $N$ is even, the function is monotonically increasing, 
-			and $x_{n} < 0$, the product interval is equal to the set of 
-			products $x^N$ for each element $x$ and ordered in the opposite 
-			direction of the original interval $X$
-			\item Otherwise, the product interval is bounded by $0$ and the 
-			maximum product of the first and last elements in the interval set
-		\end{itemize}\\
+		Description & The product interval of an interval $X$ raised 
+		to the power of a constant exponent $N$ is equal to the set of products 
+		$x^N$ for each interval element $x$.\\
 		\hline
 		Source & \url{https://en.wikipedia.org/wiki/Interval_arithmetic}\\
 		\hline
@@ -594,12 +569,6 @@ Additional models exist for interval arithmetic, but only the models named in
 		\hline
 	\end{tabular}
 \end{minipage}\\
-
-\wss{This does not make sense to me.  It does not match what I see at the
-  wikipedia page.  Is $X$ an interval, or is $X$ a set of intervals, or is $X$ a
-  set of variables?  What is the subscript $z$?}
-
-~\newline
 
 \subsubsection{General Definitions}\label{sec_gendef}
 No additional information is required to build the data definitions. 
