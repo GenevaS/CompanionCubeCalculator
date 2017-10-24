@@ -950,17 +950,20 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		Input&$[a_{1}, b_{1}], ..., [a_{n}, b_{n}]$ from \ddref{DD_interval}, 
 		$f(V)$\\
 		\hline
-		Output&$[a_{R}, b_{R}]$ such that\\
-		&\vspace*{-10mm}\begin{center}
-			\begin{tabular}{lll}
-				$[a_{R}, b_{R}]$ & $f(V) = [a_{i}, b_{i}]$ \\
-				$f(V)_{1} <op> f(V)_{2}$ & ELSE
-			\end{tabular}
-		\end{center}\\
-		&$<op>$ can be any supported operator (\aref{A_operators}) that 
-		requires two operands\\
-		&$[a_{R}, b_{R}]$ is a closed, real interval 
-		(\aref{A_interval}) and is the $R(f(V))$ for $f(V)$\\
+		Output&$R(f(V)) = [a_{R}, b_{R}]$ such that\\
+		& $R(f(V)) ::= [a_i, b_i], v_i \in V | R(f(V)) \mathit{\textless op 
+		\textgreater} R(f(V)) | ( R(f(V)) )$\\
+%		&\vspace*{-10mm}\begin{center}
+%			\begin{tabular}{lll}
+%				$R(f(V)) = [a_i, b_i]$ & $v_i \in V$ \\
+%				$R(f(V)) = R(f(V))_1 <op> R(f(V))_2$ & $f(V)_1 = f(V) - <op> - 
+%				f(V)_2 \wedge f(V)_2 = f(V) - <op> - f(V)_1$\\
+%				$R(f(V)) = (R(f(V))_1)$ & $f(V)_1 = f(V) - {()}$\\
+%			\end{tabular}
+%		\end{center}\\
+		&$\mathit{\textless op \textgreater}$ can be any supported binary 
+		operator (\aref{A_operators})\\
+		&$[a_{R}, b_{R}]$ is a closed, real interval (\aref{A_interval})\\
 		\hline
 		Description&$[a_{1}, b_{1}], ..., [a_{n}, b_{n}]$ are the $D(v)$ for 
 		each $v \in V$ in the user's input function $f(V)$. \\
