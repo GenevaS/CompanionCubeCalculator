@@ -97,9 +97,10 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
- & 1.0.2 & Collapsed theoretical models for addition, subtraction, and 
+October 21, 2017 & 1.1.1 & Collapsed theoretical models for addition, 
+subtraction, and 
  multiplication into one model\\
-October 18, 2017 & 1.0.1 & Revised table of units and documentation notations \\
+October 18, 2017 & 1.1 & Revised table of units and documentation notations \\
 October 4, 2017 & 1.0 & Completed the initial SRS documentation\\
 \bottomrule
 \end{tabularx}
@@ -1094,6 +1095,10 @@ and $D(v), v \in V$. If this is not possible, such as in the case of a violated
 data constraint (\ref{sec_DataConstraints}), communicate the reason to the 
 user.
 
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_SigFig}:] The 
+\prognameAbbrv{} tool must show the precision of $R(f(V))$ using the fewest 
+number of decimal places that appear in $D(v), v \in V$.
+
 \end{itemize}
 
 \subsection{Non-Functional Requirements}
@@ -1302,7 +1307,8 @@ within this document.
 		\rref{R_Calculate}     & X&X &X &X &X &X &X &&&X\\ \hline
 		\rref{R_VerifyOutput}  & & & & & & & &X&&\\ \hline
 		\rref{R_VerifyOutputConstraints} & & & & & & & &&X&\\ \hline
-		\rref{R_Output}   & & & & & & & &&&\\ 
+		\rref{R_Output}   & & & & & & & &&&\\ \hline
+		\rref{R_SigFig}   & & & & & & & &&&\\ 
 		\hline
 	\end{tabular}
 	\caption{Traceability Matrix Showing the Connections Between Requirements 
@@ -1323,7 +1329,7 @@ in its readability. Figure~\ref{Fig_RTrace} is a companion to
 Table~\ref{Table:R_trace}, showing the dependencies of instance models, 
 requirements, and data constraints on each other.
 
- \begin{figure}[h!]
+ \begin{figure}[H]
  	\begin{center}
  		%\rotatebox{-90}
  		{
@@ -1335,7 +1341,7 @@ requirements, and data constraints on each other.
  \end{figure}
 
 
- \begin{figure}[h!]
+ \begin{figure}[H]
  	\begin{center}
  		%\rotatebox{-90}
  		{
@@ -1346,8 +1352,7 @@ requirements, and data constraints on each other.
  	\end{center}
  \end{figure}
 
-\newpage
-
+~\newpage
 \bibliographystyle {plainnat}
 \bibliography 
 {../../ReferenceMaterial/SRS_Refs,../../ReferenceMaterial/ProblemStatement_Refs}
