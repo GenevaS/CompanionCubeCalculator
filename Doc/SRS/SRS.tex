@@ -1218,6 +1218,7 @@ within this document.
 \iref{I_negativedivision} &   &   &   &  \\ \hline
 \iref{I_exponents}        &   &   &   &  \\ \hline
 \iref{I_expbase}          &   &   &   &  \\ \hline
+\iref{I_compose}          &   &   &   &  \\ \hline
 \lcref{LC_openinterval}   & X & X &   &  \\ \hline
 \lcref{LC_unknownDomain}  & X & X &   &  \\ \hline
 \lcref{LC_trig}           & X &   &   & X \\ \hline
@@ -1231,28 +1232,29 @@ within this document.
 
 \begin{table}[h!]
 	\centering
-	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 		\hline        
 		& \tref{T_add-sub-mul}& \tref{T_division}& \tref{T_exponents} & 
 		\tref{T_expbase}& \ddref{DD_interval} & \iref{I_addition}& 
 		\iref{I_subtraction}& \iref{I_multiplication}& 
 		\iref{I_positivedivision}& \iref{I_negativedivision} & 
 		\iref{I_exponents} & 
-		\iref{I_expbase}\\
+		\iref{I_expbase} & \iref{I_compose}\\
 		\hline
-		\tref{T_add-sub-mul}         &     &   &   &   &   & & & & & & & \\ 
+		\tref{T_add-sub-mul}         &     &   &   &   &   & & & & & & && \\ 
 		\hline
-		\tref{T_division}         &    & & & & & & & & &  & &\\ \hline
-		\tref{T_exponents}        &    & & & & & & & &  & & &\\ \hline
-		\tref{T_expbase}          &    & & & & & & & & & & &\\ \hline
-		\ddref{DD_interval}       &    & & & & & & & & &&  & \\ \hline
-		\iref{I_addition}         & X  & & & & X & & & &  & & &\\ \hline
-		\iref{I_subtraction}      & X  & & & & X & & &  & &  & &\\ \hline
-		\iref{I_multiplication}   & X   & & & & X & & & &  && & \\ \hline
-		\iref{I_positivedivision} &    & X & & & X & &  & & && & \\\hline
-		\iref{I_negativedivision} &    & X &  & & X & &  & & && & \\\hline
-		\iref{I_exponents}        &    & & X & & X &  & & & & & & \\\hline
-		\iref{I_expbase}          &    & & & X & X & &  & & &  && \\
+		\tref{T_division}         &    & & & & & & & & &  & &&\\ \hline
+		\tref{T_exponents}        &    & & & & & & & &  & & &&\\ \hline
+		\tref{T_expbase}          &    & & & & & & & & & & &&\\ \hline
+		\ddref{DD_interval}       &    & & & & & & & & &&  && \\ \hline
+		\iref{I_addition}         & X  & & & & X & & & &  & & &&\\ \hline
+		\iref{I_subtraction}      & X  & & & & X & & &  & &  & &&\\ \hline
+		\iref{I_multiplication}   & X   & & & & X & & & &  && && \\ \hline
+		\iref{I_positivedivision} &    & X & & & X & &  & & && & &\\\hline
+		\iref{I_negativedivision} &    & X &  & & X & &  & & && && \\\hline
+		\iref{I_exponents}        &    & & X & & X &  & & & & & && \\\hline
+		\iref{I_expbase}          &    & & & X & X & &  & & &  && &\\\hline
+		\iref{I_compose}          &    & & &  & X & &  & & &  &&& \\
 		\hline
 	\end{tabular}
 	\caption{Traceability Matrix Showing the Connections Between Items of 
