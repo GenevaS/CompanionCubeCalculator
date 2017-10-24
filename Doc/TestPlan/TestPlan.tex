@@ -65,8 +65,6 @@
   \bottomrule
 \end{tabular}\\
 
-\wss{symbols, abbreviations or acronyms -- you can reference the SRS tables if needed}
-
 \newpage
 
 \tableofcontents
@@ -335,7 +333,7 @@ these tests have passed.
 	Input: $f(V) = x + y, x = [2,4], y = [3,5], z = [6,7]$
 	
 	Output: Warning -- Function $f(V)$ does not contain name $z$ found in 
-	variable list
+	variable list -\textgreater ignoring domain of $z$
 	
 	How test will be performed: Unit Test\\
 	
@@ -383,7 +381,8 @@ these tests have passed.
 	
 	Input: $f(V) = x +$, $x = [2,4], y = [3,5]$
 	
-	Output: Error -- Function $f(V)$ is missing an operand for $+$
+	Output: Error -- Function $f(V)$ is missing an operand for ``$+$" 
+	-\textgreater domain list contains unreferenced variable $y$
 	
 	How test will be performed: Unit Test\\
 	
@@ -545,6 +544,19 @@ these tests have passed.
 	
 	How test will be performed: Unit Test\\
 	
+	\item{test-input\_multiCharacterVariableName8}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = \mathit{x*} + y$, $x* = [2,4], y = [3,5]$
+	
+	Output: Error -- Variable names cannot contain the characters $\{+, - , *, 
+	\, \string^, (, )\}$
+	
+	How test will be performed: Unit Test\\
+	
 \end{enumerate}
 
 \subsubsection{Conditioning User Inputs}
@@ -586,7 +598,7 @@ The tests that follow these assume that the user input tests
 	
 	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_multiplication}
+	\item{test-parse\_multiplication1}
 	
 	Type: Functional, Automatic, Integration
 	
@@ -749,6 +761,60 @@ The tests that follow these assume that the user input tests
 	
 \end{enumerate}
 
+\paragraph{Constant Values}
+
+\begin{enumerate}
+	
+	\item{test-parse\_constantValue1}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = 4 + x$, $x = [2,4]$
+	
+	Output: \Tree[.$+$ [.$Const$ $[4,4]$ ] [.$x$ $[2,4]$ ] ]
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_constantValue2}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = -4 + x$, $x = [2,4]$
+	
+	Output: \Tree[.$+$ [.$Const$ $[-4,-4]$ ] [.$x$ $[2,4]$ ] ]
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_constantValue3}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + 4$, $x = [2,4]$
+	
+	Output: \Tree[.$+$ [.$x$ $[2,4]$ ] [.$Const$ $[4,4]$ ] ]
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_implicitMultiplication}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = 4x$, $x = [2,4]$
+	
+	Output: \Tree[.$*$ [.$Const$ $[4,4]$ ] [.$x$ $[2,4]$ ] ]
+	
+	How test will be performed: Unit Testing\\
+	
+\end{enumerate}
+
 \paragraph{Precedence of Brackets}
 
 \begin{enumerate}
@@ -790,6 +856,36 @@ The tests that follow these assume that the user input tests
 	
 	Output: \Tree[.$*$ [.$w$ $[5,6]$ ] [.$()$ [.$/$ [.$x$ 
 	$[2,4]$ ] [.$()$ [.$+$ [.$y$ $[3,5]$ ] [.$z$ $[2,2]$ ] ]]   ]  ] 	]
+	
+	How test will be performed: Unit Testing\\
+	
+\end{enumerate}
+
+\paragraph{Open Brackets}
+
+\begin{enumerate}
+	
+	\item{test-parse\_openLeftBracket}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + y - z)$, $x = [2,4], y = [3,5], z = [2,2]$
+	
+	Output: Error -- Missing ``$($" in $f(V)$
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_openRightBracket}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + (y - z$, $x = [2,4], y = [3,5], z = [2,2]$
+	
+	Output: Error -- Missing ``$)$" in $f(V)$
 	
 	How test will be performed: Unit Testing\\
 	
