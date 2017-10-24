@@ -808,6 +808,18 @@ The tests that follow these assume that the user input tests
 	
 	Initial State: New Session
 	
+	Input: $f(V) = x / -4$, $x = [2,4]$
+	
+	Output: \Tree[.$/$ [.$x$ $[2,4]$ ] [.$Const$ $[-4,-4]$ ] ]
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_constantValue4}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
 	Input: $f(V) = x + 4$, $x = [2,4]$
 	
 	Output: \Tree[.$+$ [.$x$ $[2,4]$ ] [.$Const$ $[4,4]$ ] ]
