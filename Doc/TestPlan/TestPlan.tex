@@ -247,6 +247,19 @@ incorrectly processed if the tool does not parse them correctly.
 	
 \subsection{Tests for Functional Requirements}
 \label{testplan_functional}
+The functional requirement tests are broken into four main groups. The 
+``Getting User Inputs" tests (\ref{tests_gettingInputs}) test to make sure that 
+no syntactic errors exist in the user's inputs that can be reasonably caught by 
+the tool. The ``Conditioning User Inputs" tests convert the user's $D(v), v \in 
+V$ into internal data structures and parses $f(V)$ into a semantically correct 
+representation following BEDMAS rules. The ``Composing Operators" tests help 
+prove that the composition of individual operators will produce the correct 
+solution $R(f(V))$. Finally, the ``Presentation of Calculations to the User" 
+tests ensure that the \prognameAbbrv{} tool follows the rules for significant 
+figures and precision.
+
+Each test group assumes that the groups preceding it have passed successfully, 
+adding to the confidence in the product.
 
 \subsubsection{Getting User Inputs}
 \label{tests_gettingInputs}
@@ -1057,6 +1070,25 @@ The tests that follow these assume that the user input tests
 	Output: $[6.0,9.9]$
 	
 	How test will be performed: Unit Testing\\
+	
+	\item{test-significantFiguresFloatingPoint}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + y, x = [2.5343...3,4.3333..34], y = 
+	[3.5343...3,5.5343...3]$
+	
+	Output: $[6.0686...6,9.8676...6]$\\
+	Warning -- Precision of domain boundaries exceeds the floating 
+	point representation on this machine -\textgreater rounded to the most 
+	significant figure available
+	
+	How test will be performed: Unit Testing
+	
+	\textbf{Note}: Numerical values for input and output are for illustrative 
+	purposes only\\
 	
 \end{enumerate}
 
