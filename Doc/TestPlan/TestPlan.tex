@@ -27,7 +27,7 @@
 
 \newcommand{\progname}{Companion Cube Calculator} % PUT YOUR PROGRAM NAME HERE
 \newcommand{\prognameAbbrv}{$C^{3}$}
-\newcommand{\srsVersion}{1.0.2}
+\newcommand{\srsVersion}{1.1.1}
 
 \begin{document}
 
@@ -444,6 +444,109 @@ these tests have passed.
 	
 \end{enumerate}
 
+\paragraph{Variable Names}
+
+\begin{enumerate}
+	
+	\item{test-input\_simpleVariableName}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + y$, $x = [2,4], y = [3,5]$
+	
+	Output: N/A
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-input\_multiCharacterVariableName1}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x1 + y$, $x1 = [2,4], y = [3,5]$
+	
+	Output: N/A
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-input\_multiCharacterVariableName2}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x\_ + y$, $x\_ = [2,4], y = [3,5]$
+	
+	Output: N/A
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-input\_multiCharacterVariableName3}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x\_1 + y$, $x\_1 = [2,4], y = [3,5]$
+	
+	Output: N/A
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-input\_multiCharacterVariableName4}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x\_i + y$, $x\_i = [2,4], y = [3,5]$
+	
+	Output: N/A
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-input\_multiCharacterVariableName5}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x'' + y$, $x'' = [2,4], y = [3,5]$
+	
+	Output: N/A
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-input\_multiCharacterVariableName6}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = xy + y$, $xy = [2,4], y = [3,5]$
+	
+	Output: N/A
+	
+	How test will be performed: Unit Test\\
+	
+	\item{test-input\_multiCharacterVariableName7}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = xy$, $x = [2,4], y = [3,5]$
+	
+	Output: Warning -- Found variable $xy$ that does not exist in the domain 
+	list for $f(V)$ -\textgreater expanding to multiplication $x * y$
+	
+	How test will be performed: Unit Test\\
+	
+\end{enumerate}
+
 \subsubsection{Conditioning User Inputs}
 \label{tests_conditioningInputs}
 This test suite is designed to determine if the \rref{R_conditionX} (Converting 
@@ -692,83 +795,7 @@ The tests that follow these assume that the user input tests
 	
 \end{enumerate}
 
-\subsubsection{Composing Operators}
-\label{tests_operatorComposition}
-This test suite is designed to determine if the \rref{R_Calculate} (Solving 
-each two-operand equation and composing the results) and \rref{R_VerifyOutput} 
-(Ensuring that the calculated result is represented in closed, interval form) 
-functional requirements, and the associated data constraints from 
-\rref{R_VerifyOutputConstraints} are satisfied.
-
-The tests that follow these assume that the user input tests 
-(\ref{tests_gettingInputs}) and input conditioning tests 
-(\ref{tests_conditioningInputs}) have passed.
-
-\paragraph{Correctness of Operator Composition}
-
-\begin{enumerate}
-	
-	\item{test-parse\_multipleOperatorsInFX}
-	
-	Type: Static, Manual, Unit
-	
-	Initial State: New Session
-	
-	Input: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$, where $R(f_1(V)), R(f_2(V))$ 
-	exist
-	
-	Output: True
-	
-	How test will be performed: Induction\\
-	
-	\item{test-parse\_multipleOperatorsInFX}
-	
-	Type: Static, Manual, Unit
-	
-	Initial State: New Session
-	
-	Input: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$, where $R(f_1(V))$ or 
-	$R(f_2(V))$ do not exist
-	
-	Output: Error -- Calculation path encountered an unsupported interval 
-	operation
-	
-	How test will be performed: Induction\\
-	
-\end{enumerate}
-
-\subsubsection{Presentation of Calculations to the User}
-\label{tests_outputResults}
-This test suite is designed to test that the final functional requirement, 
-\rref{R_Output} (Showing the results to the user or an error if a result cannot 
-be found) is satisfied. It is assumed that any inputs that do not produce a 
-viable result have been caught previously and an appropriate error or warning 
-message was presented to the user.
-
-The tests that follow these assume that the user input tests 
-(\ref{tests_gettingInputs}), input conditioning tests 
-(\ref{tests_conditioningInputs}), and operator composition tests 
-(\ref{tests_operatorComposition}) have passed.
-
-\paragraph{Showing the Results to the User}
-
-\begin{enumerate}
-	
-	\item{test-parse\_outputTest}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + y, x = [2,4], y = [3,5]$
-	
-	Output: $[5,9]$
-	
-	How test will be performed: Unit Testing\\
-	
-\end{enumerate}
-
-\paragraph{Regression Tests}
+\paragraph{Operational Precedence Tests}
 
 \begin{enumerate}
 	
@@ -846,7 +873,84 @@ The tests that follow these assume that the user input tests
 	
 	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_simpleEquationWithDecimals}
+\end{enumerate}
+
+\subsubsection{Composing Operators}
+\label{tests_operatorComposition}
+This test suite is designed to determine if the \rref{R_Calculate} (Solving 
+each two-operand equation and composing the results) and \rref{R_VerifyOutput} 
+(Ensuring that the calculated result is represented in closed, interval form) 
+functional requirements, and the associated data constraints from 
+\rref{R_VerifyOutputConstraints} are satisfied.
+
+The tests that follow these assume that the user input tests 
+(\ref{tests_gettingInputs}) and input conditioning tests 
+(\ref{tests_conditioningInputs}) have passed.
+
+\paragraph{Correctness of Operator Composition}
+
+\begin{enumerate}
+	
+	\item{test-parse\_multipleOperatorsInFX}
+	
+	Type: Static, Manual, Unit
+	
+	Initial State: New Session
+	
+	Input: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$, where $R(f_1(V)), R(f_2(V))$ 
+	exist
+	
+	Output: True
+	
+	How test will be performed: Induction\\
+	
+	\item{test-parse\_multipleOperatorsInFX}
+	
+	Type: Static, Manual, Unit
+	
+	Initial State: New Session
+	
+	Input: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$, where $R(f_1(V))$ or 
+	$R(f_2(V))$ do not exist
+	
+	Output: Error -- Calculation path encountered an unsupported interval 
+	operation
+	
+	How test will be performed: Induction\\
+	
+\end{enumerate}
+
+\subsubsection{Presentation of Calculations to the User}
+\label{tests_outputResults}
+This test suite is designed to test that the final functional requirements, 
+\rref{R_Output} (Showing the results to the user or an error if a result cannot 
+be found) and \rref{R_SigFig} (Representing $R(f(V))$ with the most precise 
+number of significant decimal figures), are satisfied. It is assumed that any 
+inputs that do not produce a viable result have been caught previously and an 
+appropriate error or warning message was presented to the user.
+
+The tests that follow these assume that the user input tests 
+(\ref{tests_gettingInputs}), input conditioning tests 
+(\ref{tests_conditioningInputs}), and operator composition tests 
+(\ref{tests_operatorComposition}) have passed.
+
+\paragraph{Rounding For Significant Figures}
+
+\begin{enumerate}
+	
+	\item{test-equalSignificantFigures}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + y, x = [2.5,4.3], y = [3.5,5.5]$
+	
+	Output: $[6.0,9.8]$
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-unequalSignificantFigures}
 	
 	Type: Functional, Automatic, System, Regression
 	
