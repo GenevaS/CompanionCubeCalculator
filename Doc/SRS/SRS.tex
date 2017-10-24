@@ -1040,19 +1040,24 @@ file.
 \prognameAbbrv{} tool must convert each $D(v)$ into interval form 
 (\ddref{DD_interval}).
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_conditionfx}:] The 
-\prognameAbbrv{} tool must decompose $f(V)$ into a series of two-operand 
-equations following the standard order of operations rules (BEDMAS).
-
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_verifyinputs}:] The 
 \prognameAbbrv{} tool must verify that the user inputs satisfy the input data 
 constraints from \ref{sec_DataConstraints}.
+
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_conditionfx}:] The 
+\prognameAbbrv{} tool must decompose $f(V)$ into a series of two-operand 
+equations following the standard order of operations rules (BEDMAS) using 
+\iref{I_compose}.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_Calculate}:] The 
 \prognameAbbrv{} tool must solve each equation identified in 
 \rref{R_conditionfx} using \iref{I_addition}, \iref{I_subtraction}, 
 \iref{I_multiplication}, \iref{I_positivedivision}, \iref{I_negativedivision}, 
 \iref{I_exponents}, and \iref{I_expbase}.
+
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_CalculateCompose}:] The 
+\prognameAbbrv{} tool must recompose the equation results from 
+\rref{R_Calculate} using \iref{I_compose}.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_VerifyOutput}:] The 
 \prognameAbbrv{} tool must verify that the program produces a $R(f(V))$ in 
@@ -1257,31 +1262,34 @@ within this document.
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 		\hline
 		& \iref{I_addition}& \iref{I_subtraction}& \iref{I_multiplication}& 
 		\iref{I_positivedivision}& \iref{I_negativedivision}& 
 		\iref{I_exponents}& 
-		\iref{I_expbase}& \ddref{DD_interval}& \ref{sec_DataConstraints}& 
-		\rref{R_conditionfx} \\
+		\iref{I_expbase} & \iref{I_compose}& \ddref{DD_interval}& 
+		\ref{sec_DataConstraints}& 
+		\rref{R_conditionfx} & \rref{R_Calculate}\\
 		\hline
-		\iref{I_addition}            & & & & & & & &&& \\ \hline
-		\iref{I_subtraction}            & & & & & & &  &&&\\ \hline
-		\iref{I_multiplication}          & & & & & & &  &&&\\ \hline
-		\iref{I_positivedivision}          & & & & & & & &&& \\ \hline
-		\iref{I_negativedivision}     & & & & & & & &&&\\ \hline
-		\iref{I_exponents}    & & & & & & & &&&\\ \hline
-		\iref{I_expbase}   & & & & & & & &&&\\ \hline
-		\ddref{DD_interval}   & & & & & & & &&&\\ \hline
-		\rref{R_Inputs}  & & & & & & &  &&&\\ \hline
-		\rref{R_conditionX}     & & & & & & & &X&&\\ \hline 
-		\rref{R_conditionfx}       & & & & & & & &&&\\ \hline
-		\rref{R_verifyinputs}   & & & & & & & &&X&\\ \hline
-		\rref{R_Calculate}     & X&X &X &X &X &X &X &&&X\\ \hline
-		\rref{R_VerifyOutput}  & & & & & & & &X&&\\ \hline
-		\rref{R_VerifyOutputConstraints} & & & & & & & &&X&\\ \hline
-		\rref{R_Output}   & & & & & & & &&&\\ \hline
-		\rref{R_SigFig}   & & & & & & & &&&\\ 
+		\iref{I_addition}            & & & & & & & &&&& &\\ \hline
+		\iref{I_subtraction}            & & & & & && &  &&&&\\ \hline
+		\iref{I_multiplication}          & & & & & & & & &&&&\\ \hline
+		\iref{I_positivedivision}          & & & & & && & &&&& \\ \hline
+		\iref{I_negativedivision}     & & & & & & && &&&&\\ \hline
+		\iref{I_exponents}    & & & & & & & &&&&&\\ \hline
+		\iref{I_expbase}   & & & & & & & &&&&&\\ \hline
+		\iref{I_compose}   & & & & & & & &&&&&\\ \hline
+		\ddref{DD_interval}   & & & & & && & &&&&\\ \hline
+		\rref{R_Inputs}  & & & & & & &  &&&&&\\ \hline
+		\rref{R_conditionX}     & & & & & & & &&X&&&\\ \hline 
+		\rref{R_verifyinputs}   & & & & & & & &&&X&&\\ \hline
+		\rref{R_conditionfx}       & & & & & && &X &&&&\\ \hline
+		\rref{R_Calculate}     & X&X &X &X &X &X &X &&&&X&\\ \hline
+		\rref{R_CalculateCompose}     & & & & & & & &X&&&&X\\ \hline
+		\rref{R_VerifyOutput}  & & & & & & & &&X&&&\\ \hline
+		\rref{R_VerifyOutputConstraints} & & & & & & & &&&X&&\\ \hline
+		\rref{R_Output}   & & & & & & & &&&X&&\\ \hline
+		\rref{R_SigFig}   & & & & & & & &&&&&\\ 
 		\hline
 	\end{tabular}
 	\caption{Traceability Matrix Showing the Connections Between Requirements 
