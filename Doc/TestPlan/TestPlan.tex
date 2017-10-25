@@ -1565,8 +1565,27 @@ How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
 				
 \section{Unit Testing Plan}
 		
-\wss{Unit testing plans for internal functions and, if appropriate, output
-  files}
+As shown by the system test description (Section \ref{testplan_highlevel}), the 
+system and integration testing of the \prognameAbbrv{} tool can be divided into 
+several unique steps. This also has implications for specific function unit 
+tests.
+
+The general plan for unit testing is to use the same tests from the functional 
+requirements (Section \ref{testplan_functional}) except that the expected 
+inputs are provided by the human tester rather than the module that produces 
+those values as outputs. For example if the $f(V)$ parsing function is 
+expecting an error-checked $f(V)$ from the input module, the error-checked 
+$f(V)$ would be provided by the human tester instead. If a manually synthesised 
+input produces incorrect behaviours from a function, debugging strategies can 
+be employed, including debugging statements and visual code inspections.
+
+The unit testing stage is also the point where code coverage tools can be used 
+to ensure that most lines of code are being tested by the integration and 
+system tests. If code is not covered by the tests, it should be analysed to 
+determine its usefulness and accessibility to the rest of the program.
+
+Once a section of tests have been completed and there do not appear to be any 
+immediate problems, the modules can be used in the functional requirement tests.
 
 %\bibliographystyle{plainnat}
 
