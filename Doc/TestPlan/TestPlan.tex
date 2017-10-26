@@ -22,6 +22,7 @@
     urlcolor=Cerulean
 }
 \usepackage[round]{natbib}
+\usepackage{float}
 
 \input{../Comments}
 
@@ -1561,7 +1562,50 @@ How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
 %\end{enumerate}
 
 \subsection{Traceability Between Test Cases and Requirements}
+The purpose of the traceability matrix (Table~\ref{Table:req2tests}) and graph 
+(Figure~\ref{Fig:req2test}) is to provide easy references between the test 
+suite and the requirements from the SRS (version \srsVersion{}). In the table, 
+the test suites that verify a requirement are marked with an ``X'' in the 
+requirement's column. In the graph, tests appear at the tail of an arrow and 
+requirements appear at the head.
 
+\begin{table}[H]
+	\centering
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			& \rref{R_Inputs} & \rref{R_conditionX} & \rref{R_verifyinputs} & 
+			\rref{R_conditionfx}& \rref{R_Calculate} &\rref{R_CalculateCompose} 
+			&\rref{R_VerifyOutput} &\rref{R_VerifyOutputConstraints} 
+			&\rref{R_Output}&\rref{R_SigFig}& NF: Usability
+			\\
+			\hline
+			\ref{tests_gettingInputs}       & X &  & X &&&&&&&&  \\ \hline
+			\ref{tests_conditioningInputs}       &  & X & X  &X&&&&&&&  \\ 
+			\hline
+			\ref{tests_correctnessOfCalculations}       &  &  &   &&X&&X&X&& & 
+			\\ 
+			\hline
+			\ref{tests_operatorComposition}       &  &  &   &&&X&X&X&& & \\ 
+			\hline
+			\ref{tests_outputResults}       &  &  &   &&&&&&X& X &\\ \hline
+			\ref{tests_nonfunctional_usability}       &  &  &   &&&&&&&  &X\\ 
+			\hline
+		\end{tabular}
+	\caption{Traceability Matrix Showing the Connections Between Requirements 
+	and Test Suites}
+	\label{Table:req2tests}
+\end{table}
+
+ \begin{figure}[H]
+	\begin{center}
+		%\rotatebox{-90}
+		{
+			\includegraphics[width=0.66\textwidth]{figures/ReqToTest.png}
+		}
+		\caption{\label{Fig:req2tests} Traceability Graph Showing the 
+		Connections Requirements and Test Suites}
+	\end{center}
+\end{figure}
 				
 \section{Unit Testing Plan}
 		
