@@ -152,7 +152,7 @@ the output data.
 constraints on the output data.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acEquationStruct}:] The 
-implementation of the equation parse tree data structure.
+implementation of the equation data structure.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acIntervalStruct}:] The 
 implementation of the interval data structure.
@@ -161,7 +161,11 @@ implementation of the interval data structure.
 decomposing $f(V)$.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acCalculations}:] How the 
-calculation of $R(f(V))$ is defined based on the input data.
+calculation of mathematical operators on intervals is defined based on the 
+input data.
+
+\item[\refstepcounter{acnum} \actheacnum \label{acCalculationAlgorithm}:] The 
+algorithm used to calculate $R(f(V))$.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acViewParse}:] The output of a 
 graphical version of the equation parse tree.
@@ -185,10 +189,19 @@ decisions will be changed.
 \item[\refstepcounter{ucnum} \uctheucnum \label{ucInput}:] There will always be
   a source of input data external to the software.
   
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucParsing}:] The parsing of 
-$f(V)$ will always follow arithmetic operator precedence rules.
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucOutput}:] Output data is 
+displayed to an output device.
 
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucPurpose}:] The purpose of the 
+\prognameAbbrv{} tool is always to calculate the range of an equation given the 
+domains of its input variables.
 
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucDecomposing}:] The allowable 
+operators in the user inputs are supported by the decomposition algorithm.
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucCalculating}:] The 
+allowable operators in the user inputs are supported by the calculation 
+algorithm.
 
 \end{description}
 
