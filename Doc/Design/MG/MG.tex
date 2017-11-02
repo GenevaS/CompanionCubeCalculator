@@ -42,7 +42,7 @@
 \begin{document}
 
 \title{Module Guide: \progname{} (\prognameAbbrv{})} 
-\author{Author Name}
+\author{Geneva Smith}
 \date{\today}
 
 \maketitle
@@ -143,7 +143,7 @@ adapted here is called design for change.
 the input data.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acInputConstraints}:] The 
-constraints on the input data.
+constraints the input data.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acOutput}:] The format of 
 the output data.
@@ -154,15 +154,17 @@ constraints on the output data.
 \item[\refstepcounter{acnum} \actheacnum \label{acEquationStruct}:] The 
 implementation of the equation data structure.
 
+\item[\refstepcounter{acnum} \actheacnum \label{acEquationConstraints}:] The 
+constraints on the equation data structure.
+
 \item[\refstepcounter{acnum} \actheacnum \label{acIntervalStruct}:] The 
 implementation of the interval data structure.
 
+\item[\refstepcounter{acnum} \actheacnum \label{acIntervalConstraints}:] The 
+constraints the interval data structure.
+
 \item[\refstepcounter{acnum} \actheacnum \label{acParsing}:] The algorithm for 
 decomposing $f(V)$.
-
-\item[\refstepcounter{acnum} \actheacnum \label{acCalculations}:] How the 
-calculation of mathematical operators on intervals is defined based on the 
-input data.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acCalculationAlgorithm}:] The 
 algorithm used to calculate $R(f(V))$.
@@ -185,23 +187,13 @@ decisions will be changed.
 \begin{description}
 \item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/Output devices
   (Input: File and/or Keyboard, Output: File, Memory, and/or Screen).
-  
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucInput}:] There will always be
-  a source of input data external to the software.
-  
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucOutput}:] Output data is 
-displayed to an output device.
 
 \item[\refstepcounter{ucnum} \uctheucnum \label{ucPurpose}:] The purpose of the 
 \prognameAbbrv{} tool is always to calculate the range of an equation given the 
 domains of its input variables.
 
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucDecomposing}:] The allowable 
-operators in the user inputs are supported by the decomposition algorithm.
-
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucCalculating}:] The 
-allowable operators in the user inputs are supported by the calculation 
-algorithm.
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucDecomposing}:] The 
+decomposition of $f(V)$ will always follow BEDMAS rules.
 
 \end{description}
 
@@ -214,33 +206,51 @@ actually be implemented.
 
 \begin{description}
 \item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
-\item ...
+
+\item [\refstepcounter{mnum} \mthemnum \label{mCF}:] Control Flow Module
+
+\item [\refstepcounter{mnum} \mthemnum \label{mUI}:] User Input Module
+
+\item [\refstepcounter{mnum} \mthemnum \label{mDC}:] Data Conversion Module
+
+\item [\refstepcounter{mnum} \mthemnum \label{mEC}:] Equation Conversion Module
+
+\item [\refstepcounter{mnum} \mthemnum \label{mIC}:] Interval Conversion Module
+
+\item [\refstepcounter{mnum} \mthemnum \label{mRS}:] Range Solver Module
+
+\item [\refstepcounter{mnum} \mthemnum \label{mO}:] Output Module
+
+\item [\refstepcounter{mnum} \mthemnum \label{mEDS}:] Equation Data Structure 
+Module
+
+\item [\refstepcounter{mnum} \mthemnum \label{mIDS}:] Interval Data Structure 
+Module
+
 \end{description}
 
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{p{0.3\textwidth} p{0.6\textwidth}}
+\begin{tabular}{p{0.28\textwidth} p{0.36\textwidth} p{0.32\textwidth}}
 \toprule
-\textbf{Level 1} & \textbf{Level 2}\\
+\textbf{Level 1} & \textbf{Level 2} & \textbf{Level 3}\\
 \midrule
 
-{Hardware-Hiding Module} & ~ \\
+{Hardware-Hiding Module} & - & - \\
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding Module} & ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\ 
-& ?\\
+\multirow{5}{0.3\textwidth}{Behaviour-Hiding Module} & Control Flow Module & -\\
+& User Input Module & -\\
+& \multirow{2}{0.3\textwidth}{Data Conversion Module} & Equation Conversion 
+Module \newline Interval Conversion Module \\
+& Range Solver Module & - \\
+& Output Module & - \\
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision Module} & {?}\\
-& ?\\
-& ?\\
+\multirow{2}{0.3\textwidth}{Software Decision Module} & Equation Data Structure 
+Module & - \\
+& Interval Data Structure Module & - \\
 \bottomrule
 
 \end{tabular}
@@ -397,6 +407,7 @@ because they use modules from the lower levels.
 \end{figure}
 
 %\section*{References}
+\newpage
 
 \bibliographystyle {plainnat}
 \bibliography {MG}
