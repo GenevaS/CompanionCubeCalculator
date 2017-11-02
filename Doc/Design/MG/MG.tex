@@ -207,15 +207,17 @@ actually be implemented.
 \begin{description}
 \item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
 
+\item [\refstepcounter{mnum} \mthemnum \label{mCF}:] Control Flow Module
+
 \item [\refstepcounter{mnum} \mthemnum \label{mUI}:] User Input Module
 
 \item [\refstepcounter{mnum} \mthemnum \label{mEC}:] Equation Conversion Module
 
 \item [\refstepcounter{mnum} \mthemnum \label{mIC}:] Interval Conversion Module
 
-\item [\refstepcounter{mnum} \mthemnum \label{mRS}:] Range Solver Module
-
 \item [\refstepcounter{mnum} \mthemnum \label{mO}:] Output Module
+
+\item [\refstepcounter{mnum} \mthemnum \label{mRS}:] Range Solver Module
 
 \item [\refstepcounter{mnum} \mthemnum \label{mEDS}:] Equation Data Structure 
 Module
@@ -236,10 +238,10 @@ Module
 {Hardware-Hiding Module} & - & -\\
 \midrule
 
-\multirow{5}{0.29\textwidth}{Behaviour-Hiding Module} & 
-\multirow{3}{0.29\textwidth}{User Input Module} & 
+\multirow{6}{0.29\textwidth}{Behaviour-Hiding Module} & Control Flow Module & - 
+\\
+& \multirow{3}{0.29\textwidth}{User Input Module} & 
 Equation Conversion Module \newline Interval Conversion Module\\
-& Range Solver Module & - \\
 & Output Module & - \\
 \midrule
 
@@ -247,6 +249,7 @@ Equation Conversion Module \newline Interval Conversion Module\\
 Structure 
 Module & -\\
 & Interval Data Structure Module & -\\
+& Range Solver Module & - \\
 \bottomrule
 
 \end{tabular}
@@ -301,6 +304,15 @@ selected.
 \item[Implemented By:] \progname{}
 \end{description}
 
+\subsubsection{Control Flow Module (\mref{mCF})}
+
+\begin{description}
+	\item[Secrets:] The coordination of the behaviour modules.
+	\item[Services:] Provides the main computational logic for using the 
+	behaviour modules.
+	\item[Implemented By:] \progname{}
+\end{description}
+
 \subsubsection{User Input Module (\mref{mUI})}
 
 \begin{description}
@@ -330,15 +342,6 @@ the Equation Conversion Module (\mref{mEC}) and the Interval Conversion Module
 	\item[Implemented By:] \progname{}
 \end{description}
 
-\subsubsection{Range Solver Module (\mref{mRS})}
-
-\begin{description}
-	\item[Secrets:]The algorithm and constraints for solving the user equation.
-	\item[Services:]Calculates the range of the user equation using the 
-	available interval data.
-	\item[Implemented By:] \progname{}
-\end{description}
-
 \subsubsection{Output Module (\mref{mO})}
 
 \begin{description}
@@ -360,6 +363,15 @@ the Equation Conversion Module (\mref{mEC}) and the Interval Conversion Module
   % Changes in these modules are more likely to be motivated by a desire to
   % improve performance than by externally imposed changes.
 \item[Implemented By:] -
+\end{description}
+
+\subsubsection{Range Solver Module (\mref{mRS})}
+
+\begin{description}
+	\item[Secrets:]The algorithm and constraints for solving the user equation.
+	\item[Services:]Calculates the range of the user equation using the 
+	available interval data.
+	\item[Implemented By:] \progname{}
 \end{description}
 
 \subsubsection{Equation Data Structure Module (\mref{mEDS})}
@@ -448,7 +460,7 @@ because they use modules from the lower levels.
 
 \begin{figure}[H]
 \centering
-%\includegraphics[width=0.7\textwidth]{UsesHierarchy.png}
+\includegraphics[width=0.7\textwidth]{figures/ModuleGraph.png}
 \caption{Use hierarchy among modules}
 \label{FigUH}
 \end{figure}
