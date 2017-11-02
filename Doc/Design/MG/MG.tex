@@ -228,24 +228,25 @@ Module
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{p{0.4\textwidth} p{0.5\textwidth}}
+\begin{tabular}{p{0.29\textwidth} p{0.36\textwidth} p{0.3\textwidth}}
 \toprule
-\textbf{Level 1} & \textbf{Level 2}\\
+\textbf{Level 1} & \textbf{Level 2} & \textbf{Level 3}\\
 \midrule
 
-{Hardware-Hiding Module} & - \\
+{Hardware-Hiding Module} & - & -\\
 \midrule
 
-\multirow{5}{0.3\textwidth}{Behaviour-Hiding Module} & User Input Module\\
-& Equation Conversion Module  \\
-& Interval Conversion Module \\
-& Range Solver Module  \\
-& Output Module  \\
+\multirow{5}{0.29\textwidth}{Behaviour-Hiding Module} & 
+\multirow{3}{0.29\textwidth}{User Input Module} & 
+Equation Conversion Module \newline Interval Conversion Module\\
+& Range Solver Module & - \\
+& Output Module & - \\
 \midrule
 
-\multirow{2}{0.3\textwidth}{Software Decision Module} & Equation Data Structure 
-Module \\
-& Interval Data Structure Module \\
+\multirow{2}{0.29\textwidth}{Software Decision Module} & Equation Data 
+Structure 
+Module & -\\
+& Interval Data Structure Module & -\\
 \bottomrule
 
 \end{tabular}
@@ -304,8 +305,9 @@ selected.
 
 \begin{description}
 \item[Secrets:] The format and structure of the input data.
-\item[Services:] Converts the input data into the data structure used by the
-  input parameters module.
+\item[Services:] Converts the input data into a format that is understood by 
+the Equation Conversion Module (\mref{mEC}) and the Interval Conversion Module 
+(\mref{mIC}).
 \item[Implemented By:] \progname{}
 \end{description}
 
@@ -331,7 +333,7 @@ selected.
 \subsubsection{Range Solver Module (\mref{mRS})}
 
 \begin{description}
-	\item[Secrets:]The algorithm for solving the user equation.
+	\item[Secrets:]The algorithm and constraints for solving the user equation.
 	\item[Services:]Calculates the range of the user equation using the 
 	available interval data.
 	\item[Implemented By:] \progname{}
@@ -360,7 +362,22 @@ selected.
 \item[Implemented By:] -
 \end{description}
 
-\subsubsection{Etc.}
+\subsubsection{Equation Data Structure Module (\mref{mEDS})}
+
+\begin{description}
+	\item[Secrets:]The internal representation of the user equation.
+	\item[Services:]Stores the components and structure of the equation parse 
+	tree.
+	\item[Implemented By:] \progname{}
+\end{description}
+
+\subsubsection{Interval Data Structure Module (\mref{mIDS})}
+
+\begin{description}
+	\item[Secrets:]The internal representation of intervals.
+	\item[Services:]Stores the components of an interval.
+	\item[Implemented By:] \progname{}
+\end{description}
 
 \section{Traceability Matrix} \label{SecTM}
 
