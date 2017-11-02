@@ -142,9 +142,6 @@ adapted here is called design for change.
 \item[\refstepcounter{acnum} \actheacnum \label{acInput}:] The format of 
 the input data.
 
-\item[\refstepcounter{acnum} \actheacnum \label{acInputConstraints}:] The 
-constraints the input data.
-
 \item[\refstepcounter{acnum} \actheacnum \label{acOutput}:] The format of 
 the output data.
 
@@ -155,13 +152,13 @@ constraints on the output data.
 implementation of the equation data structure.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acEquationConstraints}:] The 
-constraints on the equation data structure.
+constraints on the allowable user equation operators.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acIntervalStruct}:] The 
 implementation of the interval data structure.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acIntervalConstraints}:] The 
-constraints the interval data structure.
+constraints on intervals.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acParsing}:] The algorithm for 
 decomposing the user equation.
@@ -211,18 +208,20 @@ actually be implemented.
 
 \item [\refstepcounter{mnum} \mthemnum \label{mUI}:] User Input Module
 
-\item [\refstepcounter{mnum} \mthemnum \label{mEC}:] Equation Conversion Module
+\item [\refstepcounter{mnum} \mthemnum \label{mP}:] Parsing Module
 
 \item [\refstepcounter{mnum} \mthemnum \label{mIC}:] Interval Conversion Module
 
-\item [\refstepcounter{mnum} \mthemnum \label{mO}:] Output Module
+\item [\refstepcounter{mnum} \mthemnum \label{mEC}:] Equation Conversion Module
 
 \item [\refstepcounter{mnum} \mthemnum \label{mRS}:] Range Solver Module
 
-\item [\refstepcounter{mnum} \mthemnum \label{mEDS}:] Equation Data Structure 
-Module
+\item [\refstepcounter{mnum} \mthemnum \label{mO}:] Output Module
 
 \item [\refstepcounter{mnum} \mthemnum \label{mIDS}:] Interval Data Structure 
+Module
+
+\item [\refstepcounter{mnum} \mthemnum \label{mEDS}:] Equation Data Structure 
 Module
 
 \end{description}
@@ -238,10 +237,12 @@ Module
 {Hardware-Hiding Module} & - & -\\
 \midrule
 
-\multirow{6}{0.29\textwidth}{Behaviour-Hiding Module} & Control Flow Module & - 
+\multirow{7}{0.29\textwidth}{Behaviour-Hiding Module} & Control Flow Module & - 
 \\
-& \multirow{3}{0.29\textwidth}{User Input Module} & 
+& User Input Module & - \\
+& \multirow{3}{0.29\textwidth}{Parsing Module} & 
 Equation Conversion Module \newline Interval Conversion Module\\
+& Range Solver Module & - \\
 & Output Module & - \\
 \midrule
 
@@ -249,7 +250,6 @@ Equation Conversion Module \newline Interval Conversion Module\\
 Structure 
 Module & -\\
 & Interval Data Structure Module & -\\
-& Range Solver Module & - \\
 \bottomrule
 
 \end{tabular}
@@ -307,45 +307,71 @@ selected.
 \subsubsection{Control Flow Module (\mref{mCF})}
 
 \begin{description}
-	\item[Secrets:] The coordination of the behaviour modules.
-	\item[Services:] Provides the main computational logic for using the 
-	behaviour modules.
+	\item[Secrets:] The calling order of program modules.
+	\item[Services:] Facilitates and coordinates the flow of information 
+	and removes direct dependencies between modules.
 	\item[Implemented By:] \progname{}
 \end{description}
 
 \subsubsection{User Input Module (\mref{mUI})}
 
 \begin{description}
-\item[Secrets:] The format and structure of the input data.
-\item[Services:] Converts the input data into a format that is understood by 
-the Equation Conversion Module (\mref{mEC}) and the Interval Conversion Module 
-(\mref{mIC}).
+\item[Secrets:] The method of acquiring user inputs (console input, GUI, file).
+\item[Services:] Gathers data from the user input mechanism and converts it 
+into a standard intermediary format.
 \item[Implemented By:] \progname{}
 \end{description}
 
-\subsubsection{Equation Conversion Module (\mref{mEC})}
+\subsubsection{Parsing Module (\mref{mP})}
 
 \begin{description}
-	\item[Secrets:]The parsing algorithm and operation constraints for the user 
-	equation.
-	\item[Services:]Decomposes the user equation into a series of two-operator 
-	equations and checks for incomplete operations in the user equation (e.g. 
-	open brackets).
+	\item[Secrets:] The method for checking the compatibility of the 
+	user-provided equation and the user-provided variable list.
+	\item[Services:] Facilitates the user data parsing process and ensures that 
+	the resulting equation and interval list are compatible with respect to the 
+	variable names used in the equation.
 	\item[Implemented By:] \progname{}
 \end{description}
 
 \subsubsection{Interval Conversion Module (\mref{mIC})}
 
 \begin{description}
-	\item[Secrets:]The constraints on interval data.
-	\item[Services:]Parses the list of user interval data.
+	\item[Secrets:]The algorithm for parsing variable domain values into 
+	intervals.
+	\item[Services:]Converts the user-defined list of variable domains into 
+	intervals. This module checks for syntactic errors in the data set (e.g. 
+	missing boundary values). This module produces warnings for data that is 
+	valid, but might not have been intended (e.g. minimum and maximum values 
+	are switched, boundaries that have the same value).
+	\item[Implemented By:] \progname{}
+\end{description}
+
+\subsubsection{Equation Conversion Module (\mref{mEC})}
+
+\begin{description}
+	\item[Secrets:]The algorithm for parsing the user equation.
+	\item[Services:]Decomposes the user equation into a series of two-operator 
+	equations and checks for syntactic errors (e.g. open brackets, too few 
+	operands, missing or extraneous variables). This module produces warnings 
+	for equations that are valid, but might not have been intended (e.g. $f(V) 
+	= 34$).
+	\item[Implemented By:] \progname{}
+\end{description}
+
+\subsubsection{Range Solver Module (\mref{mRS})}
+
+\begin{description}
+	\item[Secrets:]The algorithm for solving the user equation and constraints 
+	on the supported operators and interval boundaries.
+	\item[Services:]Defines what operators are supported and the associated 
+	constraints. Calculates the range of the user equation using interval data.
 	\item[Implemented By:] \progname{}
 \end{description}
 
 \subsubsection{Output Module (\mref{mO})}
 
 \begin{description}
-	\item[Secrets:]The format and structure of the output data.
+	\item[Secrets:]The output format and the output interface.
 	\item[Services:]Converts the internal data representation into a human 
 	readable format and passes the information to the target output device.
 	\item[Implemented By:] \progname{}
@@ -365,12 +391,12 @@ the Equation Conversion Module (\mref{mEC}) and the Interval Conversion Module
 \item[Implemented By:] -
 \end{description}
 
-\subsubsection{Range Solver Module (\mref{mRS})}
+\subsubsection{Interval Data Structure Module (\mref{mIDS})}
 
 \begin{description}
-	\item[Secrets:]The algorithm and constraints for solving the user equation.
-	\item[Services:]Calculates the range of the user equation using the 
-	available interval data.
+	\item[Secrets:]The internal representation of intervals.
+	\item[Services:]Stores the components of an interval and provides 
+	mechanisms for reading them.
 	\item[Implemented By:] \progname{}
 \end{description}
 
@@ -378,16 +404,8 @@ the Equation Conversion Module (\mref{mEC}) and the Interval Conversion Module
 
 \begin{description}
 	\item[Secrets:]The internal representation of the user equation.
-	\item[Services:]Stores the components and structure of the equation parse 
-	tree.
-	\item[Implemented By:] \progname{}
-\end{description}
-
-\subsubsection{Interval Data Structure Module (\mref{mIDS})}
-
-\begin{description}
-	\item[Secrets:]The internal representation of intervals.
-	\item[Services:]Stores the components of an interval.
+	\item[Services:]Stores the structure of the equation and provides 
+	mechanisms for reading the structure.
 	\item[Implemented By:] \progname{}
 \end{description}
 
@@ -406,14 +424,14 @@ requirements and between the modules and the anticipated changes.
 \midrule
 \rref{R_Inputs} & \mref{mHH}, \mref{mCF}, \mref{mUI}\\
 \rref{R_conditionX} & \mref{mIC}, \mref{mIDS}\\
-\rref{R_verifyinputs} & \mref{mEC}, \mref{mIC}\\
-\rref{R_conditionfx} & \mref{mCF}, \mref{mEC}, \mref{mEDS}\\
+\rref{R_verifyinputs} & \mref{mCF}, \mref{mP}, \mref{mIC}, \mref{mEC}\\
+\rref{R_conditionfx} & \mref{mCF}, \mref{mP}, \mref{mEC}, \mref{mRS}\\
 \rref{R_Calculate} & \mref{mCF}, \mref{mRS}\\
-\rref{R_CalculateCompose} & \mref{mCF}, \mref{mRS}, \mref{mEDS}, \mref{mIDS}\\
-\rref{R_VerifyOutput} & \mref{mCF}, \mref{mRS}\\
-\rref{R_VerifyOutputConstraints} & \mref{mO}, \mref{mIDS}\\
+\rref{R_CalculateCompose} & \mref{mCF}, \mref{mRS}\\
+\rref{R_VerifyOutput} & \mref{mRS}\\
+\rref{R_VerifyOutputConstraints} & \mref{mRS}\\
 \rref{R_Output} & \mref{mHH}, \mref{mCF}, \mref{mO}\\
-\rref{R_SigFig} & \mref{mO}, \mref{mIDS}\\
+\rref{R_SigFig} & \mref{mO}\\
 \bottomrule
 \end{tabular}
 \caption{Trace Between Requirements and Modules}
@@ -428,13 +446,12 @@ requirements and between the modules and the anticipated changes.
 \midrule
 \acref{acHardware} & \mref{mHH}\\
 \acref{acInput} & \mref{mUI}\\
-\acref{acInputConstraints} & \mref{mUI}\\
 \acref{acOutput} & \mref{mO}\\
 \acref{acOutputConstraints} & \mref{mO}\\
 \acref{acEquationStruct} & \mref{mEDS}\\
-\acref{acEquationConstraints} & \mref{mEC}, \mref{mRS}\\
+\acref{acEquationConstraints} & \mref{mRS}\\
 \acref{acIntervalStruct} & \mref{mIDS}\\
-\acref{acIntervalConstraints} & \mref{mIC}\\
+\acref{acIntervalConstraints} & \mref{mRS}\\
 \acref{acParsing} & \mref{mEC}\\
 \acref{acCalculationAlgorithm} & \mref{mRS}\\
 \acref{acViewParse} & \mref{mO}\\
@@ -459,7 +476,7 @@ because they use modules from the lower levels.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{figures/ModuleGraph.png}
+\includegraphics[width=\textwidth]{figures/ModuleGraph.png}
 \caption{Use hierarchy among modules}
 \label{FigUH}
 \end{figure}
