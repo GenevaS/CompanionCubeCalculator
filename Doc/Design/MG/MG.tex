@@ -21,7 +21,7 @@
 
 \usepackage{xr}
 \externaldocument{../../SRS/SRS}
-\newcommand{\lcref}[1]{LC\ref{#1}}
+\newcommand{\rref}[1]{R\ref{#1}}
 \newcommand{\srsVersion}{1.1.1}
 
 \newcounter{acnum}
@@ -51,10 +51,10 @@
 
 \section{Revision History}
 
-\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
+\begin{tabularx}{\textwidth}{p{3.2cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
- & 1.0 & Completed first document draft\\
+November 2, 2017 & 1.0 & Completed first document draft\\
 \bottomrule
 \end{tabularx}
 
@@ -404,17 +404,16 @@ requirements and between the modules and the anticipated changes.
 \toprule
 \textbf{Req.} & \textbf{Modules}\\
 \midrule
-R1 & \mref{mHH}, \mref{mInput}, \mref{mParams}, \mref{mControl}\\
-R2 & \mref{mInput}, \mref{mParams}\\
-R3 & \mref{mVerify}\\
-R4 & \mref{mOutput}, \mref{mControl}\\
-R5 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R6 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R7 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R8 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R9 & \mref{mVerifyOut}\\
-R10 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}\\
-R11 & \mref{mOutput}, \mref{mODEs}, \mref{mEnergy}, \mref{mControl}\\
+\rref{R_Inputs} & \mref{mHH}, \mref{mCF}, \mref{mUI}\\
+\rref{R_conditionX} & \mref{mIC}, \mref{mIDS}\\
+\rref{R_verifyinputs} & \mref{mEC}, \mref{mIC}\\
+\rref{R_conditionfx} & \mref{mCF}, \mref{mEC}, \mref{mEDS}\\
+\rref{R_Calculate} & \mref{mCF}, \mref{mRS}\\
+\rref{R_CalculateCompose} & \mref{mCF}, \mref{mRS}, \mref{mEDS}, \mref{mIDS}\\
+\rref{R_VerifyOutput} & \mref{mCF}, \mref{mRS}\\
+\rref{R_VerifyOutputConstraints} & \mref{mO}, \mref{mIDS}\\
+\rref{R_Output} & \mref{mHH}, \mref{mCF}, \mref{mO}\\
+\rref{R_SigFig} & \mref{mO}, \mref{mIDS}\\
 \bottomrule
 \end{tabular}
 \caption{Trace Between Requirements and Modules}
@@ -428,17 +427,17 @@ R11 & \mref{mOutput}, \mref{mODEs}, \mref{mEnergy}, \mref{mControl}\\
 \textbf{AC} & \textbf{Modules}\\
 \midrule
 \acref{acHardware} & \mref{mHH}\\
-\acref{acInput} & \mref{mInput}\\
-\acref{acParams} & \mref{mParams}\\
-\acref{acVerify} & \mref{mVerify}\\
-\acref{acOutput} & \mref{mOutput}\\
-\acref{acVerifyOut} & \mref{mVerifyOut}\\
-\acref{acODEs} & \mref{mODEs}\\
-\acref{acEnergy} & \mref{mEnergy}\\
-\acref{acControl} & \mref{mControl}\\
-\acref{acSeqDS} & \mref{mSeqDS}\\
-\acref{acSolver} & \mref{mSolver}\\
-\acref{acPlot} & \mref{mPlot}\\
+\acref{acInput} & \mref{mUI}\\
+\acref{acInputConstraints} & \mref{mUI}\\
+\acref{acOutput} & \mref{mO}\\
+\acref{acOutputConstraints} & \mref{mO}\\
+\acref{acEquationStruct} & \mref{mEDS}\\
+\acref{acEquationConstraints} & \mref{mEC}, \mref{mRS}\\
+\acref{acIntervalStruct} & \mref{mIDS}\\
+\acref{acIntervalConstraints} & \mref{mIC}\\
+\acref{acParsing} & \mref{mEC}\\
+\acref{acCalculationAlgorithm} & \mref{mRS}\\
+\acref{acViewParse} & \mref{mO}\\
 \bottomrule
 \end{tabular}
 \caption{Trace Between Anticipated Changes and Modules}
