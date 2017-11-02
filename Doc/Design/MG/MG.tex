@@ -164,10 +164,10 @@ implementation of the interval data structure.
 constraints the interval data structure.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acParsing}:] The algorithm for 
-decomposing $f(V)$.
+decomposing the user equation.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acCalculationAlgorithm}:] The 
-algorithm used to calculate $R(f(V))$.
+algorithm used to calculate the range of the user equation.
 
 \item[\refstepcounter{acnum} \actheacnum \label{acViewParse}:] The output of a 
 graphical version of the equation parse tree.
@@ -193,7 +193,7 @@ decisions will be changed.
 domains of its input variables.
 
 \item[\refstepcounter{ucnum} \uctheucnum \label{ucDecomposing}:] The 
-decomposition of $f(V)$ will always follow BEDMAS rules.
+decomposition of the user equation will always follow BEDMAS rules.
 
 \end{description}
 
@@ -207,11 +207,7 @@ actually be implemented.
 \begin{description}
 \item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
 
-\item [\refstepcounter{mnum} \mthemnum \label{mCF}:] Control Flow Module
-
 \item [\refstepcounter{mnum} \mthemnum \label{mUI}:] User Input Module
-
-\item [\refstepcounter{mnum} \mthemnum \label{mDC}:] Data Conversion Module
 
 \item [\refstepcounter{mnum} \mthemnum \label{mEC}:] Equation Conversion Module
 
@@ -232,25 +228,24 @@ Module
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{p{0.28\textwidth} p{0.36\textwidth} p{0.32\textwidth}}
+\begin{tabular}{p{0.4\textwidth} p{0.5\textwidth}}
 \toprule
-\textbf{Level 1} & \textbf{Level 2} & \textbf{Level 3}\\
+\textbf{Level 1} & \textbf{Level 2}\\
 \midrule
 
-{Hardware-Hiding Module} & - & - \\
+{Hardware-Hiding Module} & - \\
 \midrule
 
-\multirow{5}{0.3\textwidth}{Behaviour-Hiding Module} & Control Flow Module & -\\
-& User Input Module & -\\
-& \multirow{2}{0.3\textwidth}{Data Conversion Module} & Equation Conversion 
-Module \newline Interval Conversion Module \\
-& Range Solver Module & - \\
-& Output Module & - \\
+\multirow{5}{0.3\textwidth}{Behaviour-Hiding Module} & User Input Module\\
+& Equation Conversion Module  \\
+& Interval Conversion Module \\
+& Range Solver Module  \\
+& Output Module  \\
 \midrule
 
 \multirow{2}{0.3\textwidth}{Software Decision Module} & Equation Data Structure 
-Module & - \\
-& Interval Data Structure Module & - \\
+Module \\
+& Interval Data Structure Module \\
 \bottomrule
 
 \end{tabular}
@@ -302,19 +297,54 @@ selected.
   documents. This module serves as a communication layer between the
   hardware-hiding module and the software decision module. The programs in this
   module will need to change if there are changes in the SRS.
-\item[Implemented By:] --
+\item[Implemented By:] \progname{}
 \end{description}
 
-\subsubsection{Input Format Module (\mref{mInput})}
+\subsubsection{User Input Module (\mref{mUI})}
 
 \begin{description}
-\item[Secrets:]The format and structure of the input data.
-\item[Services:]Converts the input data into the data structure used by the
+\item[Secrets:] The format and structure of the input data.
+\item[Services:] Converts the input data into the data structure used by the
   input parameters module.
-\item[Implemented By:] [Your Program Name Here]
+\item[Implemented By:] \progname{}
 \end{description}
 
-\subsubsection{Etc.}
+\subsubsection{Equation Conversion Module (\mref{mEC})}
+
+\begin{description}
+	\item[Secrets:]The parsing algorithm and operation constraints for the user 
+	equation.
+	\item[Services:]Decomposes the user equation into a series of two-operator 
+	equations and checks for incomplete operations in the user equation (e.g. 
+	open brackets).
+	\item[Implemented By:] \progname{}
+\end{description}
+
+\subsubsection{Interval Conversion Module (\mref{mIC})}
+
+\begin{description}
+	\item[Secrets:]The constraints on interval data.
+	\item[Services:]Parses the list of user interval data.
+	\item[Implemented By:] \progname{}
+\end{description}
+
+\subsubsection{Range Solver Module (\mref{mRS})}
+
+\begin{description}
+	\item[Secrets:]The algorithm for solving the user equation.
+	\item[Services:]Calculates the range of the user equation using the 
+	available interval data.
+	\item[Implemented By:] \progname{}
+\end{description}
+
+\subsubsection{Output Module (\mref{mO})}
+
+\begin{description}
+	\item[Secrets:]The format and structure of the output data.
+	\item[Services:]Converts the internal data representation into a human 
+	readable format and passes the information to the target output device.
+	\item[Implemented By:] \progname{}
+\end{description}
 
 
 \subsection{Software Decision Module}
@@ -327,7 +357,7 @@ selected.
   do not provide direct interaction with the user. 
   % Changes in these modules are more likely to be motivated by a desire to
   % improve performance than by externally imposed changes.
-\item[Implemented By:] --
+\item[Implemented By:] -
 \end{description}
 
 \subsubsection{Etc.}
