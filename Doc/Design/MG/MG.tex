@@ -208,11 +208,12 @@ actually be implemented.
 
 \item [\refstepcounter{mnum} \mthemnum \label{mUI}:] User Input Module
 
-\item [\refstepcounter{mnum} \mthemnum \label{mP}:] Parsing Module
-
 \item [\refstepcounter{mnum} \mthemnum \label{mIC}:] Interval Conversion Module
 
 \item [\refstepcounter{mnum} \mthemnum \label{mEC}:] Equation Conversion Module
+
+\item [\refstepcounter{mnum} \mthemnum \label{mVC}:] Variable Consolidation 
+Module
 
 \item [\refstepcounter{mnum} \mthemnum \label{mRS}:] Range Solver Module
 
@@ -229,27 +230,26 @@ Module
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{p{0.29\textwidth} p{0.36\textwidth} p{0.3\textwidth}}
+\begin{tabular}{p{0.35\textwidth} p{0.6\textwidth}}
 \toprule
-\textbf{Level 1} & \textbf{Level 2} & \textbf{Level 3}\\
+\textbf{Level 1} & \textbf{Level 2}\\
 \midrule
 
-{Hardware-Hiding Module} & - & -\\
+{Hardware-Hiding Module} & - \\
 \midrule
 
-\multirow{7}{0.29\textwidth}{Behaviour-Hiding Module} & Control Flow Module & - 
-\\
-& User Input Module & - \\
-& \multirow{3}{0.29\textwidth}{Parsing Module} & 
-Equation Conversion Module \newline Interval Conversion Module\\
-& Range Solver Module & - \\
-& Output Module & - \\
+\multirow{7}{0.29\textwidth}{Behaviour-Hiding Module} & Control Flow Module \\
+& User Input Module \\
+& Interval Conversion Module \\
+& Equation Conversion Module \\
+& Variable Consolidation Module \\
+& Range Solver Module \\
+& Output Module \\
 \midrule
 
-\multirow{2}{0.29\textwidth}{Software Decision Module} & Equation Data 
-Structure 
-Module & -\\
-& Interval Data Structure Module & -\\
+\multirow{2}{0.29\textwidth}{Software Decision Module} & Interval Data 
+Structure Module \\
+& Equation Data Structure Module \\
 \bottomrule
 
 \end{tabular}
@@ -322,17 +322,6 @@ into a standard intermediary format.
 \item[Implemented By:] \progname{}
 \end{description}
 
-\subsubsection{Parsing Module (\mref{mP})}
-
-\begin{description}
-	\item[Secrets:] The method for checking the compatibility of the 
-	user-provided equation and the user-provided variable list.
-	\item[Services:] Facilitates the user data parsing process and ensures that 
-	the resulting equation and interval list are compatible with respect to the 
-	variable names used in the equation.
-	\item[Implemented By:] \progname{}
-\end{description}
-
 \subsubsection{Interval Conversion Module (\mref{mIC})}
 
 \begin{description}
@@ -355,6 +344,17 @@ into a standard intermediary format.
 	operands, missing or extraneous variables). This module produces warnings 
 	for equations that are valid, but might not have been intended (e.g. $f(V) 
 	= 34$).
+	\item[Implemented By:] \progname{}
+\end{description}
+
+\subsubsection{Variable Consolidation Module (\mref{mVC})}
+
+\begin{description}
+	\item[Secrets:] The method for checking the compatibility of the 
+	user-provided equation and the user-provided variable list.
+	\item[Services:] Facilitates the user data parsing process and ensures that 
+	the resulting equation and interval list are compatible with respect to the 
+	variable names used in the equation.
 	\item[Implemented By:] \progname{}
 \end{description}
 
@@ -424,8 +424,8 @@ requirements and between the modules and the anticipated changes.
 \midrule
 \rref{R_Inputs} & \mref{mHH}, \mref{mCF}, \mref{mUI}\\
 \rref{R_conditionX} & \mref{mIC}, \mref{mIDS}\\
-\rref{R_verifyinputs} & \mref{mCF}, \mref{mP}, \mref{mIC}, \mref{mEC}\\
-\rref{R_conditionfx} & \mref{mCF}, \mref{mP}, \mref{mEC}, \mref{mRS}\\
+\rref{R_verifyinputs} & \mref{mCF}, \mref{mIC}, \mref{mEC}, \mref{mVC}\\
+\rref{R_conditionfx} & \mref{mCF}, \mref{mEC}, \mref{mVC}, \mref{mRS}\\
 \rref{R_Calculate} & \mref{mCF}, \mref{mRS}\\
 \rref{R_CalculateCompose} & \mref{mCF}, \mref{mRS}\\
 \rref{R_VerifyOutput} & \mref{mRS}\\
