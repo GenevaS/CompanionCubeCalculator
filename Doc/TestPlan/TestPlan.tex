@@ -3,7 +3,7 @@
 \usepackage{amsmath, mathtools}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage[usenames,dvipsnames,table]{xcolor}
 \usepackage{txfonts}
 \usepackage[nocenter]{qtree}
 \usepackage{xr}
@@ -104,6 +104,8 @@ in the product's SRS documentation (version \srsVersion{}). Any functionality
 defined beyond the scope of the SRS document are not included in this version 
 of the test plan.
 
+\wss{An explicit web-link to your GitHub repo would be nice.}
+
 \subsection{Scope}
 The \prognameAbbrv{} tool relies on interval arithmetic in the domain of real 
 numbers ($\varmathbb{R}$), which means that many of its functions can be 
@@ -137,13 +139,15 @@ during the verification process, and the team responsible for executing the
 plan.
 	
 \subsection{Software Description}
-The \prognameAbbrv{} tool is a stand-alone application for calculating 
-the mathematical range of a user-defined function given the domains of the 
-function's component variables. Function ranges and variable domains are 
-represented by intervals, where intervals are defined as a sequence of 
-continuous values bounded by a minimum and maximum value. The minimum and 
-maximum values for any given interval must be defined. To perform its 
-calculations, the \prognameAbbrv{} tool uses interval arithmetic.
+The \prognameAbbrv{} tool is a stand-alone application for calculating
+the mathematical range of a user-defined function given the domains of
+the function's component variables. Function ranges and variable
+domains are represented by intervals, where intervals are defined as a
+sequence of continuous values \wss{Say set rather than sequence of
+  continuous values} bounded by a minimum and maximum value. The
+minimum and maximum values for any given interval must be defined. To
+perform its calculations, the \prognameAbbrv{} tool uses interval
+arithmetic.
 
 The purpose of this product is to produce accurate results when they can be 
 found. If a result cannot be found, the tool is expected to communicate the 
@@ -201,7 +205,7 @@ test tools, including:
 	This forms the bulk of the automated testing approach and will be used for 
 	unit, integration, system, and regression testing.
 	\item \textbf{Automated GUI testing}\\
-	This version of Visual Studio allows developers to record a series of 
+	This version \wss{The selected version} of Visual Studio allows developers to record a series of 
 	interactions with a GUI that can be played multiple times for testing. This 
 	can help save time by making traditionally manual test cases into automated 
 	ones. Depending on the complexity of the GUI, this tool might not be used.
@@ -1300,11 +1304,15 @@ The tests that follow these assume that the user input tests
 
 \subsubsection{Composing Operators}
 \label{tests_operatorComposition}
-This test suite is designed to determine if the \rref{R_CalculateCompose} 
-(Recomposing the results from the component equations of $f(V)$) and 
-\rref{R_VerifyOutput} (Ensuring that the calculated result is represented in 
-closed, interval form) functional requirements, and the associated data 
-constraints from \rref{R_VerifyOutputConstraints} are satisfied.
+This test suite is designed to determine if the
+\rref{R_CalculateCompose} \wss{Very nice to have explicit
+  cross-references between documents.  To keep the information up to
+  date, consider using make to build your documentation.}
+(Recomposing the results from the component equations of $f(V)$) and
+\rref{R_VerifyOutput} (Ensuring that the calculated result is
+represented in closed, interval form) functional requirements, and the
+associated data constraints from \rref{R_VerifyOutputConstraints} are
+satisfied.
 
 The tests that follow these assume that the user input tests 
 (\ref{tests_gettingInputs}), input conditioning tests 
@@ -1324,7 +1332,8 @@ The tests that follow these assume that the user input tests
 	Input: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$, where $R(f_1(V)), R(f_2(V))$ 
 	exist
 	
-	Output: True
+	Output: True \wss{What does True mean? $R(f)$ does not have
+          the type Boolean?}
 	
 	How test will be performed: Induction\\
 	
@@ -1427,6 +1436,12 @@ The tests for usability focus on the notation used to represent $f(V)$ and
 $D(v), v \in V$ and the user's ability to use the tool intuitively without 
 external guidance or instruction.
 		
+\wss{Great to see usability testing!  Could you please give some more
+  detail on how the tests will be run.  How many participants?  How
+  will they be recruited?  What documentation will they be given?
+  etc.  What specific task or tasks will they be asked to perform?
+  How will the results of the usability tests be summarized?}
+
 \paragraph{Use of Standard Mathematical Notation}
 
 \begin{enumerate}
@@ -1562,12 +1577,13 @@ How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
 %\end{enumerate}
 
 \subsection{Traceability Between Test Cases and Requirements}
-The purpose of the traceability matrix (Table~\ref{Table:req2tests}) and graph 
-(Figure~\ref{Fig:req2test}) is to provide easy references between the test 
-suite and the requirements from the SRS (version \srsVersion{}). In the table, 
-the test suites that verify a requirement are marked with an ``X'' in the 
-requirement's column. In the graph, tests appear at the tail of an arrow and 
-requirements appear at the head.
+The purpose of the traceability matrix (Table~\ref{Table:req2tests})
+and graph (Figure~\ref{Fig:req2test}) \wss{Label and reference do not
+  match} is to provide easy references between the test suite and the
+requirements from the SRS (version \srsVersion{}). In the table, the
+test suites that verify a requirement are marked with an ``X'' in the
+requirement's column. In the graph, tests appear at the tail of an
+arrow and requirements appear at the head.
 
 \begin{table}[H]
 	\centering
@@ -1626,7 +1642,9 @@ be employed, including debugging statements and visual code inspections.
 The unit testing stage is also the point where code coverage tools can be used 
 to ensure that most lines of code are being tested by the integration and 
 system tests. If code is not covered by the tests, it should be analysed to 
-determine its usefulness and accessibility to the rest of the program.
+determine its usefulness and accessibility to the rest of the
+program.  \wss{You should explicitly state that your goal is 100\%
+  code coverage.}
 
 Once a section of tests have been completed and there do not appear to be any 
 immediate problems, the modules can be used in the functional requirement tests.
