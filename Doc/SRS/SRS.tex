@@ -896,8 +896,8 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 				$a_{pow} = a^N$, & $b_{pow} = b^N$ & $N$ is odd  \\
 				$a_{pow} = a^N$, & $b_{pow} = b^N$ & $N$ is even $\wedge (0 
 				\leq a < b)$ \\
-				$a_{pow} = b^N$, & $b_{pow} = a^N$ & $N$ is even $\wedge (0 
-				\geq a > b)$ \\
+				$a_{pow} = b^N$, & $b_{pow} = a^N$ & $N$ is even $\wedge (a < b 
+				< 0)$ \\
 				$a_{pow} = 0$, & $b_{pow} = \max(a^N, b^N)$ & ELSE
 			\end{tabular}
 		\end{center}\\
@@ -932,9 +932,6 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 	\end{tabular}
 \end{minipage}\\
 
-\wss{You don't actually have an instance model to calculate the range of $f$.
-  Something like slide 13 of the previously mentioned slides might be 
-  appropriate?}
 ~\newline
 
 \noindent
@@ -951,8 +948,8 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		$f(V)$\\
 		\hline
 		Output&$R(f(V)) = [a_{R}, b_{R}]$ such that\\
-		& $R(f(V)) ::= [a_i, b_i], v_i \in V | R(f(V)) \mathit{\textless op 
-		\textgreater} R(f(V)) | ( R(f(V)) )$\\
+		& $R(f(V)) ::= [a_i, b_i], v_i \in V \mid R(f(V)) 
+		\text{ \textless op\textgreater} R(f(V)) \mid ( R(f(V)) )$\\
 %		&\vspace*{-10mm}\begin{center}
 %			\begin{tabular}{lll}
 %				$R(f(V)) = [a_i, b_i]$ & $v_i \in V$ \\
@@ -961,7 +958,7 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 %				$R(f(V)) = (R(f(V))_1)$ & $f(V)_1 = f(V) - {()}$\\
 %			\end{tabular}
 %		\end{center}\\
-		&$\mathit{\textless op \textgreater}$ can be any supported binary 
+		&$\text{\textless op\textgreater}$ can be any supported binary 
 		operator (\aref{A_operators})\\
 		&$[a_{R}, b_{R}]$ is a closed, real interval (\aref{A_interval})\\
 		\hline
