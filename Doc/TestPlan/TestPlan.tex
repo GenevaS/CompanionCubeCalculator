@@ -672,9 +672,9 @@ The tests that follow these assume that the user input tests
 
 	Initial State: New Session
 
-	Input: $f(V) = x / y$, $x = [2,4], y = [-3,-5]$
+	Input: $f(V) = x / y$, $x = [2,4], y = [-5, -3]$
 
-	Output: \Tree[.$/$ [.$x$ $[2,4]$ ] [.$y$ $[-3,-5]$ ] ]
+	Output: \Tree[.$/$ [.$x$ $[2,4]$ ] [.$y$ $[-5,-3]$ ] ]
 
 	How test will be performed: Unit Testing\\
 	
@@ -688,6 +688,30 @@ The tests that follow these assume that the user input tests
 
 	Output: Error -- Cannot perform division with a mixed interval divisor
 
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_divisionMixedIntervalDivisorZero1}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / y$, $x = [2,4], y = [-3,0]$
+	
+	Output: Error -- Cannot perform division with a mixed interval divisor
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_divisionMixedIntervalDivisorZero2}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / y$, $x = [2,4], y = [0,3]$
+	
+	Output: Error -- Cannot perform division with a mixed interval divisor
+	
 	How test will be performed: Unit Testing\\
 
 	\item{test-parse\_divisionMixedIntervalQuotient}
@@ -840,6 +864,18 @@ The tests that follow these assume that the user input tests
 	How test will be performed: Unit Testing\\
 	
 	\item{test-parse\_constantValue4}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / 0$, $x = [2,4]$
+	
+	Output: Error -- No support for division by zero
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{test-parse\_constantValue5}
 	
 	Type: Functional, Automatic, Integration
 	
