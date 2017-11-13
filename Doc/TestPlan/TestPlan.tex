@@ -588,6 +588,26 @@ satisfied.
 The tests that follow these assume that the user input tests 
 (\ref{tests_gettingInputs}) have passed.
 
+\paragraph{Unexpected Domain Ordering}
+
+\begin{enumerate}
+	
+	\item{test-parse\_domainOrder}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + y$, $x = [2,4], y = [3,-5]$
+	
+	Output: Warning -- Domain for variable $y$ is ordered highest to lowest; 
+	reordering values to be smallest to highest\\
+	\Tree[.$+$ [.$x$ $[2,4]$ ] [.$y$ $[-5,3]$ ] ]
+	
+	How test will be performed: Unit Testing\\
+	
+\end{enumerate}
+
 \paragraph{Addition, Subtraction, and Multiplication}
 
 \begin{enumerate}
