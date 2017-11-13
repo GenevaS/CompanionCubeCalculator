@@ -1390,8 +1390,7 @@ The tests that follow these assume that the user input tests
 	Input: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$, where $R(f_1(V)), R(f_2(V))$ 
 	exist
 	
-	Output: True \wss{What does True mean? $R(f)$ does not have
-          the type Boolean?}
+	Output: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$ by induction
 	
 	How test will be performed: Induction\\
 	
@@ -1404,10 +1403,12 @@ The tests that follow these assume that the user input tests
 	Input: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$, where $R(f_1(V))$ or 
 	$R(f_2(V))$ do not exist
 	
-	Output: Error -- Calculation path encountered an unsupported interval 
-	operation
+	Output: $R(f(V)) \neq R(f_1(V)) <op> R(f_2(V))$ by induction
 	
-	How test will be performed: Induction\\
+	How test will be performed: Induction
+	
+	Note: This case should only apply to cases where there is a mixed interval 
+	divisor for the division operator\\
 	
 \end{enumerate}
 
