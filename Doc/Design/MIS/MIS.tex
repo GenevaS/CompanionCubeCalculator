@@ -20,6 +20,11 @@
 \usepackage[section]{placeins}
 \usepackage{caption}
 \usepackage{fullpage}
+\usepackage{listings}
+
+\lstset{ %
+	breaklines = true
+}
 
 \externaldocument{../../SRS/SRS}
 \newcommand{\rref}[1]{R\ref{#1}}
@@ -171,9 +176,15 @@ project. It can be found at
 
 \subsection{Module}
 
-\wss{Short name for the module}
+main
 
 \subsection{Uses}
+
+Input (Section~\ref{Module_userinput}), Consolidate 
+(Section~\ref{Module_variableconsolidation}), Solver 
+(Section~\ref{Module_rangesolver}), Output (Section~\ref{Module_output}), 
+intervalStruct (Section~\ref{Module_intervaldatastructure}), equationStruct 
+(Section~\ref{Module_equationdatastructure})
 
 
 \subsection{Syntax}
@@ -181,11 +192,11 @@ project. It can be found at
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+main & - & - & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -194,15 +205,38 @@ project. It can be found at
 
 \subsubsection{State Variables}
 
+N/A
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent main():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+\item transition: Create data structures to contain the user inputs and modify 
+their states for the Output module.
 \end{itemize}
+
+\begin{lstlisting}
+# Get User Input
+  eqString := Input.getUserEquation()
+  varList := Input.getVariableList()
+ 
+# Convert input into equation and interval data structures using 
+# the list of valid operators from Solver
+  operators := Solver.getValidOperators()
+  Consolidate.convertAndCheckInputs(eqString, varList, operators)
+  
+# Get the equation and interval data structures and pass them to 
+# the Solver module
+  equationData := Consolidate.getEquationStruct()
+  intervalDataList := Consolidate.GetIntervalStructList()
+  range := Solver.calculateRange(equationData, intervalDataList)
+  
+# Report the results back to the user
+  Output.printInterval(range)
+  Output.printEquationTree(equationData)
+  for each interval in intervalDataList:
+    Output.printInterval(interval)
+\end{lstlisting}
 
 \newpage
 
@@ -211,7 +245,7 @@ project. It can be found at
 
 \subsection{Module}
 
-\wss{Short name for the module}
+Input
 
 \subsection{Uses}
 
@@ -331,7 +365,7 @@ project. It can be found at
 
 \subsection{Module}
 
-\wss{Short name for the module}
+Consolidate
 
 \subsection{Uses}
 
@@ -371,7 +405,7 @@ project. It can be found at
 
 \subsection{Module}
 
-\wss{Short name for the module}
+Solver
 
 \subsection{Uses}
 
@@ -427,7 +461,7 @@ intervalStruct (Section~\ref{Module_intervaldatastructure}), equationStruct
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		printIntervalList & $intervalStruct^n$ & - & - \\
+		printInterval & $intervalStruct$ & - & - \\
 		printEquationTree & $equationStruct$ & - & - \\
 		\hline
 	\end{tabular}
@@ -460,12 +494,12 @@ N/A
 
 \subsubsection{Access Routine Semantics}
 
-\noindent printIntervalList($intervalStruct^n$):
+\noindent printIntervalList($intervalStruct$):
 \begin{itemize}
-	\item transition: If the user interface is the command-line, write the list 
-	of intervals to cmd. If the user interface is a GUI, modify win so that the 
-	list of intervals is displayed. In both cases, the variable name of the 
-	interval must also be displayed.
+	\item transition: If the user interface is the command-line, write the 
+	interval $intervalStruct$ to cmd. If the user interface is a GUI, modify 
+	win so that the interval is displayed. In both cases, the variable name of 
+	the interval must also be displayed.
 	\item exception: N/A
 \end{itemize}
 
@@ -544,13 +578,13 @@ N/A
 	(val1 > val2 \Rightarrow ORD\_VIOLATED)$
 \end{itemize}
 
-\noindent intervalStruct.GetMinRange:
+\noindent intervalStruct.GetMinRange():
 \begin{itemize}
 	\item output: $out := a$
 	\item exception: N/A
 \end{itemize}
 
-\noindent intervalStruct.GetMaxRange:
+\noindent intervalStruct.GetMaxRange():
 \begin{itemize}
 	\item output: $out := b$
 	\item exception: N/A
@@ -600,16 +634,20 @@ N/A
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		equationStruct & String,  & $equationStruct$ & 
+		\multirow{3}{3cm}{equationStruct} & \multirow{3}{3cm}{String, 
+		$equationStruct^2$} & \multirow{3}{3cm}{$equationStruct$} & 
 		EQ\_INSUFF\_PARAMS,\\
-		& $equationStruct^2$ & & EQ\_WRONG\_OPERATOR\_TYPE,\\
+		&  & & EQ\_WRONG\_OPERATOR\_TYPE,\\
 		& & & EQ\_WRONG\_OPERAND\_TYPE\\
 		GetOperator & - & String & - \\
 		GetLeftOperand & - & $equationStruct$ & -\\
 		GetRightOperand & - & $equationStruct$ & - \\
-		SetLeftOperand & $equationStruct$ & - & EQ\_INSUFF\_PARAMS,\\
+		\multirow{2}{3cm}{SetLeftOperand} & \multirow{2}{3cm}{$equationStruct$} 
+		& \multirow{2}{3cm}{-} & EQ\_INSUFF\_PARAMS,\\
 		& & & EQ\_WRONG\_OPERAND\_TYPE\\
-		SetRightOperand & $equationStruct$ & - & EQ\_INSUFF\_PARAMS,\\
+		\multirow{2}{3cm}{SetRightOperand} & 
+		\multirow{2}{3cm}{$equationStruct$} & \multirow{2}{3cm}{-} & 
+		EQ\_INSUFF\_PARAMS,\\
 		& & & EQ\_WRONG\_OPERAND\_TYPE\\
 		\hline
 	\end{tabular}
@@ -656,19 +694,19 @@ N/A
 	$
 \end{itemize}
 
-\noindent equationStruct.GetOperator:
+\noindent equationStruct.GetOperator():
 \begin{itemize}
 	\item output: $out := op$
 	\item exception: N/A
 \end{itemize}
 
-\noindent equationStruct.GetLeftOperand:
+\noindent equationStruct.GetLeftOperand():
 \begin{itemize}
 	\item output: $out := x$
 	\item exception: N/A
 \end{itemize}
 
-\noindent equationStruct.GetRightOperand:
+\noindent equationStruct.GetRightOperand():
 \begin{itemize}
 	\item output: $out := y$
 	\item exception: N/A
