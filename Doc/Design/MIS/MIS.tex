@@ -21,6 +21,10 @@
 \usepackage{caption}
 \usepackage{fullpage}
 
+\externaldocument{../../SRS/SRS}
+\newcommand{\rref}[1]{R\ref{#1}}
+\newcommand{\ddref}[1]{DD\ref{#1}}
+
 \hypersetup{
 	bookmarks=true,     % show bookmarks bar?
 	colorlinks=true,       % false: boxed links; true: colored links
@@ -125,7 +129,9 @@ described by giving their type signature followed by their specification.
 
 \section{Module Decomposition}
 
-The following table is taken directly from the Module Guide document for this project.
+The following table is taken directly from the Module Guide document for this 
+project. It can be found at 
+\url{https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MG}.
 
 \begin{table}[h!]
 	\centering
@@ -160,7 +166,8 @@ The following table is taken directly from the Module Guide document for this pr
 \newpage
 ~\newpage
 
-\section{MIS of \wss{Module Name}} \label{Module} \wss{Use labels for cross-referencing}
+\section{MIS of the Control Flow Module} 
+\label{Module_controlflow}
 
 \subsection{Module}
 
@@ -174,7 +181,7 @@ The following table is taken directly from the Module Guide document for this pr
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
@@ -195,6 +202,385 @@ The following table is taken directly from the Module Guide document for this pr
 \item transition: \wss{if appropriate} 
 \item output: \wss{if appropriate} 
 \item exception: \wss{if appropriate} 
+\end{itemize}
+
+\newpage
+
+\section{MIS of the User Input Module} 
+\label{Module_userinput}
+
+\subsection{Module}
+
+\wss{Short name for the module}
+
+\subsection{Uses}
+
+
+\subsection{Syntax}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+		\hline
+		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+		\hline
+		\wss{accessProg} & - & - & - \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \wss{accessProg}():
+\begin{itemize}
+	\item transition: \wss{if appropriate} 
+	\item output: \wss{if appropriate} 
+	\item exception: \wss{if appropriate} 
+\end{itemize}
+
+\newpage
+
+\section{MIS of the Interval Conversion Module} 
+\label{Module_intervalconversion}
+
+\subsection{Module}
+
+\wss{Short name for the module}
+
+\subsection{Uses}
+
+
+\subsection{Syntax}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+		\hline
+		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+		\hline
+		\wss{accessProg} & - & - & - \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \wss{accessProg}():
+\begin{itemize}
+	\item transition: \wss{if appropriate} 
+	\item output: \wss{if appropriate} 
+	\item exception: \wss{if appropriate} 
+\end{itemize}
+
+\newpage
+
+\section{MIS of the Equation Conversion Module} 
+\label{Module_equationconversion}
+
+\subsection{Module}
+
+\wss{Short name for the module}
+
+\subsection{Uses}
+
+
+\subsection{Syntax}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+		\hline
+		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+		\hline
+		\wss{accessProg} & - & - & - \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \wss{accessProg}():
+\begin{itemize}
+	\item transition: \wss{if appropriate} 
+	\item output: \wss{if appropriate} 
+	\item exception: \wss{if appropriate} 
+\end{itemize}
+
+\newpage
+
+\section{MIS of the Variable Consolidation Module} 
+\label{Module_variableconsolidation}
+
+\subsection{Module}
+
+\wss{Short name for the module}
+
+\subsection{Uses}
+
+
+\subsection{Syntax}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+		\hline
+		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+		\hline
+		\wss{accessProg} & - & - & - \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \wss{accessProg}():
+\begin{itemize}
+	\item transition: \wss{if appropriate} 
+	\item output: \wss{if appropriate} 
+	\item exception: \wss{if appropriate} 
+\end{itemize}
+
+\newpage
+
+\section{MIS of the Range Solver Module} 
+\label{Module_rangesolver}
+
+\subsection{Module}
+
+\wss{Short name for the module}
+
+\subsection{Uses}
+
+
+\subsection{Syntax}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+		\hline
+		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+		\hline
+		\wss{accessProg} & - & - & - \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \wss{accessProg}():
+\begin{itemize}
+	\item transition: \wss{if appropriate} 
+	\item output: \wss{if appropriate} 
+	\item exception: \wss{if appropriate} 
+\end{itemize}
+
+\newpage
+
+\section{MIS of the Output Module} 
+\label{Module_output}
+
+\subsection{Module}
+
+\wss{Short name for the module}
+
+\subsection{Uses}
+
+
+\subsection{Syntax}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+		\hline
+		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+		\hline
+		\wss{accessProg} & - & - & - \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \wss{accessProg}():
+\begin{itemize}
+	\item transition: \wss{if appropriate} 
+	\item output: \wss{if appropriate} 
+	\item exception: \wss{if appropriate} 
+\end{itemize}
+
+\newpage
+
+\section{MIS of the Interval Data Structure Module} 
+\label{Module_intervaldatastructure}
+
+\subsection{Module}
+
+intervalStruct
+
+\subsection{Uses}
+
+N/A
+
+\subsection{Syntax}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+	\begin{tabular}{p{3cm} p{3cm} p{4cm} p{4cm}}
+		\hline
+		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+		\hline
+		\multirow{3}{3cm}{intervalStruct} & \multirow{3}{3cm}{$\mathbb{R}^2$} & 
+		\multirow{3}{4cm}{$intervalStruct$} & 
+		IV\_NOT\_REAL\_TYPE, \\
+		 &  &  & IV\_INSUFF\_PARAMS, \\
+		  &  &  & ORD\_VIOLATED \\
+		GetMinRange & - & $\mathbb{R}$ & - \\
+		GetMaxRange & - & $\mathbb{R}$ & - \\
+		\multirow{3}{3cm}{SetMinRange} & \multirow{3}{3cm}{$\mathbb{R}$} & 
+		\multirow{3}{3cm}{-} & IV\_NOT\_REAL\_TYPE, \\
+		 &  &  & IV\_INSUFF\_PARAMS, \\
+		  &  &  & ORD\_VIOLATED \\
+		\multirow{3}{3cm}{SetMaxRange} & \multirow{3}{3cm}{$\mathbb{R}$} & 
+		\multirow{3}{3cm}{-} & IV\_NOT\_REAL\_TYPE, \\
+		 &  &  & IV\_INSUFF\_PARAMS, \\
+		   &  &  & ORD\_VIOLATED \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\# For \rref{R_conditionX} using \ddref{DD_interval}
+\begin{itemize}
+	\item $a$ : $\mathbb{R}$
+	\item $b$ : $\mathbb{R}$
+\end{itemize}
+\subsubsection{Access Routine Semantics}
+
+\noindent intervalStruct($val1, val2$):
+\begin{itemize}
+	\item output: $out := intervalStruct$
+	\item transition: Update state variable $a$ and $b$ with the provided value
+	\item exception: $exc := \\
+	(val1 \notin \mathbb{R} \vee val2 \notin \mathbb{R} \Rightarrow 
+	IV\_NOT\_REAL\_TYPE) \\
+	|\\
+	(\nexists val1 \vee \nexists val2 \Rightarrow IV\_INSUFF\_PARAMS)\\
+	|\\
+	(val1 > val2 \Rightarrow ORD\_VIOLATED)$
+\end{itemize}
+
+\noindent intervalStruct.GetMinRange:
+\begin{itemize}
+	\item output: $out := a$
+	\item exception: N/A
+\end{itemize}
+
+\noindent intervalStruct.GetMaxRange:
+\begin{itemize}
+	\item output: $out := b$
+	\item exception: N/A
+\end{itemize}
+
+\noindent intervalStruct.SetMinRange($val$):
+\begin{itemize}
+	\item transition: Update state variable $a$ with the provided value
+	\item exception: $exc := \\
+	(val \notin \mathbb{R} \Rightarrow IV\_NOT\_REAL\_TYPE) \\
+	|\\
+	(\nexists val \Rightarrow IV\_INSUFF\_PARAMS) \\
+	|\\
+	(val > b \Rightarrow ORD\_VIOLATED)$
+\end{itemize}
+
+\noindent intervalStruct.SetMaxRange($val$):
+\begin{itemize}
+	\item transition: Update state variable $a$ with the provided value
+	\item exception: $exc := \\
+	(val \notin \mathbb{R} \Rightarrow IV\_NOT\_REAL\_TYPE) \\
+	|\\
+	(\nexists val \Rightarrow IV\_INSUFF\_PARAMS) \\
+	|\\
+	(val < a \Rightarrow ORD\_VIOLATED)$
+\end{itemize}
+
+\newpage
+
+\section{MIS of the Equation Data Structure Module} 
+\label{Module_equationdatastructure}
+
+\subsection{Module}
+
+\wss{Short name for the module}
+
+\subsection{Uses}
+
+
+\subsection{Syntax}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+		\hline
+		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+		\hline
+		\wss{accessProg} & - & - & - \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+
+\subsubsection{Access Routine Semantics}
+
+\noindent \wss{accessProg}():
+\begin{itemize}
+	\item transition: \wss{if appropriate} 
+	\item output: \wss{if appropriate} 
+	\item exception: \wss{if appropriate} 
 \end{itemize}
 
 \newpage
