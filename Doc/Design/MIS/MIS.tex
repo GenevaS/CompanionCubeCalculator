@@ -411,21 +411,24 @@ project. It can be found at
 
 \subsection{Module}
 
-\wss{Short name for the module}
+Output
 
 \subsection{Uses}
 
+intervalStruct (Section~\ref{Module_intervaldatastructure}), equationStruct 
+(Section~\ref{Module_equationdatastructure})
 
 \subsection{Syntax}
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+	\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\wss{accessProg} & - & - & - \\
+		printIntervalList & $intervalStruct^n$ & - & - \\
+		printEquationTree & $equationStruct$ & - & - \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -434,14 +437,44 @@ project. It can be found at
 
 \subsubsection{State Variables}
 
+N/A
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+	\item cmd: the command-line interface
+	\item win: a 2D sequence of pixels displayed on the screen
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+	\item There are no exceptions in this module because it is assumed that 
+	only well-formed inputs will be passed in. This assumption is made knowing 
+	that this module will only be called post-process and any errors in the 
+	data structures have already been identified.
+	\item The object passed to printEquationTree is the root of the equation 
+	tree
+\end{itemize}
+
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent printIntervalList($intervalStruct^n$):
 \begin{itemize}
-	\item transition: \wss{if appropriate} 
-	\item output: \wss{if appropriate} 
-	\item exception: \wss{if appropriate} 
+	\item transition: If the user interface is the command-line, write the list 
+	of intervals to cmd. If the user interface is a GUI, modify win so that the 
+	list of intervals is displayed. In both cases, the variable name of the 
+	interval must also be displayed.
+	\item exception: N/A
+\end{itemize}
+
+\noindent printEquationTree($equationStruct$):
+\begin{itemize}
+	\item transition: If the user interface is the command-line, write the 
+	equation tree to cmd. If the user interface is a GUI, modify win so that 
+	the equation tree is displayed.
+	\item exception: N/A
 \end{itemize}
 
 \newpage
