@@ -462,7 +462,7 @@ N/A
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{3cm} p{4cm} p{4cm}}
+	\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
@@ -494,12 +494,14 @@ N/A
 	\item $a$ : $\mathbb{R}$
 	\item $b$ : $\mathbb{R}$
 \end{itemize}
+
 \subsubsection{Access Routine Semantics}
 
 \noindent intervalStruct($val1, val2$):
 \begin{itemize}
 	\item output: $out := intervalStruct$
-	\item transition: Update state variable $a$ and $b$ with the provided value
+	\item transition: Update state variables $a$ and $b$ with the provided 
+	values $val1$ and $val2$
 	\item exception: $exc := \\
 	(val1 \notin \mathbb{R} \vee val2 \notin \mathbb{R} \Rightarrow 
 	IV\_NOT\_REAL\_TYPE) \\
@@ -523,7 +525,7 @@ N/A
 
 \noindent intervalStruct.SetMinRange($val$):
 \begin{itemize}
-	\item transition: Update state variable $a$ with the provided value
+	\item transition: Update state variable $a$ with the provided value $val$
 	\item exception: $exc := \\
 	(val \notin \mathbb{R} \Rightarrow IV\_NOT\_REAL\_TYPE) \\
 	|\\
@@ -534,7 +536,7 @@ N/A
 
 \noindent intervalStruct.SetMaxRange($val$):
 \begin{itemize}
-	\item transition: Update state variable $a$ with the provided value
+	\item transition: Update state variable $b$ with the provided value $val$
 	\item exception: $exc := \\
 	(val \notin \mathbb{R} \Rightarrow IV\_NOT\_REAL\_TYPE) \\
 	|\\
@@ -550,21 +552,32 @@ N/A
 
 \subsection{Module}
 
-\wss{Short name for the module}
+equationStruct
 
 \subsection{Uses}
 
+N/A
 
 \subsection{Syntax}
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+	\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\wss{accessProg} & - & - & - \\
+		equationStruct & String,  & $equationStruct$ & 
+		EQ\_INSUFF\_PARAMS,\\
+		& $equationStruct^2$ & & EQ\_WRONG\_OPERATOR\_TYPE,\\
+		& & & EQ\_WRONG\_OPERAND\_TYPE\\
+		GetOperator & - & String & - \\
+		GetLeftOperand & - & $equationStruct$ & -\\
+		GetRightOperand & - & $equationStruct$ & - \\
+		SetLeftOperand & $equationStruct$ & - & EQ\_INSUFF\_PARAMS,\\
+		& & & EQ\_WRONG\_OPERAND\_TYPE\\
+		SetRightOperand & $equationStruct$ & - & EQ\_INSUFF\_PARAMS,\\
+		& & & EQ\_WRONG\_OPERAND\_TYPE\\
 		\hline
 	\end{tabular}
 \end{center}
@@ -573,14 +586,79 @@ N/A
 
 \subsubsection{State Variables}
 
+\# To support \rref{R_conditionfx} and \rref{R_CalculateCompose}
+\begin{itemize}
+	\item $op$ : string
+	\item $x$ : $equationStruct$
+	\item $y$ : $equationStruct$
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+	\item The decomposition of the user equation is handled by the Equation 
+	Conversion module (Section~\ref{Module_equationconversion}).
+	\item Unsupported operators are identified and handled in the Equation 
+	Conversion module (Section~\ref{Module_equationconversion}).
+	\item There is no setter method for the $op$ field because it will not be 
+	changed after initialization.
+	\item The values for $x$ and $y$ can be set to \texttt{NULL} as required.
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent equationStruct($operator, eStruct1, eStruct2$):
 \begin{itemize}
-	\item transition: \wss{if appropriate} 
-	\item output: \wss{if appropriate} 
-	\item exception: \wss{if appropriate} 
+	\item output: $out := equationStruct$
+	\item transition: Update state variables $op$, $x$, and $y$ with the 
+	provided values $operator$, $eStruct1,$ and $eStruct2$
+	\item exception: $exc := \\
+	(\nexists operator \vee \nexists eStruct1 \vee \nexists eStruct2 
+	\Rightarrow EQ\_INSUFF\_PARAMS)\\
+	|\\
+	(operator \neq string \Rightarrow EQ\_WRONG\_OPERATOR\_TYPE) \\
+	|\\
+	(eStruct1 \neq equationStruct \vee eStruct2 \neq equationStruct 
+	\\ \Rightarrow EQ\_WRONG\_OPERAND\_TYPE)
+	$
+\end{itemize}
+
+\noindent equationStruct.GetOperator:
+\begin{itemize}
+	\item output: $out := op$
+	\item exception: N/A
+\end{itemize}
+
+\noindent equationStruct.GetLeftOperand:
+\begin{itemize}
+	\item output: $out := x$
+	\item exception: N/A
+\end{itemize}
+
+\noindent equationStruct.GetRightOperand:
+\begin{itemize}
+	\item output: $out := y$
+	\item exception: N/A
+\end{itemize}
+
+\noindent SetLeftOperand($eStruct$):
+\begin{itemize}
+	\item transition: Update state variable $x$ with the provided value 
+	$eStruct$
+	\item exception: $exc := \\
+	(\nexists eStruct \Rightarrow EQ\_INSUFF\_PARAMS)\\
+	|\\
+	(eStruct \neq equationStruct \Rightarrow EQ\_WRONG\_OPERAND\_TYPE)$	
+\end{itemize}
+
+\noindent SetRightOperand($eStruct$):
+\begin{itemize}
+	\item transition: Update state variable $y$ with the provided value 
+	$eStruct$
+	\item exception: $exc := \\
+	(\nexists eStruct \Rightarrow EQ\_INSUFF\_PARAMS)\\
+	|\\
+	(eStruct \neq equationStruct \Rightarrow EQ\_WRONG\_OPERAND\_TYPE)$	
 \end{itemize}
 
 \newpage
@@ -594,14 +672,20 @@ N/A
 
 \renewcommand{\arraystretch}{1.2}
 
-\begin{longtable}{l p{12cm}}
+\begin{longtable}{l p{9.5cm}}
 	\caption{Possible Exceptions} \\
 	\toprule
 	\textbf{Message ID} & \textbf{Error Message} \\
 	\midrule
-	IV\_NOT\_REAL\_TYPE & Error: Interval values must be of type real \\
+	EQ\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
+	equation data structure.\\
+	EQ\_WRONG\_OPERAND\_TYPE & Error: Operands must have type 
+	$equationStruct$.\\
+	EQ\_WRONG\_OPERATOR\_TYPE & Warning: The operator must have type $string$. 
+	String type conversion has been applied.\\
+	IV\_NOT\_REAL\_TYPE & Error: Interval values must be of type real. \\
 	IV\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
-	interval data structure \\
+	interval data structure. \\
 	ORD\_VIOLATED & Warning: Value provided for intervals are not in increasing 
 	order. The values have been exchanged to maintain the interval ordering. \\
 	\bottomrule
