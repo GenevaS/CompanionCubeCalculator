@@ -592,6 +592,19 @@ N/A
 
 \section{Appendix} \label{Appendix}
 
-\wss{Extra information if required}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{longtable}{l p{12cm}}
+	\caption{Possible Exceptions} \\
+	\toprule
+	\textbf{Message ID} & \textbf{Error Message} \\
+	\midrule
+	IV\_NOT\_REAL\_TYPE & Error: Interval values must be of type real \\
+	IV\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
+	interval data structure \\
+	ORD\_VIOLATED & Warning: Value provided for intervals are not in increasing 
+	order. The values have been exchanged to maintain the interval ordering. \\
+	\bottomrule
+\end{longtable}
 
 \end{document}
