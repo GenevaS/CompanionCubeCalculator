@@ -409,17 +409,30 @@ Solver
 
 \subsection{Uses}
 
+intervalStruct (Section~\ref{Module_intervaldatastructure}), equationStruct 
+(Section~\ref{Module_equationdatastructure})
 
 \subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+	\item $supportedOps : String^n$
+\end{itemize}
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+	\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\wss{accessProg} & - & - & - \\
+		getValidOperators & - & $String^n$ & -\\
+		\multirow{4}{3cm}{findRange} &  & 
+		\multirow{4}{3cm}{$intervalStruct$} & SOL\_INSUFF\_PARAMS,\\
+		& $equationStruct$, & & SOL\_WRONG\_EQ\_TYPE,\\
+		& $intervalStruct^n$ & & SOL\_WRONG\_IV\_TYPE,\\
+		& & & SOL\_UNSUPPORTED\_OP\\
 		\hline
 	\end{tabular}
 \end{center}
@@ -428,14 +441,38 @@ Solver
 
 \subsubsection{State Variables}
 
+N/A
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+	\item The type of $intervalStruct^n$ accepts \texttt{NULL} as a valid value.
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent getValidOperators():
 \begin{itemize}
-	\item transition: \wss{if appropriate} 
-	\item output: \wss{if appropriate} 
-	\item exception: \wss{if appropriate} 
+	\item output: $out := supportedOps$
+	\item exception: N/A
+\end{itemize}
+
+\noindent findRange($eStruct, ivStructList$):
+\begin{itemize}
+	\item output: $out := intervalStruct$
+	\item exception: $exc := \\
+	(\nexists equationStruct \vee \nexists intervalStruct^n \Rightarrow 
+	SOL\_INSUFF\_PARAMS)\\
+	|\\
+	(eStruct \neq equationStruct \Rightarrow SOL\_WRONG\_EQ\_TYPE) \\
+	|\\
+	(ivStructList \neq intervalStruct^n \vee ivStructList \neq NULL 
+	\\\Rightarrow SOL\_WRONG\_IV\_TYPE) \\
+	|\\
+	((\exists op \in eStruct \wedge op \notin supportedOps) \\
+	\vee (\exists iv1, iv2 \in ivStructList \wedge \nexists op \in supportedOps 
+	| op(iv1, iv2) \vee op(iv2, iv1)) \\
+	\Rightarrow UNSUPPORTED\_OP)$ 
 \end{itemize}
 
 \newpage
@@ -558,8 +595,8 @@ N/A
 
 \# For \rref{R_conditionX} using \ddref{DD_interval}
 \begin{itemize}
-	\item $a$ : $\mathbb{R}$
-	\item $b$ : $\mathbb{R}$
+	\item $a : \mathbb{R}$
+	\item $b : \mathbb{R}$
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -634,12 +671,14 @@ N/A
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{3}{3cm}{equationStruct} & \multirow{3}{3cm}{String, 
-		$equationStruct^2$} & \multirow{3}{3cm}{$equationStruct$} & 
+		\multirow{4}{3cm}{equationStruct} & \multirow{4}{3cm}{$String^2$, 
+		$equationStruct^2$} & \multirow{4}{3cm}{$equationStruct$} & 
 		EQ\_INSUFF\_PARAMS,\\
+		&  & & EQ\_WRONG\_VARNAME\_TYPE,\\
 		&  & & EQ\_WRONG\_OPERATOR\_TYPE,\\
 		& & & EQ\_WRONG\_OPERAND\_TYPE\\
-		GetOperator & - & String & - \\
+		GetOperator & - & $String$ & - \\
+		GetVariableName & - & $String$ & - \\
 		GetLeftOperand & - & $equationStruct$ & -\\
 		GetRightOperand & - & $equationStruct$ & - \\
 		\multirow{2}{3cm}{SetLeftOperand} & \multirow{2}{3cm}{$equationStruct$} 
@@ -659,9 +698,10 @@ N/A
 
 \# To support \rref{R_conditionfx} and \rref{R_CalculateCompose}
 \begin{itemize}
-	\item $op$ : string
-	\item $x$ : $equationStruct$
-	\item $y$ : $equationStruct$
+	\item $op : String$
+	\item $varName : String$
+	\item $x : equationStruct$
+	\item $y : equationStruct$
 \end{itemize}
 
 \subsubsection{Assumptions}
@@ -678,7 +718,7 @@ N/A
 
 \subsubsection{Access Routine Semantics}
 
-\noindent equationStruct($operator, eStruct1, eStruct2$):
+\noindent equationStruct($operator, vName, eStruct1, eStruct2$):
 \begin{itemize}
 	\item output: $out := equationStruct$
 	\item transition: Update state variables $op$, $x$, and $y$ with the 
@@ -687,16 +727,24 @@ N/A
 	(\nexists operator \vee \nexists eStruct1 \vee \nexists eStruct2 
 	\Rightarrow EQ\_INSUFF\_PARAMS)\\
 	|\\
+	(vName \neq string \Rightarrow EQ\_WRONG\_VARNAME\_TYPE) \\
+	|\\
 	(operator \neq string \Rightarrow EQ\_WRONG\_OPERATOR\_TYPE) \\
 	|\\
-	(eStruct1 \neq equationStruct \vee eStruct2 \neq equationStruct 
-	\\ \Rightarrow EQ\_WRONG\_OPERAND\_TYPE)
+	(eStruct1 \neq equationStruct \vee eStruct1 \neq NULL \vee eStruct2 \neq 
+	equationStruct \vee eStruct2 \neq NULL \Rightarrow EQ\_WRONG\_OPERAND\_TYPE)
 	$
 \end{itemize}
 
 \noindent equationStruct.GetOperator():
 \begin{itemize}
 	\item output: $out := op$
+	\item exception: N/A
+\end{itemize}
+
+\noindent equationStruct.GetVariableName():
+\begin{itemize}
+	\item output: $out := varName$
 	\item exception: N/A
 \end{itemize}
 
@@ -744,19 +792,38 @@ N/A
 \renewcommand{\arraystretch}{1.2}
 
 \begin{longtable}{l p{9.5cm}}
-	\caption{Possible Exceptions} \\
+	\caption{Possible Error Exceptions} \\
 	\toprule
 	\textbf{Message ID} & \textbf{Error Message} \\
 	\midrule
 	EQ\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
-	equation data structure.\\
+	the	equation data structure.\\
 	EQ\_WRONG\_OPERAND\_TYPE & Error: Operands must have type 
 	$equationStruct$.\\
-	EQ\_WRONG\_OPERATOR\_TYPE & Warning: The operator must have type $string$. 
-	String type conversion has been applied.\\
 	IV\_NOT\_REAL\_TYPE & Error: Interval values must be of type real. \\
 	IV\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
 	interval data structure. \\
+	SOL\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
+	the range solver.\\
+	SOL\_WRONG\_EQ\_TYPE & Error: An equation must be provided to the solver 
+	that has type $equationStruct$.\\
+	SOL\_WRONG\_IV\_TYPE & Error: An list of intervals must be provided to the 
+	range solver. If no intervals exist, the value must be identified as 
+	\texttt{NULL}.\\
+	SOL\_UNSUPPORTED\_OP & Error: An unsupported operation was encountered 
+	while solving for the range of the equation.\\
+	\bottomrule
+\end{longtable}
+
+\begin{longtable}{l p{9.5cm}}
+	\caption{Possible Warning Exceptions} \\
+	\toprule
+	\textbf{Message ID} & \textbf{Error Message} \\
+	\midrule
+	EQ\_WRONG\_OPERATOR\_TYPE & Warning: The operator must have type $string$. 
+	String type conversion has been applied.\\
+	EQ\_WRONG\_VARNAME\_TYPE & Warning: The variable name must have type 
+	$string$. String type conversion has been applied. \\
 	ORD\_VIOLATED & Warning: Value provided for intervals are not in increasing 
 	order. The values have been exchanged to maintain the interval ordering. \\
 	\bottomrule
