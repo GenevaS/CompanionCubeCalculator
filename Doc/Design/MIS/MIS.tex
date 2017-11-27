@@ -183,7 +183,7 @@ main
 Input (Section~\ref{Module_userinput}), Consolidate 
 (Section~\ref{Module_variableconsolidation}), Solver 
 (Section~\ref{Module_rangesolver}), Output (Section~\ref{Module_output}), 
-intervalStruct (Section~\ref{Module_intervaldatastructure}), equationStruct 
+IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct 
 (Section~\ref{Module_equationdatastructure})
 
 
@@ -196,7 +196,7 @@ intervalStruct (Section~\ref{Module_intervaldatastructure}), equationStruct
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-main & - & - & - \\
+Main & - & - & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -209,7 +209,7 @@ N/A
 
 \subsubsection{Access Routine Semantics}
 
-\noindent main():
+\noindent Main():
 \begin{itemize}
 \item transition: Create data structures to contain the user inputs and modify 
 their states for the Output module.
@@ -223,20 +223,20 @@ their states for the Output module.
  
 # Convert input into equation and interval data structures using 
 # the list of valid operators from Solver
-  operators := Solver.getValidOperators()
-  Consolidate.convertAndCheckInputs(eqString, varList, operators)
+  operators := Solver.GetValidOperators()
+  Consolidate.ConvertAndCheckInputs(eqString, varList, operators)
   
 # Get the equation and interval data structures and pass them to 
 # the Solver module
-  equationData := Consolidate.getEquationStruct()
+  equationData := Consolidate.GetEquationStruct()
   intervalDataList := Consolidate.GetIntervalStructList()
-  range := Solver.calculateRange(equationData, intervalDataList)
+  range := Solver.CalculateRange(equationData, intervalDataList)
   
 # Report the results back to the user
-  Output.printInterval(range)
-  Output.printEquationTree(equationData)
+  Output.PrintInterval(range)
+  Output.PrintEquationTree(equationData)
   for each interval in intervalDataList:
-    Output.printInterval(interval)
+    Output.PrintInterval(interval)
 \end{lstlisting}
 
 \newpage
@@ -444,7 +444,7 @@ Solver
 
 \subsection{Uses}
 
-intervalStruct (Section~\ref{Module_intervaldatastructure}), equationStruct 
+IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct 
 (Section~\ref{Module_equationdatastructure})
 
 \subsection{Syntax}
@@ -458,13 +458,13 @@ intervalStruct (Section~\ref{Module_intervaldatastructure}), equationStruct
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
+	\begin{tabular}{p{3.1cm} p{3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		getValidOperators & - & $String^n$ & -\\
-		\multirow{4}{3cm}{findRange} &  & 
-		\multirow{4}{3cm}{$intervalStruct$} & SOL\_INSUFF\_PARAMS,\\
+		GetValidOperators & - & $String^n$ & -\\
+		\multirow{4}{3.1cm}{FindRange} &  & 
+		\multirow{4}{3.1cm}{$intervalStruct$} & SOL\_INSUFF\_PARAMS,\\
 		& $equationStruct$, & & SOL\_WRONG\_EQ\_TYPE,\\
 		& $intervalStruct^n$ & & SOL\_WRONG\_IV\_TYPE,\\
 		& & & SOL\_UNSUPPORTED\_OP\\
@@ -486,17 +486,17 @@ N/A
 
 \subsubsection{Access Routine Semantics}
 
-\noindent getValidOperators():
+\noindent GetValidOperators():
 \begin{itemize}
 	\item output: $out := supportedOps$
 	\item exception: N/A
 \end{itemize}
 
-\noindent findRange($eStruct, ivStructList$):
+\noindent FindRange($eStruct, ivStructList$):
 \begin{itemize}
 	\item output: $out := intervalStruct$
 	\item exception: $exc := \\
-	(\nexists equationStruct \vee \nexists intervalStruct^n \Rightarrow 
+	(\nexists eStruct \vee \nexists ivStructList \Rightarrow 
 	SOL\_INSUFF\_PARAMS)\\
 	|\\
 	(eStruct \neq equationStruct \Rightarrow SOL\_WRONG\_EQ\_TYPE) \\
@@ -521,7 +521,7 @@ Output
 
 \subsection{Uses}
 
-intervalStruct (Section~\ref{Module_intervaldatastructure}), equationStruct 
+IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct 
 (Section~\ref{Module_equationdatastructure})
 
 \subsection{Syntax}
@@ -529,12 +529,12 @@ intervalStruct (Section~\ref{Module_intervaldatastructure}), equationStruct
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
+	\begin{tabular}{p{3.1cm} p{3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		printInterval & $intervalStruct$ & - & - \\
-		printEquationTree & $equationStruct$ & - & - \\
+		PrintInterval & $intervalStruct$ & - & - \\
+		PrintEquationTree & $equationStruct$ & - & - \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -559,27 +559,27 @@ N/A
 	only well-formed inputs will be passed in. This assumption is made knowing 
 	that this module will only be called post-process and any errors in the 
 	data structures have already been identified.
-	\item The object passed to printEquationTree is the root of the equation 
+	\item The object passed to PrintEquationTree is the root of the equation 
 	tree
 \end{itemize}
 
 
 \subsubsection{Access Routine Semantics}
 
-\noindent printIntervalList($intervalStruct$):
+\noindent PrintIntervalList($iStruct$):
 \begin{itemize}
 	\item transition: If the user interface is the command-line, write the 
-	interval $intervalStruct$ to cmd. If the user interface is a GUI, modify 
-	win so that the interval is displayed. In both cases, the variable name of 
-	the interval must also be displayed.
+	interval $iStruct$ to cmd. If the user interface is a GUI, modify win so 
+	that the interval is displayed. In both cases, the variable name of the 
+	interval must also be displayed.
 	\item exception: N/A
 \end{itemize}
 
-\noindent printEquationTree($equationStruct$):
+\noindent PrintEquationTree($eStruct$):
 \begin{itemize}
 	\item transition: If the user interface is the command-line, write the 
-	equation tree to cmd. If the user interface is a GUI, modify win so that 
-	the equation tree is displayed.
+	equation tree represented by $eStruct$ to cmd. If the user interface is a 
+	GUI, modify win so that the equation tree is displayed.
 	\item exception: N/A
 \end{itemize}
 
@@ -590,7 +590,7 @@ N/A
 
 \subsection{Module}
 
-intervalStruct
+IntervalStruct
 
 \subsection{Uses}
 
@@ -605,7 +605,7 @@ N/A
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{3}{3cm}{intervalStruct} & \multirow{3}{3cm}{$\mathbb{R}^2$} & 
+		\multirow{3}{3cm}{IntervalStruct} & \multirow{3}{3cm}{$\mathbb{R}^2$} & 
 		\multirow{3}{4cm}{$intervalStruct$} & 
 		IV\_NOT\_REAL\_TYPE, \\
 		 &  &  & IV\_INSUFF\_PARAMS, \\
@@ -630,58 +630,60 @@ N/A
 
 \# For \rref{R_conditionX} using \ddref{DD_interval}
 \begin{itemize}
-	\item $a : \mathbb{R}$
-	\item $b : \mathbb{R}$
+	\item $minBound : \mathbb{R}$
+	\item $maxBound : \mathbb{R}$
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent intervalStruct($val1, val2$):
+\noindent IntervalStruct($minB, maxB$):
 \begin{itemize}
 	\item output: $out := intervalStruct$
-	\item transition: Update state variables $a$ and $b$ with the provided 
-	values $val1$ and $val2$
+	\item transition: Update state variables $minBound$ and $maxBound$ with the 
+	provided values $minB$ and $maxB$
 	\item exception: $exc := \\
-	(val1 \notin \mathbb{R} \vee val2 \notin \mathbb{R} \Rightarrow 
+	(minB \notin \mathbb{R} \vee maxB \notin \mathbb{R} \Rightarrow 
 	IV\_NOT\_REAL\_TYPE) \\
 	|\\
-	(\nexists val1 \vee \nexists val2 \Rightarrow IV\_INSUFF\_PARAMS)\\
+	(\nexists minB \vee \nexists maxB \Rightarrow IV\_INSUFF\_PARAMS)\\
 	|\\
-	(val1 > val2 \Rightarrow ORD\_VIOLATED)$
+	(minB > maxB \Rightarrow ORD\_VIOLATED)$
 \end{itemize}
 
-\noindent intervalStruct.GetMinRange():
+\noindent GetMinRange():
 \begin{itemize}
-	\item output: $out := a$
+	\item output: $out := minBound$
 	\item exception: N/A
 \end{itemize}
 
-\noindent intervalStruct.GetMaxRange():
+\noindent GetMaxRange():
 \begin{itemize}
-	\item output: $out := b$
+	\item output: $out := maxBound$
 	\item exception: N/A
 \end{itemize}
 
-\noindent intervalStruct.SetMinRange($val$):
+\noindent SetMinRange($minB$):
 \begin{itemize}
-	\item transition: Update state variable $a$ with the provided value $val$
+	\item transition: Update state variable $minBound$ with the provided value 
+	$minB$
 	\item exception: $exc := \\
-	(val \notin \mathbb{R} \Rightarrow IV\_NOT\_REAL\_TYPE) \\
+	(minB \notin \mathbb{R} \Rightarrow IV\_NOT\_REAL\_TYPE) \\
 	|\\
-	(\nexists val \Rightarrow IV\_INSUFF\_PARAMS) \\
+	(\nexists minB \Rightarrow IV\_INSUFF\_PARAMS) \\
 	|\\
-	(val > b \Rightarrow ORD\_VIOLATED)$
+	(minB > maxBound \Rightarrow ORD\_VIOLATED)$
 \end{itemize}
 
-\noindent intervalStruct.SetMaxRange($val$):
+\noindent SetMaxRange($maxB$):
 \begin{itemize}
-	\item transition: Update state variable $b$ with the provided value $val$
+	\item transition: Update state variable $maxBound$ with the provided value 
+	$maxB$
 	\item exception: $exc := \\
-	(val \notin \mathbb{R} \Rightarrow IV\_NOT\_REAL\_TYPE) \\
+	(maxB \notin \mathbb{R} \Rightarrow IV\_NOT\_REAL\_TYPE) \\
 	|\\
-	(\nexists val \Rightarrow IV\_INSUFF\_PARAMS) \\
+	(\nexists maxB \Rightarrow IV\_INSUFF\_PARAMS) \\
 	|\\
-	(val < a \Rightarrow ORD\_VIOLATED)$
+	(maxB < a \Rightarrow ORD\_VIOLATED)$
 \end{itemize}
 
 \newpage
@@ -691,7 +693,7 @@ N/A
 
 \subsection{Module}
 
-equationStruct
+EquationStruct
 
 \subsection{Uses}
 
@@ -706,7 +708,7 @@ N/A
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{4}{3cm}{equationStruct} & \multirow{4}{3cm}{$String^2$, 
+		\multirow{4}{3cm}{EquationStruct} & \multirow{4}{3cm}{$String^2$, 
 		$equationStruct^2$} & \multirow{4}{3cm}{$equationStruct$} & 
 		EQ\_INSUFF\_PARAMS,\\
 		&  & & EQ\_WRONG\_VARNAME\_TYPE,\\
@@ -733,10 +735,10 @@ N/A
 
 \# To support \rref{R_conditionfx} and \rref{R_CalculateCompose}
 \begin{itemize}
-	\item $op : String$
-	\item $varName : String$
-	\item $x : equationStruct$
-	\item $y : equationStruct$
+	\item $operator : String$
+	\item $variableName : String$
+	\item $leftOperand : equationStruct$
+	\item $rightOperand : equationStruct$
 \end{itemize}
 
 \subsubsection{Assumptions}
@@ -746,59 +748,61 @@ N/A
 	Conversion module (Section~\ref{Module_equationconversion}).
 	\item Unsupported operators are identified and handled in the Equation 
 	Conversion module (Section~\ref{Module_equationconversion}).
-	\item There is no setter method for the $op$ field because it will not be 
-	changed after initialization.
-	\item The values for $x$ and $y$ can be set to \texttt{NULL} as required.
+	\item There is no setter method for the $operator$ field because it will 
+	not be changed after initialization.
+	\item The values for $leftOperand$ and $rightOperand$ can be set to 
+	\texttt{NULL} as required.
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent equationStruct($operator, vName, eStruct1, eStruct2$):
+\noindent EquationStruct($op, vName, eStruct1, eStruct2$):
 \begin{itemize}
 	\item output: $out := equationStruct$
-	\item transition: Update state variables $op$, $x$, and $y$ with the 
-	provided values $operator$, $eStruct1,$ and $eStruct2$
+	\item transition: Update state variables $operator$, $variableName$, 
+	$leftOperand$, and $rightOperand$ with the provided values $op$, $vName$, 
+	$eStruct1,$ and $eStruct2$
 	\item exception: $exc := \\
-	(\nexists operator \vee \nexists eStruct1 \vee \nexists eStruct2 
-	\Rightarrow EQ\_INSUFF\_PARAMS)\\
+	(\nexists op \vee \nexists vName \vee \nexists eStruct1 \vee \nexists 
+	eStruct2 \Rightarrow EQ\_INSUFF\_PARAMS)\\
 	|\\
 	(vName \neq string \Rightarrow EQ\_WRONG\_VARNAME\_TYPE) \\
 	|\\
-	(operator \neq string \Rightarrow EQ\_WRONG\_OPERATOR\_TYPE) \\
+	(op \neq string \Rightarrow EQ\_WRONG\_OPERATOR\_TYPE) \\
 	|\\
 	(eStruct1 \neq equationStruct \vee eStruct1 \neq NULL \vee eStruct2 \neq 
 	equationStruct \vee eStruct2 \neq NULL \Rightarrow EQ\_WRONG\_OPERAND\_TYPE)
 	$
 \end{itemize}
 
-\noindent equationStruct.GetOperator():
+\noindent GetOperator():
 \begin{itemize}
-	\item output: $out := op$
+	\item output: $out := operator$
 	\item exception: N/A
 \end{itemize}
 
-\noindent equationStruct.GetVariableName():
+\noindent GetVariableName():
 \begin{itemize}
-	\item output: $out := varName$
+	\item output: $out := variableName$
 	\item exception: N/A
 \end{itemize}
 
-\noindent equationStruct.GetLeftOperand():
+\noindent GetLeftOperand():
 \begin{itemize}
-	\item output: $out := x$
+	\item output: $out := leftOperand$
 	\item exception: N/A
 \end{itemize}
 
-\noindent equationStruct.GetRightOperand():
+\noindent GetRightOperand():
 \begin{itemize}
-	\item output: $out := y$
+	\item output: $out := rightOperand$
 	\item exception: N/A
 \end{itemize}
 
 \noindent SetLeftOperand($eStruct$):
 \begin{itemize}
-	\item transition: Update state variable $x$ with the provided value 
-	$eStruct$
+	\item transition: Update state variable $leftOperand$ with the provided 
+	value $eStruct$
 	\item exception: $exc := \\
 	(\nexists eStruct \Rightarrow EQ\_INSUFF\_PARAMS)\\
 	|\\
@@ -807,8 +811,8 @@ N/A
 
 \noindent SetRightOperand($eStruct$):
 \begin{itemize}
-	\item transition: Update state variable $y$ with the provided value 
-	$eStruct$
+	\item transition: Update state variable $rightOperand$ with the provided 
+	value $eStruct$
 	\item exception: $exc := \\
 	(\nexists eStruct \Rightarrow EQ\_INSUFF\_PARAMS)\\
 	|\\
