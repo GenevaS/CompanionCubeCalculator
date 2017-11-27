@@ -662,22 +662,13 @@ N/A
 	\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-		\hline
-		\multirow{3}{3cm}{IntervalStruct} & \multirow{3}{3cm}{$\mathbb{R}^2$} & 
-		\multirow{3}{4cm}{$intervalStruct$} & 
-		IV\_NOT\_REAL\_TYPE, \\
-		 &  &  & IV\_INSUFF\_PARAMS, \\
-		  &  &  & ORD\_VIOLATED \\
+		\hline		
+		IntervalStruct & $\mathbb{R}^2$ & $intervalStruct$ & IV\_ORD\_VIOLATED 
+		\\
 		GetMinBound & - & $\mathbb{R}$ & - \\
 		GetMaxBound & - & $\mathbb{R}$ & - \\
-		\multirow{3}{3cm}{SetMinBound} & \multirow{3}{3cm}{$\mathbb{R}$} & 
-		\multirow{3}{3cm}{-} & IV\_NOT\_REAL\_TYPE, \\
-		 &  &  & IV\_INSUFF\_PARAMS, \\
-		  &  &  & ORD\_VIOLATED \\
-		\multirow{3}{3cm}{SetMaxBound} & \multirow{3}{3cm}{$\mathbb{R}$} & 
-		\multirow{3}{3cm}{-} & IV\_NOT\_REAL\_TYPE, \\
-		 &  &  & IV\_INSUFF\_PARAMS, \\
-		   &  &  & ORD\_VIOLATED \\
+		SetMinBound & $\mathbb{R}$ & - & IV\_ORD\_VIOLATED \\
+		SetMaxBound & $\mathbb{R}$ & - & IV\_ORD\_VIOLATED \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -696,16 +687,11 @@ N/A
 
 \noindent IntervalStruct($minB, maxB$):
 \begin{itemize}
-	\item output: $out := intervalStruct$
+	\item output: $out := intervalStruct(minB, maxB)$
 	\item transition: Update state variables $minBound$ and $maxBound$ with the 
 	provided values $minB$ and $maxB$
 	\item exception: $exc := \\
-	(minB \notin \mathbb{R} \vee maxB \notin \mathbb{R} \Rightarrow 
-	IV\_NOT\_REAL\_TYPE) \\
-	|\\
-	(\nexists minB \vee \nexists maxB \Rightarrow IV\_INSUFF\_PARAMS)\\
-	|\\
-	(minB > maxB \Rightarrow ORD\_VIOLATED)$
+	(minB > maxB \Rightarrow IV\_ORD\_VIOLATED)$
 \end{itemize}
 
 \noindent GetMinBound():
@@ -725,11 +711,7 @@ N/A
 	\item transition: Update state variable $minBound$ with the provided value 
 	$minB$
 	\item exception: $exc := \\
-	(minB \notin \mathbb{R} \Rightarrow IV\_NOT\_REAL\_TYPE) \\
-	|\\
-	(\nexists minB \Rightarrow IV\_INSUFF\_PARAMS) \\
-	|\\
-	(minB > maxBound \Rightarrow ORD\_VIOLATED)$
+	(minB > maxBound \Rightarrow IV\_ORD\_VIOLATED)$
 \end{itemize}
 
 \noindent SetMaxBound($maxB$):
@@ -737,11 +719,7 @@ N/A
 	\item transition: Update state variable $maxBound$ with the provided value 
 	$maxB$
 	\item exception: $exc := \\
-	(maxB \notin \mathbb{R} \Rightarrow IV\_NOT\_REAL\_TYPE) \\
-	|\\
-	(\nexists maxB \Rightarrow IV\_INSUFF\_PARAMS) \\
-	|\\
-	(maxB < a \Rightarrow ORD\_VIOLATED)$
+	(maxB < minBound \Rightarrow IV\_ORD\_VIOLATED)$
 \end{itemize}
 
 \newpage
@@ -907,9 +885,6 @@ N/A
 	sufficient operands. \\
 	IN\_BAD\_FILE & Error: The file could not be read. \\
 	IN\_EMPTY\_FILE & Error: The file was empty. \\
-	IV\_NOT\_REAL\_TYPE & Error: Interval values must be of type real. \\
-	IV\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
-	interval data structure. \\
 	IVC\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
 	the interval conversion process. \\
 	IVC\_CONV\_ERR\_MIN & Error: The string provided for the minimum bound 
@@ -943,12 +918,13 @@ N/A
 	$string$. String type conversion has been applied. \\
 	EQC\_CONST\_FUNC & Warning: The user equation is a constant value and the 
 	range will only include this value.\\
+	IV\_ORD\_VIOLATED & Warning: Value provided for intervals are not in 
+	increasing order. The values have been exchanged to maintain the interval 
+	ordering. \\
 	IVC\_NO\_MIN & Warning: No minimum interval bound given. Setting it to the 
 	same value as the maximum bound. \\
 	IVC\_NO\_MAX & Warning: No maximum interval bound given. Setting it to the 
 	same value as the minimum bound. \\
-	ORD\_VIOLATED & Warning: Value provided for intervals are not in increasing 
-	order. The values have been exchanged to maintain the interval ordering. \\
 	\bottomrule
 \end{longtable}
 
