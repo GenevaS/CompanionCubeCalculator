@@ -217,8 +217,9 @@ their states for the Output module.
 
 \begin{lstlisting}
 # Get User Input
-  eqString := Input.getUserEquation()
-  varList := Input.getVariableList()
+  userInputs := Input.GetUserInputs()
+  eqString := userInputs[0]
+  varList := userInputs[1, userInputs.Length - 1]    
  
 # Convert input into equation and interval data structures using 
 # the list of valid operators from Solver
@@ -249,33 +250,67 @@ Input
 
 \subsection{Uses}
 
+N/A
 
 \subsection{Syntax}
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+	\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\wss{accessProg} & - & - & - \\
+		\multirow{2}{3cm}{GetUserInputs} & \multirow{2}{3cm}{-} & 
+		\multirow{2}{3cm}{$String^n$} & IN\_BAD\_FILE, \\
+		 &  &  & IN\_EMPTY\_FILE \\
 		\hline
 	\end{tabular}
 \end{center}
 
 \subsection{Semantics}
 
+\subsubsection{Environment Variables}
+
+$inputFile$ : $String^n$
+
 \subsubsection{State Variables}
+
+N/A
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+	\item The GetInputMethod function accepts user inputs from files or as 
+	direct inputs (From SRS \rref{R_Inputs}).
+	
+	\item If the user chooses to enter their values via a file, it must be 
+	formatted such that:	
+	\begin{itemize}
+		\item The user equation on the first line
+		\item The list of variable names and interval values associated with 
+		the user equation; each name/value set is on its own line and is of the 
+		form $varName, minBound$, $maxBound$
+	\end{itemize}
+
+	\item The output of the GetUserInputs function is a list of $String$ where 
+	the first item is the user equation. The remaining items are the variable 
+	names and interval values such that every set of three values represents 
+	one data set. 
+\end{itemize}
 
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent GetUserInputs():
 \begin{itemize}
-	\item transition: \wss{if appropriate} 
-	\item output: \wss{if appropriate} 
-	\item exception: \wss{if appropriate} 
+	\item transition: If the user has chosen to enter their values via a file, 
+	$inputFile$ is associated with the provided file name.
+	\item output: $out := String^n$
+	\item exception: $exc := \\
+	(\nexists inputFile \vee \neg Read(inputFile) \Rightarrow IN\_BAD\_FILE)\\
+	|\\
+	(Read(inputFile) == \emptyset \Rightarrow IN\_EMPTY\_FILE)$
 \end{itemize}
 
 \newpage
@@ -800,6 +835,8 @@ N/A
 	the	equation data structure.\\
 	EQ\_WRONG\_OPERAND\_TYPE & Error: Operands must have type 
 	$equationStruct$.\\
+	IN\_BAD\_FILE & Error: The file could not be read. \\
+	IN\_EMPTY\_FILE & Error: The file was empty. \\
 	IV\_NOT\_REAL\_TYPE & Error: Interval values must be of type real. \\
 	IV\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
 	interval data structure. \\
