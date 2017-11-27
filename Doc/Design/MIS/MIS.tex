@@ -388,21 +388,29 @@ N/A
 
 \subsection{Module}
 
-\wss{Short name for the module}
+EquationConversion
 
 \subsection{Uses}
 
+EquationStruct (Section~\ref{Module_equationdatastructure})
 
 \subsection{Syntax}
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+	\begin{tabular}{p{3.2cm} p{2.8cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\wss{accessProg} & - & - & - \\
+		\multirow{5}{3.2cm}{MakeEquationTree} & \multirow{5}{2.8cm}{$String$, 
+		$String^n$} & \multirow{5}{3cm}{$equationStruct$} & 
+		EQC\_INSUFF\_PARAMS, \\
+		& & & EQC\_UNSUPPORTED\_OP, \\
+		& & & EQC\_CONST\_FUNC, \\
+		& & & EQC\_NO\_FUNC, \\
+		& & & EQC\_INCOMPLETE\_OP \\
+		GetVariableList & - & $String^n$ & - \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -411,14 +419,36 @@ N/A
 
 \subsubsection{State Variables}
 
+\begin{itemize}
+	\item $variableList$ : $String^n$
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent MakeEquationTree($userEquation, supportedOperations$):
 \begin{itemize}
-	\item transition: \wss{if appropriate} 
-	\item output: \wss{if appropriate} 
-	\item exception: \wss{if appropriate} 
+	\item transition: The value of $variableList$ is updated with new variable 
+	names as they are encountered during equation processing.
+	\item output: $out := equationStruct$
+	\item exception: $exc := \\
+	(\nexists userEquation \vee \nexists supportedOperations \Rightarrow 
+	EQC\_INSUFF\_PARAMS)\\
+	|\\
+	(\exists op | op \in userEquation \wedge op \notin supportedOperations 
+	\Rightarrow EQC\_UNSUPPORTED\_OP)\\
+	|\\
+	(ToReal(userEquation) \in \mathbb{R} \Rightarrow EQC\_CONST\_FUNC)\\
+	|\\
+	(userEquation == ``" \Rightarrow EQC\_NO\_FUNC)\\
+	|\\
+	(\exists op \in userEquation | (NULL<op>userEquation) \vee 
+	(userEquation<op>NULL) \Rightarrow EQC\_INCOMPLETE\_OP)$
+\end{itemize}
+
+\noindent GetVariableList():
+\begin{itemize}
+	\item output: $out := variableList$
+	\item exception: N/A
 \end{itemize}
 
 \newpage
@@ -867,6 +897,14 @@ N/A
 	the	equation data structure.\\
 	EQ\_WRONG\_OPERAND\_TYPE & Error: Operands must have type 
 	$equationStruct$.\\
+	EQC\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
+	the equation conversion process. \\
+	EQC\_UNSUPPORTED\_OP & Error: The user equation contains an unsupported 
+	operator. Supported operators include $<supportedOperators>$.\\
+	EQC\_NO\_FUNC & Error: No user equation was passed to the equation 
+	conversion process. \\
+	EQC\_INCOMPLETE\_OP & Error: An operator was found that does not have 
+	sufficient operands. \\
 	IN\_BAD\_FILE & Error: The file could not be read. \\
 	IN\_EMPTY\_FILE & Error: The file was empty. \\
 	IV\_NOT\_REAL\_TYPE & Error: Interval values must be of type real. \\
@@ -903,6 +941,8 @@ N/A
 	String type conversion has been applied.\\
 	EQ\_WRONG\_VARNAME\_TYPE & Warning: The variable name must have type 
 	$string$. String type conversion has been applied. \\
+	EQC\_CONST\_FUNC & Warning: The user equation is a constant value and the 
+	range will only include this value.\\
 	IVC\_NO\_MIN & Warning: No minimum interval bound given. Setting it to the 
 	same value as the maximum bound. \\
 	IVC\_NO\_MAX & Warning: No maximum interval bound given. Setting it to the 
