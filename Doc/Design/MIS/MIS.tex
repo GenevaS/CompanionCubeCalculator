@@ -320,10 +320,11 @@ N/A
 
 \subsection{Module}
 
-\wss{Short name for the module}
+IntervalConversion
 
 \subsection{Uses}
 
+IntervalStruct (Section~\ref{Module_intervaldatastructure})
 
 \subsection{Syntax}
 
@@ -334,7 +335,14 @@ N/A
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\wss{accessProg} & - & - & - \\
+		\multirow{6}{3cm}{MakeInterval} & \multirow{6}{3cm}{$String^2$} & 
+		\multirow{6}{3cm}{$intervalStruct$} & IVC\_INSUFF\_PARAMS, \\
+		& & & IVC\_NO\_MIN, \\
+		& & & IVC\_NO\_MAX,\\
+		& & & IVC\_WRONG\_TYPE\_MIN, \\
+		& & & IVC\_WRONG\_TYPE\_MAX,\\
+		& & & IVC\_CONV\_ERR\_MIN, \\
+		& & & IVC\_CONV\_ERR\_MAX \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -343,14 +351,34 @@ N/A
 
 \subsubsection{State Variables}
 
+N/A
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+	\item Ensuring that $min \leq max$ is handled by the IntervalStruct 
+	(Section~\ref{Module_intervaldatastructure}) module.
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent MakeInterval($min, max$):
 \begin{itemize}
-	\item transition: \wss{if appropriate} 
-	\item output: \wss{if appropriate} 
-	\item exception: \wss{if appropriate} 
+	\item output: $out := intervalStruct$
+	\item exception: $exc := \\
+	(\nexists min \vee \nexists max \Rightarrow IVC\_INSUFF\_PARAMS)\\
+	|\\
+	(min == ``" \Rightarrow IVC\_NO\_MIN)\\
+	|\\
+	(max == ``" \Rightarrow IVC\_NO\_MAX)\\
+	|\\
+	(min \neq String \Rightarrow IVC\_WRONG\_TYPE\_MIN)\\
+	|\\
+	(max \neq String \Rightarrow IVC\_WRONG\_TYPE\_MAX)\\
+	|\\
+	(ToReal(min) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MIN)\\
+	|\\
+	(ToReal(max) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MAX)$
 \end{itemize}
 
 \newpage
@@ -844,6 +872,16 @@ N/A
 	IV\_NOT\_REAL\_TYPE & Error: Interval values must be of type real. \\
 	IV\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
 	interval data structure. \\
+	IVC\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
+	the interval conversion process. \\
+	IVC\_CONV\_ERR\_MIN & Error: The string provided for the minimum bound 
+	cannot be converted to a real number. \\
+	IVC\_CONV\_ERR\_MAX & Error: The string provided for the maximum bound 
+	cannot be converted to a real number.\\
+	IVC\_WRONG\_TYPE\_MIN & Error: The value for $min$ passed to the interval 
+	conversion process must be of type $String$. \\
+	IVC\_WRONG\_TYPE\_MAX & Error: The value for $max$ passed to the interval 
+	conversion process must be of type $String$.\\
 	SOL\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
 	the range solver.\\
 	SOL\_WRONG\_EQ\_TYPE & Error: An equation must be provided to the solver 
@@ -865,6 +903,10 @@ N/A
 	String type conversion has been applied.\\
 	EQ\_WRONG\_VARNAME\_TYPE & Warning: The variable name must have type 
 	$string$. String type conversion has been applied. \\
+	IVC\_NO\_MIN & Warning: No minimum interval bound given. Setting it to the 
+	same value as the maximum bound. \\
+	IVC\_NO\_MAX & Warning: No maximum interval bound given. Setting it to the 
+	same value as the minimum bound. \\
 	ORD\_VIOLATED & Warning: Value provided for intervals are not in increasing 
 	order. The values have been exchanged to maintain the interval ordering. \\
 	\bottomrule
