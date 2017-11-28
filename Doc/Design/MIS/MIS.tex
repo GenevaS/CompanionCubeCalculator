@@ -335,14 +335,11 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure})
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{6}{3cm}{MakeInterval} & \multirow{6}{3cm}{$String^2$} & 
-		\multirow{6}{3cm}{$intervalStruct$} & IVC\_INSUFF\_PARAMS, \\
+		\multirow{4}{3cm}{MakeInterval} & \multirow{4}{3cm}{$String^2$} & 
+		\multirow{4}{3cm}{$intervalStruct$} & IVC\_CONV\_ERR\_MIN, \\
+		& & & IVC\_CONV\_ERR\_MAX, \\
 		& & & IVC\_NO\_MIN, \\
 		& & & IVC\_NO\_MAX,\\
-		& & & IVC\_WRONG\_TYPE\_MIN, \\
-		& & & IVC\_WRONG\_TYPE\_MAX,\\
-		& & & IVC\_CONV\_ERR\_MIN, \\
-		& & & IVC\_CONV\_ERR\_MAX \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -364,21 +361,15 @@ N/A
 
 \noindent MakeInterval($min, max$):
 \begin{itemize}
-	\item output: $out := intervalStruct$
+	\item output: $out := newInterval$
 	\item exception: $exc := \\
-	(\nexists min \vee \nexists max \Rightarrow IVC\_INSUFF\_PARAMS)\\
+	(ToReal(min) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MIN)\\
+	|\\
+	(ToReal(max) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MAX)\\
 	|\\
 	(min == ``" \Rightarrow IVC\_NO\_MIN)\\
 	|\\
-	(max == ``" \Rightarrow IVC\_NO\_MAX)\\
-	|\\
-	(min \neq String \Rightarrow IVC\_WRONG\_TYPE\_MIN)\\
-	|\\
-	(max \neq String \Rightarrow IVC\_WRONG\_TYPE\_MAX)\\
-	|\\
-	(ToReal(min) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MIN)\\
-	|\\
-	(ToReal(max) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MAX)$
+	(max == ``" \Rightarrow IVC\_NO\_MAX)$
 \end{itemize}
 
 \newpage
@@ -403,13 +394,12 @@ EquationStruct (Section~\ref{Module_equationdatastructure})
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{6}{3.2cm}{MakeEquationTree} & \multirow{6}{2.8cm}{$String$, 
-		$String^n$} & \multirow{6}{3cm}{$equationStruct$} & 
-		EQC\_INSUFF\_PARAMS, \\
-		& & & EQC\_UNSUPPORTED\_OP, \\
-		& & & EQC\_CONST\_FUNC, \\
+		\multirow{4}{3.2cm}{MakeEquationTree} & \multirow{4}{2.8cm}{$String$, 
+		$String^n$} & \multirow{4}{3cm}{$equationStruct$} & 
+		EQC\_CONST\_FUNC, \\	
+		& & & EQC\_IMPLICIT\_MULT, \\
 		& & & EQC\_INCOMPLETE\_OP, \\
-		& & & EQC\_IMPLICIT\_MULT \\
+		& & & EQC\_UNSUPPORTED\_OP \\
 		GetVariableList & - & $String^n$ & - \\
 		\hline
 	\end{tabular}
@@ -429,21 +419,18 @@ EquationStruct (Section~\ref{Module_equationdatastructure})
 \begin{itemize}
 	\item transition: The value of $variableList$ is updated with new variable 
 	names as they are encountered during equation processing.
-	\item output: $out := equationStruct$
+	\item output: $out := equationTreeRoot$
 	\item exception: $exc := \\
-	(\nexists userEquation \vee \nexists supportedOperations \Rightarrow 
-	EQC\_INSUFF\_PARAMS)\\
-	|\\
-	(\exists op | op \in userEquation \wedge op \notin supportedOperations 
-	\Rightarrow EQC\_UNSUPPORTED\_OP)\\
-	|\\
 	(ToReal(userEquation) \in \mathbb{R} \Rightarrow EQC\_CONST\_FUNC)\\
+	|\\
+	(\exists subEq | subEq = \{subEq_1, subEq_2\} \wedge subEq_1 \in \mathbb{R} 
+	\wedge subEq_2 \in variableList \\ \Rightarrow EQC\_IMPLICIT\_MULT)\\
 	|\\
 	(\exists op \in userEquation | (NULL<op>userEquation) \vee 
 	(userEquation<op>NULL) \Rightarrow EQC\_INCOMPLETE\_OP)\\
 	|\\
-	(\exists subEq | subEq = \{subEq_1, subEq_2\} \wedge subEq_1 \in \mathbb{R} 
-	\wedge subEq_2 \in variableList \\ \Rightarrow EQC\_IMPLICIT\_MULT)$
+	(\exists op | op \in userEquation \wedge op \notin supportedOperations 
+	\Rightarrow EQC\_UNSUPPORTED\_OP)$
 \end{itemize}
 
 \noindent GetVariableList():
@@ -923,24 +910,16 @@ N/A
 	the	equation data structure.\\
 	EQ\_WRONG\_OPERAND\_TYPE & Error: Operands must have type 
 	$equationStruct$.\\
-	EQC\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
-	the equation conversion process. \\
 	EQC\_UNSUPPORTED\_OP & Error: The user equation contains an unsupported 
 	operator. Supported operators include $<supportedOperators>$.\\
 	EQC\_INCOMPLETE\_OP & Error: An operator was found that does not have 
 	sufficient operands. \\
 	IN\_BAD\_FILE & Error: The file could not be read. \\
 	IN\_EMPTY\_FILE & Error: The file was empty. \\
-	IVC\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
-	the interval conversion process. \\
 	IVC\_CONV\_ERR\_MIN & Error: The string provided for the minimum bound 
 	cannot be converted to a real number. \\
 	IVC\_CONV\_ERR\_MAX & Error: The string provided for the maximum bound 
 	cannot be converted to a real number.\\
-	IVC\_WRONG\_TYPE\_MIN & Error: The value for $min$ passed to the interval 
-	conversion process must be of type $String$. \\
-	IVC\_WRONG\_TYPE\_MAX & Error: The value for $max$ passed to the interval 
-	conversion process must be of type $String$.\\
 	SOL\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
 	the range solver.\\
 	SOL\_WRONG\_EQ\_TYPE & Error: An equation must be provided to the solver 
