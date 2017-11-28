@@ -171,7 +171,7 @@ project. It can be found at
 
 \subsection{Module}
 
-main
+Main
 
 \subsection{Uses}
 
@@ -326,11 +326,11 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure})
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+	\begin{tabular}{p{3cm} p{2.3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{4}{3cm}{MakeInterval} & \multirow{4}{3cm}{$String^2$} & 
+		\multirow{4}{3cm}{MakeInterval} & \multirow{4}{2.3cm}{$String^2$} & 
 		\multirow{4}{3cm}{$intervalStruct$} & IVC\_CONV\_ERR\_MIN, \\
 		& & & IVC\_CONV\_ERR\_MAX, \\
 		& & & IVC\_NO\_MIN, \\
@@ -551,11 +551,7 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
 		GetValidOperators & - & $String^n$ & -\\
-		\multirow{4}{3.1cm}{FindRange} &  & 
-		\multirow{4}{3.1cm}{$intervalStruct$} & SOL\_INSUFF\_PARAMS,\\
-		& $equationStruct$, & & SOL\_WRONG\_EQ\_TYPE,\\
-		& $intervalStruct^n$ & & SOL\_WRONG\_IV\_TYPE,\\
-		& & & SOL\_UNSUPPORTED\_OP\\
+		FindRange & - & $intervalStruct$ & SOL\_UNSUPPORTED\_OP\\
 		\hline
 	\end{tabular}
 \end{center}
@@ -582,16 +578,8 @@ N/A
 
 \noindent FindRange($eStruct, ivStructList$):
 \begin{itemize}
-	\item output: $out := intervalStruct$
+	\item output: $out := eqRange$
 	\item exception: $exc := \\
-	(\nexists eStruct \vee \nexists ivStructList \Rightarrow 
-	SOL\_INSUFF\_PARAMS)\\
-	|\\
-	(eStruct \neq equationStruct \Rightarrow SOL\_WRONG\_EQ\_TYPE) \\
-	|\\
-	(ivStructList \neq intervalStruct^n \vee ivStructList \neq NULL 
-	\\\Rightarrow SOL\_WRONG\_IV\_TYPE) \\
-	|\\
 	((\exists op \in eStruct \wedge op \notin supportedOps) \\
 	\vee (\exists iv1, iv2 \in ivStructList \wedge \nexists op \in supportedOps 
 	| op(iv1, iv2) \vee op(iv2, iv1)) \\
@@ -717,7 +705,7 @@ N/A
 
 \noindent IntervalStruct($minB, maxB$):
 \begin{itemize}
-	\item output: $out := intervalStruct(minB, maxB)$
+	\item output: $out := newInterval$
 	\item transition: Update state variables $minBound$ and $maxBound$ with the 
 	provided values $minB$ and $maxB$
 	\item exception: $exc := \\
@@ -774,23 +762,15 @@ N/A
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{4}{3cm}{EquationStruct} & \multirow{4}{3cm}{$String^2$, 
-		$equationStruct^2$} & \multirow{4}{3cm}{$equationStruct$} & 
-		EQ\_INSUFF\_PARAMS,\\
-		&  & & EQ\_WRONG\_VARNAME\_TYPE,\\
-		&  & & EQ\_WRONG\_OPERATOR\_TYPE,\\
-		& & & EQ\_WRONG\_OPERAND\_TYPE\\
+		\multirow{2}{3cm}{EquationStruct} & $String^2$, $equationStruct^2$ & 
+		\multirow{2}{3cm}{$equationStruct$} & 
+		\multirow{2}{5cm}{-}\\
 		GetOperator & - & $String$ & - \\
 		GetVariableName & - & $String$ & - \\
 		GetLeftOperand & - & $equationStruct$ & -\\
 		GetRightOperand & - & $equationStruct$ & - \\
-		\multirow{2}{3cm}{SetLeftOperand} & \multirow{2}{3cm}{$equationStruct$} 
-		& \multirow{2}{3cm}{-} & EQ\_INSUFF\_PARAMS,\\
-		& & & EQ\_WRONG\_OPERAND\_TYPE\\
-		\multirow{2}{3cm}{SetRightOperand} & 
-		\multirow{2}{3cm}{$equationStruct$} & \multirow{2}{3cm}{-} & 
-		EQ\_INSUFF\_PARAMS,\\
-		& & & EQ\_WRONG\_OPERAND\_TYPE\\
+		SetLeftOperand & $equationStruct$ & - & - \\
+		SetRightOperand & $equationStruct$ & - & - \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -814,8 +794,8 @@ N/A
 	Conversion module (Section~\ref{Module_equationconversion}).
 	\item Unsupported operators are identified and handled in the Equation 
 	Conversion module (Section~\ref{Module_equationconversion}).
-	\item There is no setter method for the $operator$ field because it will 
-	not be changed after initialization.
+	\item There is no setter method for the $operator$ or $variableName$ fields 
+	because they will not be changed after initialization.
 	\item The values for $leftOperand$ and $rightOperand$ can be set to 
 	\texttt{NULL} as required.
 \end{itemize}
@@ -824,21 +804,11 @@ N/A
 
 \noindent EquationStruct($op, vName, eStruct1, eStruct2$):
 \begin{itemize}
-	\item output: $out := equationStruct$
+	\item output: $out := newEquation$
 	\item transition: Update state variables $operator$, $variableName$, 
 	$leftOperand$, and $rightOperand$ with the provided values $op$, $vName$, 
 	$eStruct1,$ and $eStruct2$
-	\item exception: $exc := \\
-	(\nexists op \vee \nexists vName \vee \nexists eStruct1 \vee \nexists 
-	eStruct2 \Rightarrow EQ\_INSUFF\_PARAMS)\\
-	|\\
-	(vName \neq string \Rightarrow EQ\_WRONG\_VARNAME\_TYPE) \\
-	|\\
-	(op \neq string \Rightarrow EQ\_WRONG\_OPERATOR\_TYPE) \\
-	|\\
-	(eStruct1 \neq equationStruct \vee eStruct1 \neq NULL \vee eStruct2 \neq 
-	equationStruct \vee eStruct2 \neq NULL \Rightarrow EQ\_WRONG\_OPERAND\_TYPE)
-	$
+	\item exception: N/A
 \end{itemize}
 
 \noindent GetOperator():
@@ -869,20 +839,14 @@ N/A
 \begin{itemize}
 	\item transition: Update state variable $leftOperand$ with the provided 
 	value $eStruct$
-	\item exception: $exc := \\
-	(\nexists eStruct \Rightarrow EQ\_INSUFF\_PARAMS)\\
-	|\\
-	(eStruct \neq equationStruct \Rightarrow EQ\_WRONG\_OPERAND\_TYPE)$	
+	\item exception: N/A
 \end{itemize}
 
 \noindent SetRightOperand($eStruct$):
 \begin{itemize}
 	\item transition: Update state variable $rightOperand$ with the provided 
 	value $eStruct$
-	\item exception: $exc := \\
-	(\nexists eStruct \Rightarrow EQ\_INSUFF\_PARAMS)\\
-	|\\
-	(eStruct \neq equationStruct \Rightarrow EQ\_WRONG\_OPERAND\_TYPE)$	
+	\item exception: N/A
 \end{itemize}
 
 \newpage
@@ -901,10 +865,6 @@ N/A
 	\toprule
 	\textbf{Message ID} & \textbf{Error Message} \\
 	\midrule
-	EQ\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
-	the	equation data structure.\\
-	EQ\_WRONG\_OPERAND\_TYPE & Error: Operands must have type 
-	$equationStruct$.\\
 	EQC\_UNSUPPORTED\_OP & Error: The user equation contains an unsupported 
 	operator. Supported operators include $<supportedOperators>$.\\
 	EQC\_INCOMPLETE\_OP & Error: An operator was found that does not have 
@@ -915,13 +875,6 @@ N/A
 	cannot be converted to a real number. \\
 	IVC\_CONV\_ERR\_MAX & Error: The string provided for the maximum bound 
 	cannot be converted to a real number.\\
-	SOL\_INSUFF\_PARAMS & Error: Insufficient number of parameters provided to 
-	the range solver.\\
-	SOL\_WRONG\_EQ\_TYPE & Error: An equation must be provided to the solver 
-	that has type $equationStruct$.\\
-	SOL\_WRONG\_IV\_TYPE & Error: An list of intervals must be provided to the 
-	range solver. If no intervals exist, the value must be identified as 
-	\texttt{NULL}.\\
 	SOL\_UNSUPPORTED\_OP & Error: An unsupported operation was encountered 
 	while solving for the range of the equation.\\
 	VC\_NO\_FUNC & Error: No user equation was received. \\
