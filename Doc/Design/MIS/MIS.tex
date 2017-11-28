@@ -306,7 +306,7 @@ N/A
 \begin{itemize}
 	\item transition: If the user has chosen to enter their values via a file, 
 	$inputFile$ is associated with the provided file name.
-	\item output: $out := String^n$
+	\item output: $out := eqString || varList$
 	\item exception: $exc := \\
 	(\nexists inputFile \vee \neg Read(inputFile) \Rightarrow IN\_BAD\_FILE)\\
 	|\\
@@ -403,13 +403,13 @@ EquationStruct (Section~\ref{Module_equationdatastructure})
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{5}{3.2cm}{MakeEquationTree} & \multirow{5}{2.8cm}{$String$, 
-		$String^n$} & \multirow{5}{3cm}{$equationStruct$} & 
+		\multirow{6}{3.2cm}{MakeEquationTree} & \multirow{6}{2.8cm}{$String$, 
+		$String^n$} & \multirow{6}{3cm}{$equationStruct$} & 
 		EQC\_INSUFF\_PARAMS, \\
 		& & & EQC\_UNSUPPORTED\_OP, \\
 		& & & EQC\_CONST\_FUNC, \\
-		& & & EQC\_NO\_FUNC, \\
-		& & & EQC\_INCOMPLETE\_OP \\
+		& & & EQC\_INCOMPLETE\_OP, \\
+		& & & EQC\_IMPLICIT\_MULT \\
 		GetVariableList & - & $String^n$ & - \\
 		\hline
 	\end{tabular}
@@ -439,10 +439,11 @@ EquationStruct (Section~\ref{Module_equationdatastructure})
 	|\\
 	(ToReal(userEquation) \in \mathbb{R} \Rightarrow EQC\_CONST\_FUNC)\\
 	|\\
-	(userEquation == ``" \Rightarrow EQC\_NO\_FUNC)\\
-	|\\
 	(\exists op \in userEquation | (NULL<op>userEquation) \vee 
-	(userEquation<op>NULL) \Rightarrow EQC\_INCOMPLETE\_OP)$
+	(userEquation<op>NULL) \Rightarrow EQC\_INCOMPLETE\_OP)\\
+	|\\
+	(\exists subEq | subEq = \{subEq_1, subEq_2\} \wedge subEq_1 \in \mathbb{R} 
+	\wedge subEq_2 \in variableList \\ \Rightarrow EQC\_IMPLICIT\_MULT)$
 \end{itemize}
 
 \noindent GetVariableList():
@@ -462,17 +463,29 @@ Consolidate
 
 \subsection{Uses}
 
+IntervalConversion (Section~\ref{Module_intervalconversion}), 
+EquationConversion (Section~\ref{Module_equationconversion}), IntervalStruct 
+(Section~\ref{Module_intervaldatastructure}), EquationStruct 
+(Section~\ref{Module_equationdatastructure})
+
 
 \subsection{Syntax}
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{4cm} p{4cm} p{2cm}}
+	\begin{tabular}{p{4.3cm} p{2.3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\wss{accessProg} & - & - & - \\
+		\multirow{4}{4.3cm}{ConvertAndCheckInputs} & 
+		\multirow{4}{2.3cm}{$String$, $String^n$, $String^n$} & 
+		\multirow{4}{3cm}{-} & VC\_MISSING\_VARS, \\
+		& & & VC\_EXTRA\_VARS, \\
+		& & & VC\_NO\_FUNCTION, \\
+		& & & VC\_INVALID\_VARNAME \\
+		GetEquationStruct & - & $equationStruct$ & - \\
+		GetIntervalStructList & - & $intervalStruct^n$ & - \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -481,14 +494,49 @@ Consolidate
 
 \subsubsection{State Variables}
 
+\begin{itemize}
+	\item $equationTreeRoot$ : $equationStruct$
+	\item $intervalList$ : $intervalStruct^n$
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+	\item The ConvertAndCheckInputs function will change the state variables 
+	before the GetEquationStruct or GetIntervalStructList functions are called.
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent ConvertAndCheckInputs(eqString, varList, operators):
 \begin{itemize}
-	\item transition: \wss{if appropriate} 
-	\item output: \wss{if appropriate} 
-	\item exception: \wss{if appropriate} 
+	\item transition: The state variables $equationTreeRoot$ and $intervalList$ 
+	will be assigned the values that result from a successful parse and 
+	consolidation process. 
+	\item output: N/A 
+	\item exception: $exc := \\
+	(\exists var | var \in eqString \wedge var \notin varList \Rightarrow 
+	VC\_MISSING\_VARS)\\
+	|\\
+	(\exists var | var \notin eqString \wedge var \in varList \Rightarrow 
+	VC\_EXTRA\_VARS)\\
+	|\\
+	(eqString == ``" \Rightarrow VC\_NO\_FUNCTION)\\
+	|\\
+	(\exists varName \supset \{+, - , *, \, \string^, (, )\} \Rightarrow 
+	VC\_INVALID\_VARNAME)$
+\end{itemize}
+
+\noindent GetEquationStruct():
+\begin{itemize}
+	\item output: $out := equationTreeRoot$
+	\item exception: N/A
+\end{itemize}
+
+\noindent GetIntervalStructList():
+\begin{itemize}
+	\item output: $out := intervalList$ 
+	\item exception: N/A
 \end{itemize}
 
 \newpage
@@ -879,8 +927,6 @@ N/A
 	the equation conversion process. \\
 	EQC\_UNSUPPORTED\_OP & Error: The user equation contains an unsupported 
 	operator. Supported operators include $<supportedOperators>$.\\
-	EQC\_NO\_FUNC & Error: No user equation was passed to the equation 
-	conversion process. \\
 	EQC\_INCOMPLETE\_OP & Error: An operator was found that does not have 
 	sufficient operands. \\
 	IN\_BAD\_FILE & Error: The file could not be read. \\
@@ -904,6 +950,7 @@ N/A
 	\texttt{NULL}.\\
 	SOL\_UNSUPPORTED\_OP & Error: An unsupported operation was encountered 
 	while solving for the range of the equation.\\
+	VC\_NO\_FUNC & Error: No user equation was received. \\
 	\bottomrule
 \end{longtable}
 
