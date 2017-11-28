@@ -63,7 +63,7 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
- & 1.0 & Initial draft completed\\
+November 27, 2017 & 1.0 & Initial draft completed\\
 \bottomrule
 \end{tabularx}
 
@@ -93,6 +93,11 @@ calculations are performed using interval arithmetic.
 Complementary documents include the System Requirement Specifications
 and Module Guide.  The full documentation and implementation can be
 found at \url{https://github.com/GenevaS/CAS741}.
+
+It is assumed that the chosen implementation language will automatically check 
+that the appropriate number of inputs are provided to a function and that all 
+inputs are of the expected type. Therefore, these exceptions are not listed in 
+this specification.
 
 \section{Notation}
 
@@ -127,6 +132,7 @@ different types. In addition, \progname \ uses functions, which
 are defined by the data types of their inputs and outputs. Local functions are
 described by giving their type signature followed by their specification.
 
+\newpage
 \section{Module Decomposition}
 
 The following table is taken directly from the Module Guide document for this 
@@ -583,7 +589,7 @@ N/A
 	((\exists op \in eStruct \wedge op \notin supportedOps) \\
 	\vee (\exists iv1, iv2 \in ivStructList \wedge \nexists op \in supportedOps 
 	| op(iv1, iv2) \vee op(iv2, iv1)) \\
-	\Rightarrow UNSUPPORTED\_OP)$ 
+	\Rightarrow SOL\_UNSUPPORTED\_OP)$ 
 \end{itemize}
 
 \newpage
@@ -877,6 +883,10 @@ N/A
 	cannot be converted to a real number.\\
 	SOL\_UNSUPPORTED\_OP & Error: An unsupported operation was encountered 
 	while solving for the range of the equation.\\
+	VC\_INVALID\_VARNAME & Error: Encountered a variable name with reserved 
+	characters ($+, - , *, \, \string^, (, )$). \\
+	VC\_MISSING\_VARS & Error: A variable is referenced in the user equation 
+	that does not exist in the variable list. \\
 	VC\_NO\_FUNC & Error: No user equation was received. \\
 	\bottomrule
 \end{longtable}
@@ -892,6 +902,8 @@ N/A
 	$string$. String type conversion has been applied. \\
 	EQC\_CONST\_FUNC & Warning: The user equation is a constant value and the 
 	range will only include this value.\\
+	EQC\_IMPLICIT\_MULT & Warning: Encountered an implicit multiplication of a 
+	constant value and a variable. Expanding with explicit operator. \\
 	IV\_ORD\_VIOLATED & Warning: Value provided for intervals are not in 
 	increasing order. The values have been exchanged to maintain the interval 
 	ordering. \\
@@ -899,6 +911,8 @@ N/A
 	same value as the maximum bound. \\
 	IVC\_NO\_MAX & Warning: No maximum interval bound given. Setting it to the 
 	same value as the minimum bound. \\
+	VC\_EXTRA\_VARS & Warning: There are more variables in the variable list 
+	than the user equation. Extraneous variables will be ignored. \\
 	\bottomrule
 \end{longtable}
 
