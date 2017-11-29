@@ -19,6 +19,11 @@ namespace CompanionCubeCalculator
             InitializeComponent();
         }
 
+        /*
+         * The UpdateLog function is used to collect exception messages
+         * and any other process messages that should be communicated to
+         * the user.
+         */
         public static void UpdateLog(string logMessage)
         {
             logMessages += logMessage;
@@ -27,7 +32,8 @@ namespace CompanionCubeCalculator
 
         private void btn_go_Click(object sender, EventArgs e)
         {
-            IntervalStruct interval = new IntervalStruct(4.2, 3.0);
+            IntervalStruct interval = new IntervalStruct("x", 4.2, 3.0);
+            UpdateLog(interval.GetVariableName() + " = ");
             UpdateLog(interval.GetMinBound().ToString() + ", ");
             UpdateLog(interval.GetMaxBound().ToString() + Environment.NewLine);
             txt_UserFeedback.Text = logMessages;

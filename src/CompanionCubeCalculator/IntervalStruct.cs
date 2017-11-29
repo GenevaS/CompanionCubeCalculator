@@ -11,12 +11,14 @@ namespace CompanionCubeCalculator
 {
     internal class IntervalStruct
     {
+        private string variableName;
         private double minBound;
         private double maxBound;
 
         /* CONSTRUCTOR */
-        public IntervalStruct(double minB, double maxB)
+        public IntervalStruct(string varName, double minB, double maxB)
         {
+            variableName = varName;
             minBound = minB;
             maxBound = maxB;
 
@@ -35,6 +37,11 @@ namespace CompanionCubeCalculator
         }
 
         /* GETTERS */
+        public string GetVariableName()
+        {
+            return variableName;
+        }
+
         public double GetMinBound()
         {
             return minBound;
@@ -46,6 +53,11 @@ namespace CompanionCubeCalculator
         }
 
         /* SETTERS */
+        public void SetVariableName(string varName)
+        {
+            variableName = varName;
+            return;
+        }
         public void SetMinBound(double minB)
         {
             minBound = minB;
