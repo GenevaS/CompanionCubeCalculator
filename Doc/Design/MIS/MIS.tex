@@ -335,11 +335,12 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure})
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{4}{3cm}{MakeInterval} & \multirow{4}{2.3cm}{$String^2$} & 
-		\multirow{4}{3cm}{$intervalStruct$} & IVC\_CONV\_ERR\_MIN, \\
+		\multirow{4}{3cm}{MakeInterval} & \multirow{4}{2.3cm}{$String^3$} & 
+		\multirow{4}{3cm}{$intervalStruct$} & IVC\_EMPTY\_VARNAME, \\
+		& & & IVC\_CONV\_ERR\_MIN, \\
 		& & & IVC\_CONV\_ERR\_MAX, \\
 		& & & IVC\_NO\_MIN, \\
-		& & & IVC\_NO\_MAX,\\
+		& & & IVC\_NO\_MAX\\
 		\hline
 	\end{tabular}
 \end{center}
@@ -359,10 +360,12 @@ N/A
 
 \subsubsection{Access Routine Semantics}
 
-\noindent MakeInterval($min, max$):
+\noindent MakeInterval($varName, min, max$):
 \begin{itemize}
 	\item output: $out := newInterval$
 	\item exception: $exc := \\
+	(varName = ``" \Rightarrow IVC\_EMPTY\_VARNAME)\\
+	|\\
 	(ToReal(min) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MIN)\\
 	|\\
 	(ToReal(max) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MAX)\\
@@ -411,6 +414,13 @@ EquationStruct (Section~\ref{Module_equationdatastructure})
 
 \begin{itemize}
 	\item $variableList$ : $String^n$
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+	\item The MakeEquationTree function will always be called before the 
+	GetVariableList function, otherwise it will not contain any data.
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -556,7 +566,9 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
 		GetValidOperators & - & $String^n$ & -\\
-		FindRange & - & $intervalStruct$ & SOL\_UNSUPPORTED\_OP\\
+		\multirow{2}{3.1cm}{FindRange} & $equationStruct$, $intervalStruct^n$ & 
+		\multirow{2}{3cm}{$intervalStruct$} & 
+		\multirow{2}{5cm}{SOL\_UNSUPPORTED\_OP}\\
 		\hline
 	\end{tabular}
 \end{center}
@@ -686,10 +698,12 @@ N/A
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline		
-		IntervalStruct & $\mathbb{R}^2$ & $intervalStruct$ & IV\_ORD\_VIOLATED 
-		\\
+		IntervalStruct & $String$, $\mathbb{R}^2$ & $intervalStruct$ & 
+		IV\_ORD\_VIOLATED \\
+		GetVariableName & - & $String$ & - \\
 		GetMinBound & - & $\mathbb{R}$ & - \\
 		GetMaxBound & - & $\mathbb{R}$ & - \\
+		SetVariableName & $String$ & - & - \\
 		SetMinBound & $\mathbb{R}$ & - & IV\_ORD\_VIOLATED \\
 		SetMaxBound & $\mathbb{R}$ & - & IV\_ORD\_VIOLATED \\
 		\hline
@@ -702,19 +716,26 @@ N/A
 
 \# For \rref{R_conditionX} using \ddref{DD_interval}
 \begin{itemize}
+	\item $variableName$ : $String$
 	\item $minBound : \mathbb{R}$
 	\item $maxBound : \mathbb{R}$
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent IntervalStruct($minB, maxB$):
+\noindent IntervalStruct($varName, minB, maxB$):
 \begin{itemize}
 	\item output: $out := newInterval$
-	\item transition: Update state variables $minBound$ and $maxBound$ with the 
-	provided values $minB$ and $maxB$
+	\item transition: Update state variables $variableName$, $minBound$, and 
+	$maxBound$ with the provided values $varName$, $minB$, and $maxB$
 	\item exception: $exc := \\
 	(minB > maxB \Rightarrow IV\_ORD\_VIOLATED)$
+\end{itemize}
+
+\noindent GetVariableName():
+\begin{itemize}
+	\item output: $out := variableName$
+	\item exception: N/A
 \end{itemize}
 
 \noindent GetMinBound():
@@ -726,6 +747,13 @@ N/A
 \noindent GetMaxBound():
 \begin{itemize}
 	\item output: $out := maxBound$
+	\item exception: N/A
+\end{itemize}
+
+\noindent SetVariableName($varName$):
+\begin{itemize}
+	\item transition: Update state variable $variableName$ with the provided 
+	value $varName$
 	\item exception: N/A
 \end{itemize}
 
@@ -880,6 +908,8 @@ N/A
 	cannot be converted to a real number. \\
 	IVC\_CONV\_ERR\_MAX & Error: The string provided for the maximum bound 
 	cannot be converted to a real number.\\
+	IVC\_EMPTY\_VARNAME & Error: Intervals must have an associated variable 
+	name. \\
 	SOL\_UNSUPPORTED\_OP & Error: An unsupported operation was encountered 
 	while solving for the range of the equation.\\
 	VC\_INVALID\_VARNAME & Error: Encountered a variable name with reserved 
