@@ -335,10 +335,11 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure})
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{4}{3cm}{MakeInterval} & \multirow{4}{2.3cm}{$String^3$} & 
-		\multirow{4}{3cm}{$intervalStruct$} & IVC\_EMPTY\_VARNAME, \\
+		\multirow{6}{3cm}{MakeInterval} & \multirow{6}{2.3cm}{$String^3$} & 
+		\multirow{6}{3cm}{$intervalStruct$} & IVC\_EMPTY\_VARNAME, \\
 		& & & IVC\_CONV\_ERR\_MIN, \\
 		& & & IVC\_CONV\_ERR\_MAX, \\
+		& & & IVC\_NO\_BOUNDS, \\
 		& & & IVC\_NO\_MIN, \\
 		& & & IVC\_NO\_MAX\\
 		\hline
@@ -910,6 +911,7 @@ N/A
 	cannot be converted to a real number.\\
 	IVC\_EMPTY\_VARNAME & Error: Intervals must have an associated variable 
 	name. \\
+	IVC\_NO\_BOUNDS & Error: No values provided for either interval bound. \\
 	SOL\_UNSUPPORTED\_OP & Error: An unsupported operation was encountered 
 	while solving for the range of the equation.\\
 	VC\_INVALID\_VARNAME & Error: Encountered a variable name with reserved 
