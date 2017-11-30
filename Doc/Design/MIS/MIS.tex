@@ -371,9 +371,11 @@ N/A
 	|\\
 	(ToReal(max) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MAX)\\
 	|\\
-	(min == ``" \Rightarrow IVC\_NO\_MIN)\\
+	(min = max = ``" \Rightarrow IVC\_NO\_BOUNDS)\\
 	|\\
-	(max == ``" \Rightarrow IVC\_NO\_MAX)$
+	(min = ``" \wedge max \neq ``" \Rightarrow IVC\_NO\_MIN)\\
+	|\\
+	(min \neq ``" \wedge max = ``" \Rightarrow IVC\_NO\_MAX)$
 \end{itemize}
 
 \newpage
