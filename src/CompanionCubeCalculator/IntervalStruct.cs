@@ -1,7 +1,7 @@
 ﻿/*
  * Interval Data Structure
  * ---------------------------------------------------------------------
- * Updated 2017/11/27
+ * Updated 2017/11/30
  * Corresponds to IntervalStruct MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * ---------------------------------------------------------------------
@@ -9,7 +9,7 @@
 
 namespace CompanionCubeCalculator
 {
-    internal class IntervalStruct
+    internal struct IntervalStruct
     {
         private string variableName;
         private double minBound;
