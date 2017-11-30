@@ -9,7 +9,7 @@
 
 namespace CompanionCubeCalculator
 {
-    internal class EquationStruct
+    public class EquationStruct
     {
         private string operatr;
         private string variableName;

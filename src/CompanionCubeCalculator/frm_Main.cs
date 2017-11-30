@@ -32,11 +32,18 @@ namespace CompanionCubeCalculator
 
         private void btn_go_Click(object sender, EventArgs e)
         {
-            IntervalStruct interval = new IntervalStruct("x", 3.0, 3.0);
-            UpdateLog(interval.GetVariableName() + " = ");
-            UpdateLog(interval.GetMinBound().ToString() + ", ");
-            UpdateLog(interval.GetMaxBound().ToString() + Environment.NewLine);
-            txt_UserFeedback.Text = logMessages;
+            IntervalStruct interval = IntervalConversion.MakeInterval("x", "", "");
+            if (interval != null)
+            {
+                UpdateLog(interval.GetVariableName() + " = ");
+                UpdateLog(interval.GetMinBound().ToString() + ", ");
+                UpdateLog(interval.GetMaxBound().ToString() + Environment.NewLine);
+            }
+            else
+            {
+                UpdateLog("Null interval" + Environment.NewLine);
+            }
+
 
             EquationStruct eq = new EquationStruct("+", "x", null, null);
             EquationStruct eq2 = new EquationStruct("+", "y", null, null);
@@ -47,6 +54,7 @@ namespace CompanionCubeCalculator
             }
             UpdateLog(eqP.GetLeftOperand().GetVariableName() + Environment.NewLine);
             UpdateLog(eqP.GetRightOperand().GetVariableName() + Environment.NewLine);
+            txt_UserFeedback.Text = logMessages;
         }
     }
 }

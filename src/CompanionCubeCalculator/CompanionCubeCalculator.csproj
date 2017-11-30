@@ -52,6 +52,7 @@
     <Compile Include="frm_Main.Designer.cs">
       <DependentUpon>frm_Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="IntervalConversion.cs" />
     <Compile Include="IntervalStruct.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,7 +9,7 @@
 
 namespace CompanionCubeCalculator
 {
-    internal struct IntervalStruct
+    public class IntervalStruct
     {
         private string variableName;
         private double minBound;
