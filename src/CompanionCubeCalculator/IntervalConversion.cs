@@ -31,7 +31,7 @@ namespace CompanionCubeCalculator
                     }
                     cMin = System.Convert.ToDouble(min);
                  }
-                catch (System.InvalidCastException)
+                catch (System.FormatException)
                 {
                     frm_Main.UpdateLog("Error: The string provided for the minimum bound cannot be converted to a real number." + System.Environment.NewLine);
                     proceed = false;
@@ -47,7 +47,7 @@ namespace CompanionCubeCalculator
                     }
                     cMax = System.Convert.ToDouble(max);
                 }
-                catch (System.InvalidCastException)
+                catch (System.FormatException)
                 {
                     frm_Main.UpdateLog("Error: The string provided for the maximum bound cannot be converted to a real number." + System.Environment.NewLine);
                     proceed = false;
@@ -85,7 +85,7 @@ namespace CompanionCubeCalculator
 
             // If both of the provided bounds are empty, display an error and tell the
             // calling method not to proceed
-            if (!((min != "") && (max != "")))
+            if ((min == "") && (max == ""))
             {
                 frm_Main.UpdateLog("Error: No values provided for either interval bound." + System.Environment.NewLine);
                 proceed = false;

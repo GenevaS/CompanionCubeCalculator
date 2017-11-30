@@ -32,7 +32,7 @@ namespace CompanionCubeCalculator
 
         private void btn_go_Click(object sender, EventArgs e)
         {
-            IntervalStruct interval = IntervalConversion.MakeInterval("x", "", "");
+            IntervalStruct interval = IntervalConversion.MakeInterval("x", "a", "4.0");
             if (interval != null)
             {
                 UpdateLog(interval.GetVariableName() + " = ");
