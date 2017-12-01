@@ -54,6 +54,16 @@ namespace CompanionCubeCalculator
             }
             UpdateLog(eqP.GetLeftOperand().GetVariableName() + Environment.NewLine);
             UpdateLog(eqP.GetRightOperand().GetVariableName() + Environment.NewLine);
+
+            string[] ops = new string[] { "+" };
+            EquationStruct testEq = EquationConversion.MakeEquationTree("x1+y1", ops);
+            testEq = EquationConversion.MakeEquationTree("42", ops);
+            string[] vars = EquationConversion.GetVariableList();
+            foreach (string v in vars)
+            {
+                UpdateLog(v + System.Environment.NewLine);
+            }
+
             txt_UserFeedback.Text = logMessages;
         }
     }

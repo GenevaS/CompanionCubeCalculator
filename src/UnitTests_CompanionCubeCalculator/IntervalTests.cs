@@ -1,5 +1,4 @@
-﻿using System;
-using CompanionCubeCalculator;
+﻿using CompanionCubeCalculator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests_CompanionCubeCalculator
