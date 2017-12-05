@@ -154,6 +154,9 @@ implementation of the equation data structure.
 \item[\refstepcounter{acnum} \actheacnum \label{acEquationConstraints}:] The 
 constraints on the allowable user equation operators.
 
+\item[\refstepcounter{acnum} \actheacnum \label{acOperatorStruct}:] The 
+implementation of the operator data structure.
+
 \item[\refstepcounter{acnum} \actheacnum \label{acIntervalStruct}:] The 
 implementation of the interval data structure.
 
@@ -225,6 +228,9 @@ Module
 \item [\refstepcounter{mnum} \mthemnum \label{mEDS}:] Equation Data Structure 
 Module
 
+\item [\refstepcounter{mnum} \mthemnum \label{mODS}:] Operator Data Structure 
+Module
+
 \end{description}
 
 
@@ -250,6 +256,7 @@ Module
 \multirow{2}{0.29\textwidth}{Software Decision Module} & Interval Data 
 Structure Module \\
 & Equation Data Structure Module \\
+& Operator Data Structure Module \\
 \bottomrule
 
 \end{tabular}
@@ -257,6 +264,7 @@ Structure Module \\
 \label{TblMH}
 \end{table}
 
+\newpage
 \section{Connection Between Requirements and Design} \label{SecConnection}
 
 The design of the system is intended to satisfy the requirements developed in
@@ -409,6 +417,14 @@ into a standard intermediary format.
 	\item[Implemented By:] \progname{}
 \end{description}
 
+\subsubsection{Operator Data Structure Module (\mref{mODS})}
+
+\begin{description}
+	\item[Secrets:]The internal representation of mathematical operators and their properties.
+	\item[Services:]Stores mathematical operators and properties such as precedence and associativity.
+	\item[Implemented By:] \progname{}
+\end{description}
+
 \section{Traceability Matrix} \label{SecTM}
 
 This section shows two traceability matrices: between the modules and the
@@ -454,6 +470,7 @@ requirements and between the modules and the anticipated changes.
 \acref{acOutputConstraints} & \mref{mO}\\
 \acref{acEquationStruct} & \mref{mEDS}\\
 \acref{acEquationConstraints} & \mref{mRS}\\
+\acref{acOperatorStruct} & \mref{mODS} \\
 \acref{acIntervalStruct} & \mref{mIDS}\\
 \acref{acIntervalConstraints} & \mref{mRS}\\
 \acref{acParsing} & \mref{mEC}\\

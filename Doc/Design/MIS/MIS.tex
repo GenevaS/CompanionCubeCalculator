@@ -117,6 +117,8 @@ The following table summarizes the primitive data types used by \progname.
 \toprule 
 \textbf{Data Type} & \textbf{Notation} & \textbf{Description}\\ 
 \midrule
+Boolean & $\mathbb{B}$ & The set of $\{True, False\}$\\
+Integer & $\mathbb{Z}$ & Any whole number in (-$\infty$, $\infty$)\\
 Real & $\mathbb{R}$ & Any number in (-$\infty$, $\infty$)\\
 \multirow{2}{1cm}{String} & \multirow{2}{1cm}{$char^n$} & A sequence of 
 alphanumeric and special characters\\
@@ -162,6 +164,7 @@ project. It can be found at
 		\multirow{2}{0.29\textwidth}{Software Decision Module} & Interval Data 
 		Structure Module \\
 		& Equation Data Structure Module \\
+		& Operator Data Structure Module \\
 		\bottomrule
 		
 	\end{tabular}
@@ -389,7 +392,7 @@ EquationConversion
 
 \subsection{Uses}
 
-EquationStruct (Section~\ref{Module_equationdatastructure})
+EquationStruct (Section~\ref{Module_equationdatastructure}), OperatorStruct (Section~\ref{Module_operatordatastructure})
 
 \subsection{Syntax}
 
@@ -401,7 +404,7 @@ EquationStruct (Section~\ref{Module_equationdatastructure})
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
 		\multirow{4}{3.2cm}{MakeEquationTree} & \multirow{4}{2.8cm}{$String$, 
-		$String^n$} & \multirow{4}{3cm}{$equationStruct$} & 
+		$operatorStruct^n$} & \multirow{4}{3cm}{$equationStruct$} & 
 		EQC\_CONST\_FUNC, \\	
 		& & & EQC\_IMPLICIT\_MULT, \\
 		& & & EQC\_INCOMPLETE\_OP, \\
@@ -474,12 +477,12 @@ EquationConversion (Section~\ref{Module_equationconversion}), IntervalStruct
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{4.3cm} p{2.3cm} p{3cm} p{5cm}}
+	\begin{tabular}{p{4.3cm} p{2.7cm} p{3cm} p{4.3cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
 		\multirow{4}{4.3cm}{ConvertAndCheckInputs} & 
-		\multirow{4}{2.3cm}{$String$, $String^n$, $String^n$} & 
+		\multirow{4}{2.3cm}{$String$, $String^n$, $operatorStruct^n$} & 
 		\multirow{4}{3cm}{-} & VC\_MISSING\_VARS, \\
 		& & & VC\_EXTRA\_VARS, \\
 		& & & VC\_NO\_FUNCTION, \\
@@ -551,14 +554,14 @@ Solver
 \subsection{Uses}
 
 IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct 
-(Section~\ref{Module_equationdatastructure})
+(Section~\ref{Module_equationdatastructure}), OperatorStruct (Section~\ref{Module_operatordatastructure})
 
 \subsection{Syntax}
 
 \subsubsection{Exported Constants}
 
 \begin{itemize}
-	\item $supportedOps : String^n$
+	\item $supportedOps : operatorStruct^n$
 \end{itemize}
 
 \subsubsection{Exported Access Programs}
@@ -568,7 +571,7 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		GetValidOperators & - & $String^n$ & -\\
+		GetValidOperators & - & $operatorStruct^n$ & -\\
 		\multirow{2}{3.1cm}{FindRange} & $equationStruct$, $intervalStruct^n$ & 
 		\multirow{2}{3cm}{$intervalStruct$} & 
 		\multirow{2}{5cm}{SOL\_UNSUPPORTED\_OP}\\
@@ -887,6 +890,118 @@ N/A
 
 \newpage
 
+\section{MIS of the Operator Data Structure Module} 
+\label{Module_operatordatastructure}
+
+\subsection{Module}
+
+OperatorStruct
+
+\subsection{Uses}
+
+N/A
+
+\subsection{Syntax}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+	\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
+		\hline
+		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+		\hline
+		\multirow{2}{3cm}{OperatorStruct} & $String$, $Int$, $Boolean^4$ & 
+		\multirow{2}{3cm}{$operatorStruct$} & 
+		\multirow{2}{5cm}{OP\_MISSING\_OP, OP\_MULTI\_TYPE}\\
+		GetOperator & - & $String$ & - \\
+		GetPrecedence & - & $Int$ & - \\
+		IsUnary & - & $Boolean$ & - \\
+		IsBinary & - & $Boolean$ & - \\
+		IsTernary & - & $Boolean$ & - \\
+		IsLeftAssociative & - & $Boolean$ & -\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+	\item $operator : String$
+	\item $precedence : Int$
+	\item $numOperands : Int$
+	\item $leftAssociative : Boolean$
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+	\item There are no Setter methods for this module because operator properties are fixed.
+	\item A low integer value is associated with a high precedence operation.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent OperatorStruct($op, prec, isUnary, isBinary, isTernary, isLeftAssociative$):
+\begin{itemize}
+	\item output: $out := newOperator$
+	\item transition: Update state variables $operator$, $precedence$, and $leftAssociative$ with the provided values $op$, $prec$, and $isLeftAssociative$. Set the value of $numOperands$ as:
+	\begin{itemize} 
+		\item $1$ if $isUnary = True$
+		\item $2$ if $isBinary = True$
+		\item $3$ if $isTernary = True$
+	\end{itemize}
+	\item exception: $exc := \\
+	(op = ``" \Rightarrow OP\_MISSING\_OP)\\
+	|\\
+	((isUnary = True \wedge isUnary = isBinary) \vee (isUnary = True \wedge isUnary = isTernary) \vee (isBinary = True \wedge isBinary = isTernary) \Rightarrow OP\_MULTI\_TYPE)$
+\end{itemize}
+
+\noindent GetOperator():
+\begin{itemize}
+	\item output: $out := operator$
+	\item exception: N/A
+\end{itemize}
+
+\noindent GetPrecedence():
+\begin{itemize}
+	\item output: $out := precedence$
+	\item exception: N/A
+\end{itemize}
+
+\noindent IsUnary():
+\begin{itemize}
+	\item output: $out := 
+		\begin{cases} 
+			True &\mbox{if } numOperands = 1 \\ 
+			False & \mbox{else }
+		\end{cases}$
+	\item exception: N/A
+\end{itemize}
+
+\noindent IsBinary():
+\begin{itemize}
+	\item output: $out := 
+		\begin{cases} 
+			True &\mbox{if } numOperands = 2 \\ 
+			False & \mbox{else }
+		\end{cases}$
+	\item exception: N/A
+\end{itemize}
+
+\noindent IsTernary():
+\begin{itemize}
+	\item output: $out := 
+		\begin{cases} 
+			True &\mbox{if } numOperands = 3 \\ 
+			False & \mbox{else }
+		\end{cases}$
+	\item exception: N/A
+\end{itemize}
+
+\newpage
+
 \bibliographystyle {plainnat}
 \bibliography {../../../ReferenceMaterial/References}
 
@@ -914,6 +1029,8 @@ N/A
 	IVC\_EMPTY\_VARNAME & Error: Intervals must have an associated variable 
 	name. \\
 	IVC\_NO\_BOUNDS & Error: No values provided for either interval bound. \\
+	OP\_MISSING\_OP & Error: Cannot have an operator with no representative symbol. \\
+	OP\_MULTI\_TYPE & Error: An operator cannot be overloaded to be unary, binary, and ternary. \\
 	SOL\_UNSUPPORTED\_OP & Error: An unsupported operation was encountered 
 	while solving for the range of the equation.\\
 	VC\_INVALID\_VARNAME & Error: Encountered a variable name with reserved 
