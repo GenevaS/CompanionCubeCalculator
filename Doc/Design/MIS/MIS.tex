@@ -63,6 +63,9 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
+December 7, 2017 & 1.1.1 & Revised the operator data structure with missing 
+``get" operator, a new exception, and seperated the \texttt{numOperands} 
+Integer state variable into three Boolean state variables\\
 December 5, 2017 & 1.1 & Added a specification for an operator data structure \\
 November 27, 2017 & 1.0 & Initial draft completed\\
 \bottomrule
@@ -911,9 +914,9 @@ N/A
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{2}{3cm}{OperatorStruct} & $String$, $Int$, $Boolean^4$ & 
-		\multirow{2}{3cm}{$operatorStruct$} & 
-		\multirow{2}{5cm}{OP\_MISSING\_OP, OP\_MULTI\_TYPE}\\
+		\multirow{3}{3cm}{OperatorStruct} & \multirow{3}{3cm}{$String$, $Int$, 
+		$Boolean^4$} & \multirow{3}{3cm}{$operatorStruct$} & OP\_MISSING\_OP, 
+		OP\_MULTI\_TYPE, OP\_NO\_TYPE\\
 		GetOperator & - & $String$ & - \\
 		GetPrecedence & - & $Int$ & - \\
 		IsUnary & - & $Boolean$ & - \\
@@ -931,7 +934,9 @@ N/A
 \begin{itemize}
 	\item $operator : String$
 	\item $precedence : Int$
-	\item $numOperands : Int$
+	\item $isUnary : Boolean$
+	\item $isBinary : Boolean$
+	\item $isTernary : Boolean$
 	\item $leftAssociative : Boolean$
 \end{itemize}
 
@@ -947,16 +952,19 @@ N/A
 \noindent OperatorStruct($op, prec, isUnary, isBinary, isTernary, isLeftAssociative$):
 \begin{itemize}
 	\item output: $out := newOperator$
-	\item transition: Update state variables $operator$, $precedence$, and $leftAssociative$ with the provided values $op$, $prec$, and $isLeftAssociative$. Set the value of $numOperands$ as:
-	\begin{itemize} 
-		\item $1$ if $isUnary = True$
-		\item $2$ if $isBinary = True$
-		\item $3$ if $isTernary = True$
-	\end{itemize}
+	\item transition: Update state variables $operator$, $precedence$, 
+	$isUnary$, $isBinary$, $isTernary$, and $leftAssociative$ with the provided 
+	values $op$, $prec$, $isUnary$, $isBinary$, $isTernary$, and 
+	$isLeftAssociative$.
 	\item exception: $exc := \\
 	(op = ``" \Rightarrow OP\_MISSING\_OP)\\
 	|\\
-	((isUnary = True \wedge isUnary = isBinary) \vee (isUnary = True \wedge isUnary = isTernary) \vee (isBinary = True \wedge isBinary = isTernary) \Rightarrow OP\_MULTI\_TYPE)$
+	((isUnary = isBinary \wedge isUnary = True) \vee (isUnary = isTernary 
+	\wedge isUnary = True) \vee (isBinary = isTernary \wedge isBinary = True) 
+	\Rightarrow OP\_MULTI\_TYPE)\\
+	|\\
+	(isUnary = isBinary = isTernary \wedge isUnary = False \Rightarrow 
+	OP\_NO\_TYPE)$
 \end{itemize}
 
 \noindent GetOperator():
@@ -973,31 +981,25 @@ N/A
 
 \noindent IsUnary():
 \begin{itemize}
-	\item output: $out := 
-		\begin{cases} 
-			True &\mbox{if } numOperands = 1 \\ 
-			False & \mbox{else }
-		\end{cases}$
+	\item output: $out := isUnary$
 	\item exception: N/A
 \end{itemize}
 
 \noindent IsBinary():
 \begin{itemize}
-	\item output: $out := 
-		\begin{cases} 
-			True &\mbox{if } numOperands = 2 \\ 
-			False & \mbox{else }
-		\end{cases}$
+	\item output: $out := isBinary$
 	\item exception: N/A
 \end{itemize}
 
 \noindent IsTernary():
 \begin{itemize}
-	\item output: $out := 
-		\begin{cases} 
-			True &\mbox{if } numOperands = 3 \\ 
-			False & \mbox{else }
-		\end{cases}$
+	\item output: $out := isTernary$
+	\item exception: N/A
+\end{itemize}
+
+\noindent IsLeftAssociative():
+\begin{itemize}
+	\item output: $out := leftAssociative$
 	\item exception: N/A
 \end{itemize}
 
@@ -1031,7 +1033,10 @@ N/A
 	name. \\
 	IVC\_NO\_BOUNDS & Error: No values provided for either interval bound. \\
 	OP\_MISSING\_OP & Error: Cannot have an operator with no representative symbol. \\
-	OP\_MULTI\_TYPE & Error: An operator cannot be overloaded to be unary, binary, and ternary. \\
+	OP\_MULTI\_TYPE & Error: An operator cannot be overloaded to be unary, 
+	binary, and ternary. \\
+	OP\_NO\_TYPE & Error: Operators must be assigned a number of operands type. 
+	\\
 	SOL\_UNSUPPORTED\_OP & Error: An unsupported operation was encountered 
 	while solving for the range of the equation.\\
 	VC\_INVALID\_VARNAME & Error: Encountered a variable name with reserved 
