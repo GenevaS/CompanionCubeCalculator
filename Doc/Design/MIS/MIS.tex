@@ -65,7 +65,8 @@
 \midrule
 December 7, 2017 & 1.1.1 & Revised the operator data structure with missing 
 ``get" operator, a new exception, and seperated the \texttt{numOperands} 
-Integer state variable into three Boolean state variables\\
+Integer state variable into three Boolean state variables; added terminator 
+variables to Solver module\\
 December 5, 2017 & 1.1 & Added a specification for an operator data structure \\
 November 27, 2017 & 1.0 & Initial draft completed\\
 \bottomrule
@@ -566,16 +567,18 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct
 
 \begin{itemize}
 	\item $supportedOps : operatorStruct^n$
+	\item $supportedTerminators : String^n$
 \end{itemize}
 
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3.1cm} p{3cm} p{3cm} p{5cm}}
+	\begin{tabular}{p{3.5cm} p{3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
 		GetValidOperators & - & $operatorStruct^n$ & -\\
+		GetValidTerminators & - & $String^n$ & -\\
 		\multirow{2}{3.1cm}{FindRange} & $equationStruct$, $intervalStruct^n$ & 
 		\multirow{2}{3cm}{$intervalStruct$} & 
 		\multirow{2}{5cm}{SOL\_UNSUPPORTED\_OP}\\
@@ -600,6 +603,12 @@ N/A
 \noindent GetValidOperators():
 \begin{itemize}
 	\item output: $out := supportedOps$
+	\item exception: N/A
+\end{itemize}
+
+\noindent GetValidTerminators():
+\begin{itemize}
+	\item output: $out := supportedTerminators$
 	\item exception: N/A
 \end{itemize}
 
