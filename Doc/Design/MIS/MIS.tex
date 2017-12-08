@@ -252,6 +252,12 @@ their states for the Output module.
 \section{MIS of the User Input Module} 
 \label{Module_userinput}
 
+\wss{Should GetUserInputs take a string is input for when the user wants to
+  obtain the inputs from a file.}
+\wss{Do you really want the output to be a sequence of strings?  What about
+  defining an ADT that stores this information, or an abstract object, if there
+  is only one?}
+
 \subsection{Module}
 
 Input
@@ -298,7 +304,8 @@ N/A
 		\item The user equation on the first line
 		\item The list of variable names and interval values associated with 
 		the user equation; each name/value set is on its own line and is of the 
-		form $varName, minBound$, $maxBound$
+		form $varName, minBound$, $maxBound$ \wss{What happens if the
+                  variables in the equation do not match the list of variable names?}
 	\end{itemize}
 
 	\item The output of the GetUserInputs function is a list of $String$ where 
@@ -325,6 +332,9 @@ N/A
 
 \section{MIS of the Interval Conversion Module} 
 \label{Module_intervalconversion}
+
+\wss{Why even create the intermediate string form?  Why not go directly to the
+  intervalStruct type?}
 
 \subsection{Module}
 
@@ -371,7 +381,7 @@ N/A
 
 \noindent MakeInterval($varName, min, max$):
 \begin{itemize}
-	\item output: $out := newInterval$
+	\item output: $out := newInterval$ \wss{Where is newInterval defined?}
 	\item exception: $exc := \\
 	(varName = ``" \Rightarrow IVC\_EMPTY\_VARNAME)\\
 	|\\
@@ -440,7 +450,8 @@ EquationStruct (Section~\ref{Module_equationdatastructure}), OperatorStruct (Sec
 \begin{itemize}
 	\item transition: The value of $variableList$ is updated with new variable 
 	names as they are encountered during equation processing.
-	\item output: $out := equationTreeRoot$
+	\item output: $out := equationTreeRoot$ \wss{Where is this output
+            defined?  I would expect it to be defined in terms of the input parameters.}
 	\item exception: $exc := \\
 	(ToReal(userEquation) \in \mathbb{R} \Rightarrow EQC\_CONST\_FUNC)\\
 	|\\
@@ -520,7 +531,8 @@ EquationConversion (Section~\ref{Module_equationconversion}), IntervalStruct
 \begin{itemize}
 	\item transition: The state variables $equationTreeRoot$ and $intervalList$ 
 	will be assigned the values that result from a successful parse and 
-	consolidation process. 
+	consolidation process. \wss{How is this done?  If you cannot represent
+          it formally, maybe a pseudo code algorithm is available?}
 	\item output: N/A 
 	\item exception: $exc := \\
 	(\exists var | var \in eqString \wedge var \notin varList \Rightarrow 
@@ -905,6 +917,11 @@ N/A
 
 \section{MIS of the Operator Data Structure Module} 
 \label{Module_operatordatastructure}
+
+\wss{Do you really want to add operators in this way?  Don't you already know
+  that your operators are addition, subtraction, multiplication and division?  I
+  like the idea of flexibility, but this might not be the right kind of
+  flexibility.}
 
 \subsection{Module}
 
