@@ -411,6 +411,13 @@ EquationStruct (Section~\ref{Module_equationdatastructure}), OperatorStruct (Sec
 
 \subsection{Syntax}
 
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+	\item $VARTOKEN : String$
+	\item $CONSTTOKEN : String$
+\end{itemize}
+
 \subsubsection{Exported Access Programs}
 
 \begin{center}
@@ -418,12 +425,18 @@ EquationStruct (Section~\ref{Module_equationdatastructure}), OperatorStruct (Sec
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{4}{3.2cm}{MakeEquationTree} & \multirow{4}{2.8cm}{$String$, 
-		$operatorStruct^n$} & \multirow{4}{3cm}{$equationStruct$} & 
+		\multirow{3}{3.2cm}{ConfigureParser} & 
+		\multirow{3}{2.8cm}{$operatorStruct^n$, $String^{n\text{x}2}$} & 
+		\multirow{3}{3cm}{$Boolean$} & EQC\_NO\_OPS, EQC\_INVALID\_OP, 
+		EQC\_UNBALANCED\_TERMINATOR\\
+		\multirow{4}{3.2cm}{MakeEquationTree} & \multirow{4}{2.8cm}{$String$} & 
+		\multirow{4}{3cm}{$equationStruct$} & 
 		EQC\_CONST\_FUNC, \\	
 		& & & EQC\_IMPLICIT\_MULT, \\
 		& & & EQC\_INCOMPLETE\_OP, \\
 		& & & EQC\_UNSUPPORTED\_OP \\
+		GetVariableToken & - & $String$ & - \\
+		GetConstToken & - & $String$ & - \\
 		GetVariableList & - & $String^n$ & - \\
 		\hline
 	\end{tabular}
@@ -435,18 +448,37 @@ EquationStruct (Section~\ref{Module_equationdatastructure}), OperatorStruct (Sec
 
 \begin{itemize}
 	\item $variableList$ : $String^n$
+	\item $variableStringPattern$ : $String$
 \end{itemize}
 
 \subsubsection{Assumptions}
 
 \begin{itemize}
+	\item The ConfigureParser function will always be called before any other 
+	function in this module.
 	\item The MakeEquationTree function will always be called before the 
 	GetVariableList function, otherwise it will not contain any data.
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent MakeEquationTree($userEquation, supportedOperations$):
+\noindent ConfigureParser($operators, terminators$):
+\begin{itemize}
+	\item transition: The value of $variableStringPattern$ is updated so that 
+	operators and terminators are not matched when the module is searching for 
+	variables.
+	\item output: $out := success$
+	\item exception: $exc := \\
+	(operators = \emptyset \Rightarrow EQC\_NO\_OPS)\\
+	|\\
+	(\exists op \in operators | op.IsUnary == False \wedge op.IsBinary == False 
+	\Rightarrow EQC\_INVALID\_OP)\\
+	|\\
+	(\exists t[i][2] \in terminators | t[i][2] == "" \Rightarrow 
+	EQC\_UNBALANCED\_TERMINATOR)$
+\end{itemize}
+
+\noindent MakeEquationTree($userEquation$):
 \begin{itemize}
 	\item transition: The value of $variableList$ is updated with new variable 
 	names as they are encountered during equation processing.
@@ -463,6 +495,18 @@ EquationStruct (Section~\ref{Module_equationdatastructure}), OperatorStruct (Sec
 	|\\
 	(\exists op | op \in userEquation \wedge op \notin supportedOperations 
 	\Rightarrow EQC\_UNSUPPORTED\_OP)$
+\end{itemize}
+
+\noindent GetVariableToken():
+\begin{itemize}
+	\item output: $out := VARTOKEN$
+	\item exception: N/A
+\end{itemize}
+
+\noindent GetConstToken():
+\begin{itemize}
+	\item output: $out := CONSTTOKEN$
+	\item exception: N/A
 \end{itemize}
 
 \noindent GetVariableList():
@@ -579,7 +623,7 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct
 
 \begin{itemize}
 	\item $supportedOps : operatorStruct^n$
-	\item $supportedTerminators : String^n$
+	\item $supportedTerminators : String^{n\text{x}2}$
 \end{itemize}
 
 \subsubsection{Exported Access Programs}
@@ -590,7 +634,7 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
 		GetValidOperators & - & $operatorStruct^n$ & -\\
-		GetValidTerminators & - & $String^n$ & -\\
+		GetValidTerminators & - & $String^{n\text{x}2}$ & -\\
 		\multirow{2}{3.1cm}{FindRange} & $equationStruct$, $intervalStruct^n$ & 
 		\multirow{2}{3cm}{$intervalStruct$} & 
 		\multirow{2}{5cm}{SOL\_UNSUPPORTED\_OP}\\
@@ -940,8 +984,9 @@ N/A
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{3}{3cm}{OperatorStruct} & \multirow{3}{3cm}{$String$, $Int$, 
-		$Boolean^4$} & \multirow{3}{3cm}{$operatorStruct$} & OP\_MISSING\_OP, 
+		\multirow{4}{3cm}{OperatorStruct} & \multirow{4}{3cm}{$String$, $Int$, 
+		$Boolean^4$} & \multirow{4}{3cm}{$operatorStruct$} & 
+		OP\_INVALID\_PRECEDENCE, OP\_MISSING\_OP, 
 		OP\_MULTI\_TYPE, OP\_NO\_TYPE\\
 		GetOperator & - & $String$ & - \\
 		GetPrecedence & - & $Int$ & - \\
@@ -970,7 +1015,7 @@ N/A
 
 \begin{itemize}
 	\item There are no Setter methods for this module because operator properties are fixed.
-	\item A low integer value is associated with a high precedence operation.
+	\item A high integer value is associated with a high precedence operation.
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -983,6 +1028,8 @@ N/A
 	values $op$, $prec$, $isUnary$, $isBinary$, $isTernary$, and 
 	$isLeftAssociative$.
 	\item exception: $exc := \\
+	(prec < 0 \Rightarrow OP\_INVALID\_PRECEDENCE)\\
+	|\\
 	(op = ``" \Rightarrow OP\_MISSING\_OP)\\
 	|\\
 	((isUnary = isBinary \wedge isUnary = True) \vee (isUnary = isTernary 
@@ -1045,6 +1092,12 @@ N/A
 	\toprule
 	\textbf{Message ID} & \textbf{Error Message} \\
 	\midrule
+	EQC\_NO\_OPS & Error: No operators were passed to the equation conversion 
+	module. \\ 
+	EQC\_INVALID\_OP & Error: The equation conversion module cannot parse the 
+	passed operator. \\ 
+	EQC\_UNBALANCED\_TERMINATOR & Error: An unbalanced terminator was passed to 
+	the equation conversion module.\\
 	EQC\_UNSUPPORTED\_OP & Error: The user equation contains an unsupported 
 	operator. Supported operators include $<supportedOperators>$.\\
 	EQC\_INCOMPLETE\_OP & Error: An operator was found that does not have 
@@ -1058,6 +1111,8 @@ N/A
 	IVC\_EMPTY\_VARNAME & Error: Intervals must have an associated variable 
 	name. \\
 	IVC\_NO\_BOUNDS & Error: No values provided for either interval bound. \\
+	OP\_INVALID\_PRECEDENCE & Error: Cannot assign a precedence value less than 
+	0.\\
 	OP\_MISSING\_OP & Error: Cannot have an operator with no representative symbol. \\
 	OP\_MULTI\_TYPE & Error: An operator cannot be overloaded to be unary, 
 	binary, and ternary. \\
@@ -1073,7 +1128,6 @@ N/A
 	\bottomrule
 \end{longtable}
 
-\newpage
 
 \begin{longtable}{l p{9.5cm}}
 	\caption{Possible Warning Exceptions} \\
