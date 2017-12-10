@@ -8,10 +8,10 @@
  * 
  * Equation parsing is completed using the Precedence Climbing algorithm
  * from https://www.engr.mun.ca/~theo/Misc/exp_parsing.htm#climbing
+ * TODO Check for constant value function, implicit multiplication
  * ---------------------------------------------------------------------
  */
 
-using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -26,6 +26,11 @@ namespace CompanionCubeCalculator
         private static List<OperatorStruct> unaryOps = new List<OperatorStruct>();
         private static List<string> binaryOpsSym = new List<string>();
         private static List<OperatorStruct> binaryOps = new List<OperatorStruct>();
+        private static List<string> leftTerminators = new List<string>();
+        private static List<string> rightTerminators = new List<string>();
+
+        private const string VARTOKEN = "VAR";
+        private const string CONSTTOKEN = "CONST";
 
         /* REGULAR EXPRESSION VARIABLES */
         private static readonly List<string> reservedChars = new List<string>() { "-", "\\", "]" };
@@ -39,8 +44,18 @@ namespace CompanionCubeCalculator
             return variableList.ToArray();
         }
 
+        public static string GetVariableToken()
+        {
+            return VARTOKEN;
+        }
+
+        public static string GetConstToken()
+        {
+            return CONSTTOKEN;
+        }
+
         /* SETTER */
-        public static bool ConfigureParser(OperatorStruct[] ops)
+        public static bool ConfigureParser(OperatorStruct[] ops, string[][] terminators)
         {
             bool success = true;
             string opList = "";
@@ -70,27 +85,40 @@ namespace CompanionCubeCalculator
                         success = false;
                     }
 
-                    if(reservedChars.Contains(op.GetOperator()))
+                    // Ensuring that reserved characters are escaped for RE matching
+                    opList += EscapeReservedCharacters(op.GetOperator()) + ",";
+                }
+
+                for (int i = 0; i < terminators.Length; i++)
+                {
+                    if(terminators[i][1] != "")
                     {
-                        opList += "\\" + op.GetOperator() + ",";
+                        leftTerminators.Add(terminators[i][0]);
+                        opList += EscapeReservedCharacters(terminators[i][0]) + ",";
+
+                        rightTerminators.Add(terminators[i][1]);
+                        opList += EscapeReservedCharacters(terminators[i][1]) + ",";
                     }
                     else
                     {
-                        opList += op.GetOperator() + ",";
+                        frm_Main.UpdateLog("Error: An unbalanced terminator token was encountered (" + terminators[i][0] + ").");
+                        success = false;
                     }
                 }
             }
 
             if(success)
             {
+                // Create the pattern for RE matching
                 variableStringPattern += opList.Substring(0, opList.Length - 1) + "]*";
-                frm_Main.UpdateLog("String Pattern: " + variableStringPattern + System.Environment.NewLine);
+                frm_Main.UpdateLog(variableStringPattern + System.Environment.NewLine);
             }
 
             return success;
         }
 
-        public static EquationStruct ParseEquation(string equationIn)
+        /* PARSING FUNCTIONS */
+        public static EquationStruct MakeEquationTree(string equationIn)
         {
             EquationStruct node = null;
 
@@ -107,20 +135,21 @@ namespace CompanionCubeCalculator
             string op = "";
             int nextPrecedence = 0;
 
-                while (binaryOpsSym.Contains(Next(equationIn)) && binaryOps[binaryOpsSym.IndexOf(Next(equationIn))].GetPrecedence() >= prec)
+            while (binaryOpsSym.Contains(Next(equationIn)) && binaryOps[binaryOpsSym.IndexOf(Next(equationIn))].GetPrecedence() >= prec)
+            {
+                op = Consume(ref equationIn, binaryOps[binaryOpsSym.IndexOf(Next(equationIn))].GetOperator().Length);
+                if(binaryOps[binaryOpsSym.IndexOf(op)].IsLeftAssociative())
                 {
-                    op = Consume(ref equationIn, binaryOps[binaryOpsSym.IndexOf(Next(equationIn))].GetOperator().Length);
-                    if(binaryOps[binaryOpsSym.IndexOf(op)].IsLeftAssociative())
-                    {
-                        nextPrecedence = binaryOps[binaryOpsSym.IndexOf(op)].GetPrecedence() + 1;
-                    }
-                    else
-                    {
-                        nextPrecedence = binaryOps[binaryOpsSym.IndexOf(op)].GetPrecedence();
-                    }
-                    child = ExpressionEquation(ref equationIn, nextPrecedence);
-                    node = MakeNode(op, node, child);
+                    nextPrecedence = binaryOps[binaryOpsSym.IndexOf(op)].GetPrecedence() + 1;
                 }
+                else
+                {
+                    nextPrecedence = binaryOps[binaryOpsSym.IndexOf(op)].GetPrecedence();
+                }
+
+                child = ExpressionEquation(ref equationIn, nextPrecedence);
+                node = MakeNode(op, node, child);
+            }
 
             return node;
         }
@@ -133,6 +162,7 @@ namespace CompanionCubeCalculator
             string nextConst = GetNextConstant(equationIn);
             string op = "";
             int precedence;
+            int index;
 
             if (unaryOpsSym.Contains(Next(equationIn)))
             {
@@ -141,12 +171,13 @@ namespace CompanionCubeCalculator
                 child = ExpressionEquation(ref equationIn, precedence);
                 node = MakeNode(op, child, null);
             }
-            else if(Next(equationIn) == "(")
+            else if(leftTerminators.Contains(Next(equationIn)))
             {
-                Consume(ref equationIn, 1);
+                index = leftTerminators.IndexOf(Next(equationIn));
+                Consume(ref equationIn, leftTerminators[index].Length);
                 child = ExpressionEquation(ref equationIn, 0);
-                Expect(equationIn, ")");
-                node = MakeNode("()", child, null);
+                Expect(equationIn, rightTerminators[index]);
+                node = MakeNode(leftTerminators[index] + rightTerminators[index], child, null);
             }
             else if (nextVar != "")
             {
@@ -180,17 +211,29 @@ namespace CompanionCubeCalculator
             try
             {
                 double constant = System.Convert.ToDouble(terminal);
-                leaf = new EquationStruct("CONST", terminal, null, null);
+                leaf = new EquationStruct(CONSTTOKEN, terminal, null, null);
             }
             catch (System.FormatException)
             {
-                leaf = new EquationStruct("VAR", terminal, null, null);
+                leaf = new EquationStruct(VARTOKEN, terminal, null, null);
             }
 
             return leaf;
         }
 
         /* HELPER FUNCTIONS */
+        private static string EscapeReservedCharacters(string token)
+        {
+            string esc = token;
+
+            if(reservedChars.Contains(token))
+            {
+                esc = "\\" + token;
+            }
+
+            return esc;
+        }
+
         private static string GetNextVariableName(string equationIn)
         {
             return Regex.Match(equationIn, variableStringPattern).Value;
@@ -199,22 +242,6 @@ namespace CompanionCubeCalculator
         private static string GetNextConstant(string equationIn)
         {
             return Regex.Match(equationIn, constantNumberStringPattern).Value;
-        }
-
-        private static int FindIndexForSymbol(string sym, List<OperatorStruct> options)
-        {
-            int index = -1;
-            
-            foreach (OperatorStruct os in options)
-            {
-                if(sym == os.GetOperator())
-                {
-                    index = options.IndexOf(os);
-                    break;
-                }
-            }
-
-            return index;
         }
 
         /*
@@ -245,7 +272,7 @@ namespace CompanionCubeCalculator
          * ---------------------------------------------------------------------------
          * Consume
          * ---------------------------------------------------------------------------
-         * Returns the next token in the string to be parsed.
+         * Returns the next token of size length in the string to be parsed.
          * The read token is removed from the source string.
          * ---------------------------------------------------------------------------
          */

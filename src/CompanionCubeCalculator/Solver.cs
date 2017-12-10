@@ -2,7 +2,7 @@
  * Solver Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/07 (Incomplete)
+ * Updated 2017/12/09 (Incomplete)
  * Corresponds to the Solver Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * Calculations performed using the Instance Models from the SRS:
@@ -14,7 +14,7 @@ namespace CompanionCubeCalculator
 {
     public static class Solver
     {
-        private static OperatorStruct[] supportedOps = new OperatorStruct[] 
+        private static readonly OperatorStruct[] supportedOps = new OperatorStruct[] 
         { new OperatorStruct("+", 1, false, true, false, true),
           new OperatorStruct("-", 1, false, true, false, true),
           new OperatorStruct("*", 2, false, true, false, true),
@@ -22,7 +22,7 @@ namespace CompanionCubeCalculator
           new OperatorStruct("^", 3, false, true, false, false)
         };
 
-        private static string[] supportedTerminators = new string[] { "(", ")" };
+        private static readonly string[][] supportedTerminators = new string[][] { new string[] { "(", ")" } };
 
         /* GETTERS */
         public static OperatorStruct[] GetValidOperators()
@@ -30,7 +30,7 @@ namespace CompanionCubeCalculator
             return supportedOps;
         }
 
-        public static string[] GetValidTerminators()
+        public static string[][] GetValidTerminators()
         {
             return supportedTerminators;
         }

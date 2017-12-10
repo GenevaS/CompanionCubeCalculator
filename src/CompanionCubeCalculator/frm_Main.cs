@@ -32,10 +32,10 @@ namespace CompanionCubeCalculator
 
         private void btn_go_Click(object sender, EventArgs e)
         {
-            if(EquationConversion.ConfigureParser(Solver.GetValidOperators()))
+            if(EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators()))
             {
                 string testVar = "x2";
-                EquationStruct testNode = EquationConversion.ParseEquation(testVar);
+                EquationStruct testNode = EquationConversion.MakeEquationTree(testVar);
                 UpdateLog(PrintEquation(testNode) + Environment.NewLine);
                 UpdateLog("Variable Equation -> Node value = " + testNode.GetVariableName() + ", node type = " + testNode.GetOperator() + ", Variable list = ");
                 string[] vars = EquationConversion.GetVariableList();
@@ -46,7 +46,7 @@ namespace CompanionCubeCalculator
                 UpdateLog(System.Environment.NewLine + System.Environment.NewLine);
 
                 EquationStruct testNode2 = new EquationStruct("+", "", new EquationStruct("+", "", testNode, testNode), testNode);
-                EquationStruct testParse = EquationConversion.ParseEquation("x1^x2+x3*x4-x5");
+                EquationStruct testParse = EquationConversion.MakeEquationTree("x1^x2+x3*x4-x5");
 
                 UpdateLog(PrintEquation(new EquationStruct("neg", "", testNode, null)) + Environment.NewLine);
                 UpdateLog(PrintEquation(testNode2) + Environment.NewLine);

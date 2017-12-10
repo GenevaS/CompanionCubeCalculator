@@ -59,6 +59,7 @@ namespace CompanionCubeCalculator
             variableName = varName;
             return;
         }
+
         public void SetMinBound(double minB)
         {
             minBound = minB;
