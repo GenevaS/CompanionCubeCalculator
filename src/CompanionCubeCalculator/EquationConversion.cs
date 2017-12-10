@@ -2,7 +2,7 @@
  * Equation Conversion Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/09
+ * Updated 2017/12/10
  * Corresponds to the Equation Conversion Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * 
