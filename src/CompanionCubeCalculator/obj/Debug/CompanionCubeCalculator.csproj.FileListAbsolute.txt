@@ -8,3 +8,13 @@ C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCub
 C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.exe
 C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.pdb
 C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.frm_Main.resources
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\bin\Debug\CompanionCubeCalculator.exe.config
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\bin\Debug\CompanionCubeCalculator.exe
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\bin\Debug\CompanionCubeCalculator.pdb
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.csprojResolveAssemblyReference.cache
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.frm_Main.resources
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.Properties.Resources.resources
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.csproj.GenerateResource.Cache
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.csproj.CoreCompileInputs.cache
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.exe
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.pdb

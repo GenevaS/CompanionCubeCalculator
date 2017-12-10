@@ -33,9 +33,12 @@ namespace CompanionCubeCalculator
 
         /* REGULAR EXPRESSION VARIABLES */
         private static readonly List<string> reservedChars = new List<string>() { "-", "\\", "]" };
-        private static string variableStringPattern = "^[^0-9][^";
+        private static string variableStringPattern = "^[^0-9,";
+        private static string variableStringPatternMid = "]*[^";
+        private static string variableStringPatternClose = "]+";
         private const string constantNumberStringPattern = "^[0-9]+";
-        private static string implicitMultiplicationPattern = "(?<const>[0-9]+)(?<var>[^";
+        private static string implicitMultiplicationPattern = "(?<const>[0-9]+)(?<var>[^0-9,";
+        private static string implicitMultiplicationPatternClose = "]+)";
         private static string implicitMultiplicationReplacement = "${const}*${var}";
         private const string ENDTOKEN = "END";
 
@@ -111,8 +114,8 @@ namespace CompanionCubeCalculator
             if(success)
             {
                 // Create the pattern for RE matching
-                variableStringPattern += opList.Substring(0, opList.Length - 1) + "]*";
-                implicitMultiplicationPattern += opList.Substring(0, opList.Length - 1) + "]+)";
+                variableStringPattern += opList.Substring(0, opList.Length - 1) + variableStringPatternMid + opList.Substring(0, opList.Length - 1) + variableStringPatternClose;
+                implicitMultiplicationPattern += opList.Substring(0, opList.Length - 1) + implicitMultiplicationPatternClose;
                 frm_Main.UpdateLog(variableStringPattern + System.Environment.NewLine);
             }
 
@@ -124,14 +127,6 @@ namespace CompanionCubeCalculator
         {
             EquationStruct node = null;
 
-            // Replacing implicit multiplications of constants by variables with an explicit operator
-            if(binaryOpsSym.Contains("*"))
-            {
-                Regex rgx = new Regex(implicitMultiplicationPattern);
-                equationIn = rgx.Replace(equationIn, implicitMultiplicationReplacement);
-            }
-            
-
             try
             {
                 System.Convert.ToDouble(equationIn);
@@ -141,8 +136,18 @@ namespace CompanionCubeCalculator
             }
             catch (System.FormatException)
             {
+                // Replacing implicit multiplications of constants by variables with an explicit operator
+                if (binaryOpsSym.Contains("*"))
+                {
+                    Regex rgx = new Regex(implicitMultiplicationPattern);
+                    equationIn = rgx.Replace(equationIn, implicitMultiplicationReplacement);
+                }
+
                 node = ExpressionEquation(ref equationIn, 0);
-                Expect(equationIn, ENDTOKEN);
+                if (node != null)
+                {
+                    Expect(equationIn, ENDTOKEN);
+                }
             }
 
             return node;
@@ -155,22 +160,37 @@ namespace CompanionCubeCalculator
             string op = "";
             int nextPrecedence = 0;
 
-            while (binaryOpsSym.Contains(Next(equationIn)) && binaryOps[binaryOpsSym.IndexOf(Next(equationIn))].GetPrecedence() >= prec)
+            if(node != null)
             {
-                op = Consume(ref equationIn, binaryOps[binaryOpsSym.IndexOf(Next(equationIn))].GetOperator().Length);
-                if(binaryOps[binaryOpsSym.IndexOf(op)].IsLeftAssociative())
+                while (binaryOpsSym.Contains(Next(equationIn)) && binaryOps[binaryOpsSym.IndexOf(Next(equationIn))].GetPrecedence() >= prec)
                 {
-                    nextPrecedence = binaryOps[binaryOpsSym.IndexOf(op)].GetPrecedence() + 1;
-                }
-                else
-                {
-                    nextPrecedence = binaryOps[binaryOpsSym.IndexOf(op)].GetPrecedence();
-                }
+                    op = Consume(ref equationIn, binaryOps[binaryOpsSym.IndexOf(Next(equationIn))].GetOperator().Length);
+                    if(binaryOps[binaryOpsSym.IndexOf(op)].IsLeftAssociative())
+                    {
+                        nextPrecedence = binaryOps[binaryOpsSym.IndexOf(op)].GetPrecedence() + 1;
+                    }
+                    else
+                    {
+                        nextPrecedence = binaryOps[binaryOpsSym.IndexOf(op)].GetPrecedence();
+                    }
 
-                child = ExpressionEquation(ref equationIn, nextPrecedence);
-                node = MakeNode(op, node, child);
+                    child = ExpressionEquation(ref equationIn, nextPrecedence);
+                    if(child != null)
+                    {
+                        node = MakeNode(op, node, child);
+                    }
+                    else
+                    {
+                        node = null;
+                    }
+                    
+                }
+            } 
+            else
+            {
+                equationIn = "";
             }
-
+            
             return node;
         }
 
@@ -188,16 +208,24 @@ namespace CompanionCubeCalculator
             {
                 op = Consume(ref equationIn, op.Length);
                 precedence = unaryOps[unaryOpsSym.BinarySearch(op)].GetPrecedence();
+
                 child = ExpressionEquation(ref equationIn, precedence);
-                node = MakeNode(op, child, null);
+                if(child != null)
+                {
+                    node = MakeNode(op, child, null);
+                }
             }
             else if(leftTerminators.Contains(Next(equationIn)))
             {
                 index = leftTerminators.IndexOf(Next(equationIn));
                 Consume(ref equationIn, leftTerminators[index].Length);
+
                 child = ExpressionEquation(ref equationIn, 0);
-                Expect(equationIn, rightTerminators[index]);
-                node = MakeNode(leftTerminators[index] + rightTerminators[index], child, null);
+                if(child != null)
+                {
+                    Expect(equationIn, rightTerminators[index]);
+                    node = MakeNode(leftTerminators[index] + rightTerminators[index], child, null);
+                }
             }
             else if (nextVar != "")
             {
@@ -210,9 +238,11 @@ namespace CompanionCubeCalculator
                 node = MakeLeaf(nextConst);
                 Consume(ref equationIn, nextConst.Length);
             }
+            // Either an unbalanced operator or unexpected case was encountered -> return null
             else
             {
-                throw new System.ArgumentException("Error: Invalid sequence encountered during Atomic Equation parsing.");
+                //throw new System.ArgumentException("Error: Unrecognized sequence encountered during Atomic Equation parsing." + System.Environment.NewLine);
+                frm_Main.UpdateLog("Error: Unrecognized sequence encountered during Atomic Equation parsing. Remaining equation = " + equationIn + System.Environment.NewLine);
             }
 
             return node;

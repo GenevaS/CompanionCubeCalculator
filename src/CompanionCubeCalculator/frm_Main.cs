@@ -34,27 +34,19 @@ namespace CompanionCubeCalculator
         {
             if(EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators()))
             {
-                string testVar = "x2";
-                EquationStruct testNode = EquationConversion.MakeEquationTree(testVar);
-                UpdateLog(PrintEquation(testNode) + Environment.NewLine);
-                UpdateLog("Variable Equation -> Node value = " + testNode.GetVariableName() + ", node type = " + testNode.GetOperator() + ", Variable list = ");
-                string[] vars = EquationConversion.GetVariableList();
-                foreach (string var in vars)
+               
+
+                EquationStruct testParse = EquationConversion.MakeEquationTree("x1+*x2");
+                if(testParse != null)
                 {
-                    UpdateLog(var + ", ");
+                    UpdateLog(Environment.NewLine + PrintEquation(testParse) + Environment.NewLine);
                 }
-                UpdateLog(System.Environment.NewLine + System.Environment.NewLine);
+                else
+                {
+                    UpdateLog("Equation is null -> cannot print results.");
+                }
+                
 
-                EquationStruct testNode2 = new EquationStruct("+", "", new EquationStruct("+", "", testNode, testNode), testNode);
-                UpdateLog(PrintEquation(testNode2) + Environment.NewLine);
-
-                EquationStruct testParse = EquationConversion.MakeEquationTree("x1^x2+x3*x4-x5+4x");
-                UpdateLog(PrintEquation(testParse) + Environment.NewLine);
-
-                EquationStruct testParse2 = EquationConversion.MakeEquationTree("42");
-                UpdateLog(PrintEquation(testParse2) + Environment.NewLine);
-
-                UpdateLog(PrintEquation(new EquationStruct("neg", "", testNode, null)) + Environment.NewLine);
             }
 
             txt_UserFeedback.Text = logMessages;
