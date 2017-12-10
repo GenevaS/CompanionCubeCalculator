@@ -46,11 +46,15 @@ namespace CompanionCubeCalculator
                 UpdateLog(System.Environment.NewLine + System.Environment.NewLine);
 
                 EquationStruct testNode2 = new EquationStruct("+", "", new EquationStruct("+", "", testNode, testNode), testNode);
-                EquationStruct testParse = EquationConversion.MakeEquationTree("x1^x2+x3*x4-x5");
+                UpdateLog(PrintEquation(testNode2) + Environment.NewLine);
+
+                EquationStruct testParse = EquationConversion.MakeEquationTree("x1^x2+x3*x4-x5+4x");
+                UpdateLog(PrintEquation(testParse) + Environment.NewLine);
+
+                EquationStruct testParse2 = EquationConversion.MakeEquationTree("42");
+                UpdateLog(PrintEquation(testParse2) + Environment.NewLine);
 
                 UpdateLog(PrintEquation(new EquationStruct("neg", "", testNode, null)) + Environment.NewLine);
-                UpdateLog(PrintEquation(testNode2) + Environment.NewLine);
-                UpdateLog(PrintEquation(testParse) + Environment.NewLine);
             }
 
             txt_UserFeedback.Text = logMessages;

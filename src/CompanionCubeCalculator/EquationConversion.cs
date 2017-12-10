@@ -2,13 +2,12 @@
  * Equation Conversion Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/09 (Incomplete)
+ * Updated 2017/12/09
  * Corresponds to the Equation Conversion Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * 
  * Equation parsing is completed using the Precedence Climbing algorithm
  * from https://www.engr.mun.ca/~theo/Misc/exp_parsing.htm#climbing
- * TODO Check for constant value function, implicit multiplication
  * ---------------------------------------------------------------------
  */
 
@@ -36,6 +35,8 @@ namespace CompanionCubeCalculator
         private static readonly List<string> reservedChars = new List<string>() { "-", "\\", "]" };
         private static string variableStringPattern = "^[^0-9][^";
         private const string constantNumberStringPattern = "^[0-9]+";
+        private static string implicitMultiplicationPattern = "(?<const>[0-9]+)(?<var>[^";
+        private static string implicitMultiplicationReplacement = "${const}*${var}";
         private const string ENDTOKEN = "END";
 
         /* GETTERS */
@@ -111,6 +112,7 @@ namespace CompanionCubeCalculator
             {
                 // Create the pattern for RE matching
                 variableStringPattern += opList.Substring(0, opList.Length - 1) + "]*";
+                implicitMultiplicationPattern += opList.Substring(0, opList.Length - 1) + "]+)";
                 frm_Main.UpdateLog(variableStringPattern + System.Environment.NewLine);
             }
 
@@ -122,8 +124,26 @@ namespace CompanionCubeCalculator
         {
             EquationStruct node = null;
 
-            node = ExpressionEquation(ref equationIn, 0);
-            Expect(equationIn, ENDTOKEN);
+            // Replacing implicit multiplications of constants by variables with an explicit operator
+            if(binaryOpsSym.Contains("*"))
+            {
+                Regex rgx = new Regex(implicitMultiplicationPattern);
+                equationIn = rgx.Replace(equationIn, implicitMultiplicationReplacement);
+            }
+            
+
+            try
+            {
+                System.Convert.ToDouble(equationIn);
+                node = new EquationStruct(CONSTTOKEN, equationIn, null, null);
+
+                frm_Main.UpdateLog("Warning: The user equation is a constant value and the range will only include this value.");
+            }
+            catch (System.FormatException)
+            {
+                node = ExpressionEquation(ref equationIn, 0);
+                Expect(equationIn, ENDTOKEN);
+            }
 
             return node;
         }
@@ -314,39 +334,5 @@ namespace CompanionCubeCalculator
 
             return token;
         }
-
-        /*
-        
-        
-        public static EquationStruct MakeEquationTree(string userEquation, OperatorStruct[] supportedOperations, string[] supportedTerminators)
-        {
-            EquationStruct eqRoot = null;
-            string[] components;
-            double constant;
-
-            try
-            {
-                constant = System.Convert.ToDouble(userEquation);
-                eqRoot = new EquationStruct("Const", "var" + userEquation, null, null);
-                variableList.Add("var" + userEquation);
-
-                frm_Main.UpdateLog("Warning: The user equation is a constant value and the range will only include this value.");
-            }
-            catch(System.FormatException)
-            {
-                for (int i = supportedOperations.Length - 1; i >= 0; i--)
-                {
-                    components = userEquation.Split(supportedOperations[i].ToCharArray()[0]);
-                    for (int j = 0; j < components.Length; j++)
-                    {
-                        frm_Main.UpdateLog(components[j] + System.Environment.NewLine);
-                    }
-                }
-            }
-
-            return eqRoot;
-        }
-
-        */
     }
 }
