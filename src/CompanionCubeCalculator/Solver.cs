@@ -1,6 +1,7 @@
 ﻿/*
  * Solver Module
  * ---------------------------------------------------------------------
+ * Author: Geneva Smith (GenevaS)
  * Updated 2017/12/07 (Incomplete)
  * Corresponds to the Solver Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
@@ -34,17 +35,19 @@ namespace CompanionCubeCalculator
             return supportedTerminators;
         }
 
-        /* CALCULATION METHODS */
+        /* CALCULATION -- ADDITION */
         private static IntervalStruct IntervalAddition(IntervalStruct x, IntervalStruct y)
         {
             return new IntervalStruct("", x.GetMinBound() + y.GetMinBound(), x.GetMaxBound() + y.GetMaxBound());
         }
 
+        /* CALCULATION -- SUBTRACTION */
         private static IntervalStruct IntervalSubtraction(IntervalStruct x, IntervalStruct y)
         {
             return new IntervalStruct("", x.GetMinBound() - y.GetMinBound(), x.GetMaxBound() - y.GetMaxBound());
         }
 
+        /* CALCULATION -- MULTIPLICATION */
         private static IntervalStruct IntervalMultiplication(IntervalStruct x, IntervalStruct y)
         {
             // Comparing a1 * a2 and a1 * b2
@@ -60,6 +63,30 @@ namespace CompanionCubeCalculator
             max = System.Math.Max(max, y.GetMinBound() * y.GetMaxBound());
 
             return new IntervalStruct("", min, max);
+        }
+
+        /* CALCULATION -- DIVISION */
+        private static IntervalStruct IntervalDivision(IntervalStruct x, IntervalStruct y)
+        {
+            IntervalStruct divInterval = null;
+
+            // 0 < a2 <= b2
+            if (y.GetMinBound() > 0)
+            {
+                divInterval = IntervalDivisionPositiveDivisor(x, y);
+            }
+            // a2 <= b2 < 0
+            else if (y.GetMaxBound() < 0)
+            {
+                divInterval = IntervalDivisionNegativeDivisor(x, y);
+            }
+            // a2 = 0 v b2 = 0
+            else
+            {
+                throw new System.ArgumentException("Error: An unsupported operation was encountered while solving for the range of the equation.");
+            }
+
+            return divInterval;
         }
 
         private static IntervalStruct IntervalDivisionPositiveDivisor(IntervalStruct x, IntervalStruct y)
@@ -148,6 +175,73 @@ namespace CompanionCubeCalculator
             }
 
             return new IntervalStruct("", min, max);
+        }
+
+        /* CALCULATION -- EXPONENTS */
+        private static IntervalStruct IntervalExponents(IntervalStruct x, IntervalStruct y)
+        {
+            IntervalStruct exp = null;
+
+            if (x.GetMinBound() == x.GetMaxBound())
+            {
+                exp = IntervalAsExponent(x.GetMinBound(), y);
+            }
+            else if (y.GetMinBound() == y.GetMaxBound())
+            {
+                exp = IntervalAsBase(x, y.GetMinBound());
+            }
+            else
+            {
+                throw new System.ArgumentException("Error: An unsupported operation was encountered while solving for the range of the equation.");
+            }
+
+            return exp;
+        }
+
+        private static IntervalStruct IntervalAsExponent(double b, IntervalStruct x)
+        {
+            IntervalStruct exp = null;
+
+            if(b > 1)
+            {
+                exp = new IntervalStruct("", System.Math.Pow(b, x.GetMinBound()), System.Math.Pow(b, x.GetMaxBound()));
+            }
+            else
+            {
+                throw new System.ArgumentException("Error: An unsupported operation was encountered while solving for the range of the equation.");
+            }
+
+            return exp;
+        }
+
+        private static IntervalStruct IntervalAsBase(IntervalStruct x, double n)
+        {
+            double roundedN = System.Math.Round(n);
+            if (n != roundedN)
+            {
+                frm_Main.UpdateLog("Warning: The value provided for the exponent" + System.Convert.ToString(n) + "is not a natural number. It has been rounded to " + System.Convert.ToString(roundedN) + System.Environment.NewLine);
+            }
+
+            IntervalStruct exp = null;
+
+            if (roundedN % 2 != 0)
+            {
+                exp = new IntervalStruct("", System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN));
+            }
+            else if (x.GetMinBound() >= 0)
+            {
+                exp = new IntervalStruct("", System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN));
+            }
+            else if (x.GetMaxBound() < 0)
+            {
+                exp = new IntervalStruct("", System.Math.Pow(x.GetMaxBound(), roundedN), System.Math.Pow(x.GetMinBound(), roundedN));
+            }
+            else
+            {
+                exp = new IntervalStruct("", 0, System.Math.Max(System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN)));
+            }
+
+            return exp;
         }
     }
 }

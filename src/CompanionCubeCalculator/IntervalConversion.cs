@@ -1,6 +1,7 @@
 ﻿/*
  * Interval Conversion Module
  * ---------------------------------------------------------------------
+ * Author: Geneva Smith (GenevaS)
  * Updated 2017/11/30
  * Corresponds to IntervalConversion MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf

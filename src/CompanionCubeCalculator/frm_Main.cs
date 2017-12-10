@@ -32,39 +32,48 @@ namespace CompanionCubeCalculator
 
         private void btn_go_Click(object sender, EventArgs e)
         {
-            IntervalStruct interval = IntervalConversion.MakeInterval("x", "a", "4.0");
-            if (interval != null)
+            if(EquationConversion.ConfigureParser(Solver.GetValidOperators()))
             {
-                UpdateLog(interval.GetVariableName() + " = ");
-                UpdateLog(interval.GetMinBound().ToString() + ", ");
-                UpdateLog(interval.GetMaxBound().ToString() + Environment.NewLine);
-            }
-            else
-            {
-                UpdateLog("Null interval" + Environment.NewLine);
-            }
+                string testVar = "x2";
+                EquationStruct testNode = EquationConversion.ParseEquation(testVar);
+                UpdateLog(PrintEquation(testNode) + Environment.NewLine);
+                UpdateLog("Variable Equation -> Node value = " + testNode.GetVariableName() + ", node type = " + testNode.GetOperator() + ", Variable list = ");
+                string[] vars = EquationConversion.GetVariableList();
+                foreach (string var in vars)
+                {
+                    UpdateLog(var + ", ");
+                }
+                UpdateLog(System.Environment.NewLine + System.Environment.NewLine);
 
+                EquationStruct testNode2 = new EquationStruct("+", "", new EquationStruct("+", "", testNode, testNode), testNode);
+                EquationStruct testParse = EquationConversion.ParseEquation("x1^x2+x3*x4-x5");
 
-            EquationStruct eq = new EquationStruct("+", "x", null, null);
-            EquationStruct eq2 = new EquationStruct("+", "y", null, null);
-            EquationStruct eqP = new EquationStruct("+", "x2", eq, eq2);
-            if (eq.GetRightOperand() == null)
-            {
-                UpdateLog("null" + Environment.NewLine);
-            }
-            UpdateLog(eqP.GetLeftOperand().GetVariableName() + Environment.NewLine);
-            UpdateLog(eqP.GetRightOperand().GetVariableName() + Environment.NewLine);
-
-            string[] ops = new string[] { "+" };
-            EquationStruct testEq = EquationConversion.MakeEquationTree("x1+y1", ops);
-            testEq = EquationConversion.MakeEquationTree("42", ops);
-            string[] vars = EquationConversion.GetVariableList();
-            foreach (string v in vars)
-            {
-                UpdateLog(v + System.Environment.NewLine);
+                UpdateLog(PrintEquation(new EquationStruct("neg", "", testNode, null)) + Environment.NewLine);
+                UpdateLog(PrintEquation(testNode2) + Environment.NewLine);
+                UpdateLog(PrintEquation(testParse) + Environment.NewLine);
             }
 
             txt_UserFeedback.Text = logMessages;
+        }
+
+        private static string PrintEquation(EquationStruct node)
+        {
+            string equation = "";
+
+            if (node.GetLeftOperand() == null)
+            {
+                equation = node.GetOperator() + ": " + node.GetVariableName();
+            }
+            else if (node.GetRightOperand() == null)
+            {
+                equation = node.GetOperator() + "(" + PrintEquation(node.GetLeftOperand()) + ")";
+            }
+            else
+            {
+                equation = node.GetOperator() + "(" + PrintEquation(node.GetLeftOperand()) + ", " + PrintEquation(node.GetRightOperand()) + ")";
+            }
+
+            return equation;
         }
     }
 }

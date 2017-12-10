@@ -1,7 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿/*
+ * Main
+ * ---------------------------------------------------------------------
+ * Author: Geneva Smith (GenevaS)
+ * Updated 2017/11/30
+ * Starts the GUI program.
+ * ---------------------------------------------------------------------
+ */
+
+using System;
 using System.Windows.Forms;
 
 namespace CompanionCubeCalculator

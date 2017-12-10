@@ -1,6 +1,7 @@
 ﻿/*
  * Equation Data Structure
  * ---------------------------------------------------------------------
+ * Author: Geneva Smith (GenevaS)
  * Updated 2017/11/30
  * Corresponds to EquationStruct MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf

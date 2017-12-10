@@ -1,6 +1,7 @@
 ﻿/*
  * Operator Data Structure
  * ---------------------------------------------------------------------
+ * Author: Geneva Smith (GenevaS)
  * Updated 2017/12/07
  * Corresponds to Operator Data Structure MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
@@ -29,7 +30,15 @@ namespace CompanionCubeCalculator
                 operatr = op;
             }
             
-            precedence = prec;
+            if (prec > 0)
+            {
+                precedence = prec;
+            }
+            else
+            {
+                throw new System.ArgumentException("Error: Precedence values must be greater than 0.");
+            }
+            
 
             if ((isUnary == isBinary && isUnary == true) || (isUnary == isTernary && isUnary == true) || (isBinary == isTernary && isBinary == true))
             {

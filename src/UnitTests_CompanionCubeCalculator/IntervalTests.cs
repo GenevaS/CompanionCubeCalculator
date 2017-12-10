@@ -1,4 +1,12 @@
-﻿using CompanionCubeCalculator;
+﻿/*
+ * Interval Conversion and Data Structure Tests
+ * ---------------------------------------------------------------------
+ * Author: Geneva Smith (GenevaS)
+ * Updated 2017/12/07
+ * ---------------------------------------------------------------------
+ */
+
+using CompanionCubeCalculator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests_CompanionCubeCalculator
