@@ -51,9 +51,11 @@
 
 \section{Revision History}
 
-\begin{tabularx}{\textwidth}{p{3.2cm}p{2cm}X}
+\begin{tabularx}{\textwidth}{p{3.5cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
+December 10, 2017 & 1.1.1 & Added justification for assigning multiple 
+anticipated changes to one module. \\
 December 5, 2017 & 1.1 & Added a description for an operator data structure module\\
 November 2, 2017 & 1.0 & Completed first document draft\\
 \bottomrule
@@ -431,10 +433,6 @@ into a standard intermediary format.
 This section shows two traceability matrices: between the modules and the
 requirements and between the modules and the anticipated changes.
 
-\wss{You have multiple ACs mapping to the same modules.  I think this makes
-  sense for the specific cases where it occurs, but you should highlight it in
-  your discussion.  It violates the usual rule of one module, one secret.}
-
 % the table should use mref, the requirements should be named, use something
 % like fref
 \begin{table}[H]
@@ -483,6 +481,27 @@ requirements and between the modules and the anticipated changes.
 \label{TblACT}
 \end{table}
 
+Generally, each anticipated change should map to one module because it implies 
+that each module contains information that only it knows about the design. 
+However, in \prognameAbbrv{} design, two modules have multiple associated 
+anticipated changes: the Range Solver Module (\mref{mRS}) and the Output Module 
+(\mref{mO}). 
+
+The Range Solver Module is responsible for the calculation of an equation's 
+range. Since its main responsibility is to execute the algorithm used to 
+perform the range calculation (\acref{acCalculationAlgorithm}), the Range 
+Solver Module also implicitly stores the constraints on valid operations 
+(\acref{acEquationConstraints}) and intervals (\acref{acIntervalConstraints}). 
+Any changes to these constraints would directly result in changes to 
+this module.
+
+The Output Module is responsible for presenting program information to the 
+user and all of its anticipated changes are directly related to this task. The 
+changes include format (\acref{acOutput}), data constraints 
+(\acref{acOutputConstraints}), and changes to the process for presenting a 
+graphical representation of the equation tree (\acref{acViewParse}).
+
+\newpage
 \section{Use Hierarchy Between Modules} \label{SecUse}
 
 In this section, the uses hierarchy between modules is
@@ -502,9 +521,6 @@ because they use modules from the lower levels.
 \caption{Use hierarchy among modules}
 \label{FigUH}
 \end{figure}
-
-\wss{Looks like a great design to start with.  You may end up making some tweaks
-  as you work on the MIS.}
 
 %\section*{References}
 \newpage
