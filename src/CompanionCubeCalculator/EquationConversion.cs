@@ -121,7 +121,6 @@ namespace CompanionCubeCalculator
                 // Create the pattern for RE matching
                 variableStringPattern += opList.Substring(0, opList.Length - 1) + variableStringPatternMid + opList.Substring(0, opList.Length - 1) + variableStringPatternClose;
                 implicitMultiplicationPattern += opList.Substring(0, opList.Length - 1) + implicitMultiplicationPatternClose;
-                frm_Main.UpdateLog(implicitMultiplicationPattern + System.Environment.NewLine);
             }
 
             ready = success;
@@ -133,7 +132,6 @@ namespace CompanionCubeCalculator
         {
             EquationStruct node = null;
             string parseString = equationIn;
-            int errorPoint;
 
             // The error flag will be true if a parsing error is encountered
             bool error = false;
@@ -158,7 +156,7 @@ namespace CompanionCubeCalculator
                 node = ExpressionEquation(ref parseString, 0, ref error);
                 if (!error)
                 {
-                    Expect(equationIn, ENDTOKEN, ref error);
+                    Expect(parseString, ENDTOKEN, ref error);
                     if(error)
                     {
                         frm_Main.UpdateLog("Error: Could not find the end of the equation.");

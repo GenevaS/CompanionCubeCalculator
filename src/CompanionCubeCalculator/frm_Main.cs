@@ -34,9 +34,7 @@ namespace CompanionCubeCalculator
         {
             if(EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators()))
             {
-               
-
-                EquationStruct testParse = EquationConversion.MakeEquationTree("(x1+*x2");
+                EquationStruct testParse = EquationConversion.MakeEquationTree("x+y");
                 if(testParse != null)
                 {
                     UpdateLog(Environment.NewLine + PrintEquation(testParse) + Environment.NewLine);
@@ -46,7 +44,6 @@ namespace CompanionCubeCalculator
                     UpdateLog("Equation is null -> cannot print results.");
                 }
                 
-
             }
 
             txt_UserFeedback.Text = logMessages;
