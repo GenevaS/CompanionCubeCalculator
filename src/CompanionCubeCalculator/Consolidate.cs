@@ -21,9 +21,12 @@ namespace CompanionCubeCalculator
         public static bool ConvertAndCheckInputs(string eqString, string varList, OperatorStruct[] operators, string[][] terminators)
         {
             string[] equationVars;
+            List<int> eqVarIndex = new List<int>();
             string[] intervalVars;
+            List<int> ivVarIndex = new List<int>();
             int index;
             bool success = true;
+            string message = "";
 
             if (!EquationConversion.IsReady())
             {
@@ -41,35 +44,57 @@ namespace CompanionCubeCalculator
                     intervalVars = GetVariableNamesFromIntervals(intervalList);
                     equationVars = EquationConversion.GetVariableList();
 
+                    // Find matching variable names from the interval structures and the equation
                     for(int i = 0; i < equationVars.Length; i++)
                     {
                         index = Array.IndexOf(intervalVars, equationVars[i]);
                         if(index > -1)
                         {
-                            intervalVars = RemoveName(intervalVars, index);
-                            equationVars = RemoveName(equationVars, i);
+                            ivVarIndex.Add(index);
+                            eqVarIndex.Add(i);
                         }
                     }
 
-                    if(intervalVars.Length > 0)
+                    // Found fewer matching entries in the equation
+                    if(ivVarIndex.Count < intervalVars.Length)
                     {
-                        frm_Main.UpdateLog("Warning: Extraneous variables found in interval list (");
-                        foreach (string v in intervalVars)
+                        message += "Warning: Extraneous variables found in interval list (";
+
+                        // Sort list and reverse so that it is in descending order -> enables correct 
+                        // behaviour for RemoveName(string[], int)
+                        ivVarIndex.Sort();
+                        ivVarIndex.Reverse();
+
+                        foreach (int v in ivVarIndex)
                         {
-                            frm_Main.UpdateLog(v + ",");
+                            intervalVars = RemoveName(intervalVars, v);
                         }
-                        frm_Main.UpdateLog(")." + Environment.NewLine);
+
+                        foreach(string vName in intervalVars)
+                        {
+                           message += vName + ", ";
+                        }
+                        frm_Main.UpdateLog(message.Substring(0, message.Length - 2) + ")." + Environment.NewLine);
                     }
 
-                    if(equationVars.Length > 0)
+                    // Found fewer matching entries in the variable list
+                    if(eqVarIndex.Count < equationVars.Length)
                     {
-                        frm_Main.UpdateLog("Error: Cannot find intervals for variables ");
-                        foreach (string v in equationVars)
-                        {
-                            frm_Main.UpdateLog(v + ",");
-                        }
-                        frm_Main.UpdateLog("." + Environment.NewLine);
+                        // This is a fail state
                         success = false;
+
+                        message = "Error: Cannot find intervals for variable name(s): ";
+
+                        foreach(int v in eqVarIndex)
+                        {
+                            equationVars = RemoveName(equationVars, v);
+                        }
+
+                        foreach (string vName in equationVars)
+                        {
+                            message += vName + ", ";
+                        }
+                        frm_Main.UpdateLog(message.Substring(0, message.Length - 2) + "." + Environment.NewLine);
                     }
 
                 }

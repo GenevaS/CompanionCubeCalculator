@@ -8,7 +8,6 @@
  * 
  * Equation parsing is completed using the Precedence Climbing algorithm
  * from https://www.engr.mun.ca/~theo/Misc/exp_parsing.htm#climbing
- * TODO: Removed duplicate variable names from variableList
  * ---------------------------------------------------------------------
  */
 
@@ -253,7 +252,10 @@ namespace CompanionCubeCalculator
             else if (nextVar != "")
             {
                 node = MakeLeaf(nextVar);
-                variableList.Add(nextVar);
+                if(!variableList.Contains(nextVar))
+                {
+                    variableList.Add(nextVar);
+                }
                 Consume(ref equationIn, nextVar.Length);
             }
             else if (nextConst != "")

@@ -39,11 +39,8 @@ namespace CompanionCubeCalculator
                 {
                     UpdateLog(Environment.NewLine + PrintEquation(testParse) + Environment.NewLine);
                     string[] vars = EquationConversion.GetVariableList();
-                    foreach (string v in vars)
-                    {
-                        UpdateLog(v + ",");
-                    }
-                    bool success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), Solver.GetValidTerminators());
+ 
+                    bool success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3", Solver.GetValidOperators(), Solver.GetValidTerminators());
                     UpdateLog(success.ToString());
                 }
                 else
