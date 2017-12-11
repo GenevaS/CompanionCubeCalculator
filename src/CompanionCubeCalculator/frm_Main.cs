@@ -36,7 +36,7 @@ namespace CompanionCubeCalculator
             {
                
 
-                EquationStruct testParse = EquationConversion.MakeEquationTree("x1+*x2");
+                EquationStruct testParse = EquationConversion.MakeEquationTree("(x1+*x2");
                 if(testParse != null)
                 {
                     UpdateLog(Environment.NewLine + PrintEquation(testParse) + Environment.NewLine);

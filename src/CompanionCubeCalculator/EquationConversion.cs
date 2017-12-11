@@ -19,6 +19,7 @@ namespace CompanionCubeCalculator
     public static class EquationConversion
     {
         private static List<string> variableList = new List<string>();
+        private static bool ready = false;
     
         /* OPERATOR VARIABLES */
         private static List<string> unaryOpsSym = new List<string>();
@@ -43,6 +44,10 @@ namespace CompanionCubeCalculator
         private const string ENDTOKEN = "END";
 
         /* GETTERS */
+        public static bool IsReady()
+        {
+            return ready;
+        }
         public static string[] GetVariableList()
         {
             return variableList.ToArray();
@@ -116,9 +121,10 @@ namespace CompanionCubeCalculator
                 // Create the pattern for RE matching
                 variableStringPattern += opList.Substring(0, opList.Length - 1) + variableStringPatternMid + opList.Substring(0, opList.Length - 1) + variableStringPatternClose;
                 implicitMultiplicationPattern += opList.Substring(0, opList.Length - 1) + implicitMultiplicationPatternClose;
-                frm_Main.UpdateLog(variableStringPattern + System.Environment.NewLine);
+                frm_Main.UpdateLog(implicitMultiplicationPattern + System.Environment.NewLine);
             }
 
+            ready = success;
             return success;
         }
 
@@ -126,6 +132,11 @@ namespace CompanionCubeCalculator
         public static EquationStruct MakeEquationTree(string equationIn)
         {
             EquationStruct node = null;
+            string parseString = equationIn;
+            int errorPoint;
+
+            // The error flag will be true if a parsing error is encountered
+            bool error = false;
 
             try
             {
@@ -143,24 +154,34 @@ namespace CompanionCubeCalculator
                     equationIn = rgx.Replace(equationIn, implicitMultiplicationReplacement);
                 }
 
-                node = ExpressionEquation(ref equationIn, 0);
-                if (node != null)
+                // Parse the equation -> return null if an error occurs
+                node = ExpressionEquation(ref parseString, 0, ref error);
+                if (!error)
                 {
-                    Expect(equationIn, ENDTOKEN);
+                    Expect(equationIn, ENDTOKEN, ref error);
+                    if(error)
+                    {
+                        frm_Main.UpdateLog("Error: Could not find the end of the equation.");
+                        node = null;
+                    }
+                }
+                else
+                {
+                    node = null;
                 }
             }
 
             return node;
         }
 
-        private static EquationStruct ExpressionEquation(ref string equationIn, int prec)
+        private static EquationStruct ExpressionEquation(ref string equationIn, int prec, ref bool error)
         {
-            EquationStruct node = AtomicEquation(ref equationIn);
+            EquationStruct node = AtomicEquation(ref equationIn, ref error);
             EquationStruct child = null;
             string op = "";
             int nextPrecedence = 0;
 
-            if(node != null)
+            if(!error)
             {
                 while (binaryOpsSym.Contains(Next(equationIn)) && binaryOps[binaryOpsSym.IndexOf(Next(equationIn))].GetPrecedence() >= prec)
                 {
@@ -174,8 +195,8 @@ namespace CompanionCubeCalculator
                         nextPrecedence = binaryOps[binaryOpsSym.IndexOf(op)].GetPrecedence();
                     }
 
-                    child = ExpressionEquation(ref equationIn, nextPrecedence);
-                    if(child != null)
+                    child = ExpressionEquation(ref equationIn, nextPrecedence, ref error);
+                    if(!error)
                     {
                         node = MakeNode(op, node, child);
                     }
@@ -188,13 +209,13 @@ namespace CompanionCubeCalculator
             } 
             else
             {
-                equationIn = "";
+                node = null;
             }
             
             return node;
         }
 
-        private static EquationStruct AtomicEquation(ref string equationIn)
+        private static EquationStruct AtomicEquation(ref string equationIn, ref bool error)
         {
             EquationStruct node = null;
             EquationStruct child = null;
@@ -209,8 +230,8 @@ namespace CompanionCubeCalculator
                 op = Consume(ref equationIn, op.Length);
                 precedence = unaryOps[unaryOpsSym.BinarySearch(op)].GetPrecedence();
 
-                child = ExpressionEquation(ref equationIn, precedence);
-                if(child != null)
+                child = ExpressionEquation(ref equationIn, precedence, ref error);
+                if(!error)
                 {
                     node = MakeNode(op, child, null);
                 }
@@ -220,11 +241,14 @@ namespace CompanionCubeCalculator
                 index = leftTerminators.IndexOf(Next(equationIn));
                 Consume(ref equationIn, leftTerminators[index].Length);
 
-                child = ExpressionEquation(ref equationIn, 0);
-                if(child != null)
+                child = ExpressionEquation(ref equationIn, 0, ref error);
+                if(!error)
                 {
-                    Expect(equationIn, rightTerminators[index]);
-                    node = MakeNode(leftTerminators[index] + rightTerminators[index], child, null);
+                    Expect(equationIn, rightTerminators[index], ref error);
+                    if(!error)
+                    {
+                        node = MakeNode(leftTerminators[index] + rightTerminators[index], child, null);
+                    }
                 }
             }
             else if (nextVar != "")
@@ -241,8 +265,8 @@ namespace CompanionCubeCalculator
             // Either an unbalanced operator or unexpected case was encountered -> return null
             else
             {
-                //throw new System.ArgumentException("Error: Unrecognized sequence encountered during Atomic Equation parsing." + System.Environment.NewLine);
                 frm_Main.UpdateLog("Error: Unrecognized sequence encountered during Atomic Equation parsing. Remaining equation = " + equationIn + System.Environment.NewLine);
+                error = true;
             }
 
             return node;
@@ -349,7 +373,7 @@ namespace CompanionCubeCalculator
          * successful.
          * ---------------------------------------------------------------------------
          */
-        private static string Expect(string equationIn, string tok)
+        private static string Expect(string equationIn, string tok, ref bool error)
         {
             string token = "";
 
@@ -359,7 +383,8 @@ namespace CompanionCubeCalculator
             }
             else
             {
-                throw new System.ArgumentException("Error: Could not find expected token " + tok + ".");
+                frm_Main.UpdateLog("Error: Could not find expected token " + tok + "." + System.Environment.NewLine);
+                error = true;
             }
 
             return token;

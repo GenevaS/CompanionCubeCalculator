@@ -18,7 +18,12 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestConstantValueFunction()
         {
 
-            if(EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators()))
+            if(!EquationConversion.IsReady())
+            {
+                EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators());
+            }
+
+            if(EquationConversion.IsReady())
             {
                 string constToken = EquationConversion.GetConstToken();
 
@@ -36,7 +41,12 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestIncompleteFunction()
         {
-            if (EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators()))
+            if (!EquationConversion.IsReady())
+            {
+                EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators());
+            }
+
+            if (EquationConversion.IsReady())
             {
                 // test-input missingFunctionValue1
                 EquationStruct incompleteEq = EquationConversion.MakeEquationTree("x+");
@@ -48,6 +58,14 @@ namespace UnitTests_CompanionCubeCalculator
                 //  test-input missingFunctionValue2
                 incompleteEq = EquationConversion.MakeEquationTree("x+*y");
                 Assert.AreEqual(null, incompleteEq);
+
+                // 
+                incompleteEq = EquationConversion.MakeEquationTree("(x+y");
+                Assert.AreEqual(null, incompleteEq);
+
+                // 
+                incompleteEq = EquationConversion.MakeEquationTree("x+y)");
+                Assert.AreEqual(null, incompleteEq);
             }
             else
             {
@@ -58,7 +76,12 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestVariableNames()
         {
-            if (EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators()))
+            if (!EquationConversion.IsReady())
+            {
+                EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators());
+            }
+
+            if (EquationConversion.IsReady())
             {
                 string varToken = EquationConversion.GetVariableToken();
 
