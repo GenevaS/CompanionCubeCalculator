@@ -51,16 +51,16 @@ namespace CompanionCubeCalculator
         private static IntervalStruct IntervalMultiplication(IntervalStruct x, IntervalStruct y)
         {
             // Comparing a1 * a2 and a1 * b2
-            double min = System.Math.Min(x.GetMinBound() * x.GetMaxBound(), x.GetMinBound() * y.GetMaxBound());
-            double max = System.Math.Max(x.GetMinBound() * x.GetMaxBound(), x.GetMinBound() * y.GetMaxBound());
+            double min = System.Math.Min(x.GetMinBound() * y.GetMinBound(), x.GetMinBound() * y.GetMaxBound());
+            double max = System.Math.Max(x.GetMinBound() * y.GetMinBound(), x.GetMinBound() * y.GetMaxBound());
 
             // Comparing the previous results to b1 * a2
-            min = System.Math.Min(min, y.GetMinBound() * x.GetMaxBound());
-            max = System.Math.Max(max, y.GetMinBound() * x.GetMaxBound());
+            min = System.Math.Min(min, x.GetMaxBound() * y.GetMinBound());
+            max = System.Math.Max(max, x.GetMaxBound() * y.GetMinBound());
 
             // Comparing the previous results to b1 * b2
-            min = System.Math.Min(min, y.GetMinBound() * y.GetMaxBound());
-            max = System.Math.Max(max, y.GetMinBound() * y.GetMaxBound());
+            min = System.Math.Min(min, x.GetMaxBound() * y.GetMaxBound());
+            max = System.Math.Max(max, x.GetMaxBound() * y.GetMaxBound());
 
             return new IntervalStruct("", min, max);
         }
