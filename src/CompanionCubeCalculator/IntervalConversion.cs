@@ -8,10 +8,42 @@
  * ---------------------------------------------------------------------
  */
 
+using System.Collections.Generic;
+
 namespace CompanionCubeCalculator
 {
     public static class IntervalConversion
     {
+        public static IntervalStruct[] ConvertToIntervals(string varList)
+        {
+            List<IntervalStruct> intervals = new List<IntervalStruct>();
+            string[] vars = varList.Split('\n');
+            string[] currentVar;
+
+            for(int i = 0; i < vars.Length; i++)
+            {
+                currentVar = vars[i].Split(',');
+                if(currentVar.Length == 3)
+                {
+                    intervals.Add(MakeInterval(currentVar[0], currentVar[1], currentVar[2]));
+                }
+                else if(currentVar.Length == 2 && currentVar[0] != "")
+                {
+                    intervals.Add(MakeInterval(currentVar[0], currentVar[1], ""));
+                }
+                else if(currentVar.Length > 3)
+                {
+                    frm_Main.UpdateLog("Error: Encountered a variable with more than three fields (Line " + (i + 1) + "). Skipping line." + System.Environment.NewLine);
+                }
+                else
+                {
+                    frm_Main.UpdateLog("Error: No fields found for variable (Line " + (i + 1) + "). Skipping line." + System.Environment.NewLine);
+                }
+            }
+
+            return intervals.ToArray();
+        }
+
         public static IntervalStruct MakeInterval(string varName, string min, string max)
         {
             IntervalStruct iv = null;

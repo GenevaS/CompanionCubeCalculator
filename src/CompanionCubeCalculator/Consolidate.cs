@@ -16,10 +16,15 @@ namespace CompanionCubeCalculator
     public static class Consolidate
     {
         private static EquationStruct equationTreeRoot = null;
-        private static List<IntervalStruct> intervalList = new List<IntervalStruct>();
+        private static IntervalStruct[] intervalList;
 
-        public static void ConvertAndCheckInputs(string eqString, string varList, OperatorStruct[] operators, string[][] terminators)
+        public static bool ConvertAndCheckInputs(string eqString, string varList, OperatorStruct[] operators, string[][] terminators)
         {
+            string[] equationVars;
+            string[] intervalVars;
+            int index;
+            bool success = true;
+
             if (!EquationConversion.IsReady())
             {
                 EquationConversion.ConfigureParser(operators, terminators);
@@ -31,16 +36,51 @@ namespace CompanionCubeCalculator
 
                 if(equationTreeRoot != null)
                 {
-                    // Convert varList into an array of IntervalStruct
-                    // Compare the variable list from the equation parser to the interval list and find missing variables
+                    intervalList = IntervalConversion.ConvertToIntervals(varList);
+
+                    intervalVars = GetVariableNamesFromIntervals(intervalList);
+                    equationVars = EquationConversion.GetVariableList();
+
+                    for(int i = 0; i < equationVars.Length; i++)
+                    {
+                        index = Array.IndexOf(intervalVars, equationVars[i]);
+                        if(index > -1)
+                        {
+                            intervalVars = RemoveName(intervalVars, index);
+                            equationVars = RemoveName(equationVars, i);
+                        }
+                    }
+
+                    if(intervalVars.Length > 0)
+                    {
+                        frm_Main.UpdateLog("Warning: Extraneous variables found in interval list (");
+                        foreach (string v in intervalVars)
+                        {
+                            frm_Main.UpdateLog(v + ",");
+                        }
+                        frm_Main.UpdateLog(")." + Environment.NewLine);
+                    }
+
+                    if(equationVars.Length > 0)
+                    {
+                        frm_Main.UpdateLog("Error: Cannot find intervals for variables ");
+                        foreach (string v in equationVars)
+                        {
+                            frm_Main.UpdateLog(v + ",");
+                        }
+                        frm_Main.UpdateLog("." + Environment.NewLine);
+                        success = false;
+                    }
+
                 }
             }
             else
             {
                 frm_Main.UpdateLog("Error: Equation parser could not be configured.");
+                success = false;
             }
 
-            return;
+            return success;
         }
 
         /* GETTERS */
@@ -51,7 +91,39 @@ namespace CompanionCubeCalculator
 
         public static IntervalStruct[] GetIntervalStructList()
         {
-            return intervalList.ToArray();
+            return intervalList;
+        }
+
+        /* HELPER FUNCTIONS */
+        private static string[] GetVariableNamesFromIntervals(IntervalStruct[] intervals)
+        {
+            List<string> names = new List<string>();
+
+            foreach (IntervalStruct iv in intervals)
+            {
+                names.Add(iv.GetVariableName());
+            }
+
+            return names.ToArray();
+        }
+
+        private static string[] RemoveName(string[] nameList, int index)
+        {
+            string[] newNameList = new string[nameList.Length - 1];
+            int i = 0;
+            int j = 0;
+
+            while(i < nameList.Length)
+            {
+                if(i != index)
+                {
+                    newNameList[j] = nameList[i];
+                    j++;
+                }
+                i++;
+            }
+
+            return newNameList;
         }
     }
 }
