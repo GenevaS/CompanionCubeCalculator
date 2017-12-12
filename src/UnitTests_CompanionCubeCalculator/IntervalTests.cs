@@ -2,7 +2,7 @@
  * Interval Conversion and Data Structure Tests
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/11
+ * Updated 2017/12/12
  * ---------------------------------------------------------------------
  */
 
@@ -84,6 +84,14 @@ namespace UnitTests_CompanionCubeCalculator
         }
 
         [TestMethod]
+        public void TestMissingMaxBound()
+        {
+            //test-input missingMaxDomainValue
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x, 3.0");
+            Assert.AreEqual(3, interval[0].GetMaxBound());
+        }
+
+        [TestMethod]
         public void TestMissingBounds()
         {
             //
@@ -96,7 +104,7 @@ namespace UnitTests_CompanionCubeCalculator
         {
             //
             IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x,,");
-            Assert.AreEqual(null, interval[0]);
+            Assert.AreEqual(0, interval.Length);
         }
 
         [TestMethod]
@@ -104,7 +112,7 @@ namespace UnitTests_CompanionCubeCalculator
         {
             //
             IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("3.0, 4.0");
-            Assert.AreEqual(null, interval[0]);
+            Assert.AreEqual(0, interval.Length);
         }
 
         [TestMethod]
@@ -112,7 +120,7 @@ namespace UnitTests_CompanionCubeCalculator
         {
             //
             IntervalStruct[] interval = IntervalConversion.ConvertToIntervals(",3.0, 4.0");
-            Assert.AreEqual(null, interval[0]);
+            Assert.AreEqual(0, interval.Length);
         }
 
         [TestMethod]
@@ -120,7 +128,7 @@ namespace UnitTests_CompanionCubeCalculator
         {
             //test-input nonNumberInDomain
             IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x, a, 4.0");
-            Assert.AreEqual(null, interval[0]);
+            Assert.AreEqual(0, interval.Length);
         }
 
         [TestMethod]
@@ -128,7 +136,15 @@ namespace UnitTests_CompanionCubeCalculator
         {
             //test-input nonNumberInDomain
             IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x, 3.0, b");
-            Assert.AreEqual(null, interval[0]);
+            Assert.AreEqual(0, interval.Length);
+        }
+
+        [TestMethod]
+        public void TestMissingWithNonNumericMinValue()
+        {
+            //test-input nonNumberInDomain
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x, a");
+            Assert.AreEqual(0, interval.Length);
         }
 
         [TestMethod]

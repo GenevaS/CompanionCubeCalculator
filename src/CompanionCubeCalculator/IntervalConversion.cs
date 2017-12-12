@@ -2,7 +2,7 @@
  * Interval Conversion Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/11/30
+ * Updated 2017/12/12
  * Corresponds to IntervalConversion MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * ---------------------------------------------------------------------
@@ -15,33 +15,51 @@ namespace CompanionCubeCalculator
 {
     public static class IntervalConversion
     {
+        private static char lineDelimiter = '\n';
+        private static char fieldDelimiter = ',';
+
+        /* PARSING FUNCTION */
         public static IntervalStruct[] ConvertToIntervals(string varList)
         {
             List<IntervalStruct> intervals = new List<IntervalStruct>();
-            string[] vars = varList.Split('\n');
+            IntervalStruct currentInterval;
+            string[] vars = varList.Split(lineDelimiter);
             string[] currentVar;
 
             for(int i = 0; i < vars.Length; i++)
             {
                 // Split the string on the delimiter (',') and remove all whitespaces
-                currentVar = vars[i].Split(',');
+                currentVar = vars[i].Split(fieldDelimiter);
                 for(int j = 0; j < currentVar.Length; j++)
                 {
                     currentVar[j] = Regex.Replace(currentVar[j], @"\s+", "");
                 }
 
+                // There are the right number of fields -> add to list if the interval != null
                 if(currentVar.Length == 3)
                 {
-                    intervals.Add(MakeInterval(currentVar[0], currentVar[1], currentVar[2]));
+                    currentInterval = MakeInterval(currentVar[0], currentVar[1], currentVar[2]);
+                    if(currentInterval != null)
+                    {
+                        intervals.Add(currentInterval);
+                    }
                 }
-                else if(currentVar.Length == 2)
+                // There is one missing field, so add an empty placeholder and let the MakeInterval function
+                // handle the rest -> add to list if the interval != null
+                else if (currentVar.Length == 2)
                 {
-                    intervals.Add(MakeInterval(currentVar[0], currentVar[1], ""));
+                    currentInterval = MakeInterval(currentVar[0], currentVar[1], "");
+                    if (currentInterval != null)
+                    {
+                        intervals.Add(currentInterval);
+                    }
                 }
+                // There are too many fields -> skip and notify the user
                 else if(currentVar.Length > 3)
                 {
                     frm_Main.UpdateLog("Error: Encountered a variable with more than three fields (Line " + (i + 1) + "). Skipping line." + System.Environment.NewLine);
                 }
+                // There is one or fewer fields on the current line -> skip and notify the user
                 else
                 {
                     frm_Main.UpdateLog("Error: No fields found for variable (Line " + (i + 1) + "). Skipping line." + System.Environment.NewLine);
@@ -51,6 +69,7 @@ namespace CompanionCubeCalculator
             return intervals.ToArray();
         }
 
+        /* CONVERSION FUNCTION */
         private static IntervalStruct MakeInterval(string varName, string min, string max)
         {
             IntervalStruct iv = null;
@@ -108,8 +127,7 @@ namespace CompanionCubeCalculator
         {
             bool proceed = true;
 
-            // If the variable name is empty or a value, display an error and tell calling method
-            // not to continue
+            // If the variable name is empty or a value, display an error and tell calling method not to continue
             try
             {
                 System.Convert.ToDouble(varName);
@@ -132,8 +150,7 @@ namespace CompanionCubeCalculator
         {
             bool proceed = true;
 
-            // If both of the provided bounds are empty, display an error and tell the
-            // calling method not to proceed
+            // If both of the provided bounds are empty, display an error and tell the calling method not to proceed
             if ((min == "") && (max == ""))
             {
                 frm_Main.UpdateLog("Error: No values provided for either interval bound." + System.Environment.NewLine);
