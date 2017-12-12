@@ -2,7 +2,7 @@
  * Equation Conversion Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/11
+ * Updated 2017/12/12
  * Corresponds to the Equation Conversion Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * 
@@ -31,18 +31,22 @@ namespace CompanionCubeCalculator
 
         private const string VARTOKEN = "VAR";
         private const string CONSTTOKEN = "CONST";
+        private const string ENDTOKEN = "END";
 
         /* REGULAR EXPRESSION VARIABLES */
         private static readonly List<string> reservedChars = new List<string>() { "-", "\\", "]" };
-        private static string variableStringPattern = "^[^0-9,";
-        private static string variableStringPatternMid = "]*[^";
-        private static string variableStringPatternClose = "]+";
+
+        private static string variableStringPattern = "";
+        private static string variableStringPatternOpen = "^[^0-9,";
+        private static string variableStringPatternClose = "]+[0-9]*";
+
         private const string constantNumberStringPattern = "^[0-9]+";
-        private static string implicitMultiplicationPattern = "(?<const>[0-9]+)(?<var>[^0-9,";
+
+        private static string implicitMultiplicationPattern = "";
+        private static string implicitMultiplicationPatternOpen = "(?<const>[0-9]+)(?<var>[^0-9,";
         private static string implicitMultiplicationPatternClose = "]+)";
         private static string implicitMultiplicationReplacement = "${const}*${var}";
-        private const string ENDTOKEN = "END";
-
+       
         /* GETTERS */
         public static bool IsReady()
         {
@@ -100,7 +104,7 @@ namespace CompanionCubeCalculator
 
                 for (int i = 0; i < terminators.Length; i++)
                 {
-                    if(terminators[i][1] != "")
+                    if(terminators[i][0] != "" && terminators[i][1] != "")
                     {
                         leftTerminators.Add(terminators[i][0]);
                         opList += EscapeReservedCharacters(terminators[i][0]) + ",";
@@ -110,7 +114,15 @@ namespace CompanionCubeCalculator
                     }
                     else
                     {
-                        frm_Main.UpdateLog("Error: An unbalanced terminator token was encountered (" + terminators[i][0] + ").");
+                        if(terminators[i][0] != "")
+                        {
+                            frm_Main.UpdateLog("Error: An unbalanced left terminator token was encountered (" + terminators[i][0] + ").");
+                        }
+                        else
+                        {
+                            frm_Main.UpdateLog("Error: An unbalanced right terminator token was encountered (" + terminators[i][1] + ").");
+                        }
+                        
                         success = false;
                     }
                 }
@@ -119,12 +131,33 @@ namespace CompanionCubeCalculator
             if(success)
             {
                 // Create the pattern for RE matching
-                variableStringPattern += opList.Substring(0, opList.Length - 1) + variableStringPatternMid + opList.Substring(0, opList.Length - 1) + variableStringPatternClose;
-                implicitMultiplicationPattern += opList.Substring(0, opList.Length - 1) + implicitMultiplicationPatternClose;
+                variableStringPattern += variableStringPatternOpen + opList.Substring(0, opList.Length - 1) + variableStringPatternClose;
+                implicitMultiplicationPattern += implicitMultiplicationPatternOpen + opList.Substring(0, opList.Length - 1) + implicitMultiplicationPatternClose;
             }
 
             ready = success;
             return success;
+        }
+
+        public static void ResetEquationConversion()
+        {
+            variableList.Clear();
+
+            unaryOpsSym.Clear();
+            unaryOps.Clear();
+
+            binaryOpsSym.Clear();
+            binaryOps.Clear();
+
+            leftTerminators.Clear();
+            rightTerminators.Clear();
+
+            variableStringPattern = "";
+            implicitMultiplicationPattern = "";
+
+            ready = false;
+
+            return;
         }
 
         /* PARSING FUNCTIONS */

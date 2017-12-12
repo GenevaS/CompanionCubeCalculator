@@ -39,9 +39,14 @@ namespace CompanionCubeCalculator
                 {
                     UpdateLog(Environment.NewLine + PrintEquation(testParse) + Environment.NewLine);
                     string[] vars = EquationConversion.GetVariableList();
+                    foreach(string v in vars)
+                    {
+                        UpdateLog(v + ", ");
+                    }
+                    UpdateLog(System.Environment.NewLine);
  
-                    bool success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3", Solver.GetValidOperators(), Solver.GetValidTerminators());
-                    UpdateLog(success.ToString());
+                    /*bool success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3", Solver.GetValidOperators(), Solver.GetValidTerminators());
+                    UpdateLog(success.ToString());*/
                 }
                 else
                 {
@@ -49,8 +54,6 @@ namespace CompanionCubeCalculator
                 }
                 
             }
-
-            IntervalConversion.ConvertToIntervals("x, 3");
 
             txt_UserFeedback.Text = logMessages;
         }
