@@ -2,7 +2,7 @@
  * Equation Conversion and Data Structure Tests
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/10
+ * Updated 2017/12/12
  * ---------------------------------------------------------------------
  */
 
@@ -12,7 +12,62 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace UnitTests_CompanionCubeCalculator
 {
     [TestClass]
-    public class EquationTests
+    public class EquationStructTests
+    {
+        [TestMethod]
+        [ExpectedException(typeof(System.ArgumentException), "Error: Equation structures must be assigned an operator during initialization.")]
+        public void TestEquationStructNoOperator()
+        {
+            EquationStruct eq = new EquationStruct("", "", null, null);
+        }
+
+        [TestMethod]
+        public void TestEquationStructConstructorWithNulls()
+        {
+            EquationStruct eq = new EquationStruct("+", "x", null, null);
+            Assert.AreEqual("+", eq.GetOperator());
+            Assert.AreEqual("x", eq.GetVariableName());
+            Assert.AreEqual(null, eq.GetLeftOperand());
+            Assert.AreEqual(null, eq.GetRightOperand());
+        }
+
+        [TestMethod]
+        public void TestEquationStructConstructor()
+        {
+            EquationStruct eq = new EquationStruct("+", "x", new EquationStruct("VAR", "y", null, null), new EquationStruct("VAR", "z", null, null));
+            Assert.AreEqual("+", eq.GetOperator());
+            Assert.AreEqual("x", eq.GetVariableName());
+            Assert.AreEqual("y", eq.GetLeftOperand().GetVariableName());
+            Assert.AreEqual("z", eq.GetRightOperand().GetVariableName());
+        }
+
+        [TestMethod]
+        public void TestEqSetVariableName()
+        {
+            EquationStruct eq = new EquationStruct("+", "x", null, null);
+            eq.SetVariableName("y");
+            Assert.AreEqual("y", eq.GetVariableName());
+        }
+
+        [TestMethod]
+        public void TestEqSetLeftOperand()
+        {
+            EquationStruct eq = new EquationStruct("+", "x", null, null);
+            eq.SetLeftOperand(new EquationStruct("VAR", "y", null, null));
+            Assert.AreEqual("y", eq.GetLeftOperand().GetVariableName());
+        }
+
+        [TestMethod]
+        public void TestEqSetRightOperand()
+        {
+            EquationStruct eq = new EquationStruct("+", "x", null, null);
+            eq.SetRightOperand(new EquationStruct("VAR", "z", null, null));
+            Assert.AreEqual("z", eq.GetRightOperand().GetVariableName());
+        }
+    }
+
+    [TestClass]
+    public class EquationConversionTests
     {
         [TestMethod]
         public void TestConstantValueFunction()

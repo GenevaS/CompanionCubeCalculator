@@ -20,6 +20,11 @@ namespace CompanionCubeCalculator
         /* CONSTRUCTOR */
         public EquationStruct(string op, string vName, EquationStruct eStruct1, EquationStruct eStruct2)
         {
+            if(op == "")
+            {
+                throw new System.ArgumentException("Error: Equation structures must be assigned an operator during initialization.");
+            }
+
             operatr = op;
             variableName = vName;
 
@@ -52,6 +57,12 @@ namespace CompanionCubeCalculator
         }
 
         /* SETTERS */
+        public void SetVariableName(string vName)
+        {
+            variableName = vName;
+            return;
+        }
+
         public void SetLeftOperand(EquationStruct eStruct)
         {
             leftOperand = eStruct;
