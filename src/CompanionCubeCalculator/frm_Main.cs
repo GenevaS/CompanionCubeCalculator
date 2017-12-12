@@ -50,7 +50,7 @@ namespace CompanionCubeCalculator
                 
             }
 
-            
+            IntervalConversion.ConvertToIntervals("x, , 4.0");
 
             txt_UserFeedback.Text = logMessages;
         }

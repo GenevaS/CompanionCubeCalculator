@@ -2,7 +2,7 @@
  * Interval Conversion and Data Structure Tests
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/07
+ * Updated 2017/12/11
  * ---------------------------------------------------------------------
  */
 
@@ -19,8 +19,8 @@ namespace UnitTests_CompanionCubeCalculator
         {
             //test-parse domainOrder
             IntervalStruct interval = new IntervalStruct("x", 4.0, 3.0);
-            Assert.AreEqual(interval.GetMinBound(), 3);
-            Assert.AreEqual(interval.GetMaxBound(), 4);
+            Assert.AreEqual(3, interval.GetMinBound());
+            Assert.AreEqual(4, interval.GetMaxBound());
         }
 
         [TestMethod]
@@ -30,8 +30,8 @@ namespace UnitTests_CompanionCubeCalculator
             IntervalStruct interval = new IntervalStruct("x", 3, 4);
             interval.SetMinBound(2);
             interval.SetMaxBound(5);
-            Assert.AreEqual(interval.GetMinBound(), 2);
-            Assert.AreEqual(interval.GetMaxBound(), 5);
+            Assert.AreEqual(2, interval.GetMinBound());
+            Assert.AreEqual(5, interval.GetMaxBound());
         }
 
         [TestMethod]
@@ -40,8 +40,8 @@ namespace UnitTests_CompanionCubeCalculator
             //
             IntervalStruct interval = new IntervalStruct("x", 3, 4);
             interval.SetMinBound(5);
-            Assert.AreEqual(interval.GetMinBound(), 4);
-            Assert.AreEqual(interval.GetMaxBound(), 5);
+            Assert.AreEqual(4, interval.GetMinBound());
+            Assert.AreEqual(5, interval.GetMaxBound());
         }
 
         [TestMethod]
@@ -50,8 +50,8 @@ namespace UnitTests_CompanionCubeCalculator
             //
             IntervalStruct interval = new IntervalStruct("x", 3, 4);
             interval.SetMaxBound(-1);
-            Assert.AreEqual(interval.GetMinBound(), -1);
-            Assert.AreEqual(interval.GetMaxBound(), 3);
+            Assert.AreEqual(-1, interval.GetMinBound());
+            Assert.AreEqual(3, interval.GetMaxBound());
         }
 
         [TestMethod]
@@ -60,7 +60,7 @@ namespace UnitTests_CompanionCubeCalculator
             //
             IntervalStruct interval = new IntervalStruct("x", 3, 4);
             interval.SetVariableName("y");
-            Assert.AreEqual(interval.GetVariableName(), "y");
+            Assert.AreEqual("y", interval.GetVariableName());
         }
     }
 
@@ -71,48 +71,71 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestEmptyMinBound()
         {
             //test-input missingMinDomainValue
-            IntervalStruct interval = IntervalConversion.MakeInterval("x", "", "4.0");
-            Assert.AreEqual(interval.GetMinBound(), 4);
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x, ,4.0" );
+            Assert.AreEqual(4, interval[0].GetMinBound());
         }
-
+        
         [TestMethod]
         public void TestEmptyMaxBound()
         {
             //test-input missingMaxDomainValue
-            IntervalStruct interval = IntervalConversion.MakeInterval("x", "3.0", "");
-            Assert.AreEqual(interval.GetMaxBound(), 3);
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x, 3.0,");
+            Assert.AreEqual(3, interval[0].GetMaxBound());
+        }
+
+        [TestMethod]
+        public void TestMissingBounds()
+        {
+            //
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x");
+            Assert.AreEqual(0, interval.Length);
         }
 
         [TestMethod]
         public void TestEmptyBounds()
         {
             //
-            IntervalStruct interval = IntervalConversion.MakeInterval("x", "", "");
-            Assert.AreEqual(interval, null);
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x,,");
+            Assert.AreEqual(null, interval[0]);
+        }
+
+        [TestMethod]
+        public void TestMissingVarName()
+        {
+            //
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("3.0, 4.0");
+            Assert.AreEqual(null, interval[0]);
         }
 
         [TestMethod]
         public void TestEmptyVarName()
         {
             //
-            IntervalStruct interval = IntervalConversion.MakeInterval("", "3.0", "4.0");
-            Assert.AreEqual(interval, null);
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals(",3.0, 4.0");
+            Assert.AreEqual(null, interval[0]);
         }
 
         [TestMethod]
         public void TestNonNumericMinValue()
         {
             //test-input nonNumberInDomain
-            IntervalStruct interval = IntervalConversion.MakeInterval("x", "a", "4.0");
-            Assert.AreEqual(interval, null);
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x, a, 4.0");
+            Assert.AreEqual(null, interval[0]);
         }
 
         [TestMethod]
         public void TestNonNumericMaxValue()
         {
             //test-input nonNumberInDomain
-            IntervalStruct interval = IntervalConversion.MakeInterval("x", "3.0", "b");
-            Assert.AreEqual(interval, null);
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x, 3.0, b");
+            Assert.AreEqual(null, interval[0]);
+        }
+
+        [TestMethod]
+        public void TestTooManyFields()
+        {
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x, 3, 4, 5");
+            Assert.AreEqual(0, interval.Length);
         }
     }
 }

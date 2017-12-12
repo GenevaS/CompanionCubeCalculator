@@ -9,6 +9,7 @@
  */
 
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace CompanionCubeCalculator
 {
@@ -22,12 +23,18 @@ namespace CompanionCubeCalculator
 
             for(int i = 0; i < vars.Length; i++)
             {
+                // Split the string on the delimiter (',') and remove all whitespaces
                 currentVar = vars[i].Split(',');
+                for(int j = 0; j < currentVar.Length; j++)
+                {
+                    currentVar[j] = Regex.Replace(currentVar[j], @"\s+", "");
+                }
+
                 if(currentVar.Length == 3)
                 {
                     intervals.Add(MakeInterval(currentVar[0], currentVar[1], currentVar[2]));
                 }
-                else if(currentVar.Length == 2 && currentVar[0] != "")
+                else if(currentVar.Length == 2)
                 {
                     intervals.Add(MakeInterval(currentVar[0], currentVar[1], ""));
                 }
@@ -44,7 +51,7 @@ namespace CompanionCubeCalculator
             return intervals.ToArray();
         }
 
-        public static IntervalStruct MakeInterval(string varName, string min, string max)
+        private static IntervalStruct MakeInterval(string varName, string min, string max)
         {
             IntervalStruct iv = null;
             bool proceed = true;
@@ -94,19 +101,28 @@ namespace CompanionCubeCalculator
             }  
 
             return iv;
-            }
+        }
 
         /* HELPER METHODS */
         private static bool CheckVarName(string varName)
         {
             bool proceed = true;
 
-            // If the variable name is empty, display an error and tell calling method
+            // If the variable name is empty or a value, display an error and tell calling method
             // not to continue
-            if(varName == "")
-            { 
+            try
+            {
+                System.Convert.ToDouble(varName);
                 frm_Main.UpdateLog("Error: Intervals must have an associated variable name." + System.Environment.NewLine);
                 proceed = false;
+            }
+            catch(System.FormatException)
+            { 
+                if(varName == "")
+                {
+                    frm_Main.UpdateLog("Error: Intervals must have an associated variable name." + System.Environment.NewLine);
+                    proceed = false;
+                }
             }
 
             return proceed;
