@@ -131,6 +131,31 @@ namespace UnitTests_CompanionCubeCalculator
         }
 
         [TestMethod]
+        public void TestUnaryFunction()
+        {
+            OperatorStruct[] ops = new OperatorStruct[] { new OperatorStruct("-", 5, true, false, false, false) };
+            string varToken = EquationConversion.GetVariableToken();
+
+            EquationConversion.ResetEquationConversion();
+            EquationConversion.ConfigureParser(ops, Solver.GetValidTerminators());
+
+            if (EquationConversion.IsReady())
+            {
+                string constToken = EquationConversion.GetConstToken();
+
+                EquationStruct unaryEq = EquationConversion.MakeEquationTree("-x");
+                EquationStruct targetStructure = new EquationStruct("-", "", new EquationStruct(varToken, "x", null, null), null);
+
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(unaryEq));
+                //Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
+            }
+            else
+            {
+                Assert.Fail("Equation Parser could not be initialized.");
+            }
+        }
+
+        [TestMethod]
         public void TestConstantValueFunction()
         {
             EquationConversion.ResetEquationConversion();
@@ -169,11 +194,97 @@ namespace UnitTests_CompanionCubeCalculator
                 Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(constEq));
                 Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
 
-                constEq = EquationConversion.MakeEquationTree("42+x");
-                targetStructure = new EquationStruct("+", "", new EquationStruct(constToken, "42", null, null), new EquationStruct(varToken, "x", null, null));
+                // test-parse constantValue1 
+                constEq = EquationConversion.MakeEquationTree("4+x");
+                targetStructure = new EquationStruct("+", "", new EquationStruct(constToken, "4", null, null), new EquationStruct(varToken, "x", null, null));
 
                 Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(constEq));
                 Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
+
+                // test-parse constantValue2
+                constEq = EquationConversion.MakeEquationTree("-4+x");
+                targetStructure = new EquationStruct("+", "", new EquationStruct(constToken, "-4", null, null), new EquationStruct(varToken, "x", null, null));
+
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(constEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
+
+                // test-parse constantValue3
+                constEq = EquationConversion.MakeEquationTree("x/-4");
+                targetStructure = new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "-4", null, null));
+
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(constEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
+
+                // test-parse constantValue5
+                constEq = EquationConversion.MakeEquationTree("x+4");
+                targetStructure = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "4", null, null));
+
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(constEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
+
+                // 
+                constEq = EquationConversion.MakeEquationTree("x+-4");
+                targetStructure = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "-4", null, null));
+
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(constEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
+
+                // test-parse implicitMultiplication
+                constEq = EquationConversion.MakeEquationTree("4x");
+                targetStructure = new EquationStruct("*", "", new EquationStruct(constToken, "4", null, null), new EquationStruct(varToken, "x", null, null));
+
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(constEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
+            }
+            else
+            {
+                Assert.Fail("Equation Parser could not be initialized.");
+            }
+        }
+
+        [TestMethod]
+        public void TestEqBrackets()
+        {
+            EquationConversion.ResetEquationConversion();
+            EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators());
+
+            if (EquationConversion.IsReady())
+            {
+                string constToken = EquationConversion.GetConstToken();
+                string varToken = EquationConversion.GetVariableToken();
+
+                // test-parse brackets1 
+                EquationStruct brackEq = EquationConversion.MakeEquationTree("x+(y-z)");
+                EquationStruct targetStructure = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("()", "", new EquationStruct("-", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), null));
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(brackEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x", "y", "z" }, EquationConversion.GetVariableList()));
+
+                // test-parse brackets2 
+                brackEq = EquationConversion.MakeEquationTree("(x*y)-2^z");
+                EquationStruct comp1 = new EquationStruct("()", "", new EquationStruct("*", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null)), null);
+                EquationStruct comp2 = new EquationStruct("^", "", new EquationStruct(constToken, "2", null, null), new EquationStruct(varToken, "z", null, null));
+
+                targetStructure = new EquationStruct("-", "", comp1, comp2);
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(brackEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x", "y", "z" }, EquationConversion.GetVariableList()));
+
+                /*// test-parse brackets3
+                brackEq = EquationConversion.MakeEquationTree("w∗(x/(y + z))");
+
+                comp1 = new EquationStruct("()", "", new EquationStruct("*", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null)), null);
+                comp2 = new EquationStruct("^", "", new EquationStruct(constToken, "2", null, null), new EquationStruct(varToken, "z", null, null));
+
+                targetStructure = new EquationStruct("-", "", comp1, comp2);
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(brackEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x", "y", "z" }, EquationConversion.GetVariableList()));*/
+
+                //  test-parse openRightBracket
+                brackEq = EquationConversion.MakeEquationTree("x+(y-z");
+                Assert.AreEqual(null, brackEq);
+
+                // test-parse openLeftBracket
+                brackEq = EquationConversion.MakeEquationTree("x+y-z)");
+                Assert.AreEqual(null, brackEq);
             }
             else
             {
@@ -193,19 +304,12 @@ namespace UnitTests_CompanionCubeCalculator
                 EquationStruct incompleteEq = EquationConversion.MakeEquationTree("x+");
                 Assert.AreEqual(null, incompleteEq);
 
+                // 
                 incompleteEq = EquationConversion.MakeEquationTree("*x");
                 Assert.AreEqual(null, incompleteEq);
 
                 //  test-input missingFunctionValue2
                 incompleteEq = EquationConversion.MakeEquationTree("x+*y");
-                Assert.AreEqual(null, incompleteEq);
-
-                // 
-                incompleteEq = EquationConversion.MakeEquationTree("(x+y");
-                Assert.AreEqual(null, incompleteEq);
-
-                // 
-                incompleteEq = EquationConversion.MakeEquationTree("x+y)");
                 Assert.AreEqual(null, incompleteEq);
             }
             else
@@ -265,6 +369,40 @@ namespace UnitTests_CompanionCubeCalculator
                 targetStructure = new EquationStruct("+", "", new EquationStruct(varToken, "xy", null, null), new EquationStruct(varToken, "y", null, null));
                 Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(varEq));
                 Assert.AreEqual(true, CheckVariableList(new string[] { "xy", "y" }, EquationConversion.GetVariableList()));
+            }
+            else
+            {
+                Assert.Fail("Equation Parser could not be initialized.");
+            }
+        }
+
+        [TestMethod]
+        public void TestSimpleFunctions()
+        {
+            EquationConversion.ResetEquationConversion();
+            EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators());
+
+            if (EquationConversion.IsReady())
+            {
+                string varToken = EquationConversion.GetVariableToken();
+
+                // test-parse addition 
+                EquationStruct varEq = EquationConversion.MakeEquationTree("x+y");
+                EquationStruct targetStructure = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(varEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x", "y" }, EquationConversion.GetVariableList()));
+
+                // test-parse subtraction
+                varEq = EquationConversion.MakeEquationTree("x-y");
+                 targetStructure = new EquationStruct("-", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(varEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x", "y" }, EquationConversion.GetVariableList()));
+
+                // test-parse multiplication1 
+                varEq = EquationConversion.MakeEquationTree("x*y");
+                targetStructure = new EquationStruct("*", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(varEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x", "y" }, EquationConversion.GetVariableList()));
             }
             else
             {

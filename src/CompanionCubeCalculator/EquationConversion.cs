@@ -40,11 +40,11 @@ namespace CompanionCubeCalculator
         private static string variableStringPatternOpen = "^[^0-9,";
         private static string variableStringPatternClose = "]+[0-9]*";
 
-        private const string constantNumberStringPattern = "^[0-9]+";
+        private const string constantNumberStringPattern = "^-?[0-9]+";
 
         private static string implicitMultiplicationPattern = "";
-        private static string implicitMultiplicationPatternOpen = "(?<const>[0-9]+)(?<var>[^0-9,";
-        private static string implicitMultiplicationPatternClose = "]+)";
+        private static string implicitMultiplicationPatternOpen = "(?<const>-?[0-9]+)(?<var>[^0-9,";
+        private static string implicitMultiplicationPatternClose = "]+[0-9]*)";
         private static string implicitMultiplicationReplacement = "${const}*${var}";
        
         /* GETTERS */
@@ -164,7 +164,7 @@ namespace CompanionCubeCalculator
         public static EquationStruct MakeEquationTree(string equationIn)
         {
             EquationStruct node = null;
-            string parseString = equationIn;
+            string parseString;
 
             // The error flag will be true if a parsing error is encountered
             bool error = false;
@@ -186,10 +186,11 @@ namespace CompanionCubeCalculator
                 }
 
                 // Parse the equation -> return null if an error occurs
+                parseString = equationIn;
                 node = ExpressionEquation(ref parseString, 0, ref error);
                 if (!error)
                 {
-                    Expect(parseString, ENDTOKEN, ref error);
+                    Expect(ref parseString, ENDTOKEN, ref error);
                     if(error)
                     {
                         frm_Main.UpdateLog("Error: Could not find the end of the equation.");
@@ -214,9 +215,9 @@ namespace CompanionCubeCalculator
 
             if(!error)
             {
-                while (binaryOpsSym.Contains(Next(equationIn)) && binaryOps[binaryOpsSym.IndexOf(Next(equationIn))].GetPrecedence() >= prec)
+                while (binaryOpsSym.Contains(Next(ref equationIn)) && binaryOps[binaryOpsSym.IndexOf(Next(ref equationIn))].GetPrecedence() >= prec)
                 {
-                    op = Consume(ref equationIn, binaryOps[binaryOpsSym.IndexOf(Next(equationIn))].GetOperator().Length);
+                    op = Consume(ref equationIn, binaryOps[binaryOpsSym.IndexOf(Next(ref equationIn))].GetOperator().Length);
                     if(binaryOps[binaryOpsSym.IndexOf(op)].IsLeftAssociative())
                     {
                         nextPrecedence = binaryOps[binaryOpsSym.IndexOf(op)].GetPrecedence() + 1;
@@ -256,9 +257,10 @@ namespace CompanionCubeCalculator
             int precedence;
             int index;
 
-            if (unaryOpsSym.Contains(Next(equationIn)))
+            if (unaryOpsSym.Contains(Next(ref equationIn)))
             {
-                op = Consume(ref equationIn, op.Length);
+                op = Next(ref equationIn);
+                Consume(ref equationIn, op.Length);
                 precedence = unaryOps[unaryOpsSym.BinarySearch(op)].GetPrecedence();
 
                 child = ExpressionEquation(ref equationIn, precedence, ref error);
@@ -267,15 +269,15 @@ namespace CompanionCubeCalculator
                     node = MakeNode(op, child, null);
                 }
             }
-            else if(leftTerminators.Contains(Next(equationIn)))
+            else if(leftTerminators.Contains(Next(ref equationIn)))
             {
-                index = leftTerminators.IndexOf(Next(equationIn));
+                index = leftTerminators.IndexOf(Next(ref equationIn));
                 Consume(ref equationIn, leftTerminators[index].Length);
 
                 child = ExpressionEquation(ref equationIn, 0, ref error);
                 if(!error)
                 {
-                    Expect(equationIn, rightTerminators[index], ref error);
+                    Expect(ref equationIn, rightTerminators[index], ref error);
                     if(!error)
                     {
                         node = MakeNode(leftTerminators[index] + rightTerminators[index], child, null);
@@ -360,7 +362,7 @@ namespace CompanionCubeCalculator
          * The source string is not modified by this function.
          * ---------------------------------------------------------------------------
          */
-        private static string Next(string equationIn)
+        private static string Next(ref string equationIn)
         {
             string token = "";
 
@@ -407,11 +409,11 @@ namespace CompanionCubeCalculator
          * successful.
          * ---------------------------------------------------------------------------
          */
-        private static string Expect(string equationIn, string tok, ref bool error)
+        private static string Expect(ref string equationIn, string tok, ref bool error)
         {
             string token = "";
 
-            if (Next(equationIn) == tok)
+            if (Next(ref equationIn) == tok)
             {
                 token = Consume(ref equationIn, tok.Length);
             }
