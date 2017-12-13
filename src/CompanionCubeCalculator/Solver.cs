@@ -2,13 +2,16 @@
  * Solver Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/09 (Incomplete)
+ * Updated 2017/12/13
  * Corresponds to the Solver Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
+ * 
  * Calculations performed using the Instance Models from the SRS:
  * https://github.com/GenevaS/CAS741/blob/master/Doc/SRS/SRS.pdf
  * ---------------------------------------------------------------------
  */
+
+using System.Collections.Generic;
 
 namespace CompanionCubeCalculator
 {
@@ -33,6 +36,98 @@ namespace CompanionCubeCalculator
         public static string[][] GetValidTerminators()
         {
             return supportedTerminators;
+        }
+
+        /* CALCULATION */
+        public static IntervalStruct FindRange(EquationStruct eqRoot, IntervalStruct[] intervals)
+        {
+            string[] varNames = GetVariableNamesFromIntervals(intervals);
+
+            return CalculateRange(eqRoot, intervals, varNames);
+        }
+
+        private static IntervalStruct CalculateRange(EquationStruct eqTree, IntervalStruct[] intervals, string[] intervalNames)
+        {
+            IntervalStruct range = null;
+            IntervalStruct leftResult = null;
+            IntervalStruct rightResult = null;
+            double constant;
+            int varIndex;
+
+            // This is either a variable or a constant
+            if(eqTree.GetLeftOperand() == null && eqTree.GetRightOperand() == null)
+            {
+                try
+                {
+                    constant = System.Convert.ToDouble(eqTree.GetVariableName());
+                    range = new IntervalStruct("", constant, constant);
+                }
+                catch(System.FormatException)
+                {
+                    varIndex = System.Array.IndexOf(intervalNames, eqTree.GetVariableName());
+                    if (varIndex > -1)
+                    {
+                        range = intervals[varIndex];
+                    }
+                    else
+                    {
+                        frm_Main.UpdateLog("Error: Could not find an associated interval for variable " + eqTree.GetVariableName() + System.Environment.NewLine);
+                    }
+                    
+                }
+            }
+            // This is an equation, so calculate the result
+            else if(eqTree.GetOperator() == "+")
+            {
+                leftResult = CalculateRange(eqTree.GetLeftOperand(), intervals, intervalNames);
+                rightResult = CalculateRange(eqTree.GetRightOperand(), intervals, intervalNames);
+                if(leftResult != null && rightResult != null)
+                {
+                    range = IntervalAddition(leftResult, rightResult);
+                }
+            }
+            else if (eqTree.GetOperator() == "-")
+            {
+                leftResult = CalculateRange(eqTree.GetLeftOperand(), intervals, intervalNames);
+                rightResult = CalculateRange(eqTree.GetRightOperand(), intervals, intervalNames);
+                if (leftResult != null && rightResult != null)
+                {
+                    range = IntervalSubtraction(leftResult, rightResult);
+                }
+            }
+            else if (eqTree.GetOperator() == "*")
+            {
+                leftResult = CalculateRange(eqTree.GetLeftOperand(), intervals, intervalNames);
+                rightResult = CalculateRange(eqTree.GetRightOperand(), intervals, intervalNames);
+                if (leftResult != null && rightResult != null)
+                {
+                    range = IntervalMultiplication(leftResult, rightResult);
+                }
+            }
+            else if (eqTree.GetOperator() == "/")
+            {
+                leftResult = CalculateRange(eqTree.GetLeftOperand(), intervals, intervalNames);
+                rightResult = CalculateRange(eqTree.GetRightOperand(), intervals, intervalNames);
+                if (leftResult != null && rightResult != null)
+                {
+                    range = IntervalDivision(leftResult, rightResult);
+                }
+            }
+            else if (eqTree.GetOperator() == "^")
+            {
+                leftResult = CalculateRange(eqTree.GetLeftOperand(), intervals, intervalNames);
+                rightResult = CalculateRange(eqTree.GetRightOperand(), intervals, intervalNames);
+                if (leftResult != null && rightResult != null)
+                {
+                    range = IntervalExponents(leftResult, rightResult);
+                }
+            }
+            else
+            {
+                frm_Main.UpdateLog("Error: An unsupported operation was encountered while solving for the range of the equation (Unknown operator)." + System.Environment.NewLine);
+            }
+
+            return range;
         }
 
         /* CALCULATION -- ADDITION */
@@ -83,7 +178,7 @@ namespace CompanionCubeCalculator
             // a2 = 0 v b2 = 0
             else
             {
-                throw new System.ArgumentException("Error: An unsupported operation was encountered while solving for the range of the equation.");
+                frm_Main.UpdateLog("Error: An unsupported operation was encountered while solving for the range of the equation (Mixed interval division)." + System.Environment.NewLine);
             }
 
             return divInterval;
@@ -98,7 +193,7 @@ namespace CompanionCubeCalculator
             if (x.GetMinBound() > 0)
             {
                 min = x.GetMinBound() / y.GetMaxBound();
-                max = y.GetMinBound() / x.GetMaxBound();
+                max = x.GetMaxBound() / y.GetMinBound();
             }
             // a1 = 0, a1 <= b1
             else if (x.GetMinBound() == 0)
@@ -127,7 +222,7 @@ namespace CompanionCubeCalculator
             // Unaccounted for case
             else
             {
-                throw new System.Exception("Error: Encountered unexpected division case.");
+                frm_Main.UpdateLog("Error: Encountered unexpected positive divisor division case." + System.Environment.NewLine);
             }
 
             return new IntervalStruct("", min, max);
@@ -171,7 +266,7 @@ namespace CompanionCubeCalculator
             // Unaccounted for case
             else
             {
-                throw new System.Exception("Error: Encountered unexpected division case.");
+                frm_Main.UpdateLog("Error: Encountered unexpected negative divisor division case." + System.Environment.NewLine);
             }
 
             return new IntervalStruct("", min, max);
@@ -192,7 +287,7 @@ namespace CompanionCubeCalculator
             }
             else
             {
-                throw new System.ArgumentException("Error: An unsupported operation was encountered while solving for the range of the equation.");
+                frm_Main.UpdateLog("Error: An unsupported operation was encountered while solving for the range of the equation (Intervals as exponents)." + System.Environment.NewLine);
             }
 
             return exp;
@@ -208,7 +303,7 @@ namespace CompanionCubeCalculator
             }
             else
             {
-                throw new System.ArgumentException("Error: An unsupported operation was encountered while solving for the range of the equation.");
+                frm_Main.UpdateLog("Error: An unsupported operation was encountered while solving for the range of the equation (Exponent base <= 1)." + System.Environment.NewLine);
             }
 
             return exp;
@@ -216,32 +311,53 @@ namespace CompanionCubeCalculator
 
         private static IntervalStruct IntervalAsBase(IntervalStruct x, double n)
         {
-            double roundedN = System.Math.Round(n);
-            if (n != roundedN)
-            {
-                frm_Main.UpdateLog("Warning: The value provided for the exponent" + System.Convert.ToString(n) + "is not a natural number. It has been rounded to " + System.Convert.ToString(roundedN) + System.Environment.NewLine);
-            }
-
             IntervalStruct exp = null;
+            double roundedN = System.Math.Round(n);
 
-            if (roundedN % 2 != 0)
+            if(n >= 0)
             {
-                exp = new IntervalStruct("", System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN));
-            }
-            else if (x.GetMinBound() >= 0)
-            {
-                exp = new IntervalStruct("", System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN));
-            }
-            else if (x.GetMaxBound() < 0)
-            {
-                exp = new IntervalStruct("", System.Math.Pow(x.GetMaxBound(), roundedN), System.Math.Pow(x.GetMinBound(), roundedN));
+                if (n != roundedN)
+                {
+                    frm_Main.UpdateLog("Warning: The value provided for the exponent" + System.Convert.ToString(n) + "is not a natural number. It has been rounded to " + System.Convert.ToString(roundedN) + System.Environment.NewLine);
+                }
+
+                if (roundedN % 2 != 0)
+                {
+                    exp = new IntervalStruct("", System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN));
+                }
+                else if (x.GetMinBound() >= 0)
+                {
+                    exp = new IntervalStruct("", System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN));
+                }
+                else if (x.GetMaxBound() < 0)
+                {
+                    exp = new IntervalStruct("", System.Math.Pow(x.GetMaxBound(), roundedN), System.Math.Pow(x.GetMinBound(), roundedN));
+                }
+                else
+                {
+                    exp = new IntervalStruct("", 0, System.Math.Max(System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN)));
+                }
             }
             else
             {
-                exp = new IntervalStruct("", 0, System.Math.Max(System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN)));
+                frm_Main.UpdateLog("Error: An unsupported operation was encountered while solving for the range of the equation (Exponent < 0)." + System.Environment.NewLine);
             }
+
 
             return exp;
         }
-    }
+
+        /* HELPER FUNCTIONS */
+        private static string[] GetVariableNamesFromIntervals(IntervalStruct[] intervals)
+        {
+            List<string> names = new List<string>();
+
+            foreach (IntervalStruct iv in intervals)
+            {
+                names.Add(iv.GetVariableName());
+            }
+
+            return names.ToArray();
+        }
+    } 
 }

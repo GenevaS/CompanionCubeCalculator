@@ -2,7 +2,7 @@
  * Variable Consolidation Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/11
+ * Updated 2017/12/12
  * Corresponds to the Variable Consolidation Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * ---------------------------------------------------------------------

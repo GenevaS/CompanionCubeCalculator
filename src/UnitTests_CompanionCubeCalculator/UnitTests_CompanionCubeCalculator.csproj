@@ -51,6 +51,7 @@
     <Compile Include="EquationTests.cs" />
     <Compile Include="IntervalTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SolverTests.cs" />
     <Compile Include="VariableConsolidationTests.cs" />
   </ItemGroup>
   <ItemGroup>
