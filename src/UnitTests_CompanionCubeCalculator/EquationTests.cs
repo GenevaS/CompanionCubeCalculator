@@ -165,6 +165,7 @@ namespace UnitTests_CompanionCubeCalculator
             {
                 string constToken = EquationConversion.GetConstToken();
 
+                // test-input functionAsConstant
                 EquationStruct constEq = EquationConversion.MakeEquationTree("42");
                 EquationStruct targetStructure = new EquationStruct(constToken, "42", null, null);
 
