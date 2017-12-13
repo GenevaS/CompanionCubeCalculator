@@ -34,7 +34,7 @@ namespace CompanionCubeCalculator
         {
             if(EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators()))
             {
-                EquationStruct testParse = EquationConversion.MakeEquationTree("(x*y)+2^z");
+                EquationStruct testParse = EquationConversion.MakeEquationTree("w*(x/(y+z))");
                 if(testParse != null)
                 {
                     UpdateLog(Environment.NewLine + PrintEquation(testParse) + Environment.NewLine);

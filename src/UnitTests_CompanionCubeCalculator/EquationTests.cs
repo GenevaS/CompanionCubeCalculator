@@ -268,15 +268,15 @@ namespace UnitTests_CompanionCubeCalculator
                 Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(brackEq));
                 Assert.AreEqual(true, CheckVariableList(new string[] { "x", "y", "z" }, EquationConversion.GetVariableList()));
 
-                /*// test-parse brackets3
-                brackEq = EquationConversion.MakeEquationTree("w∗(x/(y + z))");
+                // test-parse brackets3
+                brackEq = EquationConversion.MakeEquationTree("w*(x/(y+z))");
 
-                comp1 = new EquationStruct("()", "", new EquationStruct("*", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null)), null);
-                comp2 = new EquationStruct("^", "", new EquationStruct(constToken, "2", null, null), new EquationStruct(varToken, "z", null, null));
+                comp1 = new EquationStruct("()", "", new EquationStruct("+", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), null); ;
+                comp2 = new EquationStruct("()", "", new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), comp1), null);
 
-                targetStructure = new EquationStruct("-", "", comp1, comp2);
+                targetStructure = new EquationStruct("*", "", new EquationStruct(varToken, "w", null, null), comp2);
                 Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(brackEq));
-                Assert.AreEqual(true, CheckVariableList(new string[] { "x", "y", "z" }, EquationConversion.GetVariableList()));*/
+                Assert.AreEqual(true, CheckVariableList(new string[] { "w", "x", "y", "z" }, EquationConversion.GetVariableList()));
 
                 //  test-parse openRightBracket
                 brackEq = EquationConversion.MakeEquationTree("x+(y-z");
