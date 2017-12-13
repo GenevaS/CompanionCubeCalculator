@@ -24,14 +24,14 @@ namespace CompanionCubeCalculator
             List<int> eqVarIndex = new List<int>();
             string[] intervalVars;
             List<int> ivVarIndex = new List<int>();
+            string[] intervalVars2;
+            List<int> removeIndex = new List<int>();
             int index;
             bool success = true;
             string message = "";
 
-            if (!EquationConversion.IsReady())
-            {
-                EquationConversion.ConfigureParser(operators, terminators);
-            }
+            EquationConversion.ResetEquationConversion();
+            EquationConversion.ConfigureParser(operators, terminators);
 
             if (EquationConversion.IsReady())
             {
@@ -75,10 +75,28 @@ namespace CompanionCubeCalculator
                            message += vName + ", ";
                         }
                         frm_Main.UpdateLog(message.Substring(0, message.Length - 2) + ")." + Environment.NewLine);
+
+                        // Find and remove extra intervals from the list
+                        intervalVars2 = GetVariableNamesFromIntervals(intervalList);
+                        for (int i = 0; i < intervalVars.Length; i++)
+                        {
+                            index = Array.IndexOf(intervalVars2, intervalVars[i]);
+                            if (index > -1)
+                            {
+                                removeIndex.Add(index);
+                            }
+                        }
+
+                        removeIndex.Sort();
+                        removeIndex.Reverse();
+                        foreach(int r in removeIndex)
+                        {
+                            intervalList = RemoveInterval(intervalList, r);
+                        }
                     }
 
                     // Found fewer matching entries in the variable list
-                    if(eqVarIndex.Count < equationVars.Length)
+                    if (eqVarIndex.Count < equationVars.Length)
                     {
                         // This is a fail state
                         success = false;
@@ -149,6 +167,25 @@ namespace CompanionCubeCalculator
             }
 
             return newNameList;
+        }
+
+        private static IntervalStruct[] RemoveInterval(IntervalStruct[] nameList, int index)
+        {
+            IntervalStruct[] newIvList = new IntervalStruct[nameList.Length - 1];
+            int i = 0;
+            int j = 0;
+
+            while (i < nameList.Length)
+            {
+                if (i != index)
+                {
+                    newIvList[j] = nameList[i];
+                    j++;
+                }
+                i++;
+            }
+
+            return newIvList;
         }
     }
 }
