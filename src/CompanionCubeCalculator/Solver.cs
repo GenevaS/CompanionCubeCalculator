@@ -122,6 +122,10 @@ namespace CompanionCubeCalculator
                     range = IntervalExponents(leftResult, rightResult);
                 }
             }
+            else if (eqTree.GetOperator() == "()")
+            {
+                range = CalculateRange(eqTree.GetLeftOperand(), intervals, intervalNames);
+            }
             else
             {
                 frm_Main.UpdateLog("Error: An unsupported operation was encountered while solving for the range of the equation (Unknown operator)." + System.Environment.NewLine);

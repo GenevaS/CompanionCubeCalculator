@@ -74,6 +74,18 @@ namespace UnitTests_CompanionCubeCalculator
     public class SolverTests
     {
         [TestMethod]
+        public void TestUnknownOp()
+        {
+            string varToken = EquationConversion.GetVariableToken();
+            EquationStruct equation = new EquationStruct ("**", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "x", null, null));
+            IntervalStruct[] intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3, true, true) };
+
+            IntervalStruct range = Solver.FindRange(equation, intervals);
+
+            Assert.AreEqual(null, range);
+        }
+
+        [TestMethod]
         public void TestMissingIntervals()
         {
             string varToken = EquationConversion.GetVariableToken();
@@ -447,13 +459,30 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(null, range);
         }
 
-        /* Operational Precedence tests
-         * x+y−z == f(V) = (x+y)−z,x = [2,4],y = [3,5],z = [2,2] 
-         * x∗y/z == f(V) = (x∗y)/z,x = [2,4],y = [3,5],z = [2,2] 
-         * x + y∗z == x + (y∗z),x = [2,4],y = [3,5],z = [2,2] 
-         * 2x ∗y == (2x)∗y,x = [2,4],y = [3,5] 
-         * x2 ∗y == (x2)∗y,x = [2,4],y = [3,5] 
-         * x∗(y + z),x = [2,4],y = [3,5],z = [2,2] == [10,28]
-         */
+        [TestMethod]
+        public void TestPrecedenceOfOperations()
+        {
+            string varToken = EquationConversion.GetVariableToken();
+            string constToken = EquationConversion.GetConstToken();
+            
+            // x+y−z == (x+y)−z
+            EquationStruct equation1 = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("-", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)));
+            EquationStruct equation2 = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("()", "", new EquationStruct("-", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), null));
+            IntervalStruct[] intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", 3, 5, true, true), new IntervalStruct("z", 2, 2, true, true) };
+
+            IntervalStruct range1 = Solver.FindRange(equation1, intervals);
+            IntervalStruct range2 = Solver.FindRange(equation2, intervals);
+
+            Assert.AreEqual(range1.GetMinBound(), range2.GetMinBound());
+            Assert.AreEqual(range1.GetMaxBound(), range2.GetMaxBound());
+            /* Operational Precedence tests
+                     * 
+                     * x∗y/z == f(V) = (x∗y)/z,x = [2,4],y = [3,5],z = [2,2] 
+                     * x + y∗z == x + (y∗z),x = [2,4],y = [3,5],z = [2,2] 
+                     * 2x ∗y == (2x)∗y,x = [2,4],y = [3,5] 
+                     * x2 ∗y == (x2)∗y,x = [2,4],y = [3,5] 
+                     * x∗(y + z),x = [2,4],y = [3,5],z = [2,2] == [10,28]
+                     */
+        }
     }
 }
