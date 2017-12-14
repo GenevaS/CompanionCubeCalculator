@@ -133,14 +133,6 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(7, range.GetMaxBound());
 
             // 
-            equation = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)));
-            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
-
-            range = Solver.FindRange(equation, intervals);
-
-            Assert.AreEqual(null, range);
-
-            // 
             equation = new EquationStruct("+", "", new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), new EquationStruct(varToken, "x", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
 
@@ -163,14 +155,6 @@ namespace UnitTests_CompanionCubeCalculator
 
             Assert.AreEqual(-1, range.GetMinBound());
             Assert.AreEqual(-1, range.GetMaxBound());
-
-            // 
-            equation = new EquationStruct("-", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)));
-            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
-
-            range = Solver.FindRange(equation, intervals);
-
-            Assert.AreEqual(null, range);
 
             // 
             equation = new EquationStruct("-", "", new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), new EquationStruct(varToken, "x", null, null));
@@ -213,14 +197,6 @@ namespace UnitTests_CompanionCubeCalculator
 
             Assert.AreEqual(2, range.GetMinBound());
             Assert.AreEqual(15, range.GetMaxBound());
-
-            // 
-            equation = new EquationStruct("*", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)));
-            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
-
-            range = Solver.FindRange(equation, intervals);
-
-            Assert.AreEqual(null, range);
 
             // 
             equation = new EquationStruct("*", "", new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), new EquationStruct(varToken, "x", null, null));
@@ -361,14 +337,6 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(null, range);
 
             // 
-            equation = new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)));
-            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
-
-            range = Solver.FindRange(equation, intervals);
-
-            Assert.AreEqual(null, range);
-
-            // 
             equation = new EquationStruct("/", "", new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), new EquationStruct(varToken, "x", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
 
@@ -465,14 +433,6 @@ namespace UnitTests_CompanionCubeCalculator
             // test-parse intervalWithInvalidExponent2
             equation = new EquationStruct("^", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "y", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", 3, 5, true, true) };
-
-            range = Solver.FindRange(equation, intervals);
-
-            Assert.AreEqual(null, range);
-
-            // 
-            equation = new EquationStruct("^", "", new EquationStruct(constToken, "4", null, null), new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)));
-            intervals = new IntervalStruct[] { new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
 
             range = Solver.FindRange(equation, intervals);
 
