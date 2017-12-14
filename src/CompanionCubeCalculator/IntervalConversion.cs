@@ -115,7 +115,7 @@ namespace CompanionCubeCalculator
                 // If you have reached this point, all the inputs are available to create an IntervalStruct object
                 if(proceed)
                 {
-                    iv = new IntervalStruct(varName, cMin, cMax);
+                    iv = new IntervalStruct(varName, cMin, cMax, true, true);
                 }
             }  
 

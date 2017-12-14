@@ -22,7 +22,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             //
             EquationStruct equation = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
-            IntervalStruct[] intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3), new IntervalStruct("y", 4, 5) };
+            IntervalStruct[] intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3, true, true), new IntervalStruct("y", 4, 5, true, true) };
 
             IntervalStruct range = Solver.FindRange(equation, intervals);
 
@@ -31,7 +31,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             //
             equation = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "4", null, null));
-            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3) };
+            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3, true, true) };
 
             range = Solver.FindRange(equation, intervals);
 
@@ -40,7 +40,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             //
             equation = new EquationStruct("-", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
-            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3), new IntervalStruct("y", 4, 5) };
+            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3, true, true), new IntervalStruct("y", 4, 5, true, true) };
 
             range = Solver.FindRange(equation, intervals);
 
@@ -49,7 +49,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             //
             equation = new EquationStruct("*", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
-            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3), new IntervalStruct("y", 4, 5) };
+            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3, true, true), new IntervalStruct("y", 4, 5, true, true) };
 
             range = Solver.FindRange(equation, intervals);
 
@@ -58,7 +58,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             //
             equation = new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
-            intervals = new IntervalStruct[] { new IntervalStruct("x", 2.0, 3.0), new IntervalStruct("y", 4.0, 5.0) };
+            intervals = new IntervalStruct[] { new IntervalStruct("x", 2.0, 3.0, true, true), new IntervalStruct("y", 4.0, 5.0, true, true) };
 
             range = Solver.FindRange(equation, intervals);
 
@@ -67,7 +67,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             //
             equation = new EquationStruct("^", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "2", null, null));
-            intervals = new IntervalStruct[] { new IntervalStruct("x", 2.0, 3.0) };
+            intervals = new IntervalStruct[] { new IntervalStruct("x", 2.0, 3.0, true, true) };
 
             range = Solver.FindRange(equation, intervals);
 
@@ -76,7 +76,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             //
             equation = new EquationStruct("^", "", new EquationStruct(constToken, "2", null, null), new EquationStruct(varToken, "x", null, null));
-            intervals = new IntervalStruct[] { new IntervalStruct("x", 2.0, 3.0) };
+            intervals = new IntervalStruct[] { new IntervalStruct("x", 2.0, 3.0, true, true) };
 
             range = Solver.FindRange(equation, intervals);
 

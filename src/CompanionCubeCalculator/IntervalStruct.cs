@@ -2,7 +2,7 @@
  * Interval Data Structure
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/11/30
+ * Updated 2017/12/14
  * Corresponds to IntervalStruct MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * ---------------------------------------------------------------------
@@ -15,13 +15,17 @@ namespace CompanionCubeCalculator
         private string variableName;
         private double minBound;
         private double maxBound;
+        private bool isClosedLeft;
+        private bool isClosedRight;
 
         /* CONSTRUCTOR */
-        public IntervalStruct(string varName, double minB, double maxB)
+        public IntervalStruct(string varName, double minB, double maxB, bool leftClosed, bool rightClosed)
         {
             variableName = varName;
             minBound = minB;
             maxBound = maxB;
+            isClosedLeft = leftClosed;
+            isClosedRight = rightClosed;
 
             /*
              * If the constructor has been called with minB > maxB, 
@@ -51,6 +55,16 @@ namespace CompanionCubeCalculator
         public double GetMaxBound()
         {
             return maxBound;
+        }
+
+        public bool IsLeftBoundClosed()
+        {
+            return isClosedLeft;
+        }
+
+        public bool IsRightBoundClosed()
+        {
+            return isClosedRight;
         }
 
         /* SETTERS */
@@ -90,6 +104,18 @@ namespace CompanionCubeCalculator
                 frm_Main.UpdateLog("WARNING: Value provided for maximum bound is smaller than the current minimum bound. The values have been exchanged to maintain the interval ordering." + System.Environment.NewLine);
             }
 
+            return;
+        }
+
+        public void SetLeftBoundClosed(bool closed)
+        {
+            isClosedLeft = closed;
+            return;
+        }
+
+        public void SetRightBoundClosed(bool closed)
+        {
+            isClosedRight = closed;
             return;
         }
 

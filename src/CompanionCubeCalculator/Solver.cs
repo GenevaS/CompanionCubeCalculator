@@ -60,7 +60,7 @@ namespace CompanionCubeCalculator
                 try
                 {
                     constant = System.Convert.ToDouble(eqTree.GetVariableName());
-                    range = new IntervalStruct("", constant, constant);
+                    range = new IntervalStruct("", constant, constant, true, true);
                 }
                 catch(System.FormatException)
                 {
@@ -133,13 +133,13 @@ namespace CompanionCubeCalculator
         /* CALCULATION -- ADDITION */
         private static IntervalStruct IntervalAddition(IntervalStruct x, IntervalStruct y)
         {
-            return new IntervalStruct("", x.GetMinBound() + y.GetMinBound(), x.GetMaxBound() + y.GetMaxBound());
+            return new IntervalStruct("", x.GetMinBound() + y.GetMinBound(), x.GetMaxBound() + y.GetMaxBound(), true, true);
         }
 
         /* CALCULATION -- SUBTRACTION */
         private static IntervalStruct IntervalSubtraction(IntervalStruct x, IntervalStruct y)
         {
-            return new IntervalStruct("", x.GetMinBound() - y.GetMinBound(), x.GetMaxBound() - y.GetMaxBound());
+            return new IntervalStruct("", x.GetMinBound() - y.GetMinBound(), x.GetMaxBound() - y.GetMaxBound(), true, true);
         }
 
         /* CALCULATION -- MULTIPLICATION */
@@ -157,7 +157,7 @@ namespace CompanionCubeCalculator
             min = System.Math.Min(min, x.GetMaxBound() * y.GetMaxBound());
             max = System.Math.Max(max, x.GetMaxBound() * y.GetMaxBound());
 
-            return new IntervalStruct("", min, max);
+            return new IntervalStruct("", min, max, true, true);
         }
 
         /* CALCULATION -- DIVISION */
@@ -225,7 +225,7 @@ namespace CompanionCubeCalculator
                 frm_Main.UpdateLog("Error: Encountered unexpected positive divisor division case." + System.Environment.NewLine);
             }
 
-            return new IntervalStruct("", min, max);
+            return new IntervalStruct("", min, max, true, true);
         }
 
         private static IntervalStruct IntervalDivisionNegativeDivisor(IntervalStruct x, IntervalStruct y)
@@ -269,7 +269,7 @@ namespace CompanionCubeCalculator
                 frm_Main.UpdateLog("Error: Encountered unexpected negative divisor division case." + System.Environment.NewLine);
             }
 
-            return new IntervalStruct("", min, max);
+            return new IntervalStruct("", min, max, true, true);
         }
 
         /* CALCULATION -- EXPONENTS */
@@ -299,7 +299,7 @@ namespace CompanionCubeCalculator
 
             if(b > 1)
             {
-                exp = new IntervalStruct("", System.Math.Pow(b, x.GetMinBound()), System.Math.Pow(b, x.GetMaxBound()));
+                exp = new IntervalStruct("", System.Math.Pow(b, x.GetMinBound()), System.Math.Pow(b, x.GetMaxBound()), true, true);
             }
             else
             {
@@ -323,19 +323,19 @@ namespace CompanionCubeCalculator
 
                 if (roundedN % 2 != 0)
                 {
-                    exp = new IntervalStruct("", System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN));
+                    exp = new IntervalStruct("", System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN), true, true);
                 }
                 else if (x.GetMinBound() >= 0)
                 {
-                    exp = new IntervalStruct("", System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN));
+                    exp = new IntervalStruct("", System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN), true, true);
                 }
                 else if (x.GetMaxBound() < 0)
                 {
-                    exp = new IntervalStruct("", System.Math.Pow(x.GetMaxBound(), roundedN), System.Math.Pow(x.GetMinBound(), roundedN));
+                    exp = new IntervalStruct("", System.Math.Pow(x.GetMaxBound(), roundedN), System.Math.Pow(x.GetMinBound(), roundedN), true, true);
                 }
                 else
                 {
-                    exp = new IntervalStruct("", 0, System.Math.Max(System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN)));
+                    exp = new IntervalStruct("", 0, System.Math.Max(System.Math.Pow(x.GetMinBound(), roundedN), System.Math.Pow(x.GetMaxBound(), roundedN)), true, true);
                 }
             }
             else

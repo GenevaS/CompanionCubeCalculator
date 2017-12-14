@@ -40,7 +40,7 @@ namespace UnitTests_CompanionCubeCalculator
             IntervalStruct[] vars = Consolidate.GetIntervalStructList();
 
             EquationStruct targetStructure = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
-            IntervalStruct[] targetIntervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3), new IntervalStruct("y", 4, 5) };
+            IntervalStruct[] targetIntervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3, true, true), new IntervalStruct("y", 4, 5, true, true) };
 
             Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(eqRoot));
             Assert.AreEqual(targetIntervals[0].GetVariableName(), vars[0].GetVariableName());
@@ -65,7 +65,7 @@ namespace UnitTests_CompanionCubeCalculator
             IntervalStruct[] vars = Consolidate.GetIntervalStructList();
 
             EquationStruct targetStructure = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
-            IntervalStruct[] targetIntervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3), new IntervalStruct("y", 4, 5) };
+            IntervalStruct[] targetIntervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3, true, true), new IntervalStruct("y", 4, 5, true, true) };
 
             Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(eqRoot));
             Assert.AreEqual(targetIntervals[0].GetVariableName(), vars[0].GetVariableName());

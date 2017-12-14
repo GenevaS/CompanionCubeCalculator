@@ -2,7 +2,7 @@
  * Interval Conversion and Data Structure Tests
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/12
+ * Updated 2017/12/14
  * ---------------------------------------------------------------------
  */
 
@@ -18,7 +18,7 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestReversedBounds()
         {
             //test-parse domainOrder
-            IntervalStruct interval = new IntervalStruct("x", 4.0, 3.0);
+            IntervalStruct interval = new IntervalStruct("x", 4.0, 3.0, true, true);
             Assert.AreEqual(3, interval.GetMinBound());
             Assert.AreEqual(4, interval.GetMaxBound());
         }
@@ -27,18 +27,24 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestSetMethodsSimple()
         {
             //
-            IntervalStruct interval = new IntervalStruct("x", 3, 4);
+            IntervalStruct interval = new IntervalStruct("x", 3, 4, false, true);
+
             interval.SetMinBound(2);
             interval.SetMaxBound(5);
+            interval.SetLeftBoundClosed(true);
+            interval.SetRightBoundClosed(false);
+
             Assert.AreEqual(2, interval.GetMinBound());
             Assert.AreEqual(5, interval.GetMaxBound());
+            Assert.AreEqual(true, interval.IsLeftBoundClosed());
+            Assert.AreEqual(false, interval.IsRightBoundClosed());
         }
 
         [TestMethod]
         public void TestSetMinHigherThanMax()
         {
             //
-            IntervalStruct interval = new IntervalStruct("x", 3, 4);
+            IntervalStruct interval = new IntervalStruct("x", 3, 4, true, true);
             interval.SetMinBound(5);
             Assert.AreEqual(4, interval.GetMinBound());
             Assert.AreEqual(5, interval.GetMaxBound());
@@ -48,7 +54,7 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestSetMaxLowerThanMin()
         {
             //
-            IntervalStruct interval = new IntervalStruct("x", 3, 4);
+            IntervalStruct interval = new IntervalStruct("x", 3, 4, true, true);
             interval.SetMaxBound(-1);
             Assert.AreEqual(-1, interval.GetMinBound());
             Assert.AreEqual(3, interval.GetMaxBound());
@@ -58,7 +64,7 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestSetVariableName()
         {
             //
-            IntervalStruct interval = new IntervalStruct("x", 3, 4);
+            IntervalStruct interval = new IntervalStruct("x", 3, 4, true, true);
             interval.SetVariableName("y");
             Assert.AreEqual("y", interval.GetVariableName());
         }
