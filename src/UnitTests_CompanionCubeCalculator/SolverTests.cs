@@ -475,14 +475,59 @@ namespace UnitTests_CompanionCubeCalculator
 
             Assert.AreEqual(range1.GetMinBound(), range2.GetMinBound());
             Assert.AreEqual(range1.GetMaxBound(), range2.GetMaxBound());
-            /* Operational Precedence tests
-                     * 
-                     * x∗y/z == f(V) = (x∗y)/z,x = [2,4],y = [3,5],z = [2,2] 
-                     * x + y∗z == x + (y∗z),x = [2,4],y = [3,5],z = [2,2] 
-                     * 2x ∗y == (2x)∗y,x = [2,4],y = [3,5] 
-                     * x2 ∗y == (x2)∗y,x = [2,4],y = [3,5] 
-                     * x∗(y + z),x = [2,4],y = [3,5],z = [2,2] == [10,28]
-                     */
+
+            // x∗y/z == (x∗y)/z
+            equation1 = new EquationStruct("*", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)));
+            equation2 = new EquationStruct("/", "", new EquationStruct("()", "", new EquationStruct("*", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null)), null), new EquationStruct(varToken, "z", null, null));
+            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", 3, 5, true, true), new IntervalStruct("z", 2, 2, true, true) };
+
+            range1 = Solver.FindRange(equation1, intervals);
+            range2 = Solver.FindRange(equation2, intervals);
+
+            Assert.AreEqual(range1.GetMinBound(), range2.GetMinBound());
+            Assert.AreEqual(range1.GetMaxBound(), range2.GetMaxBound());
+
+            // x + y∗z == x + (y∗z)
+            equation1 = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("*", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)));
+            equation2 = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("()", "", new EquationStruct("*", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), null));
+            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", 3, 5, true, true), new IntervalStruct("z", 2, 2, true, true) };
+
+            range1 = Solver.FindRange(equation1, intervals);
+            range2 = Solver.FindRange(equation2, intervals);
+
+            Assert.AreEqual(range1.GetMinBound(), range2.GetMinBound());
+            Assert.AreEqual(range1.GetMaxBound(), range2.GetMaxBound());
+
+            // 2x ∗y == (2x)∗y
+            equation1 = new EquationStruct("*", "", new EquationStruct(constToken, "2", null, null), new EquationStruct("*", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null)));
+            equation2 = new EquationStruct("*", "", new EquationStruct("()", "", new EquationStruct("*", "", new EquationStruct(constToken, "2", null, null), new EquationStruct(varToken, "x", null, null)), null), new EquationStruct(varToken, "y", null, null));
+            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", 3, 5, true, true) };
+
+            range1 = Solver.FindRange(equation1, intervals);
+            range2 = Solver.FindRange(equation2, intervals);
+
+            Assert.AreEqual(range1.GetMinBound(), range2.GetMinBound());
+            Assert.AreEqual(range1.GetMaxBound(), range2.GetMaxBound());
+
+            // x2 ∗y == (x2)∗y
+            equation1 = new EquationStruct("*", "", new EquationStruct(varToken, "x2", null, null), new EquationStruct(varToken, "y", null, null));
+            equation2 = new EquationStruct("*", "", new EquationStruct("()", "", new EquationStruct(varToken, "x2", null, null), null), new EquationStruct(varToken, "y", null, null));
+            intervals = new IntervalStruct[] { new IntervalStruct("x2", 2, 4, true, true), new IntervalStruct("y", 3, 5, true, true) };
+
+            range1 = Solver.FindRange(equation1, intervals);
+            range2 = Solver.FindRange(equation2, intervals);
+
+            Assert.AreEqual(range1.GetMinBound(), range2.GetMinBound());
+            Assert.AreEqual(range1.GetMaxBound(), range2.GetMaxBound());
+
+            // x∗(y + z)
+            equation1 = new EquationStruct("*", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("()", "", new EquationStruct("+", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), null));
+            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", 3, 5, true, true), new IntervalStruct("z", 2, 2, true, true) };
+
+            range1 = Solver.FindRange(equation1, intervals);
+
+            Assert.AreEqual(10, range1.GetMinBound());
+            Assert.AreEqual(28, range1.GetMaxBound());
         }
     }
 }
