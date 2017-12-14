@@ -2,7 +2,7 @@
  * Solver Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/13
+ * Updated 2017/12/14
  * Corresponds to the Solver Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * 
@@ -51,8 +51,8 @@ namespace CompanionCubeCalculator
             IntervalStruct range = null;
             IntervalStruct leftResult = null;
             IntervalStruct rightResult = null;
-            double constant;
-            int varIndex;
+            double constant = 0;
+            int varIndex = -1;
 
             // This is either a variable or a constant
             if(eqTree.GetLeftOperand() == null && eqTree.GetRightOperand() == null)
@@ -202,7 +202,7 @@ namespace CompanionCubeCalculator
                 max = x.GetMaxBound() / y.GetMinBound();
             }
             // a1 < 0 < b1
-            else if (x.GetMinBound() < 0 && x.GetMaxBound() > 0)
+            else if (x.GetMaxBound() > 0)
             {
                 min = x.GetMinBound() / y.GetMinBound();
                 max = x.GetMaxBound() / y.GetMinBound();
@@ -218,11 +218,6 @@ namespace CompanionCubeCalculator
             {
                 min = x.GetMinBound() / y.GetMinBound();
                 max = x.GetMaxBound() / y.GetMaxBound();
-            }
-            // Unaccounted for case
-            else
-            {
-                frm_Main.UpdateLog("Error: Encountered unexpected positive divisor division case." + System.Environment.NewLine);
             }
 
             return new IntervalStruct("", min, max, true, true);
@@ -246,7 +241,7 @@ namespace CompanionCubeCalculator
                 max = 0;
             }
             // a1 < 0 < b1
-            else if (x.GetMinBound() < 0 && x.GetMaxBound() > 0)
+            else if (x.GetMaxBound() > 0)
             {
                 min = x.GetMaxBound() / y.GetMaxBound();
                 max = x.GetMinBound() / y.GetMaxBound();
@@ -262,11 +257,6 @@ namespace CompanionCubeCalculator
             {
                 min = x.GetMaxBound() / y.GetMinBound();
                 max = x.GetMinBound() / y.GetMaxBound();
-            }
-            // Unaccounted for case
-            else
-            {
-                frm_Main.UpdateLog("Error: Encountered unexpected negative divisor division case." + System.Environment.NewLine);
             }
 
             return new IntervalStruct("", min, max, true, true);
@@ -287,7 +277,7 @@ namespace CompanionCubeCalculator
             }
             else
             {
-                frm_Main.UpdateLog("Error: An unsupported operation was encountered while solving for the range of the equation (Intervals as exponents)." + System.Environment.NewLine);
+                frm_Main.UpdateLog("Error: An unsupported operation was encountered while solving for the range of the equation (Exponents)." + System.Environment.NewLine);
             }
 
             return exp;

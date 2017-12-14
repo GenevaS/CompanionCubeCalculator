@@ -40,7 +40,7 @@ namespace CompanionCubeCalculator
             }
             
 
-            if ((isUnary == isBinary && isUnary == true) || (isUnary == isTernary && isUnary == true) || (isBinary == isTernary && isBinary == true))
+            if ((isUnary == true && isUnary == isBinary) || (isUnary == true && isUnary == isTernary) || (isBinary == true && isBinary == isTernary))
             {
                 throw new System.ArgumentException("Error: An operator cannot be overloaded to be unary, binary, and ternary.");
             }

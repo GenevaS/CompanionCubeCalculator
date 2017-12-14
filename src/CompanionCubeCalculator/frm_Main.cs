@@ -55,6 +55,14 @@ namespace CompanionCubeCalculator
                 
             }
 
+            string varToken = EquationConversion.GetVariableToken();
+            EquationStruct equation = new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
+            IntervalStruct[] intervals = new IntervalStruct[] { new IntervalStruct("x", -1, 4, true, true), new IntervalStruct("y", -5, -3, true, true) };
+
+            IntervalStruct range = Solver.FindRange(equation, intervals);
+
+            UpdateLog("Results: min = " + range.GetMinBound().ToString() + ", max = " + range.GetMaxBound().ToString() + System.Environment.NewLine);
+
             txt_UserFeedback.Text = logMessages;
         }
 
