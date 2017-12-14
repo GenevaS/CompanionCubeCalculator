@@ -32,36 +32,15 @@ namespace CompanionCubeCalculator
 
         private void btn_go_Click(object sender, EventArgs e)
         {
-            if(EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators()))
-            {
-                EquationStruct testParse = EquationConversion.MakeEquationTree("w*(x/(y+z))");
-                if(testParse != null)
-                {
-                    UpdateLog(Environment.NewLine + PrintEquation(testParse) + Environment.NewLine);
-                    string[] vars = EquationConversion.GetVariableList();
-                    foreach(string v in vars)
-                    {
-                        UpdateLog(v + ", ");
-                    }
-                    UpdateLog(System.Environment.NewLine);
- 
-                    /*bool success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3", Solver.GetValidOperators(), Solver.GetValidTerminators());
-                    UpdateLog(success.ToString());*/
-                }
-                else
-                {
-                    UpdateLog("Equation is null -> cannot print results.");
-                }
-                
-            }
-
             string varToken = EquationConversion.GetVariableToken();
-            EquationStruct equation = new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
-            IntervalStruct[] intervals = new IntervalStruct[] { new IntervalStruct("x", -1, 4, true, true), new IntervalStruct("y", -5, -3, true, true) };
+            EquationStruct equation = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("-", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)));
+            IntervalStruct[] intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", 3, 5, true, true), new IntervalStruct("z", 2, 2, true, true) };
 
             IntervalStruct range = Solver.FindRange(equation, intervals);
 
             UpdateLog("Results: min = " + range.GetMinBound().ToString() + ", max = " + range.GetMaxBound().ToString() + System.Environment.NewLine);
+
+            UpdateLog(Output.PrintEquationTree(equation));
 
             txt_UserFeedback.Text = logMessages;
         }
