@@ -22,6 +22,7 @@ namespace CompanionCubeCalculator
             }
             else
             {
+                iv += interval.GetVariableName() + " = ";
                 if(interval.IsLeftBoundClosed())
                 {
                     iv += "[";
@@ -57,7 +58,7 @@ namespace CompanionCubeCalculator
 
             if(node.GetLeftOperand() == null && node.GetRightOperand() == null)
             {
-                eq += ": " + node.GetVariableName();
+                eq += " " + node.GetVariableName();
             }
 
             if (isRightOperand && node.GetLeftOperand() == null && node.GetRightOperand() == null)

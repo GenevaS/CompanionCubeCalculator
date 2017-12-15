@@ -1,0 +1,1 @@
+<Playlist Version="1.0"><Add Test="UnitTests_CompanionCubeCalculator.OutputTests.TestPrintIntervals" /><Add Test="UnitTests_CompanionCubeCalculator.OutputTests.TestPrintEquation" /></Playlist>
