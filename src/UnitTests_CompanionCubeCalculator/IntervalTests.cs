@@ -77,7 +77,7 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestEmptyMinBound()
         {
             //test-input missingMinDomainValue
-            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x, ,4.0" );
+            IntervalStruct[] interval = IntervalConversion.ConvertToIntervals("x,,4.0" );
             Assert.AreEqual(4, interval[0].GetMinBound());
         }
         

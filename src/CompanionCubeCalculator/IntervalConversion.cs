@@ -28,12 +28,8 @@ namespace CompanionCubeCalculator
 
             for(int i = 0; i < vars.Length; i++)
             {
-                // Split the string on the delimiter (',') and remove all whitespaces
+                // Split the string on the delimiter (',')
                 currentVar = vars[i].Split(fieldDelimiter);
-                for(int j = 0; j < currentVar.Length; j++)
-                {
-                    currentVar[j] = Regex.Replace(currentVar[j], @"\s+", "");
-                }
 
                 // There are the right number of fields -> add to list if the interval != null
                 if(currentVar.Length == 3)

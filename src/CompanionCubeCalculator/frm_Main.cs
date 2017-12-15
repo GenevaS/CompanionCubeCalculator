@@ -32,15 +32,21 @@ namespace CompanionCubeCalculator
 
         private void btn_go_Click(object sender, EventArgs e)
         {
-            string varToken = EquationConversion.GetVariableToken();
-            EquationStruct equation = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct("-", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)));
-            IntervalStruct[] intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", 3, 5, true, true), new IntervalStruct("z", 2, 2, true, true) };
+            string[] fileContents = Input.ReadFile(@"C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\test.txt");
 
-            IntervalStruct range = Solver.FindRange(equation, intervals);
+            if (fileContents != null)
+            {
+                UpdateLog(fileContents[0] + Environment.NewLine);
+                UpdateLog(fileContents[1] + Environment.NewLine);
+            }
+            else
+            {
+                UpdateLog("File read returned null." + Environment.NewLine);
+            }
 
-            UpdateLog("Results: min = " + range.GetMinBound().ToString() + ", max = " + range.GetMaxBound().ToString() + System.Environment.NewLine);
-
-            UpdateLog(Output.PrintEquationTree(equation));
+            string[] test = fileContents[1].Split('\n');
+            UpdateLog(test.Length.ToString());
+            
 
             txt_UserFeedback.Text = logMessages;
         }
