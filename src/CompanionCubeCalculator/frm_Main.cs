@@ -34,7 +34,7 @@ namespace CompanionCubeCalculator
         {
             ControlFlow.ControlFile(@"TestFiles/test.txt");
 
-            txt_UserFeedback.Text = logMessages;
+            Txt_Log.Text = logMessages;
         }
 
         private static string PrintEquation(EquationStruct node)
