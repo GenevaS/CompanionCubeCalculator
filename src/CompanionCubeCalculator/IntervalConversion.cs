@@ -2,7 +2,7 @@
  * Interval Conversion Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/12
+ * Updated 2017/12/15
  * Corresponds to IntervalConversion MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * ---------------------------------------------------------------------
@@ -15,21 +15,19 @@ namespace CompanionCubeCalculator
 {
     public static class IntervalConversion
     {
-        private static char lineDelimiter = '\n';
-        private static char fieldDelimiter = ',';
-
         /* PARSING FUNCTION */
-        public static IntervalStruct[] ConvertToIntervals(string varList)
+        public static IntervalStruct[] ConvertToIntervals(string varList, string lineDelimiter, string fieldDelimiter)
         {
             List<IntervalStruct> intervals = new List<IntervalStruct>();
             IntervalStruct currentInterval;
-            string[] vars = varList.Split(lineDelimiter);
+            Regex split = new Regex(lineDelimiter);
+            string[] vars = split.Split(varList);
             string[] currentVar;
 
             for(int i = 0; i < vars.Length; i++)
             {
                 // Split the string on the delimiter (',')
-                currentVar = vars[i].Split(fieldDelimiter);
+                currentVar =Regex.Split(vars[i], fieldDelimiter);
 
                 // There are the right number of fields -> add to list if the interval != null
                 if(currentVar.Length == 3)

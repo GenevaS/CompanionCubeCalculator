@@ -2,7 +2,7 @@
  * Input Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/14
+ * Updated 2017/12/15
  * Corresponds to Input Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * ---------------------------------------------------------------------
@@ -16,19 +16,19 @@ namespace CompanionCubeCalculator
 {
     public static class Input
     {
-        private static char lineDelimeter = '\n';
-        private static char fieldDelimiter = ',';
+        private static string lineDelimeter = System.Environment.NewLine;
+        private static string fieldDelimiter = ",";
         private static string[] validFileTypes = new string[] { ".txt" };
-    
+
         /* GETTERS */
-        public static char GetLineDelimiter()
+        public static string GetLineDelimiter()
         {
-            return lineDelimeter;
+            return BuildLiteralString(lineDelimeter);
         }
 
-        public static char GetFieldDelimiter()
+        public static string GetFieldDelimiter()
         {
-            return fieldDelimiter;
+            return BuildLiteralString(fieldDelimiter);
         }
 
         public static string[] GetValidFileTypes()
@@ -41,37 +41,37 @@ namespace CompanionCubeCalculator
         {
             string[] inputs = null;
 
-            if(File.Exists(fileName))
+            if (File.Exists(fileName))
             {
                 try
                 {
-                    if(fileName.Contains(".txt"))
+                    if (fileName.Contains(".txt"))
                     {
                         using (StreamReader inStream = new StreamReader(fileName, Encoding.UTF8))
                         {
                             string line = inStream.ReadLine();
 
-                            if(line != null)
+                            if (line != null)
                             {
-                                if(line.Contains(fieldDelimiter.ToString()))
+                                if (line.Contains(fieldDelimiter.ToString()))
                                 {
                                     frm_Main.UpdateLog("Error: The first line of the file is not an equation or the equation contains ','." + System.Environment.NewLine);
                                 }
                                 else
                                 {
                                     inputs = new string[2];
-                                    inputs[0] = Regex.Replace(line, @"\s+", "");
-
-                                    line = inStream.ReadToEnd();
-                                    if (line != null)
+                                    if (line.Contains("="))
                                     {
-                                        inputs[1] = Regex.Replace(line, @"[^\S\r\n]+", "");
+                                        inputs[0] = Regex.Split(RemoveWhitespace(line, false), "=")[1];
                                     }
                                     else
                                     {
-                                        inputs[1] = "";
+                                        inputs[0] =RemoveWhitespace(line, false);
                                     }
-                                    
+
+                                    line = inStream.ReadToEnd();
+                                    inputs[1] = RemoveWhitespace(line, true);
+
                                 }
                             }
                             else
@@ -84,9 +84,9 @@ namespace CompanionCubeCalculator
                     {
                         frm_Main.UpdateLog("Error: Cannot read files of this type." + System.Environment.NewLine);
                     }
-                    
+
                 }
-                catch(System.Exception)
+                catch (System.Exception)
                 {
                     frm_Main.UpdateLog("Error: The file could not be read." + System.Environment.NewLine);
                 }
@@ -97,6 +97,46 @@ namespace CompanionCubeCalculator
             }
 
             return inputs;
+        }
+
+        public static string RemoveWhitespace(string line, bool preserveSpecialWhitespace)
+        {
+            string conditionedLine;
+
+            if(preserveSpecialWhitespace)
+            {
+                conditionedLine = Regex.Replace(line, @"[^\S\r\n\t]+", "");
+            }
+            else
+            {
+                conditionedLine = Regex.Replace(line, @"\s+", "");
+            }
+
+            return conditionedLine;
+        }
+
+        /* HELPER FUNCTIONS */
+        private static string BuildLiteralString(string line)
+        {
+            string output = "";
+
+            foreach (char c in line)
+            {
+                switch (c)
+                {
+                    case '\r':
+                        output += @"\r";
+                        break;
+                    case '\n':
+                        output += @"\n";
+                        break;
+                    default:
+                        output += c;
+                        break;
+                }
+            }
+
+            return output;
         }
     }
 }

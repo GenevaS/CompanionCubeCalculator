@@ -18,3 +18,9 @@ C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\obj\Debug\Co
 C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.csproj.CoreCompileInputs.cache
 C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.exe
 C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\obj\Debug\CompanionCubeCalculator.pdb
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\bin\Debug\TestFiles\test.txt
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\bin\Debug\TestFiles\testempty.txt
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\bin\Debug\TestFiles\test.tex
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\bin\Debug\TestFiles\testNoEq.txt
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\bin\Debug\TestFiles\testSpecialChars.txt
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\bin\Debug\TestFiles\testWithEquals.txt

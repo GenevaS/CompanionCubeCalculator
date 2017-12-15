@@ -2,7 +2,7 @@
  * Variable Consolidation Tests
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/12
+ * Updated 2017/12/15
  * ---------------------------------------------------------------------
  */
 
@@ -18,15 +18,15 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestFailedConfig()
         {
             OperatorStruct[] ops = new OperatorStruct[] { };
-            bool success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", ops, Solver.GetValidTerminators());
+            bool success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", ops, Solver.GetValidTerminators(), System.Environment.NewLine, ",");
             Assert.AreEqual(false, success);
 
             string[][] terminators = new string[][] { new string[] { "(", "" } };
-            success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), terminators);
+            success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), terminators, System.Environment.NewLine, ",");
             Assert.AreEqual(false, success);
 
             terminators = new string[][] { new string[] { "", ")" } };
-            success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), terminators);
+            success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), terminators, System.Environment.NewLine, ",");
             Assert.AreEqual(false, success);
         }
 
@@ -35,7 +35,7 @@ namespace UnitTests_CompanionCubeCalculator
         {
             string varToken = EquationConversion.GetVariableToken();
 
-            Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), Solver.GetValidTerminators());
+            Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), Solver.GetValidTerminators(), "\n", ",");
             EquationStruct eqRoot = Consolidate.GetEquationStruct();
             IntervalStruct[] vars = Consolidate.GetIntervalStructList();
 
@@ -60,7 +60,7 @@ namespace UnitTests_CompanionCubeCalculator
             // test-input variableNotInFunction
             string varToken = EquationConversion.GetVariableToken();
 
-            Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5\nz,6,7", Solver.GetValidOperators(), Solver.GetValidTerminators());
+            Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5\nz,6,7", Solver.GetValidOperators(), Solver.GetValidTerminators(), "\n", ",");
             EquationStruct eqRoot = Consolidate.GetEquationStruct();
             IntervalStruct[] vars = Consolidate.GetIntervalStructList();
 
@@ -83,7 +83,7 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestMissingVariable()
         {
             // test-input noDomain
-            bool success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3", Solver.GetValidOperators(), Solver.GetValidTerminators());
+            bool success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3", Solver.GetValidOperators(), Solver.GetValidTerminators(), System.Environment.NewLine, ",");
             
             Assert.AreEqual(false, success);
         }

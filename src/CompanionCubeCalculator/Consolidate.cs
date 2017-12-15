@@ -2,7 +2,7 @@
  * Variable Consolidation Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/12
+ * Updated 2017/12/15
  * Corresponds to the Variable Consolidation Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * ---------------------------------------------------------------------
@@ -18,7 +18,7 @@ namespace CompanionCubeCalculator
         private static EquationStruct equationTreeRoot = null;
         private static IntervalStruct[] intervalList;
 
-        public static bool ConvertAndCheckInputs(string eqString, string varList, OperatorStruct[] operators, string[][] terminators)
+        public static bool ConvertAndCheckInputs(string eqString, string varList, OperatorStruct[] operators, string[][] terminators, string lineDelimiter, string fieldDelimiter)
         {
             string[] equationVars;
             List<int> eqVarIndex = new List<int>();
@@ -39,7 +39,7 @@ namespace CompanionCubeCalculator
 
                 if(equationTreeRoot != null)
                 {
-                    intervalList = IntervalConversion.ConvertToIntervals(varList);
+                    intervalList = IntervalConversion.ConvertToIntervals(varList, lineDelimiter, fieldDelimiter);
 
                     intervalVars = GetVariableNamesFromIntervals(intervalList);
                     equationVars = EquationConversion.GetVariableList();

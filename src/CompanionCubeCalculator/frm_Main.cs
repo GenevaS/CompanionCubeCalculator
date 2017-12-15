@@ -32,21 +32,7 @@ namespace CompanionCubeCalculator
 
         private void btn_go_Click(object sender, EventArgs e)
         {
-            string[] fileContents = Input.ReadFile(@"C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\test.txt");
-
-            if (fileContents != null)
-            {
-                UpdateLog(fileContents[0] + Environment.NewLine);
-                UpdateLog(fileContents[1] + Environment.NewLine);
-            }
-            else
-            {
-                UpdateLog("File read returned null." + Environment.NewLine);
-            }
-
-            string[] test = fileContents[1].Split('\n');
-            UpdateLog(test.Length.ToString());
-            
+            ControlFlow.ControlFile(@"TestFiles/test.txt");
 
             txt_UserFeedback.Text = logMessages;
         }
