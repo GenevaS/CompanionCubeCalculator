@@ -12,7 +12,7 @@ namespace CompanionCubeCalculator
 {
     public class Output
     {
-        public static string PrintInterval(IntervalStruct interval)
+        public static string PrintInterval(IntervalStruct interval, bool withVarName)
         {
             string iv = "";
 
@@ -22,7 +22,11 @@ namespace CompanionCubeCalculator
             }
             else
             {
-                iv += interval.GetVariableName() + " = ";
+                if (withVarName)
+                {
+                    iv += interval.GetVariableName() + " = ";
+                }
+                
                 if(interval.IsLeftBoundClosed())
                 {
                     iv += "[";

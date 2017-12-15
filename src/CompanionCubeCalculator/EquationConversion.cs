@@ -2,7 +2,7 @@
  * Equation Conversion Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/12
+ * Updated 2017/12/15
  * Corresponds to the Equation Conversion Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * 
@@ -75,7 +75,7 @@ namespace CompanionCubeCalculator
 
             if(ops.Length == 0)
             {
-                frm_Main.UpdateLog("Error: No operators were passed to the parser.");
+                frm_Main.UpdateLog("Error: No operators were passed to the parser." + System.Environment.NewLine);
                 success = false;
             }
             else
@@ -94,7 +94,7 @@ namespace CompanionCubeCalculator
                     }
                     else
                     {
-                        frm_Main.UpdateLog("Error: The parser cannot process the " + op.GetOperator() + " operator.");
+                        frm_Main.UpdateLog("Error: The parser cannot process the " + op.GetOperator() + " operator." + System.Environment.NewLine);
                         success = false;
                     }
 
@@ -116,11 +116,11 @@ namespace CompanionCubeCalculator
                     {
                         if(terminators[i][0] != "")
                         {
-                            frm_Main.UpdateLog("Error: An unbalanced left terminator token was encountered (" + terminators[i][0] + ").");
+                            frm_Main.UpdateLog("Error: An unbalanced left terminator token was encountered (" + terminators[i][0] + ")." + System.Environment.NewLine);
                         }
                         else
                         {
-                            frm_Main.UpdateLog("Error: An unbalanced right terminator token was encountered (" + terminators[i][1] + ").");
+                            frm_Main.UpdateLog("Error: An unbalanced right terminator token was encountered (" + terminators[i][1] + ")." + System.Environment.NewLine);
                         }
                         
                         success = false;
@@ -174,7 +174,7 @@ namespace CompanionCubeCalculator
                 System.Convert.ToDouble(equationIn);
                 node = new EquationStruct(CONSTTOKEN, equationIn, null, null);
 
-                frm_Main.UpdateLog("Warning: The user equation is a constant value and the range will only include this value.");
+                frm_Main.UpdateLog("Warning: The user equation is a constant value and the range will only include this value." + System.Environment.NewLine);
             }
             catch (System.FormatException)
             {
@@ -193,7 +193,7 @@ namespace CompanionCubeCalculator
                     Expect(ref parseString, ENDTOKEN, ref error);
                     if(error)
                     {
-                        frm_Main.UpdateLog("Error: Could not find the end of the equation.");
+                        frm_Main.UpdateLog("Error: Could not find the end of the equation." + System.Environment.NewLine);
                         node = null;
                     }
                 }

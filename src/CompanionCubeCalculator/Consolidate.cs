@@ -2,7 +2,7 @@
  * Variable Consolidation Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/15
+ * Updated 2017/12/12
  * Corresponds to the Variable Consolidation Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * ---------------------------------------------------------------------
@@ -39,7 +39,10 @@ namespace CompanionCubeCalculator
 
                 if(equationTreeRoot != null)
                 {
-                    intervalList = IntervalConversion.ConvertToIntervals(varList, lineDelimiter, fieldDelimiter);
+                    if(varList != "")
+                    {
+                        intervalList = IntervalConversion.ConvertToIntervals(varList, lineDelimiter, fieldDelimiter);
+                    }
 
                     intervalVars = GetVariableNamesFromIntervals(intervalList);
                     equationVars = EquationConversion.GetVariableList();
@@ -142,11 +145,14 @@ namespace CompanionCubeCalculator
         {
             List<string> names = new List<string>();
 
-            foreach (IntervalStruct iv in intervals)
+            if (intervals != null)
             {
-                names.Add(iv.GetVariableName());
+                foreach (IntervalStruct iv in intervals)
+                {
+                    names.Add(iv.GetVariableName());
+                }
             }
-
+            
             return names.ToArray();
         }
 

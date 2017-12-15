@@ -12,29 +12,43 @@ namespace CompanionCubeCalculator
 {
     public static class ControlFlow
     {
-        public static void ControlFile(string fileName)
+        public static bool Initialize()
+        {
+            bool success = EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators());
+            if (success)
+            {
+                frm_Main.UpdateLog("Parser initialized." + System.Environment.NewLine);
+            }
+            
+            return success;
+        }
+
+        public static string[] ControlFile(string fileName)
         {
             string[] inputs = Input.ReadFile(fileName);
-            frm_Main.UpdateLog(inputs[0] + System.Environment.NewLine);
-            frm_Main.UpdateLog(inputs[1]);
 
-            bool success = Consolidate.ConvertAndCheckInputs(inputs[0], inputs[1], Solver.GetValidOperators(), Solver.GetValidTerminators(), Input.GetLineDelimiter(), Input.GetFieldDelimiter());
+            return CalculateRange(inputs[0], inputs[1]);
+        }
 
-            if(success)
+        public static string[] ControlDirect(string eq, string variables)
+        {
+            return CalculateRange(eq, variables);
+        }
+
+        private static string[] CalculateRange(string rawEquation, string variables)
+        {
+            bool success = Consolidate.ConvertAndCheckInputs(rawEquation, variables, Solver.GetValidOperators(), Solver.GetValidTerminators(), Input.GetLineDelimiter(), Input.GetFieldDelimiter());
+            string[] results = null;
+
+            if (success)
             {
                 EquationStruct eq = Consolidate.GetEquationStruct();
                 IntervalStruct[] intervals = Consolidate.GetIntervalStructList();
                 IntervalStruct range = Solver.FindRange(eq, intervals);
-                frm_Main.UpdateLog("Range" + Output.PrintInterval(range) + System.Environment.NewLine);
-                frm_Main.UpdateLog("Equation Tree: " + System.Environment.NewLine + "---------------------------" + System.Environment.NewLine);
-                frm_Main.UpdateLog(Output.PrintEquationTree(eq) + System.Environment.NewLine);
-                foreach(IntervalStruct iv in intervals)
-                {
-                    frm_Main.UpdateLog(Output.PrintInterval(iv) + System.Environment.NewLine);
-                }
+                results = new string[] { Output.PrintInterval(range, false), Output.PrintEquationTree(eq) };
             }
 
-            return;
+            return results;
         }
     }
 }

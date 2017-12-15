@@ -345,12 +345,14 @@ namespace CompanionCubeCalculator
         private static string[] GetVariableNamesFromIntervals(IntervalStruct[] intervals)
         {
             List<string> names = new List<string>();
-
-            foreach (IntervalStruct iv in intervals)
+            if (intervals != null)
             {
-                names.Add(iv.GetVariableName());
+                foreach (IntervalStruct iv in intervals)
+                {
+                    names.Add(iv.GetVariableName());
+                }
             }
-
+            
             return names.ToArray();
         }
     } 

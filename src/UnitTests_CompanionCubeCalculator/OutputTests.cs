@@ -18,19 +18,22 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestPrintIntervals()
         {
             IntervalStruct interval = new IntervalStruct("x", 3,5, true, true);
-            Assert.AreEqual("x = [3, 5]", Output.PrintInterval(interval));
+            Assert.AreEqual("x = [3, 5]", Output.PrintInterval(interval, true));
 
             interval = new IntervalStruct("x", 3, 5, false, false);
-            Assert.AreEqual("x = (3, 5)", Output.PrintInterval(interval));
+            Assert.AreEqual("x = (3, 5)", Output.PrintInterval(interval, true));
 
             interval = new IntervalStruct("x", 3, 5, true, false);
-            Assert.AreEqual("x = [3, 5)", Output.PrintInterval(interval));
+            Assert.AreEqual("x = [3, 5)", Output.PrintInterval(interval, true));
 
             interval = new IntervalStruct("x", 3, 5, false, true);
-            Assert.AreEqual("x = (3, 5]", Output.PrintInterval(interval));
+            Assert.AreEqual("x = (3, 5]", Output.PrintInterval(interval, true));
 
             interval = new IntervalStruct("", 3, 3, false, false);
-            Assert.AreEqual("CONST: 3", Output.PrintInterval(interval));
+            Assert.AreEqual("CONST: 3", Output.PrintInterval(interval, true));
+
+            interval = new IntervalStruct("", 3, 3, false, false);
+            Assert.AreEqual("CONST: 3", Output.PrintInterval(interval, false));
         }
 
         [TestMethod]
