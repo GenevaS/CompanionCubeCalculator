@@ -20,8 +20,7 @@ namespace CompanionCubeCalculator
         {
             List<IntervalStruct> intervals = new List<IntervalStruct>();
             IntervalStruct currentInterval;
-            Regex split = new Regex(lineDelimiter);
-            string[] vars = split.Split(varList);
+            string[] vars = Regex.Split(varList, lineDelimiter);
             string[] currentVar;
 
             for (int i = 0; i < vars.Length; i++)

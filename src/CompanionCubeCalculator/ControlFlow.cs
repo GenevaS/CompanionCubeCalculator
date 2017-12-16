@@ -12,6 +12,8 @@ namespace CompanionCubeCalculator
 {
     public static class ControlFlow
     {
+        private static bool hasRun = false;
+
         public static bool Initialize()
         {
             bool success = EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators());
@@ -21,6 +23,26 @@ namespace CompanionCubeCalculator
             }
             
             return success;
+        }
+
+        public static string[,] GetVariableInfo()
+        {
+            string[,] ivInfo = null;
+
+            if (hasRun)
+            {
+                IntervalStruct[] intervals = Consolidate.GetIntervalStructList();
+                ivInfo = new string[intervals.Length,3];
+
+                for(int i = 0; i < intervals.Length; i++)
+                {
+                    ivInfo[i, 0] = intervals[i].GetVariableName();
+                    ivInfo[i, 1] = intervals[i].GetMinBound().ToString();
+                    ivInfo[i, 2] = intervals[i].GetMaxBound().ToString();
+                }
+            }
+
+            return ivInfo;
         }
 
         public static string[] ControlFile(string fileName)
@@ -49,6 +71,7 @@ namespace CompanionCubeCalculator
                 {
                     results = new string[] { Output.PrintInterval(range, false), Output.PrintEquationTree(eq) };
                     frm_Main.UpdateLog("Range calculated successfully." + System.Environment.NewLine);
+                    hasRun = true;
                 }
                 
             }

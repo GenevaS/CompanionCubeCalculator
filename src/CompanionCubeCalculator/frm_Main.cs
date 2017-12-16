@@ -144,6 +144,7 @@ namespace CompanionCubeCalculator
             string[] results = ControlFlow.ControlDirect(equation, variables);
             if(results != null)
             {
+
                 Grp_Outputs.Enabled = true;
                 Lbl_RangeHeader.Enabled = true;
                 Lbl_RangeValue.Enabled = true;
@@ -154,6 +155,22 @@ namespace CompanionCubeCalculator
                 Txt_DisplayTree.Text = results[1];
 
                 Btn_ExtractVars.Enabled = false;
+
+                
+                string[,] varInfo = ControlFlow.GetVariableInfo();
+                if (varInfo != null)
+                {
+                    ResetVarTable();
+                    DataGridViewRow varRow;
+                    for (int i = 0; i < varInfo.GetLength(0); i++)
+                    {
+                        varRow = (DataGridViewRow)Grid_Vars.Rows[0].Clone();
+                        varRow.Cells[0].Value = varInfo[i, 0];
+                        varRow.Cells[1].Value = varInfo[i, 1];
+                        varRow.Cells[2].Value = varInfo[i, 2];
+                        Grid_Vars.Rows.Add(varRow);
+                    }
+                }
             }
 
             Txt_Log.AppendText(logMessages);
@@ -222,6 +239,7 @@ namespace CompanionCubeCalculator
                     Txt_Equation.Text = fileContents[0];
 
                     string[] results = ControlFlow.ControlDirect(fileContents[0], fileContents[1]);
+
                     if (results != null)
                     {
                         Grp_Outputs.Enabled = true;
@@ -233,7 +251,22 @@ namespace CompanionCubeCalculator
                         Lbl_RangeValue.Text = results[0];
                         Txt_DisplayTree.Text = results[1];
 
-                        Btn_ExtractVars.Enabled = false;
+                        Btn_ExtractVars.Enabled = false;                        
+                    }
+
+                    string[,] varInfo = ControlFlow.GetVariableInfo();
+                    if (varInfo != null)
+                    {
+                        ResetVarTable();
+                        DataGridViewRow varRow;
+                        for (int i = 0; i < varInfo.GetLength(0); i++)
+                        {
+                            varRow = (DataGridViewRow)Grid_Vars.Rows[0].Clone();
+                            varRow.Cells[0].Value = varInfo[i, 0];
+                            varRow.Cells[1].Value = varInfo[i, 1];
+                            varRow.Cells[2].Value = varInfo[i, 2];
+                            Grid_Vars.Rows.Add(varRow);
+                        }
                     }
                 }
                 
@@ -255,15 +288,7 @@ namespace CompanionCubeCalculator
         {
             Txt_Equation.Text = "";
 
-            Grid_Vars.AllowUserToAddRows = false;
-            foreach (DataGridViewRow var in Grid_Vars.Rows)
-            {
-                if (var.Cells[0].Value != null && var.Cells[1].Value != null && var.Cells[2].Value != null)
-                {
-                    Grid_Vars.Rows.Remove(var);
-                }
-            }
-            Grid_Vars.AllowUserToAddRows = true;
+            ResetVarTable();
 
             Grp_Outputs.Enabled = false;
             Lbl_RangeHeader.Enabled = false;
@@ -273,6 +298,21 @@ namespace CompanionCubeCalculator
 
             Lbl_RangeValue.Text = "-";
             Txt_DisplayTree.Text = "";
+
+            return;
+        }
+
+        private void ResetVarTable()
+        {
+            Grid_Vars.AllowUserToAddRows = false;
+            foreach (DataGridViewRow var in Grid_Vars.Rows)
+            {
+                if (var.Cells[0].Value != null && var.Cells[1].Value != null && var.Cells[2].Value != null)
+                {
+                    Grid_Vars.Rows.Remove(var);
+                }
+            }
+            Grid_Vars.AllowUserToAddRows = true;
 
             return;
         }

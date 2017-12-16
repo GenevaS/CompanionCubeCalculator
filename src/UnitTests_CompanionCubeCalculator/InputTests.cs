@@ -25,7 +25,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             string[] testFileTypes = Input.GetValidFileTypes();
             Assert.AreEqual(1, testFileTypes.Length);
-            Assert.AreEqual(".txt", testFileTypes[0]);
+            Assert.AreEqual("*.txt", testFileTypes[0]);
         }
 
         [TestMethod]
