@@ -45,7 +45,12 @@ namespace CompanionCubeCalculator
                 EquationStruct eq = Consolidate.GetEquationStruct();
                 IntervalStruct[] intervals = Consolidate.GetIntervalStructList();
                 IntervalStruct range = Solver.FindRange(eq, intervals);
-                results = new string[] { Output.PrintInterval(range, false), Output.PrintEquationTree(eq) };
+                if(range != null)
+                {
+                    results = new string[] { Output.PrintInterval(range, false), Output.PrintEquationTree(eq) };
+                    frm_Main.UpdateLog("Range calculated successfully.");
+                }
+                
             }
 
             return results;

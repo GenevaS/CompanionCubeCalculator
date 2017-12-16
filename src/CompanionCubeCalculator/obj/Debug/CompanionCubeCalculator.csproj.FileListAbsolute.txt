@@ -25,3 +25,10 @@ C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCub
 C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\bin\Debug\TestFiles\testSpecialChars.txt
 C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\bin\Debug\TestFiles\testWithEquals.txt
 C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\CompanionCubeCalculator\bin\Debug\frm_Main.resx
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\bin\Debug\TestFiles\test.txt
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\bin\Debug\TestFiles\testempty.txt
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\bin\Debug\TestFiles\testNoEq.txt
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\bin\Debug\TestFiles\testSpecialChars.txt
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\bin\Debug\TestFiles\testWithEquals.txt
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\bin\Debug\frm_Main.resx
+C:\Users\smith\Desktop\VisualStudioProjects\CompanionCubeCalculator\bin\Debug\TestFiles\test.tex

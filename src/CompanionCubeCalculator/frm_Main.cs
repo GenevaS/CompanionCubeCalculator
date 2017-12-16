@@ -30,6 +30,11 @@ namespace CompanionCubeCalculator
             return;
         }
 
+        private static void ClearLog()
+        {
+            logMessages = "";
+        }
+
         private void Frm_Main_Load(object sender, EventArgs e)
         {
             if (!ControlFlow.Initialize())
@@ -41,28 +46,9 @@ namespace CompanionCubeCalculator
 
             Lbl_RangeValue.Text = "-";
 
-            Txt_Log.Text = logMessages;
+            Txt_Log.AppendText(logMessages);
+            ClearLog();
         }
-        /*
-                private static string PrintEquation(EquationStruct node)
-                {
-                    string equation = "";
-
-                    if (node.GetLeftOperand() == null)
-                    {
-                        equation = node.GetOperator() + ": " + node.GetVariableName();
-                    }
-                    else if (node.GetRightOperand() == null)
-                    {
-                        equation = node.GetOperator() + "(" + PrintEquation(node.GetLeftOperand()) + ")";
-                    }
-                    else
-                    {
-                        equation = node.GetOperator() + "(" + PrintEquation(node.GetLeftOperand()) + ", " + PrintEquation(node.GetRightOperand()) + ")";
-                    }
-
-                    return equation;
-                }*/
 
         private void Txt_Equation_TextChanged(object sender, EventArgs e)
         {
@@ -108,9 +94,8 @@ namespace CompanionCubeCalculator
                 UpdateLog("Error: Equation field is empty. Please enter an equation into the Equation field to proceed." + System.Environment.NewLine);
             }
 
-            
-
-            Txt_Log.Text = logMessages;
+            Txt_Log.AppendText(logMessages);
+            ClearLog();
 
             return;
         }
@@ -122,11 +107,12 @@ namespace CompanionCubeCalculator
 
             foreach (DataGridViewRow var in Grid_Vars.Rows)
             {
+                
                 if (var.Cells[0].Value != null)
                 {
                     if (var.Cells[0].Value.ToString() != "" && var.Cells[1].Value.ToString() != "" && var.Cells[2].Value.ToString() != "")
                     {
-                        variables += var.Cells[0].Value.ToString() + Input.GetFieldDelimiter() + var.Cells[1].Value.ToString() + Input.GetFieldDelimiter() + var.Cells[2].Value.ToString() + Input.GetLineDelimiter();
+                        variables += var.Cells[0].Value.ToString() + Input.GetFieldDelimiter() + var.Cells[1].Value.ToString() + Input.GetFieldDelimiter() + var.Cells[2].Value.ToString() + System.Environment.NewLine;
                     }
                 }
                 
@@ -135,11 +121,18 @@ namespace CompanionCubeCalculator
             string[] results = ControlFlow.ControlDirect(equation, variables);
             if(results != null)
             {
+                Grp_Outputs.Enabled = true;
+                Lbl_RangeHeader.Enabled = true;
+                Lbl_RangeValue.Enabled = true;
+                Lbl_TreeHeader.Enabled = true;
+                Txt_DisplayTree.Enabled = true;
+
                 Lbl_RangeValue.Text = results[0];
                 Txt_DisplayTree.Text = results[1];
             }
 
-            Txt_Log.Text = logMessages;
+            Txt_Log.AppendText(logMessages);
+            ClearLog();
 
             return;
         }
