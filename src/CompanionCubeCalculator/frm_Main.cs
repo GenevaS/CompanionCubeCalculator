@@ -305,13 +305,7 @@ namespace CompanionCubeCalculator
         private void ResetVarTable()
         {
             Grid_Vars.AllowUserToAddRows = false;
-            foreach (DataGridViewRow var in Grid_Vars.Rows)
-            {
-                if (var.Cells[0].Value != null && var.Cells[1].Value != null && var.Cells[2].Value != null)
-                {
-                    Grid_Vars.Rows.Remove(var);
-                }
-            }
+            Grid_Vars.Rows.Clear();
             Grid_Vars.AllowUserToAddRows = true;
 
             return;
