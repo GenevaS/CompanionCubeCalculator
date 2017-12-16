@@ -71,7 +71,7 @@ namespace CompanionCubeCalculator
             }
             else
             {
-                indentation += "|  ";
+                indentation += "|   ";
             }
 
             eq += System.Environment.NewLine;

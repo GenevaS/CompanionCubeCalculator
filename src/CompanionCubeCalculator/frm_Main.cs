@@ -2,7 +2,7 @@
  * GUI Control Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/15
+ * Updated 2017/12/16
  * This module links GUI widgets to the different modules of the 
  * Companion Cube Calculator.
  * ---------------------------------------------------------------------
@@ -40,6 +40,7 @@ namespace CompanionCubeCalculator
             logMessages = "";
         }
 
+        /* <frm_Main> FUNCTIONS */
         private void Frm_Main_Load(object sender, EventArgs e)
         {
             if (!ControlFlow.Initialize())
@@ -55,6 +56,7 @@ namespace CompanionCubeCalculator
             ClearLog();
         }
 
+        /* EQUATION HEADER AND TEXTBOX FUNCTIONS */
         private void Txt_Equation_TextChanged(object sender, EventArgs e)
         {
             if (Input.RemoveWhitespace(Txt_Equation.Text, false) != "")
@@ -69,34 +71,61 @@ namespace CompanionCubeCalculator
             return;
         }
 
+        /* VARIABLE EXTRACTION FUNCTION */
         private void Btn_ExtractVars_Click(object sender, EventArgs e)
         {
             string eq = Input.RemoveWhitespace(Txt_Equation.Text, false);
             string[] variables;
             string[] varTableRow;
+            bool contains = false;
 
             if (eq != "")
             {
-                EquationConversion.MakeEquationTree(eq);
-                variables = EquationConversion.GetVariableList();
-
-                if (variables.Length > 0)
+                if (EquationConversion.MakeEquationTree(eq) != null)
                 {
-                    varTableRow = new string[] { "", "", "" };
-                    foreach (string varName in variables)
+                    Txt_Equation.BackColor = System.Drawing.SystemColors.Window;
+                    variables = EquationConversion.GetVariableList();
+
+                    if (variables.Length > 0)
                     {
-                        varTableRow[0] = varName;
-                        Grid_Vars.Rows.Add(varTableRow);
+                        varTableRow = new string[] { "", "", "" };
+                        foreach (string varName in variables)
+                        {
+                            foreach (DataGridViewRow row in Grid_Vars.Rows)
+                            {
+                                if (!(row.Cells[0].Value == null))
+                                {
+                                    if (row.Cells[0].Value.ToString().Contains(varName))
+                                    {
+                                        contains = true;
+                                    }
+                                }
+                            }
+
+                            if (!contains)
+                            {
+                                varTableRow[0] = varName;
+                                Grid_Vars.Rows.Add(varTableRow);
+                                contains = false;
+                            }
+                        }
+
+                        Btn_ExtractVars.Enabled = false;
+                    }
+                    else
+                    {
+                        Btn_Calculate.Enabled = true;
                     }
                 }
                 else
                 {
-                    Btn_Calculate.Enabled = true;
+                    Txt_Equation.BackColor = System.Drawing.Color.Red;
                 }
             }
             else
             {
                 UpdateLog("Error: Equation field is empty. Please enter an equation into the Equation field to proceed." + Environment.NewLine);
+                Txt_Equation.BackColor = System.Drawing.Color.Red;
             }
 
             Txt_Log.AppendText(logMessages);
@@ -105,6 +134,7 @@ namespace CompanionCubeCalculator
             return;
         }
 
+        /* CALCULATE BUTTON FUNCTION */
         private void Btn_Calculate_Click(object sender, EventArgs e)
         {
             string equation = Input.RemoveWhitespace(Txt_Equation.Text, false);
@@ -127,9 +157,7 @@ namespace CompanionCubeCalculator
                         else
                         {
                             UpdateLog("Warning: Found duplicate variable name (" + Regex.Replace(var.Cells[0].Value.ToString(), @"\s+", "") + "). Removing from the list." + Environment.NewLine);
-                            Grid_Vars.AllowUserToAddRows = false;
                             Grid_Vars.Rows.Remove(var);
-                            Grid_Vars.AllowUserToAddRows = true;
                         }
                     }
                 }
@@ -141,37 +169,7 @@ namespace CompanionCubeCalculator
             }
             Grid_Vars.AllowUserToAddRows = true;
 
-            string[] results = ControlFlow.ControlDirect(equation, variables);
-            if(results != null)
-            {
-
-                Grp_Outputs.Enabled = true;
-                Lbl_RangeHeader.Enabled = true;
-                Lbl_RangeValue.Enabled = true;
-                Lbl_TreeHeader.Enabled = true;
-                Txt_DisplayTree.Enabled = true;
-
-                Lbl_RangeValue.Text = results[0];
-                Txt_DisplayTree.Text = results[1];
-
-                Btn_ExtractVars.Enabled = false;
-
-                
-                string[,] varInfo = ControlFlow.GetVariableInfo();
-                if (varInfo != null)
-                {
-                    ResetVarTable();
-                    DataGridViewRow varRow;
-                    for (int i = 0; i < varInfo.GetLength(0); i++)
-                    {
-                        varRow = (DataGridViewRow)Grid_Vars.Rows[0].Clone();
-                        varRow.Cells[0].Value = varInfo[i, 0];
-                        varRow.Cells[1].Value = varInfo[i, 1];
-                        varRow.Cells[2].Value = varInfo[i, 2];
-                        Grid_Vars.Rows.Add(varRow);
-                    }
-                }
-            }
+            HandleResults(equation, variables);
 
             Txt_Log.AppendText(logMessages);
             ClearLog();
@@ -179,7 +177,20 @@ namespace CompanionCubeCalculator
             return;
         }
 
+        /* VARIABLE DATGRIDVIEW TABLE FUNCTIONS */
         private void Grid_Vars_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            CheckVariableTable();
+            return;
+        }
+
+        private void Grid_Vars_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            CheckVariableTable();
+            return;
+        }
+
+        private void CheckVariableTable()
         {
             bool enableCalculate = true;
 
@@ -192,7 +203,6 @@ namespace CompanionCubeCalculator
                         enableCalculate = false;
                     }
                 }
-                
             }
 
             if (enableCalculate)
@@ -207,6 +217,8 @@ namespace CompanionCubeCalculator
             return;
         }
 
+
+        /* LOAD MENU FUNCTIONS */
         private void MenuItem_Load_Click(object sender, EventArgs e)
         {
             Reset();
@@ -225,7 +237,6 @@ namespace CompanionCubeCalculator
                 {
                     filter += "|" + fileExtensions[i] + "|" + fileExtensions[i];
                 }
-
                 getUserFile.Filter = filter;
             }
 
@@ -237,41 +248,8 @@ namespace CompanionCubeCalculator
                 if (fileContents != null)
                 {
                     Txt_Equation.Text = fileContents[0];
-
-                    string[] results = ControlFlow.ControlDirect(fileContents[0], fileContents[1]);
-
-                    if (results != null)
-                    {
-                        Grp_Outputs.Enabled = true;
-                        Lbl_RangeHeader.Enabled = true;
-                        Lbl_RangeValue.Enabled = true;
-                        Lbl_TreeHeader.Enabled = true;
-                        Txt_DisplayTree.Enabled = true;
-
-                        Lbl_RangeValue.Text = results[0];
-                        Txt_DisplayTree.Text = results[1];
-
-                        Btn_ExtractVars.Enabled = false;                        
-                    }
-
-                    string[,] varInfo = ControlFlow.GetVariableInfo();
-                    if (varInfo != null)
-                    {
-                        ResetVarTable();
-                        DataGridViewRow varRow;
-                        for (int i = 0; i < varInfo.GetLength(0); i++)
-                        {
-                            varRow = (DataGridViewRow)Grid_Vars.Rows[0].Clone();
-                            varRow.Cells[0].Value = varInfo[i, 0];
-                            varRow.Cells[1].Value = varInfo[i, 1];
-                            varRow.Cells[2].Value = varInfo[i, 2];
-                            Grid_Vars.Rows.Add(varRow);
-                        }
-                    }
+                    HandleResults(fileContents[0], fileContents[1]);
                 }
-                
-                Txt_Log.AppendText(logMessages);
-                ClearLog();
             }
             else
             {
@@ -288,27 +266,74 @@ namespace CompanionCubeCalculator
         {
             Txt_Equation.Text = "";
 
-            ResetVarTable();
+            Grid_Vars.Rows.Clear();
+
+            Btn_ExtractVars.Enabled = false;
+            Btn_Calculate.Enabled = false;
 
             Grp_Outputs.Enabled = false;
             Lbl_RangeHeader.Enabled = false;
             Lbl_RangeValue.Enabled = false;
             Lbl_TreeHeader.Enabled = false;
-            Txt_DisplayTree.Enabled = false;
 
             Lbl_RangeValue.Text = "-";
             Txt_DisplayTree.Text = "";
 
+            Txt_Equation.BackColor = System.Drawing.SystemColors.Window;
+            Grid_Vars.GridColor = System.Drawing.SystemColors.ControlDark;
+
             return;
         }
 
-        private void ResetVarTable()
+        /* RESULT HANDLING FUNCTION */
+        private void HandleResults(string equation, string variables)
         {
-            Grid_Vars.AllowUserToAddRows = false;
-            Grid_Vars.Rows.Clear();
-            Grid_Vars.AllowUserToAddRows = true;
+            string[] results = ControlFlow.ControlDirect(equation, variables);
 
-            return;
+            if (results != null)
+            {
+                Grp_Outputs.Enabled = true;
+                Lbl_RangeHeader.Enabled = true;
+                Lbl_RangeValue.Enabled = true;
+                Lbl_TreeHeader.Enabled = true;
+
+                Lbl_RangeValue.Text = results[0];
+                Txt_DisplayTree.Text = results[1];
+
+                Btn_ExtractVars.Enabled = false;
+
+                string[,] varInfo = ControlFlow.GetVariableInfo();
+                if (varInfo != null)
+                {
+                    Grid_Vars.Rows.Clear();
+                    DataGridViewRow varRow;
+                    for (int i = 0; i < varInfo.GetLength(0); i++)
+                    {
+                        varRow = (DataGridViewRow)Grid_Vars.Rows[0].Clone();
+                        varRow.Cells[0].Value = varInfo[i, 0];
+                        varRow.Cells[1].Value = varInfo[i, 1];
+                        varRow.Cells[2].Value = varInfo[i, 2];
+                        Grid_Vars.Rows.Add(varRow);
+                    }
+                }
+
+                Txt_Equation.BackColor = System.Drawing.SystemColors.Window;
+                Grid_Vars.GridColor = System.Drawing.SystemColors.ControlDark;
+            }
+            else
+            {
+                if (ControlFlow.GetSuccessCode() == -3)
+                {
+                    Txt_Equation.BackColor = System.Drawing.Color.Red;
+                }
+                else if (ControlFlow.GetSuccessCode() == -2)
+                {
+                    Grid_Vars.GridColor = System.Drawing.Color.Red;
+                }
+            }
+
+            Btn_ExtractVars.Enabled = false;
+            Btn_Calculate.Enabled = false;
         }
     }
 }

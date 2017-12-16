@@ -2,7 +2,7 @@
  * Variable Consolidation Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/12
+ * Updated 2017/12/16
  * Corresponds to the Variable Consolidation Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * ---------------------------------------------------------------------
@@ -18,7 +18,17 @@ namespace CompanionCubeCalculator
         private static EquationStruct equationTreeRoot = null;
         private static IntervalStruct[] intervalList;
 
-        public static bool ConvertAndCheckInputs(string eqString, string varList, OperatorStruct[] operators, string[][] terminators, string lineDelimiter, string fieldDelimiter)
+        /*
+         * ConvertAndCheckInputs
+         * -----------------------------------------------------------------------------------
+         * Returns an Integer code denoting the success of the parsing and conversion process.
+         * Codes:
+         * -3 -> Equation Parsing failed
+         * -2 -> Variable Matching failed
+         * -1 -> Equation Parser Initialization failed
+         *  0 -> Success
+         */
+        public static int ConvertAndCheckInputs(string eqString, string varList, OperatorStruct[] operators, string[][] terminators, string lineDelimiter, string fieldDelimiter)
         {
             string[] equationVars;
             List<int> eqVarIndex = new List<int>();
@@ -27,7 +37,7 @@ namespace CompanionCubeCalculator
             string[] intervalVars2;
             List<int> removeIndex = new List<int>();
             int index;
-            bool success = true;
+            int success = 0;
             string message = "";
 
             EquationConversion.ResetEquationConversion();
@@ -102,7 +112,7 @@ namespace CompanionCubeCalculator
                     if (eqVarIndex.Count < equationVars.Length)
                     {
                         // This is a fail state
-                        success = false;
+                        success = -2;
 
                         message = "Error: Cannot find intervals for variable name(s): ";
 
@@ -119,11 +129,15 @@ namespace CompanionCubeCalculator
                     }
 
                 }
+                else
+                {
+                    success = -3;
+                }
             }
             else
             {
                 frm_Main.UpdateLog("Error: Equation parser could not be configured.");
-                success = false;
+                success = -1;
             }
 
             return success;

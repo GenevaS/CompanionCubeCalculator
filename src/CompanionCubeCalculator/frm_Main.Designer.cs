@@ -95,7 +95,7 @@
             // 
             this.MenuItem_Load.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.MenuItem_Load.Name = "MenuItem_Load";
-            this.MenuItem_Load.Size = new System.Drawing.Size(152, 22);
+            this.MenuItem_Load.Size = new System.Drawing.Size(100, 22);
             this.MenuItem_Load.Text = "Load";
             this.MenuItem_Load.Click += new System.EventHandler(this.MenuItem_Load_Click);
             // 
@@ -141,6 +141,7 @@
             this.Grid_Vars.Size = new System.Drawing.Size(343, 150);
             this.Grid_Vars.TabIndex = 8;
             this.Grid_Vars.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Grid_Vars_CellValueChanged);
+            this.Grid_Vars.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.Grid_Vars_RowsRemoved);
             // 
             // Col_VarName
             // 
@@ -185,7 +186,7 @@
             // 
             this.Txt_DisplayTree.BackColor = System.Drawing.SystemColors.Control;
             this.Txt_DisplayTree.Enabled = false;
-            this.Txt_DisplayTree.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Txt_DisplayTree.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Txt_DisplayTree.Location = new System.Drawing.Point(496, 150);
             this.Txt_DisplayTree.Multiline = true;
             this.Txt_DisplayTree.Name = "Txt_DisplayTree";
