@@ -95,8 +95,9 @@
             // 
             this.MenuItem_Load.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.MenuItem_Load.Name = "MenuItem_Load";
-            this.MenuItem_Load.Size = new System.Drawing.Size(100, 22);
+            this.MenuItem_Load.Size = new System.Drawing.Size(152, 22);
             this.MenuItem_Load.Text = "Load";
+            this.MenuItem_Load.Click += new System.EventHandler(this.MenuItem_Load_Click);
             // 
             // Lbl_EquationHeader
             // 

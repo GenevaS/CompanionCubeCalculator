@@ -18,7 +18,7 @@ namespace CompanionCubeCalculator
     {
         private static string lineDelimeter = System.Environment.NewLine;
         private static string fieldDelimiter = ",";
-        private static string[] validFileTypes = new string[] { ".txt" };
+        private static string[] validFileTypes = new string[] { "*.txt" };
 
         /* GETTERS */
         public static string GetLineDelimiter()

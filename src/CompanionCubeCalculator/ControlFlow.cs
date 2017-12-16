@@ -27,7 +27,7 @@ namespace CompanionCubeCalculator
         {
             string[] inputs = Input.ReadFile(fileName);
 
-            return CalculateRange(inputs[0], inputs[1]);
+            return inputs;
         }
 
         public static string[] ControlDirect(string eq, string variables)
@@ -48,7 +48,7 @@ namespace CompanionCubeCalculator
                 if(range != null)
                 {
                     results = new string[] { Output.PrintInterval(range, false), Output.PrintEquationTree(eq) };
-                    frm_Main.UpdateLog("Range calculated successfully.");
+                    frm_Main.UpdateLog("Range calculated successfully." + System.Environment.NewLine);
                 }
                 
             }
