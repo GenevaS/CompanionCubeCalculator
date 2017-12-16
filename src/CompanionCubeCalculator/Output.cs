@@ -36,7 +36,15 @@ namespace CompanionCubeCalculator
                     iv += "(";
                 }
 
-                iv += interval.GetMinBound().ToString() + ", " + interval.GetMaxBound();
+                if(interval.GetMinBound().ToString().Length > 12)
+                {
+                    iv += interval.GetMinBound() + ", " + System.Environment.NewLine + " " + interval.GetMaxBound();
+                }
+                else
+                {
+                    iv += interval.GetMinBound() + ", " + interval.GetMaxBound();
+                }
+                
 
                 if(interval.IsRightBoundClosed())
                 {

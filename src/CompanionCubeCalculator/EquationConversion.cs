@@ -72,6 +72,7 @@ namespace CompanionCubeCalculator
         {
             bool success = true;
             string opList = "";
+            string termList = "";
 
             if(ops.Length == 0)
             {
@@ -107,10 +108,10 @@ namespace CompanionCubeCalculator
                     if(terminators[i][0] != "" && terminators[i][1] != "")
                     {
                         leftTerminators.Add(terminators[i][0]);
-                        opList += EscapeReservedCharacters(terminators[i][0]) + ",";
+                        termList += EscapeReservedCharacters(terminators[i][0]) + ",";
 
                         rightTerminators.Add(terminators[i][1]);
-                        opList += EscapeReservedCharacters(terminators[i][1]) + ",";
+                        termList += EscapeReservedCharacters(terminators[i][1]) + ",";
                     }
                     else
                     {
@@ -131,7 +132,7 @@ namespace CompanionCubeCalculator
             if(success)
             {
                 // Create the pattern for RE matching
-                variableStringPattern += variableStringPatternOpen + opList.Substring(0, opList.Length - 1) + variableStringPatternClose;
+                variableStringPattern += variableStringPatternOpen + opList.Substring(0, opList.Length) + termList.Substring(0, termList.Length - 1) + variableStringPatternClose;
                 implicitMultiplicationPattern += implicitMultiplicationPatternOpen + opList.Substring(0, opList.Length - 1) + implicitMultiplicationPatternClose;
             }
 

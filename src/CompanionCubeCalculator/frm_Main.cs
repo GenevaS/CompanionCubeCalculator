@@ -106,8 +106,8 @@ namespace CompanionCubeCalculator
                             {
                                 varTableRow[0] = varName;
                                 Grid_Vars.Rows.Add(varTableRow);
-                                contains = false;
                             }
+                            contains = false;
                         }
 
                         Btn_ExtractVars.Enabled = false;
@@ -296,6 +296,7 @@ namespace CompanionCubeCalculator
                 Lbl_RangeHeader.Enabled = true;
                 Lbl_RangeValue.Enabled = true;
                 Lbl_TreeHeader.Enabled = true;
+                Txt_DisplayTree.Enabled = true;
 
                 Lbl_RangeValue.Text = results[0];
                 Txt_DisplayTree.Text = results[1];

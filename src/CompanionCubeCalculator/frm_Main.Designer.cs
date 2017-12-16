@@ -187,11 +187,11 @@
             this.Txt_DisplayTree.BackColor = System.Drawing.SystemColors.Control;
             this.Txt_DisplayTree.Enabled = false;
             this.Txt_DisplayTree.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Txt_DisplayTree.Location = new System.Drawing.Point(496, 150);
+            this.Txt_DisplayTree.Location = new System.Drawing.Point(462, 150);
             this.Txt_DisplayTree.Multiline = true;
             this.Txt_DisplayTree.Name = "Txt_DisplayTree";
             this.Txt_DisplayTree.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.Txt_DisplayTree.Size = new System.Drawing.Size(402, 149);
+            this.Txt_DisplayTree.Size = new System.Drawing.Size(440, 165);
             this.Txt_DisplayTree.TabIndex = 11;
             // 
             // Lbl_TreeHeader
@@ -199,7 +199,7 @@
             this.Lbl_TreeHeader.AutoSize = true;
             this.Lbl_TreeHeader.Enabled = false;
             this.Lbl_TreeHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Lbl_TreeHeader.Location = new System.Drawing.Point(493, 129);
+            this.Lbl_TreeHeader.Location = new System.Drawing.Point(459, 129);
             this.Lbl_TreeHeader.Name = "Lbl_TreeHeader";
             this.Lbl_TreeHeader.Size = new System.Drawing.Size(100, 18);
             this.Lbl_TreeHeader.TabIndex = 12;
@@ -210,7 +210,7 @@
             this.Lbl_RangeHeader.AutoSize = true;
             this.Lbl_RangeHeader.Enabled = false;
             this.Lbl_RangeHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Lbl_RangeHeader.Location = new System.Drawing.Point(492, 80);
+            this.Lbl_RangeHeader.Location = new System.Drawing.Point(456, 80);
             this.Lbl_RangeHeader.Name = "Lbl_RangeHeader";
             this.Lbl_RangeHeader.Size = new System.Drawing.Size(82, 20);
             this.Lbl_RangeHeader.TabIndex = 13;
@@ -221,7 +221,7 @@
             this.Lbl_RangeValue.AutoSize = true;
             this.Lbl_RangeValue.Enabled = false;
             this.Lbl_RangeValue.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Lbl_RangeValue.Location = new System.Drawing.Point(571, 82);
+            this.Lbl_RangeValue.Location = new System.Drawing.Point(535, 82);
             this.Lbl_RangeValue.Name = "Lbl_RangeValue";
             this.Lbl_RangeValue.Size = new System.Drawing.Size(68, 18);
             this.Lbl_RangeValue.TabIndex = 14;

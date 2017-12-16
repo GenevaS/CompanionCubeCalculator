@@ -44,12 +44,12 @@ namespace UnitTests_CompanionCubeCalculator
             EquationStruct equation = new EquationStruct("+", "", new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), new EquationStruct(varToken, "x", null, null));
             string target = "";
             target += "+- {+}" + System.Environment.NewLine;
-            target += "|  +- {/}" + System.Environment.NewLine;
-            target += "|  |  +- {VAR} y" + System.Environment.NewLine;
-            target += "|  |  +- {VAR} z" + System.Environment.NewLine;
-            target += "|  +- {VAR} x" + System.Environment.NewLine;
+            target += "|   +- {/}" + System.Environment.NewLine;
+            target += "|   |  +- {VAR} y" + System.Environment.NewLine;
+            target += "|   |  +- {VAR} z" + System.Environment.NewLine;
+            target += "|   +- {VAR} x" + System.Environment.NewLine;
 
-            Assert.AreEqual(target, Output.PrintEquationTree(equation));
+            Assert.AreEqual(System.Text.RegularExpressions.Regex.Replace(target, @"\s+", ""), System.Text.RegularExpressions.Regex.Replace(Output.PrintEquationTree(equation), @"\s+", ""));
         }
     }
 }

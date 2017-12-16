@@ -18,16 +18,16 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestFailedConfig()
         {
             OperatorStruct[] ops = new OperatorStruct[] { };
-            bool success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", ops, Solver.GetValidTerminators(), System.Environment.NewLine, ",");
-            Assert.AreEqual(false, success);
+            int success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", ops, Solver.GetValidTerminators(), System.Environment.NewLine, ",");
+            Assert.AreEqual(-1, success);
 
             string[][] terminators = new string[][] { new string[] { "(", "" } };
             success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), terminators, System.Environment.NewLine, ",");
-            Assert.AreEqual(false, success);
+            Assert.AreEqual(-1, success);
 
             terminators = new string[][] { new string[] { "", ")" } };
             success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), terminators, System.Environment.NewLine, ",");
-            Assert.AreEqual(false, success);
+            Assert.AreEqual(-1, success);
         }
 
         [TestMethod]
@@ -83,9 +83,9 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestMissingVariable()
         {
             // test-input noDomain
-            bool success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3", Solver.GetValidOperators(), Solver.GetValidTerminators(), System.Environment.NewLine, ",");
+            int success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3", Solver.GetValidOperators(), Solver.GetValidTerminators(), System.Environment.NewLine, ",");
             
-            Assert.AreEqual(false, success);
+            Assert.AreEqual(-2, success);
         }
 
 
