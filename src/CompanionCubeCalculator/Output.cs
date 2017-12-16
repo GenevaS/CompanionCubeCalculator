@@ -67,7 +67,7 @@ namespace CompanionCubeCalculator
 
             if (isRightOperand && node.GetLeftOperand() == null && node.GetRightOperand() == null)
             {
-                indentation += "   ";
+                indentation += "     ";
             }
             else
             {

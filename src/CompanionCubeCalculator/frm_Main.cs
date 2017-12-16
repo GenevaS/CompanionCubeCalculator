@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CompanionCubeCalculator
@@ -91,7 +86,7 @@ namespace CompanionCubeCalculator
             }
             else
             {
-                UpdateLog("Error: Equation field is empty. Please enter an equation into the Equation field to proceed." + System.Environment.NewLine);
+                UpdateLog("Error: Equation field is empty. Please enter an equation into the Equation field to proceed." + Environment.NewLine);
             }
 
             Txt_Log.AppendText(logMessages);
@@ -104,16 +99,34 @@ namespace CompanionCubeCalculator
         {
             string equation = Input.RemoveWhitespace(Txt_Equation.Text, false);
             string variables = "";
+            List<string> varNames = new List<string>();
 
             foreach (DataGridViewRow var in Grid_Vars.Rows)
             {
                 
-                if (var.Cells[0].Value != null)
+                if (var.Cells[0].Value != null && var.Cells[1].Value != null && var.Cells[2].Value != null)
                 {
                     if (var.Cells[0].Value.ToString() != "" && var.Cells[1].Value.ToString() != "" && var.Cells[2].Value.ToString() != "")
                     {
-                        variables += var.Cells[0].Value.ToString() + Input.GetFieldDelimiter() + var.Cells[1].Value.ToString() + Input.GetFieldDelimiter() + var.Cells[2].Value.ToString() + System.Environment.NewLine;
+                        if(!varNames.Contains(Regex.Replace(var.Cells[0].Value.ToString(), @"\s+", "")))
+                        {
+                            variables += var.Cells[0].Value.ToString() + Regex.Unescape(Input.GetFieldDelimiter()) + var.Cells[1].Value.ToString() + Regex.Unescape(Input.GetFieldDelimiter()) + var.Cells[2].Value.ToString() + Regex.Unescape(Input.GetLineDelimiter());
+                            varNames.Add(Regex.Replace(var.Cells[0].Value.ToString(), @"\s+", ""));
+                        }
+                        else
+                        {
+                            UpdateLog("Warning: Found duplicate variable name (" + Regex.Replace(var.Cells[0].Value.ToString(), @"\s+", "") + "). Removing from the list." + Environment.NewLine);
+                            Grid_Vars.AllowUserToAddRows = false;
+                            Grid_Vars.Rows.Remove(var);
+                            Grid_Vars.AllowUserToAddRows = true;
+                        }
                     }
+                }
+                else
+                {
+                    Grid_Vars.AllowUserToAddRows = false;
+                    Grid_Vars.Rows.Remove(var);
+                    Grid_Vars.AllowUserToAddRows = true;
                 }
                 
             }

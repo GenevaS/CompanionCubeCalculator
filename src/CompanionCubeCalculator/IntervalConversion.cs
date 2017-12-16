@@ -24,39 +24,42 @@ namespace CompanionCubeCalculator
             string[] vars = split.Split(varList);
             string[] currentVar;
 
-            for(int i = 0; i < vars.Length; i++)
+            for (int i = 0; i < vars.Length; i++)
             {
-                // Split the string on the delimiter (',')
-                currentVar =Regex.Split(vars[i], fieldDelimiter);
+                if (vars[i] != "")
+                {
+                    // Split the string on the delimiter (',')
+                    currentVar = Regex.Split(vars[i], fieldDelimiter);
 
-                // There are the right number of fields -> add to list if the interval != null
-                if(currentVar.Length == 3)
-                {
-                    currentInterval = MakeInterval(currentVar[0], currentVar[1], currentVar[2]);
-                    if(currentInterval != null)
+                    // There are the right number of fields -> add to list if the interval != null
+                    if (currentVar.Length == 3)
                     {
-                        intervals.Add(currentInterval);
+                        currentInterval = MakeInterval(currentVar[0], currentVar[1], currentVar[2]);
+                        if (currentInterval != null)
+                        {
+                            intervals.Add(currentInterval);
+                        }
                     }
-                }
-                // There is one missing field, so add an empty placeholder and let the MakeInterval function
-                // handle the rest -> add to list if the interval != null
-                else if (currentVar.Length == 2)
-                {
-                    currentInterval = MakeInterval(currentVar[0], currentVar[1], "");
-                    if (currentInterval != null)
+                    // There is one missing field, so add an empty placeholder and let the MakeInterval function
+                    // handle the rest -> add to list if the interval != null
+                    else if (currentVar.Length == 2)
                     {
-                        intervals.Add(currentInterval);
+                        currentInterval = MakeInterval(currentVar[0], currentVar[1], "");
+                        if (currentInterval != null)
+                        {
+                            intervals.Add(currentInterval);
+                        }
                     }
-                }
-                // There are too many fields -> skip and notify the user
-                else if(currentVar.Length > 3)
-                {
-                    frm_Main.UpdateLog("Error: Encountered a variable with more than three fields (Line " + (i + 1) + "). Skipping line." + System.Environment.NewLine);
-                }
-                // There is one or fewer fields on the current line -> skip and notify the user
-                else
-                {
-                    frm_Main.UpdateLog("Error: No fields found for variable (Line " + (i + 1) + "). Skipping line." + System.Environment.NewLine);
+                    // There are too many fields -> skip and notify the user
+                    else if (currentVar.Length > 3)
+                    {
+                        frm_Main.UpdateLog("Error: Encountered a variable with more than three fields (Line " + (i + 1) + "). Skipping line." + System.Environment.NewLine);
+                    }
+                    // There is one or fewer fields on the current line -> skip and notify the user
+                    else
+                    {
+                        frm_Main.UpdateLog("Error: No fields found for variable (Line " + (i + 1) + "). Skipping line." + System.Environment.NewLine);
+                    }
                 }
             }
 
