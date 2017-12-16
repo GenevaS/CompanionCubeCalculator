@@ -3,6 +3,7 @@
 \usepackage[margin=1.1in]{geometry}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{listings}
 
 \title{Companion Cube Calculator \\ User Guide}
 \author{Geneva Smith (GenevaS)}
@@ -85,6 +86,29 @@ per line in your input file. The expected format of the file is:
 	\item Each subsequent line contains the information for one of your 
 	variable domains, where each field is separated by a comma (,).
 \end{itemize}
+
+\textbf{Example}:
+
+Given the equation $f(x) = x + y, x = [2, 4], y = [3, 5]$, the corresponding 
+file 
+would contain:
+
+ \begin{lstlisting}
+ f(x) = x + y
+ x,2,4
+ y,3,5
+ \end{lstlisting}
+ 
+ You can optionally omit the equality in your user function:
+ 
+\begin{lstlisting}
+x + y
+x,2,4
+y,3,5
+\end{lstlisting}
+
+You can find the sample file, \texttt{test.txt}, corresponding to this example 
+\texttt{TestFiles} directory.
 
 \paragraph{Reading the Results\\}
 You can find the calculated range of your function in the ``Range" field. You 
