@@ -63,6 +63,8 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
+December 17, 2017 & 1.2 & Updated the Control Flow specification to match the 
+resulting implementation \\
 December 7, 2017 & 1.1.1 & Revised the operator data structure with missing 
 ``get" operator, a new exception, and seperated the \texttt{numOperands} 
 Integer state variable into three Boolean state variables; added terminator 
@@ -89,23 +91,26 @@ symbols, abbreviations, and acronyms.
 \pagenumbering{arabic}
 
 \section{Introduction}
-
 The following document details the Module Interface Specifications for the 
 \progname{} (\prognameAbbrv{}), a mathematical tool which determines the range 
 of a user-specified function given the domains of the function's variables. The 
 calculations are performed using interval arithmetic.
-
-Complementary documents include the System Requirement Specifications
-and Module Guide.  The full documentation and implementation can be
-found at \url{https://github.com/GenevaS/CAS741}.
 
 It is assumed that the chosen implementation language will automatically check 
 that the appropriate number of inputs are provided to a function and that all 
 inputs are of the expected type. Therefore, these exceptions are not listed in 
 this specification.
 
-\section{Notation}
+Complementary documents include the System Requirement Specifications
+and Module Guide. The full documentation and implementation can be
+found at:
+\begin{center}
+	\href{https://github.com/GenevaS/CAS741}{https://github.com/GenevaS/CAS741}
+\end{center}
 
+\newpage
+
+\section{Notation}
 The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995},
 with the addition that template modules have been adapted from
 \cite{GhezziEtAl2003}.  The mathematical notation comes from Chapter 3 of
@@ -132,19 +137,18 @@ alphanumeric and special characters\\
 \end{center}
 
 \noindent
-The specification of \progname \ uses some derived data types: sequences, strings, and
-tuples. Sequences are lists filled with elements of the same data type. Strings
-are sequences of characters. Tuples contain a list of values, potentially of
-different types. In addition, \progname \ uses functions, which
+The specification of \progname{} uses some derived data types: sequences and 
+strings. Sequences are lists filled with elements of the same data type. Strings
+are sequences of characters. In addition, \progname{} uses functions, which
 are defined by the data types of their inputs and outputs. Local functions are
 described by giving their type signature followed by their specification.
 
 \newpage
-\section{Module Decomposition}
 
+\section{Module Decomposition}
 The following table is taken directly from the Module Guide document for this 
 project. It can be found at 
-\url{https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MG}.
+\href{https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MG}{https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MG}.
 
 \begin{table}[h!]
 	\centering
@@ -181,19 +185,25 @@ project. It can be found at
 
 \section{MIS of the Control Flow Module} 
 \label{Module_controlflow}
+The Control Flow module is the only access point that external applications 
+should use when implementing the Companion Cube Calculator. This affords the 
+freedom to create any type of user interface without changing any of the 
+underlying structure. In some cases, this means that a Control Flow access 
+program simply returns the outputs from other module access programs without 
+modifying them.
 
 \subsection{Module}
 
-Main
+ControlFlow
 
 \subsection{Uses}
 
-Input (Section~\ref{Module_userinput}), Consolidate 
+Input (Section~\ref{Module_userinput}), EquationConversion 
+(Section~\ref{Module_equationconversion}), Consolidate 
 (Section~\ref{Module_variableconsolidation}), Solver 
-(Section~\ref{Module_rangesolver}), Output (Section~\ref{Module_output}), 
+(Section~\ref{Module_rangesolver}), Output (Section~\ref{Module_output}),
 IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct 
 (Section~\ref{Module_equationdatastructure})
-
 
 \subsection{Syntax}
 
@@ -204,7 +214,11 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-Main & - & - & - \\
+Initialize & - & $Boolean$ & - \\
+ControlFile & $String$ & $String^n$ & - \\
+ControlDirect & $String$, $String$ & $String^n$ & - \\
+GetSuccessCode & - & $Int$ & - \\
+GetVariableInfo & - & $String^{n \times 3}$ & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -213,39 +227,83 @@ Main & - & - & - \\
 
 \subsubsection{State Variables}
 
-N/A
+\begin{itemize}
+	\item $hasRun$ : $Boolean$
+	\item $successCode$ : $Int$
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent Main():
+\noindent Initialize():
 \begin{itemize}
-\item transition: Create data structures to contain the user inputs and modify 
-their states for the Output module.
+	\item output: $out := success$ where $success$ is the output of the 
+	ConfigureParser access program from the EquationConversion module
+	\item exception: N/A
 \end{itemize}
 
-\begin{lstlisting}
-# Get User Input
-  userInputs := Input.GetUserInputs()
-  eqString := userInputs[0]
-  varList := userInputs[1, userInputs.Length - 1]    
- 
-# Convert input into equation and interval data structures using 
-# the list of valid operators from Solver
-  operators := Solver.GetValidOperators()
-  Consolidate.ConvertAndCheckInputs(eqString, varList, operators)
-  
-# Get the equation and interval data structures and pass them to 
-# the Solver module
-  equationData := Consolidate.GetEquationStruct()
-  intervalDataList := Consolidate.GetIntervalStructList()
-  range := Solver.CalculateRange(equationData, intervalDataList)
-  
-# Report the results back to the user
-  Output.PrintInterval(range)
-  Output.PrintEquationTree(equationData)
-  for each interval in intervalDataList:
-    Output.PrintInterval(interval)
-\end{lstlisting}
+\noindent ControlFile(fileName):
+\begin{itemize}
+	\item output: $out := inputs$ where $inputs$ is the output of the 
+	ReadFile access program from the Input module
+	\item exception: N/A
+\end{itemize}
+
+\noindent ControlDirect($equationString, variableListString$):
+\begin{itemize}
+	\item transition: Updates the $successCode$ state variable with the return 
+	value of the ConvertAndCheckInputs access program from the Consolidate 
+	module. If the ControlDirect access program completes successfully, update 
+	the $hasRun$ state variable to $True$.
+	\item output: $out := results$ where:
+	\begin{itemize}
+		\item The program completed successfully:\\
+		$results$ is the sequence $range, equationTree$. The value for $range$ 
+		is the output of the PrintInterval access program from the Output 
+		module and the value for $equationTree$ is the output of the 
+		PrintEquationTree access program from the Output module.
+		\item The program was not completed successfully, $results$ is $NULL$
+	\end{itemize} 
+
+	\begin{lstlisting}
+	results = NULL
+	successCode = Consolidate.ConvertAndCheckInputs(equationString, 
+	   variableListString, 
+	   Solver.GetValidOperators(), 
+	   Solver.GetValidTerminators())
+	if successCode = 0
+	  range = Solver.FindRange(
+	     Consolidate.GetEquationStruct(), 
+	     Consolidate.GetIntervalStructList())
+	  if range != NULL
+	    results = {Output.PrintInterval(range), 
+	               Output.PrintEquationTree(Consolidate.GetEquationStruct())}
+	    hasRun = TRUE
+	return results
+	\end{lstlisting}
+\end{itemize}
+
+\noindent GetSuccessCode():
+\begin{itemize}
+	\item output: $out := successCode$
+	\item exception: N/A
+\end{itemize}
+
+\noindent GetVariableInfo():
+\begin{itemize}
+	\item output: $out := varInfoList$ where:
+	\begin{lstlisting}
+	Initialize varInfoList = NULL
+	if hasRun is TRUE
+	  intervalList = Consolidate.GetIntervalStructList()
+	  if the interval list contains data
+	    foreach(interval in intervalList)
+	      varInfoList.Add(interval.GetVariableName, 
+	                      interval.GetMinBound, 
+                              interval.GetMaxBound)
+    return varInfoList
+	\end{lstlisting}
+	\item exception: N/A
+\end{itemize}
 
 \newpage
 
