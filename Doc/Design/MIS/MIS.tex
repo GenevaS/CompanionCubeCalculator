@@ -63,8 +63,8 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-December 17, 2017 & 1.2 & Updated the Control Flow specification to match the 
-resulting implementation \\
+December 17, 2017 & 1.2 & Updated the Control Flow and Input specifications to 
+match the resulting implementation \\
 December 7, 2017 & 1.1.1 & Revised the operator data structure with missing 
 ``get" operator, a new exception, and seperated the \texttt{numOperands} 
 Integer state variable into three Boolean state variables; added terminator 
@@ -309,12 +309,16 @@ GetVariableInfo & - & $String^{n \times 3}$ & - \\
 
 \section{MIS of the User Input Module} 
 \label{Module_userinput}
-
-\wss{Should GetUserInputs take a string is input for when the user wants to
-  obtain the inputs from a file.}
-\wss{Do you really want the output to be a sequence of strings?  What about
-  defining an ADT that stores this information, or an abstract object, if there
-  is only one?}
+The Input Module is responsible for the File I/O and string formatting 
+processes required by the program. This module simply outputs a pair of strings 
+(equation and variable information) and leaves the conditioning and validation 
+of the actual values to the Variable Consolidation Module 
+(Section~\ref{Module_variableconsolidation}). This completely decouples input 
+acquisition from files and the internal function of the program, allowing for 
+other input methods to be implemented simultaneously while reducing the number 
+of modules to modify if the underlying data structures 
+(Section~\ref{Module_intervaldatastructure} and 
+~\ref{Module_equationdatastructure}) change.
 
 \subsection{Module}
 
@@ -326,25 +330,36 @@ N/A
 
 \subsection{Syntax}
 
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+	\item $lineDelimiter$ : $String$
+	\item $fieldDelimiter$ : $String$
+	\item $validFileTypes$ : $String^n$
+\end{itemize}
+
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
+	\begin{tabular}{p{3.2cm} p{3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{2}{3cm}{GetUserInputs} & \multirow{2}{3cm}{-} & 
-		\multirow{2}{3cm}{$String^n$} & IN\_BAD\_FILE, \\
-		 &  &  & IN\_EMPTY\_FILE \\
+		\multirow{5}{3.2cm}{ReadFile} & \multirow{5}{3cm}{$String$} & 
+		\multirow{5}{3cm}{$String^2$} & IN\_CANNOT\_READ\_FILE, \\
+		 &  &  & IN\_EMPTY\_FILE, \\
+		 & & & IN\_INVALID\_FILE\_TYPE,\\
+		 & & &  IN\_NO\_EQUATION,\\
+		 & & & IN\_NO\_FILE\\
+		 RemoveWhitespace & $String$, $Bool$ & $String$ & - \\
+		 GetLineDelimiter & - & $String$ & - \\
+		 GetFieldDelimiter & - & $String$ & - \\
+		 GetValidFileTypes & - & $String^n$ & - \\
 		\hline
 	\end{tabular}
 \end{center}
 
 \subsection{Semantics}
-
-\subsubsection{Environment Variables}
-
-$inputFile$ : $String^n$
 
 \subsubsection{State Variables}
 
@@ -353,37 +368,76 @@ N/A
 \subsubsection{Assumptions}
 
 \begin{itemize}
-	\item The GetInputMethod function accepts user inputs from files or as 
-	direct inputs (From SRS \rref{R_Inputs}).
-	
-	\item If the user chooses to enter their values via a file, it must be 
-	formatted such that:	
+	\item Input files must be formatted such that:	
 	\begin{itemize}
-		\item The user equation on the first line
-		\item The list of variable names and interval values associated with 
-		the user equation; each name/value set is on its own line and is of the 
-		form $varName, minBound$, $maxBound$ \wss{What happens if the
-                  variables in the equation do not match the list of variable names?}
+		\item The user equation is on the first line
+		\item Each subsequent line contains the information (name, minimum 
+		bound, and maximum bound) for variables. Each line contains one 
+		variable definition, and each field in the variable definition is 
+		separated by the $fieldDelimiter$.
 	\end{itemize}
-
-	\item The output of the GetUserInputs function is a list of $String$ where 
-	the first item is the user equation. The remaining items are the variable 
-	names and interval values such that every set of three values represents 
-	one data set. 
+	The end of each line must be the value of $lineDelimiter$.
+	\item The conditioning and validation of file contents is performed by the 
+	Variable Consolidation module (Section~\ref{Module_variableconsolidation}).
 \end{itemize}
 
 
 \subsubsection{Access Routine Semantics}
 
-\noindent GetUserInputs():
+\noindent ReadFile(fileName):
 \begin{itemize}
-	\item transition: If the user has chosen to enter their values via a file, 
-	$inputFile$ is associated with the provided file name.
-	\item output: $out := eqString || varList$
+	\item output: $out := fileContents$ where:
+	\begin{itemize}
+		\item $fileContents = \{fileName[0], fileName[1,fileName.Length]$ if no 
+		exception was 
+		raised
+		\item $fileContents = NULL$ if an exception was raised
+	\end{itemize}
 	\item exception: $exc := \\
-	(\nexists inputFile \vee \neg Read(inputFile) \Rightarrow IN\_BAD\_FILE)\\
+	(\neg Read(fileName) \Rightarrow IN\_CANNOT\_READ\_FILE)\\
 	|\\
-	(Read(inputFile) == \emptyset \Rightarrow IN\_EMPTY\_FILE)$
+	(Read(fileName) == \emptyset \Rightarrow IN\_EMPTY\_FILE)\\
+	|\\
+	(fileName.Extension \notin validFileTypes \Rightarrow 
+	IN\_INVALID\_FILE\_TYPE)\\
+	|\\
+	(fileName[0].Exists \wedge fileName[0].Contains(fieldDelimiter) \Rightarrow 
+	IN\_NO\_EQUATION)\\
+	|\\	
+	(\neg fileName.Exists \Rightarrow IN\_NO\_FILE)$
+\end{itemize}
+
+\noindent RemoveWhitespace($line$, $preserveSpecialWhitespace$):
+\begin{itemize}
+	\item output: $out := conditionedLine$ where:
+	\begin{itemize}
+		\item If $preserveSpecialWhitespace = TRUE$, $conditionedLine = line$ 
+		with white space characters removed except for carriage return 
+		(\texttt{\textbackslash r}), line feed (\texttt{\textbackslash n}), and 
+		horizontal tab (\texttt{\textbackslash t}) 
+		characters
+		\item If $preserveSpecialWhitespace = FALSE$, $conditionedLine = line$ 
+		with all white space characters removed
+	\end{itemize}
+	\item exception: N/A
+\end{itemize}
+
+\noindent GetLineDelimiter():
+\begin{itemize}
+	\item output: $out := lineDelimiter$
+	\item exception: N/A
+\end{itemize}
+
+\noindent GetFieldDelimiter():
+\begin{itemize}
+	\item output: $out := fieldDelimiter$
+	\item exception: N/A
+\end{itemize}
+
+\noindent GetValidFileTypes():
+\begin{itemize}
+	\item output: $out := validFileTypes$
+	\item exception: N/A
 \end{itemize}
 
 \newpage
@@ -1160,8 +1214,12 @@ N/A
 	operator. Supported operators include $<supportedOperators>$.\\
 	EQC\_INCOMPLETE\_OP & Error: An operator was found that does not have 
 	sufficient operands. \\
-	IN\_BAD\_FILE & Error: The file could not be read. \\
-	IN\_EMPTY\_FILE & Error: The file was empty. \\
+	IN\_CANNOT\_READ\_FILE & Error: The file could not be read. \\	
+	IN\_EMPTY\_FILE & Error: The file is empty. \\
+	IN\_INVALID\_FILE\_TYPE & Error: Cannot read files of this type. \\
+	IN\_NO\_EQUATION & Error: The first line of the file is not an equation or 
+	the equation contains $<Input.GetFieldDelimiter>$.\\
+	IN\_NO\_FILE & Error: The specified file does not exist. \\ 
 	IVC\_CONV\_ERR\_MIN & Error: The string provided for the minimum bound 
 	cannot be converted to a real number. \\
 	IVC\_CONV\_ERR\_MAX & Error: The string provided for the maximum bound 
