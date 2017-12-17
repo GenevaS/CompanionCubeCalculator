@@ -3,6 +3,7 @@
 \usepackage{amsmath, mathtools}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage[nounderscore]{syntax}
 \usepackage{graphicx}
 \usepackage{colortbl}
 \usepackage{xr}
@@ -18,6 +19,7 @@
 \usepackage{afterpage}
 \usepackage[usenames,dvipsnames,table]{xcolor}
 \usepackage{txfonts}
+
 
 \usepackage[round]{natbib}
 
@@ -97,6 +99,8 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
+December 16, 2017 & 2.0 & Revised the ``Composing Operators" instance model and 
+the requirements \\
 October 21, 2017 & 1.1.1 & Collapsed theoretical models for addition, 
 subtraction, and 
  multiplication into one model\\
@@ -134,20 +138,19 @@ $(a,b)$ & $(\varmathbb{R}, \varmathbb{R})$ & Open interval with endpoints $a$
 and $b$\\
 $B$ & $\varmathbb{R}$ & Base number in exponentiation (e.g. $B^2$)\\
 $D(v)$ & $[\varmathbb{R}, \varmathbb{R}]$ & The domain of a variable $v$ 
-represented as a closed, real interval $x$\\
-$f(x)$ & $Type$ & A mathematical function on a variable $x$; the 
-function type is determined by the type of $x$\\
+represented as a closed, real interval $v$\\
+$f(x)$ & $Type \rightarrow Type$ & A mathematical function on a variable $x$; 
+the function type is determined by the type of $x$\\
 $f(V)$ & $\{[\varmathbb{R}, \varmathbb{R}]_0, ..., [\varmathbb{R}, 
 \varmathbb{R}]_n\} \rightarrow [\varmathbb{R}, 
-\varmathbb{R}]$ & A function of domains for a set of variables $V$ that 
-produces a closed, real interval\\
+\varmathbb{R}]$ & A function of closed, real interval domains for a set of 
+variables $V$ that produces a closed, real interval\\
 $M$ & - & A temporary variable for aiding in the readability of equations\\
-$\varmathbb{N}$ & - & The set of natural numbers; assumes that $0$ is included 
-in this specification\\
+$\varmathbb{N}$ & - & The set of natural numbers that includes 0\\
 $N$ & $\varmathbb{N}$ & Power in exponentiation (e.g. $2^N$) \\
 $n$ & $\varmathbb{N}$ & A variable subscript denoting placement in an ordered 
 set\\
-$op$ & $Type \rightarrow Type \rightarrow Type$ & A temporary set of 
+$op$ & $\{(Type \rightarrow Type \rightarrow Type)_n\}$ & A temporary set of $n$
 mathematical operators used to define equation templates; the type of the 
 equation is determined by the type of the input values\\
 $\varmathbb{R}$ & - & The set of real numbers\\
@@ -231,9 +234,9 @@ additional mathematical models to suit their project, such as those proposed in
 
 \subsection{Scope of Requirements} 
 \label{sec_scope}
-The \prognameAbbrv{} calculates $R(f(V))$ of a user-defined $f(V)$ and variable 
-domains $D(v), v \in V$. Each $D(v)$ must be specified by the user in the 
-initial version of this tool, otherwise the tool will assume that the user 
+The \prognameAbbrv{} calculates $R(f(V))$ of a user-defined $f(V)$ given the 
+variable domains $D(v), v \in V$. Each $D(v)$ must be specified by the user in 
+the initial version of this tool, otherwise the tool will assume that the user 
 input set is incomplete and treat it as an error.
 
 For the initial version of this product, the mathematical operations allowed in 
@@ -243,32 +246,33 @@ list to include trigonometric functions ($\sin(x)$, $\cos(x)$, $\tan(x)$,
 $\arcsin(x)$, $\arccos(x)$, $\arctan(x)$), partial functions, and other useful 
 mathematical constructs.
 
-Division is a special case in the \prognameAbbrv{} tool because of its 
-behaviour around zero. Division by zero is an undefined term, but can be 
-represented by the open interval $(-\infty, \infty)$. This version of the 
-\prognameAbbrv{} tool can only process closed intervals (\aref{A_interval}), 
-meaning that a divisor interval that contains zero cannot be handled correctly. 
+Division is a special case in the \prognameAbbrv{} tool due to its behaviour 
+around zero. Division by zero is an undefined term, but can be represented by 
+the open interval $(-\infty, \infty)$. This version of the \prognameAbbrv{} 
+tool can only process closed intervals (\aref{A_interval}), meaning that a 
+divisor interval that contains zero cannot be handled correctly. 
 
 The initial version of the tool is intended for use during the development of 
 the GLaDOS architecture. The values calculated by the architecture are 
 normalized, so any uncertainties in the bounds of $R(f(V))$ can be ignored in 
 this context because it is assumed that any calculation errors will not have a 
 noticeable affect on the architecture's processing. Therefore, directed 
-rounding is not required for the initial version of the \prognameAbbrv{} tool.
+rounding is not required.
 
 The purpose of this product is to aid in the design and tuning of the GLaDOS 
 architecture (Section~\ref{Sec_pd}), but it can be used in similar projects 
-because it does not contain any GLaDOS-specific concepts or models.
+because it relies on interval arithmetic and does not contain any 
+GLaDOS-specific concepts or models.
 
 \subsection{Characteristics of Intended Reader}
 \label{intro_reader}
 The intended reader of this document must understand elementary algebra, 
 especially interval arithmetic, in the domain of real numbers 
-($\varmathbb{R}$). An understanding of set notation is also required to 
-understand the models presented in this document. They must also have an 
-understanding of domain and range with respect to a function in order to 
-understand the outputs of the product 
-and how it relates to its inputs.
+($\varmathbb{R}$). An understanding of set notation and grammar representations 
+are also required to understand the models presented in this document. They 
+must also have an understanding of mathematical domain and range with respect 
+to a function in order to understand the outputs of the product and how it 
+relates to its inputs.
 
 \subsection{Organization of Document}
 This document begins by describing the general description of the 
@@ -284,6 +288,8 @@ last section in this document, traceability matrices and graphs (Section
 components. This information can be referenced when making changes to the 
 tool's core specifications.
 
+\newpage
+
 \section{General System Description}
 \label{general}
 
@@ -292,26 +298,28 @@ describes the user characteristics, and lists the system constraints.
 
 \subsection{System Context}
 The \prognameAbbrv{} tool is a stand-alone application for calculating 
-$R(f(V))$ for a user-defined $f(V)$ given the known $D(v), v\in V$. Therefore 
+$R(f(V))$ for a user-defined $f(V)$ given the $D(v), v\in V$. Therefore 
 it is independent and self-contained with respect to external organizations, 
 products, and technologies.
 
 The user interface of the \prognameAbbrv{} tool facilitates communication 
 between the product and the user, and must contain the ability to exchange user 
 inputs and system outputs. In general, the user is responsible for ensuring 
-that they have provided a semantically correct function and that their inputs 
-do not contain unsupported mathematical operations or special functions. The 
-\prognameAbbrv{} is responsible for providing an information exchange interface 
-between itself and the user, performing mathematical calculations, and 
-detecting syntactic errors in the system inputs.
-\newpage
+that they have provided a semantically correct function for their intended 
+application and that their inputs do not contain unsupported mathematical 
+operations or special functions. The \prognameAbbrv{} is responsible for 
+providing an information exchange interface between itself and the user, 
+performing mathematical calculations, and detecting syntactic errors in the 
+system inputs.
+
 \begin{itemize}
 	\item User Responsibilities:
 	\begin{itemize}
-		\item Provide $f(V)$ that only contains numerical values and supported 
+		\item Provide $f(V)$ that contains numerical values and supported 
 		mathematical operations and symbols
 		\item Provide $D(v), \forall v\in V$
-		\item Ensure that $f(V)$ does not contain semantic errors
+		\item Ensure that $f(V)$ does not contain semantic errors with respect 
+		to their intended application
 		\item Determine if the \prognameAbbrv{} outputs are appropriate for 
 		the intended application and make adjustments to the program inputs as 
 		required
@@ -323,8 +331,10 @@ detecting syntactic errors in the system inputs.
 		system inputs
 		\item Detect data type mismatch, such as a string of characters instead 
 		of a floating point number, and communicate this to the user
-		\item Detect bracket mismatches in $f(V)$ and communicate this to the 
-		user
+		\item Detect unsupported mathematical operators and bracket mismatches 
+		in $f(V)$ and communicate this to the user
+		\item Detect missing or incomplete $D(v), \forall v\in V$ and 
+		communicate this to the user
 		\item Calculate and output $R(f(V))$ using the user-provided $f(V)$ and 
 		$D(v), \forall v\in V$; if a result cannot be calculated, communicate 
 		this to the user
@@ -343,47 +353,50 @@ debugging. This has implications on the development languages and target
 platform selections. If a GUI is included in the \prognameAbbrv{} design, only 
 Windows platforms will be supported in the initial release.
 
+\newpage
+
 \section{Specific System Description}
 \label{specific}
 This section presents the problem description, which gives a high-level
 view of the motivation behind the \prognameAbbrv{} tool. This is followed by 
 the solution characteristics specification, presenting the assumptions, 
 theories, definitions, and instance models. The solution characteristics are 
-based in interval arithmetic and presented using set notation. 
+based in interval arithmetic and presented using set notation and language 
+grammars. 
 
 \subsection{Problem Description} 
 \label{Sec_pd}
 The purpose of this product is to aid in the design and tuning of the GLaDOS 
-architecture, a specialized game engine enables game designers to create NPCs 
-that react to their environment by using models of emotion from psychology. One 
-module in the architecture converts information from the environment into an 
-internal representation that directs an NPC's decision-making. This task 
-requires the specification of several $f(V)$, each with a different variable 
-set $V$ and $D(v), v \in V$. Each $f(V)$ must be normalized to a range of 
-$[-1,1]$, which can only be done if its $R(f(V))$ is known. The currently 
-implemented $f(V)$ are not well-informed by observation or scientific research 
-and must be subjected to an iterative process to address this problem. An 
-automated method of calculating $R(f(V))$ for a proposed $f(V)$ will make this 
-process faster and less error-prone.
+architecture, a specialized game engine which enables game designers to create 
+NPCs that react to their environment using models of emotion from 
+psychology. One module in the architecture converts information from the 
+environment into an internal representation that directs an NPC's behaviour 
+selection process. This task requires the specification of several $f(V)$, each 
+with a different variable set $V$ and $D(v), v \in V$. Each $f(V)$ must be 
+normalized to a range of $[-1,1]$, which can only be done if its $R(f(V))$ is 
+known. The currently implemented $f(V)$ are not well-informed by observation or 
+scientific research and must be subjected to an iterative design process to 
+address this shortcoming. An automated method of calculating $R(f(V))$ for a 
+proposed $f(V)$ will make this process faster and less error-prone.
 
 \subsubsection{Terminology and  Definitions}
-
-This subsection provides a list of terms that are used in the subsequent
-sections and their meaning, with the purpose of reducing ambiguity and making it
-easier to correctly understand the requirements:
+This section provides a list of terms and their meaning that are used in the 
+subsequent sections. They are included with the purpose of reducing ambiguity 
+and making it easier to correctly understand the requirements.
 
 \begin{itemize}
 
 \item Closed interval: A bounded set that includes its end points; this is 
 expressed $[a,b]$
-\item Closed interval method: A mathematical method for determining the local 
-maximum and minimum values of a function $f(x)$ using a closed domain interval 
-$[a,b]$
+%\item Closed interval method: A mathematical method for determining the local 
+%maximum and minimum values of a function $f(x)$ using a closed domain interval 
+%$[a,b]$
 \item Connected set: A set of values that does not contain any disjoint members
-\item Domain: A set of values for a variable $x$ that are valid in $f(x)$
+\item Domain: A connected set of values for a variable $x$ that are valid in 
+$f(x)$
 \item Extended real interval: The set of all $\varmathbb{R}$ that also contains 
 $\pm \infty$
-\item Mixed interval: An interval that satisfies the property $a < 0 < b$
+\item Mixed interval: An interval that satisfies the property $a \leq 0 \leq b$
 \item Monotonic function: A function whose first derivative does not change its 
 mathematical sign
 \item Negative interval: An interval that satisfies the property $a < b < 0$
@@ -392,6 +405,8 @@ points; this is expressed $(a,b)$
 \item Order of Operations: Describes the precedence of mathematical operations 
 when solving an equation (Brackets, Exponents, Division/Multiplication, 
 Addition/Subtraction [BEDMAS])
+\item Parity: The property of an integer value's inclusion in the even or odd 
+set
 \item Positive interval: An interval that satisfies the property $0 < a < b$
 \item Range: The set of values that are produced by a function $f(x)$
 \item Real interval: A closed, connected set of real numbers
@@ -407,7 +422,7 @@ exists independently of the context of $f(V)$.
 
 \noindent Given a user-defined function, which can contain any number of 
 variables, and the minimum and maximum values for each variable in the 
-user-defined function, the goal of the \prognameAbbrv{} tool is
+function, the goal of the \prognameAbbrv{} tool is to:
 
 \begin{itemize}
 
@@ -427,10 +442,10 @@ the instance models can be verified.
 
 \subsubsection{Assumptions}
 This section reduces the scope the original problem to help specify the 
-theoretical models (Section~\ref{sec_theoretical}). The numbers given in the 
-square brackets refer to the theoretical model [T], general definition [GD], 
-data definition [DD], instance model [IM], or likely change [LC], in which the 
-respective assumption is used.
+required theoretical models (Section~\ref{sec_theoretical}). The numbers given 
+in the square brackets refer to the theoretical model [T], general definition 
+[GD], data definition [DD], instance model [IM], or likely change [LC], in 
+which the respective assumption is used.
 
 \begin{itemize}
 
@@ -453,8 +468,8 @@ not in $f(V)$ [\lcref{LC_unknownDomain}, \lcref{LC_infinity}].
 
 \end{itemize}
 
+\newpage
 \subsubsection{Theoretical Models}\label{sec_theoretical}
-
 This section focuses on the general equations and laws from interval arithmetic 
 that the \prognameAbbrv{} is based on. The models presented here are for real 
 intervals, which can be constrained to closed, real intervals using 
@@ -477,8 +492,8 @@ Additional models exist for interval arithmetic, but only the models named in
   Equation&  $X <op> Y = \{x <op> y | x \in X \wedge y \in Y\}$, where $op \in 
   \{+, -, \times\}$\\
   \hline
-  Description & The summation, subtraction, and multiplication interval of two 
-  real intervals $X$ and $Y$ is equal to the set of sums, differences, and 
+  Description & The summation, subtraction, and multiplication intervals of two 
+  real intervals $X$ and $Y$ are equal to the set of sums, differences, and 
   products for each pairwise element $x$ and $y$.\\
   \hline
   Source & \citet{intervalarithmetic}\\
@@ -506,8 +521,7 @@ Additional models exist for interval arithmetic, but only the models named in
 		\hline
 		Description & The quotient interval of two real intervals $X$ and $Y$ 
 		is equal to the set of quotients for each pairwise element $x$ and $y$ 
-		where $y \neq 0$. If $0 \in Y$, the quotient itself might not be an 
-		interval.\\
+		where $y \neq 0$. If $0 \in Y$, the quotient might not be an interval.\\
 		\hline
 		Source & \citet{intervalarithmetic}\\
 		\hline
@@ -570,11 +584,12 @@ Additional models exist for interval arithmetic, but only the models named in
 	\end{tabular}
 \end{minipage}\\
 
-\subsubsection{General Definitions}\label{sec_gendef}
+\subsubsection{General Definitions}
+\label{sec_gendef}
 No additional information is required to build the data definitions. 
-
-\subsubsection{Data Definitions}\label{sec_datadef}
-
+\newpage
+\subsubsection{Data Definitions}
+\label{sec_datadef}
 This section collects and defines all the data needed to build the instance
 models. No dimensions are required because the tasks performed by 
 \prognameAbbrv{} are unitless. These definitions are used to constrain the 
@@ -613,9 +628,9 @@ Symbol &$[a, b]$\\
   \hline
 \end{tabular}
 \end{minipage}\\
-
-\subsubsection{Instance Models} \label{sec_instance}    
-
+\newpage
+\subsubsection{Instance Models} 
+\label{sec_instance}    
 This section transforms the problem defined in Section~\ref{Sec_pd} into 
 one which is expressed in mathematical terms. It uses concrete symbols defined 
 in Section~\ref{sec_datadef} to replace the abstract symbols in the models 
@@ -626,9 +641,10 @@ The goal \gsref{G_range} is solved by recursively solving instance models
 \iref{I_positivedivision}, \iref{I_negativedivision}, \iref{I_exponents}, and 
 \iref{I_expbase} and combining the results (\iref{I_compose}).
 
-These models can also be used as a specification for the closed interval method 
-because of the closed, real interval assumption on $D(v), \forall v \in V$ 
-(\aref{A_domain}).
+%These models can also be used as a specification for the closed interval 
+%method 
+%because of the closed, real interval assumption on $D(v), \forall v \in V$ 
+%(\aref{A_domain}).
 
 ~\newline
 
@@ -650,8 +666,8 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
   \hline
   Description&$[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ are the $D(v)$ for two 
   $v \in V$ in the user's input function $f(V)$.\\
-  &The combined boundary values $a_{sum}$ and  $b_{sum}$ are determined 
-  using basic arithmetic addition.\\
+  &The boundary values $a_{sum}$ and  $b_{sum}$ are determined using arithmetic 
+  addition.\\
   & The result, $[a_{sum}, b_{sum}]$, is guaranteed to be a closed, real 
   interval (\aref{A_interval}) due to the closed, real interval constraint on 
   $[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ (\aref{A_domain}).
@@ -684,8 +700,8 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		\hline
 		Description&$[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ are the the $D(v)$ 
 		for two $v \in V$ in the user's input function $f(V)$. \\
-		&The combined boundary values $a_{sub}$ and  $b_{sub}$ are determined 
-		using basic arithmetic subtraction.\\
+		&The boundary values $a_{sub}$ and  $b_{sub}$ are determined using 
+		arithmetic subtraction.\\
 		& The result, $[a_{sub}, b_{sub}]$, is guaranteed to be a closed, real 
 		interval (\aref{A_interval}) due to the closed, real interval 
 		constraint on $[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ (\aref{A_domain}).
@@ -719,14 +735,14 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		\hline
 		Description&$[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ are the $D(v)$ for 
 		two $v \in V$ in the user's input function $f(V)$. \\
-		&The combined boundary value $a_{mul}$ is determined by taking the 
-		minimum of all possible products calculated from the sets $[a_{1}, 
-		b_{1}]$ and $[a_{2}, a_{2}]$, where $[a_{1}, b_{1}]$ is the 
-		multiplier set and $[a_{2}, b_{2}]$ is the multiplicand set\\
-		&The combined boundary value $b_{mul}$ is determined by taking the 
-		maximum of all possible products calculated from the sets $[a_{1}, 
-		b_{1}]$ and $[a_{2}, b_{2}]$, where $[a_{1}, b_{1}]$ is the 
-		multiplier set and $[a_{2}, b_{2}]$ is the multiplicand set\\
+		&The boundary value $a_{mul}$ is determined by taking the minimum of 
+		all possible products calculated from the sets $[a_{1}, b_{1}]$ and 
+		$[a_{2}, b_{2}]$, where $[a_{1}, b_{1}]$ is the multiplier set and 
+		$[a_{2}, b_{2}]$ is the multiplicand set\\
+		&The boundary value $b_{mul}$ is determined by taking the maximum of 
+		all possible products calculated from the sets $[a_{1}, b_{1}]$ and 
+		$[a_{2}, b_{2}]$, where $[a_{1}, b_{1}]$ is the multiplier set and 
+		$[a_{2}, b_{2}]$ is the multiplicand set\\
 		& The result, $[a_{mul}, b_{mul}]$, is guaranteed to be a closed, real 
 		interval (\aref{A_interval}) due to the closed, real interval 
 		constraint on $[a_{1}, b_{1}]$ and $[a_{2}, b_{2}]$ (\aref{A_domain}).
@@ -860,10 +876,10 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		&$[a_{exp}, b_{exp}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
 		Description&$[a, b]$ is the $D(v)$ for a $v \in V$ in the user's input 
-		function $f(V)$ which is used as an exponent on a constant base number 
+		function $f(V)$ which is used as an exponent on a constant value base 
 		$B$. \\
-		&The combined boundary values $a_{exp}$ and $b_{exp}$ are determined 
-		using basic arithmetic exponents.\\
+		&The boundary values $a_{exp}$ and $b_{exp}$ are determined 
+		using arithmetic exponentiation.\\
 		& The result, $[a_{exp}, b_{exp}]$, is guaranteed to be a closed, real 
 		interval (\aref{A_interval}) due to the closed, real interval 
 		constraint on $[a, b]$ and the data constraint on $B$ (\aref{A_domain}).
@@ -904,16 +920,16 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		&$[a_{pow}, b_{pow}]$ is a closed, real interval (\aref{A_interval}) \\
 		\hline
 		Description&$[a, b]$ is the $D(v)$ for a $v \in V$ in the user's input 
-		function $f(V)$ raised to a constant power $N$. \\
-		&The combined boundary values $a_{pow}$ and $b_{pow}$ are determined 
-		by the divisibility of $N$ by two and the monotonicity of $[a, b]$:
+		function $f(V)$ raised to a constant value power $N$. \\
+		&The boundary values $a_{pow}$ and $b_{pow}$ are determined 
+		by the parity of $N$ and the monotonicity of $[a, b]$:
 		\begin{itemize}
 			\item For odd values of $N$ and any interval $[a, b]$, and even 
 			values of $N$ when $[a, b]$ is monotonically increasing, $[a_{pow}, 
-			b_{pow}]$ are determined by simply raising each of $a$ and $b$ to 
-			the power of $N$
-			\item For even values of $N$ and $[a, b]$ is monotonically 
-			decreasing, the boundary values of $a$ and $b$ are reversed before 
+			b_{pow}]$ are determined by raising each of $a$ and $b$ to the 
+			power of $N$
+			\item For even values of $N$ and monotonically decreasing interval 
+			$[a, b]$, the boundary values of $a$ and $b$ are reversed before 
 			being raised to the power of $N$
 			\item For all other cases, the interval is bounded by $0$ and the 
 			maximum of the input bounds raised to the power of $N$
@@ -948,36 +964,51 @@ because of the closed, real interval assumption on $D(v), \forall v \in V$
 		$f(V)$\\
 		\hline
 		Output&$R(f(V)) = [a_{R}, b_{R}]$ such that\\
-		& $R(f(V)) ::= [a_i, b_i], v_i \in V \mid R(f(V)) 
-		\text{ \textless op\textgreater} R(f(V)) \mid ( R(f(V)) )$\\
-%		&\vspace*{-10mm}\begin{center}
-%			\begin{tabular}{lll}
-%				$R(f(V)) = [a_i, b_i]$ & $v_i \in V$ \\
-%				$R(f(V)) = R(f(V))_1 <op> R(f(V))_2$ & $f(V)_1 = f(V) - <op> - 
-%				f(V)_2 \wedge f(V)_2 = f(V) - <op> - f(V)_1$\\
-%				$R(f(V)) = (R(f(V))_1)$ & $f(V)_1 = f(V) - {()}$\\
-%			\end{tabular}
-%		\end{center}\\
-		&$\text{\textless op\textgreater}$ can be any supported binary 
-		operator (\aref{A_operators})\\
+		& 
+		\setlength{\grammarparsep}{5pt plus 1pt minus 1pt} 
+		\setlength{\grammarindent}{6em} % increase separation between LHS/RHS 
+		
+		\begin{grammar}
+			<R(f(V))> ::= <E>
+			
+			<E> ::= Exp(0) 
+			
+			<Exp(p)> ::= <P> (<B> <Exp(q)>)
+			
+			<P> ::= "(" <E> ")" 
+			\alt v $\in [a_{1}, b_{1}], ..., [a_{n}, b_{n}]$
+			
+			<B> ::= "+"
+			\alt "-"
+			\alt "*"
+			\alt "/"
+			\alt "\textasciicircum"
+			
+		\end{grammar}\\
 		&$[a_{R}, b_{R}]$ is a closed, real interval (\aref{A_interval})\\
 		\hline
 		Description&$[a_{1}, b_{1}], ..., [a_{n}, b_{n}]$ are the $D(v)$ for 
 		each $v \in V$ in the user's input function $f(V)$. \\
-		&An $f(V)$ that contains multiple operators is solved by recursively 
-		solving each of its component two-operand equations. For example, if 
-		the user provided an equation of the form $p + q \times r$, it is 
-		decomposed into $p + Q$ where $Q = q \times r$. This approach is 
-		identical to a hand-written evaluation where the intermediary 
-		decomposition stages are commonly omitted by humans. 
+		&An $f(V)$ that contains multiple operators can solved recursively 
+		using the precedence climbing algorithm. \\
+		&In the production rule for $<Exp(p)>$, the $()$ implies a loop. This 
+		loop is will exit when either the next token is a binary operator with 
+		an operator precedence that is less than $p$. If the operator 
+		precedence is greater than or equal to $p$, the precedence value $q$ is 
+		calculated as: 
+		\begin{itemize}
+			\item $Operator Precedence + 1$, if the operator is left associative
+			\item $Operator Precedence$, otherwise
+		\end{itemize}
 		\\
-		&The result, $[a_{R}, b_{R}]$, might not be 
-		a closed, real interval (\aref{A_interval}) due to the mixed interval 
-		restriction on divisors (\ref{sec_scope}). In this case, the 
-		\prognameAbbrv{} tool returns an error.
+		&The result, $[a_{R}, b_{R}]$, might not be a closed, real interval 
+		(\aref{A_interval}) due to the mixed interval restriction on divisors 
+		(\ref{sec_scope}). In this case, the \prognameAbbrv{} tool returns an 
+		error.
 		\\
 		\hline
-		Sources& - \\
+		Sources& 
+		\url{https://www.engr.mun.ca/~theo/Misc/exp_parsing.htm#climbing} \\
 		\hline
 		Ref.\ By & -\\
 		\hline
@@ -989,8 +1020,9 @@ The inputs to the \prognameAbbrv{} tool are subject to the following data
 constraints:
 
 \begin{itemize}
-	\item The function $f(V)$ contains only the mathematical operators in 
-	the set $\{()\} \cup \{+, -, \times, \div, B^x, x^N \}$ (\aref{A_operators})
+	\item The function $f(V)$ contains only the mathematical symbols in 
+	the set $\{()\} \cup \{+, -, \times, \div, B^x, x^N \}$ 
+	(\aref{A_operators}), variable names, and constant real values
 	\item If $f(V)$ contains $B^x$, then $B > 1 \in \varmathbb{R}$
 	\item If $f(V)$ contains $x^N$, then $N \in \varmathbb{N}$
 	\item For every variable $v \in V$, $D(v)$ is defined and is a closed, real 
@@ -1002,8 +1034,7 @@ The output of the \prognameAbbrv{} tool is subject to the following data
 constraint:
 
 \begin{itemize}
-	\item The interval $R(f(V))$ is defined and is a closed, real interval 
-	(\aref{A_interval})
+	\item The interval $R(f(V))$ is a closed, real interval (\aref{A_interval})
 \end{itemize}
 
 \subsubsection{Properties of a Correct Solution} 
@@ -1015,6 +1046,7 @@ the properties of a closed, real interval (\aref{A_interval}). This can be
 verified mathematically by checking if $R(f(V)) = [a,b]$ satisfies $\{\forall v 
 \in V | a \leq D(v) \leq b \wedge D(v) \in \varmathbb{R}\}$.
 
+\newpage
 
 \section{Requirements}
 \label{requirements}
@@ -1042,9 +1074,9 @@ file.
 constraints from \ref{sec_DataConstraints}.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_conditionfx}:] The 
-\prognameAbbrv{} tool must decompose $f(V)$ into a series of two-operand 
-equations following the standard order of operations rules (BEDMAS) using 
-\iref{I_compose}.
+\prognameAbbrv{} tool must decompose $f(V)$ into a series of connected 
+two-operand equations following the standard order of operations rules (BEDMAS) 
+using \iref{I_compose}.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_Calculate}:] The 
 \prognameAbbrv{} tool must solve each equation identified in 
@@ -1070,9 +1102,9 @@ and $D(v), v \in V$. If this is not possible, such as in the case of a violated
 data constraint (\ref{sec_DataConstraints}), communicate the reason to the 
 user.
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_SigFig}:] The 
-\prognameAbbrv{} tool must show the precision of $R(f(V))$ using the fewest 
-number of decimal places that appear in $D(v), v \in V$.
+%\item[R\refstepcounter{reqnum}\thereqnum \label{R_SigFig}:] The 
+%\prognameAbbrv{} tool must show the precision of $R(f(V))$ using the fewest 
+%number of decimal places that appear in $D(v), v \in V$.
 
 \end{itemize}
 
@@ -1086,13 +1118,17 @@ number of decimal places that appear in $D(v), v \in V$.
 \end{itemize}
 
 \subsubsection*{Reliability}
-\begin{itemize}
-	\item The \prognameAbbrv{} tool must calculate the interval $R(f(V))$ with 
-	an error rate relative to the floating point precision available on the 
-	host machine. \\ \textbf{Fit Criterion}: Given the floating point error on 
-	a test machine, verify that the output produced by the program is within 
-	the range of a manually calculated result $\pm$ the floating point error.
-\end{itemize}
+The minimization of floating-point calculation errors is not a priority in the 
+\prognameAbbrv{} tool specification. It is predicted that the intended users 
+will be using the tool for tasks that are not sensitive to the inaccuracies 
+produced by floating-point rounding errors.
+%\begin{itemize}
+%	\item The \prognameAbbrv{} tool must calculate the interval $R(f(V))$ with 
+%	an error rate relative to the floating point precision available on the 
+%	host machine. \\ \textbf{Fit Criterion}: Given the floating point error on 
+%	a test machine, verify that the output produced by the program is within 
+%	the range of a manually calculated result $\pm$ the floating point error.
+%\end{itemize}
 
 \subsubsection*{Robustness}
 \begin{itemize}
@@ -1139,7 +1175,7 @@ perform its calculations will be relatively small in reasonable implementations.
 	\item The evolvability of the \prognameAbbrv{} tool must allow the addition 
 	of open, real intervals (\lcref{LC_openinterval}).
 	\item The evolvability of the \prognameAbbrv{} tool must allow the addition 
-	of mathematical operators and special functions (\lcref{LC_trig}, 
+	of other mathematical operators and special functions (\lcref{LC_trig}, 
 	\lcref{LC_infinity}).
 \end{itemize}
 
@@ -1150,6 +1186,8 @@ that will rely on \prognameAbbrv{} tool components.
 \subsubsection*{Portability}
 The portability of the \prognameAbbrv{} tool is not a priority because it is 
 expected that the intended users will use Windows platforms for their analysis.
+
+\newpage
 
 \section{Likely Changes}    
 \label{changes}
@@ -1173,6 +1211,8 @@ operators and trigonometric functions whose range includes $\pm\infty$
 \aref{A_commonfunctions})
 
 \end{itemize}
+
+\newpage
 
 \section{Traceability Matrices and Graphs}
 \label{trace}
@@ -1261,6 +1301,7 @@ within this document.
 
 \begin{table}[H]
 	\centering
+	\scalebox{0.94}{
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 		\hline
 		& \iref{I_addition}& \iref{I_subtraction}& \iref{I_multiplication}& 
@@ -1287,10 +1328,10 @@ within this document.
 		\rref{R_CalculateCompose}     & & & & & & & &X&&&&X\\ \hline
 		\rref{R_VerifyOutput}  & & & & & & & &&X&&&\\ \hline
 		\rref{R_VerifyOutputConstraints} & & & & & & & &&&X&&\\ \hline
-		\rref{R_Output}   & & & & & & & &&&X&&\\ \hline
-		\rref{R_SigFig}   & & & & & & & &&&&&\\ 
+		\rref{R_Output}   & & & & & & & &&&X&&\\
 		\hline
 	\end{tabular}
+	}
 	\caption{Traceability Matrix Showing the Connections Between Requirements 
 	and Instance Models}
 	\label{Table:R_trace}
