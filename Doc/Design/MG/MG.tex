@@ -54,8 +54,10 @@
 \begin{tabularx}{\textwidth}{p{3.5cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
+December 17, 2017 & 1.1.2 & Added a reference to the project repository and 
+made some formatting changes \\
 December 10, 2017 & 1.1.1 & Added justification for assigning multiple 
-anticipated changes to one module. \\
+anticipated changes to one module \\
 December 5, 2017 & 1.1 & Added a description for an operator data structure module\\
 November 2, 2017 & 1.0 & Completed first document draft\\
 \bottomrule
@@ -74,7 +76,15 @@ November 2, 2017 & 1.0 & Completed first document draft\\
 \pagenumbering{arabic}
 
 \section{Introduction}
+This is the Module Guide (MG) for the Companion Cube Calculator, a mathematical 
+tool which determines the range of a user-specified function given the domains 
+of the function's variables. The the directory for this project can be found at:
 
+\begin{center}
+	\href{https://github.com/GenevaS/CAS741}{https://github.com/GenevaS/CAS741}.
+\end{center} 
+
+\subsection{Purpose of the Document}
 Decomposing a system into modules is a commonly accepted approach to developing
 software.  A module is a work assignment for a programmer or programming
 team~\citep{ParnasEtAl1984}.  We advocate a decomposition
@@ -94,7 +104,7 @@ Our design follows the rules proposed by \citet{ParnasEtAl1984}, as follows:
 \end{itemize}
 
 After completing the first stage of the design, the Software Requirements
-Specification (SRS), the Module Guide (MG) is developed~\citep{ParnasEtAl1984}. The MG
+Specification (SRS), the MG is developed~\citep{ParnasEtAl1984}. The MG
 specifies the modular structure of the system and is intended to allow both
 designers and maintainers to easily identify the parts of the software.  The
 potential readers of this document are:
@@ -113,6 +123,7 @@ potential readers of this document are:
   decomposition, and flexibility of the design.
 \end{itemize}
 
+\subsection{Organization of the Document}
 The rest of the document is organized as follows. Section
 \ref{SecChange} lists the anticipated and unlikely changes of the software
 requirements. Section \ref{SecMH} summarizes the module decomposition that
@@ -124,15 +135,17 @@ the completeness of the design against the requirements provided in the SRS. The
 other shows the relation between anticipated changes and the modules. Section
 \ref{SecUse} describes the use relation between modules.
 
-\section{Anticipated and Unlikely Changes} \label{SecChange}
+\newpage
 
+\section{Anticipated and Unlikely Changes} 
+\label{SecChange}
 This section lists possible changes to the system. According to the likeliness
 of the change, the possible changes are classified into two
 categories. Anticipated changes are listed in Section \ref{SecAchange}, and
 unlikely changes are listed in Section \ref{SecUchange}.
 
-\subsection{Anticipated Changes} \label{SecAchange}
-
+\subsection{Anticipated Changes} 
+\label{SecAchange}
 Anticipated changes are the source of the information that is to be hidden
 inside the modules. Ideally, changing one of the anticipated changes will only
 require changing the one module that hides the associated decision. The approach
@@ -175,11 +188,10 @@ algorithm used to calculate the range of the user equation.
 \item[\refstepcounter{acnum} \actheacnum \label{acViewParse}:] The output of a 
 graphical version of the equation parse tree.
 
-
 \end{description}
 
-\subsection{Unlikely Changes} \label{SecUchange}
-
+\subsection{Unlikely Changes} 
+\label{SecUchange}
 The module design should be as general as possible. However, a general system is
 more complex. Sometimes this complexity is not necessary. Fixing some design
 decisions at the system architecture stage can simplify the software design. If
@@ -200,8 +212,10 @@ decomposition of the user equation will always follow BEDMAS rules.
 
 \end{description}
 
-\section{Module Hierarchy} \label{SecMH}
+\newpage
 
+\section{Module Hierarchy} 
+\label{SecMH}
 This section provides an overview of the module design. Modules are summarized
 in a hierarchy decomposed by secrets in Table \ref{TblMH}. The modules listed
 below, which are leaves in the hierarchy tree, are the modules that will
@@ -268,14 +282,17 @@ Structure Module \\
 \end{table}
 
 \newpage
-\section{Connection Between Requirements and Design} \label{SecConnection}
 
+\section{Connection Between Requirements and Design} 
+\label{SecConnection}
 The design of the system is intended to satisfy the requirements developed in
 the SRS. In this stage, the system is decomposed into modules. The connection
 between requirements and modules is listed in Table \ref{TblRT}.
 
-\section{Module Decomposition} \label{SecMD}
+\newpage
 
+\section{Module Decomposition} 
+\label{SecMD}
 Modules are decomposed according to the principle of ``information hiding''
 proposed by \citet{ParnasEtAl1984}. The \emph{Secrets} field in a module
 decomposition is a brief statement of the design decision hidden by the
@@ -428,8 +445,10 @@ into a standard intermediary format.
 	\item[Implemented By:] \progname{}
 \end{description}
 
-\section{Traceability Matrix} \label{SecTM}
+\newpage
 
+\section{Traceability Matrix} 
+\label{SecTM}
 This section shows two traceability matrices: between the modules and the
 requirements and between the modules and the anticipated changes.
 
@@ -502,8 +521,9 @@ changes include format (\acref{acOutput}), data constraints
 graphical representation of the equation tree (\acref{acViewParse}).
 
 \newpage
-\section{Use Hierarchy Between Modules} \label{SecUse}
 
+\section{Use Hierarchy Between Modules} 
+\label{SecUse}
 In this section, the uses hierarchy between modules is
 provided. \citet{Parnas1978} said of two programs A and B that A {\em uses} B if
 correct execution of B may be necessary for A to complete the task described in
