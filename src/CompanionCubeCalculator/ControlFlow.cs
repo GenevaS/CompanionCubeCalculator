@@ -17,11 +17,6 @@ namespace CompanionCubeCalculator
         private static bool hasRun = false;
         private static int successCode = 1;
 
-        public static int GetSuccessCode()
-        {
-            return successCode;
-        }
-
         public static bool Initialize()
         {
             bool success = Consolidate.Initialize();
@@ -36,6 +31,50 @@ namespace CompanionCubeCalculator
         public static string ConditionRawInput(string input, bool preserveSpecialChars)
         {
             return Input.RemoveWhitespace(input, preserveSpecialChars);
+        }
+
+
+        public static string[] ControlFile(string fileName)
+        {
+            string[] inputs = Input.ReadFile(fileName);
+
+            return inputs;
+        }
+
+        public static string[] ControlDirect(string eq, string variables)
+        {
+            return CalculateRange(eq, variables);
+        }
+
+        private static string[] CalculateRange(string rawEquation, string variables)
+        {
+            int success = Consolidate.ConvertAndCheckInputs(rawEquation, variables, Solver.GetValidOperators(), Solver.GetValidTerminators(), Input.GetLineDelimiter(), Input.GetFieldDelimiter());
+            string[] results = null;
+
+            if (success == 0)
+            {
+                EquationStruct eq = Consolidate.GetEquationStruct();
+                IntervalStruct[] intervals = Consolidate.GetIntervalStructList();
+                IntervalStruct range = Solver.FindRange(eq, intervals);
+                if (range != null)
+                {
+                    results = new string[] { Output.PrintInterval(range, false), Output.PrintEquationTree(eq) };
+                    frm_Main.UpdateLog("Range calculated successfully." + System.Environment.NewLine);
+                    hasRun = true;
+                }
+            }
+            else
+            {
+                successCode = success;
+            }
+
+            return results;
+        }
+
+        /* GETTERS */
+        public static int GetSuccessCode()
+        {
+            return successCode;
         }
 
         public static string[] GetValidFileTypes()
@@ -74,43 +113,6 @@ namespace CompanionCubeCalculator
             }
 
             return ivInfo;
-        }
-
-        public static string[] ControlFile(string fileName)
-        {
-            string[] inputs = Input.ReadFile(fileName);
-
-            return inputs;
-        }
-
-        public static string[] ControlDirect(string eq, string variables)
-        {
-            return CalculateRange(eq, variables);
-        }
-
-        private static string[] CalculateRange(string rawEquation, string variables)
-        {
-            int success = Consolidate.ConvertAndCheckInputs(rawEquation, variables, Solver.GetValidOperators(), Solver.GetValidTerminators(), Input.GetLineDelimiter(), Input.GetFieldDelimiter());
-            string[] results = null;
-
-            if (success == 0)
-            {
-                EquationStruct eq = Consolidate.GetEquationStruct();
-                IntervalStruct[] intervals = Consolidate.GetIntervalStructList();
-                IntervalStruct range = Solver.FindRange(eq, intervals);
-                if (range != null)
-                {
-                    results = new string[] { Output.PrintInterval(range, false), Output.PrintEquationTree(eq) };
-                    frm_Main.UpdateLog("Range calculated successfully." + System.Environment.NewLine);
-                    hasRun = true;
-                }
-            }
-            else
-            {
-                successCode = success;
-            }
-
-            return results;
         }
     }
 }

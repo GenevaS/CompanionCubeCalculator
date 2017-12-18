@@ -20,22 +20,6 @@ namespace CompanionCubeCalculator
         private static string fieldDelimiter = ",";
         private static string[] validFileTypes = new string[] { "*.txt" };
 
-        /* GETTERS */
-        public static string GetLineDelimiter()
-        {
-            return BuildLiteralString(lineDelimeter);
-        }
-
-        public static string GetFieldDelimiter()
-        {
-            return BuildLiteralString(fieldDelimiter);
-        }
-
-        public static string[] GetValidFileTypes()
-        {
-            return validFileTypes;
-        }
-
         /* FILE I/O */
         public static string[] ReadFile(string fileName)
         {
@@ -113,6 +97,22 @@ namespace CompanionCubeCalculator
             }
 
             return conditionedLine;
+        }
+
+        /* GETTERS */
+        public static string GetLineDelimiter()
+        {
+            return BuildLiteralString(lineDelimeter);
+        }
+
+        public static string GetFieldDelimiter()
+        {
+            return BuildLiteralString(fieldDelimiter);
+        }
+
+        public static string[] GetValidFileTypes()
+        {
+            return validFileTypes;
         }
 
         /* HELPER FUNCTIONS */

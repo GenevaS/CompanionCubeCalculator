@@ -198,8 +198,7 @@ ControlFlow
 
 \subsection{Uses}
 
-Input (Section~\ref{Module_userinput}), EquationConversion 
-(Section~\ref{Module_equationconversion}), Consolidate 
+Input (Section~\ref{Module_userinput}), Consolidate 
 (Section~\ref{Module_variableconsolidation}), Solver 
 (Section~\ref{Module_rangesolver}), Output (Section~\ref{Module_output}),
 IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct 
@@ -210,14 +209,18 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
+\begin{tabular}{p{3.2cm} p{3cm} p{3cm} p{5cm}}
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
 Initialize & - & $Boolean$ & - \\
+ConditionRawInput & $String$, $Boolean$ & $String$ & - \\
 ControlFile & $String$ & $String^n$ & - \\
 ControlDirect & $String$, $String$ & $String^n$ & - \\
 GetSuccessCode & - & $Int$ & - \\
+GetValidFileTypes & - & $String^n$ & - \\
+GetDelimiters & - & $String^2$ & - \\
+ExtractVariables& $String$ & $String^n$ & - \\
 GetVariableInfo & - & $String^{n \times 3}$ & - \\
 \hline
 \end{tabular}
@@ -237,7 +240,14 @@ GetVariableInfo & - & $String^{n \times 3}$ & - \\
 \noindent Initialize():
 \begin{itemize}
 	\item output: $out := success$ where $success$ is the output of the 
-	ConfigureParser access program from the EquationConversion module
+	Initialize access program from the Variable Consolidation module
+	\item exception: N/A
+\end{itemize}
+
+\noindent ConditionRawInput($input, preserveSpecialChars$):
+\begin{itemize}
+	\item output: $out := conditionedLine$ where $conditioned$ is the output of 
+	the RemoveWhitespace access program from the Input module
 	\item exception: N/A
 \end{itemize}
 
@@ -285,6 +295,30 @@ GetVariableInfo & - & $String^{n \times 3}$ & - \\
 \noindent GetSuccessCode():
 \begin{itemize}
 	\item output: $out := successCode$
+	\item exception: N/A
+\end{itemize}
+
+\noindent GetValidFileTypes():
+\begin{itemize}
+	\item output: $out := validFileTypes$ where $validFileTypes$ is the output 
+	of the GetValidFileTypes access program from the Input module.
+	\item exception: N/A
+\end{itemize}
+
+\noindent GetDelimiters():
+\begin{itemize}
+	\item output: $out := delimiters$ where $delimiters$ is the set of input 
+	delimiters. The sequence size is two, where the first value is the output 
+	of the GetLineDelimiter access program from the Input module and the second 
+	value is the output of the GetFieldDelimiter access program from the Input 
+	module. Both values in the sequence contain unescaped character sequences.
+	\item exception: N/A
+\end{itemize}
+
+\noindent ExtractVariables():
+\begin{itemize}
+	\item output: $out := varList$ where $varList$ is the output of the 
+	ExtractVariablesFromEquation access program from the Consolidate module.
 	\item exception: N/A
 \end{itemize}
 
@@ -341,11 +375,11 @@ N/A
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3.2cm} p{3cm} p{3cm} p{5cm}}
+	\begin{tabular}{p{3.3cm} p{3cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{5}{3.2cm}{ReadFile} & \multirow{5}{3cm}{$String$} & 
+		\multirow{5}{3.3cm}{ReadFile} & \multirow{5}{3cm}{$String$} & 
 		\multirow{5}{3cm}{$String^2$} & IN\_CANNOT\_READ\_FILE, \\
 		 &  &  & IN\_EMPTY\_FILE, \\
 		 & & & IN\_INVALID\_FILE\_TYPE,\\
@@ -1073,11 +1107,11 @@ N/A
 
 \section{MIS of the Operator Data Structure Module} 
 \label{Module_operatordatastructure}
-
-\wss{Do you really want to add operators in this way?  Don't you already know
-  that your operators are addition, subtraction, multiplication and division?  I
-  like the idea of flexibility, but this might not be the right kind of
-  flexibility.}
+The Operator Data Structure contains all relevant information required to 
+correctly use them in a mathematical context. It is much simpler to pass a 
+single data structure containing all of the associated fields for an operator 
+as opposed to creating a class with lists of information that must queried and 
+returned individually for each associated operator field.
 
 \subsection{Module}
 
@@ -1115,7 +1149,7 @@ N/A
 \subsubsection{State Variables}
 
 \begin{itemize}
-	\item $operator : String$
+	\item $operatr : String$
 	\item $precedence : Int$
 	\item $isUnary : Boolean$
 	\item $isBinary : Boolean$
@@ -1134,7 +1168,8 @@ N/A
 
 \noindent OperatorStruct($op, prec, isUnary, isBinary, isTernary, isLeftAssociative$):
 \begin{itemize}
-	\item output: $out := newOperator$
+	\item output: $out := new OperatorStruct(operatr$, $precedence$, $isUnary$, 
+	$isBinary$, $isTernary$, $leftAssociative)$
 	\item transition: Update state variables $operator$, $precedence$, 
 	$isUnary$, $isBinary$, $isTernary$, and $leftAssociative$ with the provided 
 	values $op$, $prec$, $isUnary$, $isBinary$, $isTernary$, and 
