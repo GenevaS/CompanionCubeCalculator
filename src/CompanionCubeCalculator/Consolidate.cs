@@ -16,7 +16,7 @@ namespace CompanionCubeCalculator
     public static class Consolidate
     {
         private static EquationStruct equationTreeRoot = null;
-        private static IntervalStruct[] intervalList;
+        private static IntervalStruct[] intervalList = null;
 
         public static bool Initialize()
         {

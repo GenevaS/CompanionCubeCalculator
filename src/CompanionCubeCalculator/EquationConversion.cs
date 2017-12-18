@@ -182,8 +182,13 @@ namespace CompanionCubeCalculator
                 // Replacing implicit multiplications of constants by variables with an explicit operator
                 if (binaryOpsSym.Contains("*"))
                 {
+                    string temp = equationIn;
                     Regex rgx = new Regex(implicitMultiplicationPattern);
                     equationIn = rgx.Replace(equationIn, implicitMultiplicationReplacement);
+                    if(equationIn != temp)
+                    {
+                        frm_Main.UpdateLog("Warning: Encountered an implicit multiplication of a constant value and a variable. Expanding with explicit operator." + System.Environment.NewLine);
+                    }
                 }
 
                 // Parse the equation -> return null if an error occurs
