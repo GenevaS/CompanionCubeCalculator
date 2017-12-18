@@ -1,5 +1,7 @@
-# Test Report
+## Test Report ##
 
-The folders and files for this folder are as follows:
+The TestReport (.tex, .pdf) contains the results of the software tesing
+as implemented in the TestPlan from Doc/TestPlan.
 
-Describe ...
+The UserStudy directory contains all material that was used to conduct
+the informal usability test.
