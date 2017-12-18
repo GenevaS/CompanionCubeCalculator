@@ -1,0 +1,1 @@
+<Playlist Version="1.0"><Add Test="UnitTests_CompanionCubeCalculator.ControlTests.TestInitialize" /><Add Test="UnitTests_CompanionCubeCalculator.ControlTests.TestConditionFunction" /><Add Test="UnitTests_CompanionCubeCalculator.ControlTests.TestControlFile" /></Playlist>
