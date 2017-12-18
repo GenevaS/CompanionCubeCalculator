@@ -74,6 +74,13 @@ namespace UnitTests_CompanionCubeCalculator
     public class SolverTests
     {
         [TestMethod]
+        [ExpectedException(typeof(System.ArgumentException), "Error: No information was provided for the equation.")]
+        public void TestNoEquation()
+        {
+            Solver.FindRange(null, new IntervalStruct[] { new IntervalStruct("x", 1, 2, true, true) });
+        }
+
+        [TestMethod]
         public void TestUnknownOp()
         {
             string varToken = EquationConversion.GetVariableToken();

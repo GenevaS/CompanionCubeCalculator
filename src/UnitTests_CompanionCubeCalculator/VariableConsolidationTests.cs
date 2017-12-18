@@ -15,8 +15,19 @@ namespace UnitTests_CompanionCubeCalculator
     public class VariableConsolidationTests
     {
         [TestMethod]
+        public void TestInit()
+        {
+            bool success = Consolidate.Initialize();
+
+            Assert.AreEqual(true, success);
+        }
+
+        [TestMethod]
         public void TestFailedConfig()
         {
+            EquationConversion.ResetEquationConversion();
+            Consolidate.Initialize();
+
             OperatorStruct[] ops = new OperatorStruct[] { };
             int success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", ops, Solver.GetValidTerminators(), System.Environment.NewLine, ",");
             Assert.AreEqual(-1, success);
@@ -34,6 +45,9 @@ namespace UnitTests_CompanionCubeCalculator
         public void TestSimpleInputs()
         {
             string varToken = EquationConversion.GetVariableToken();
+
+            EquationConversion.ResetEquationConversion();
+            Consolidate.Initialize();
 
             Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), Solver.GetValidTerminators(), "\n", ",");
             EquationStruct eqRoot = Consolidate.GetEquationStruct();
@@ -57,6 +71,9 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestExtraVariable()
         {
+            EquationConversion.ResetEquationConversion();
+            Consolidate.Initialize();
+
             // test-input variableNotInFunction
             string varToken = EquationConversion.GetVariableToken();
 
@@ -82,10 +99,35 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestMissingVariable()
         {
+            EquationConversion.ResetEquationConversion();
+            Consolidate.Initialize();
+
             // test-input noDomain
             int success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3", Solver.GetValidOperators(), Solver.GetValidTerminators(), System.Environment.NewLine, ",");
             
             Assert.AreEqual(-2, success);
+        }
+
+        [TestMethod]
+        public void TestVarExtraction()
+        {
+            EquationConversion.ResetEquationConversion();
+            Consolidate.Initialize();
+            string[] vars = Consolidate.ExtractVariablesFromEquation("x+y");
+
+            Assert.AreEqual(2, vars.Length);
+            Assert.AreEqual("x", vars[0]);
+            Assert.AreEqual("y", vars[1]);
+        }
+
+        [TestMethod]
+        public void TestIncompleteEquation()
+        {
+            EquationConversion.ResetEquationConversion();
+            Consolidate.Initialize();
+
+            int successCode = Consolidate.ConvertAndCheckInputs("", "x,2,3\n", Solver.GetValidOperators(), Solver.GetValidTerminators(), Input.GetLineDelimiter(), Input.GetFieldDelimiter());
+            Assert.AreEqual(-3, successCode);
         }
 
 

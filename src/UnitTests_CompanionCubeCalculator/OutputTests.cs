@@ -34,6 +34,9 @@ namespace UnitTests_CompanionCubeCalculator
 
             interval = new IntervalStruct("", 3, 3, false, false);
             Assert.AreEqual("CONST: 3", Output.PrintInterval(interval, false));
+
+            interval = new IntervalStruct("r", 0.333333333333, 0.66666666666666, true, true);
+            Assert.AreEqual("[0.333333333333, " + System.Environment.NewLine + " 0.66666666666666]", Output.PrintInterval(interval, false));
         }
 
         [TestMethod]
