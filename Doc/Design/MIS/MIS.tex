@@ -998,6 +998,9 @@ N/A
 
 \section{MIS of the Equation Data Structure Module} 
 \label{Module_equationdatastructure}
+The Equation Data Structure represents a node in an equation tree which can 
+support up to two-operand operations. The tree can be expanded by assigning 
+other nodes as the left and right operands.
 
 \subsection{Module}
 
@@ -1016,15 +1019,16 @@ N/A
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{2}{3cm}{EquationStruct} & $String^2$, $equationStruct^2$ & 
-		\multirow{2}{3cm}{$equationStruct$} & 
-		\multirow{2}{5cm}{-}\\
+		\multirow{2}{3cm}{EquationStruct} & $String^2$, $EquationStruct^2$ & 
+		\multirow{2}{3cm}{$EquationStruct$} & 
+		\multirow{2}{5cm}{EQS\_MISSING\_OP}\\
 		GetOperator & - & $String$ & - \\
 		GetVariableName & - & $String$ & - \\
-		GetLeftOperand & - & $equationStruct$ & -\\
-		GetRightOperand & - & $equationStruct$ & - \\
-		SetLeftOperand & $equationStruct$ & - & - \\
-		SetRightOperand & $equationStruct$ & - & - \\
+		GetLeftOperand & - & $EquationStruct$ & -\\
+		GetRightOperand & - & $EquationStruct$ & - \\
+		SetVariableName & $String$ & - & - \\
+		SetLeftOperand & $EquationStruct$ & - & - \\
+		SetRightOperand & $EquationStruct$ & - & - \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -1035,10 +1039,10 @@ N/A
 
 \# To support \rref{R_conditionfx} and \rref{R_CalculateCompose}
 \begin{itemize}
-	\item $operator : String$
+	\item $operatr : String$
 	\item $variableName : String$
-	\item $leftOperand : equationStruct$
-	\item $rightOperand : equationStruct$
+	\item $leftOperand : EquationStruct$
+	\item $rightOperand : EquationStruct$
 \end{itemize}
 
 \subsubsection{Assumptions}
@@ -1048,26 +1052,28 @@ N/A
 	Conversion module (Section~\ref{Module_equationconversion}).
 	\item Unsupported operators are identified and handled in the Equation 
 	Conversion module (Section~\ref{Module_equationconversion}).
-	\item There is no setter method for the $operator$ or $variableName$ fields 
-	because they will not be changed after initialization.
+	\item There is no setter method for the $operator$ field because they will 
+	not be changed after initialization.
 	\item The values for $leftOperand$ and $rightOperand$ can be set to 
-	\texttt{NULL} as required.
+	\texttt{NULL} as required (e.g. variables, constants).
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
 \noindent EquationStruct($op, vName, eStruct1, eStruct2$):
 \begin{itemize}
-	\item output: $out := newEquation$
-	\item transition: Update state variables $operator$, $variableName$, 
+	\item output: $out := new EquationStruct(operatr$, $variableName$, 
+	$leftOperand$, $rightOperand)$
+	\item transition: Update state variables $operatr$, $variableName$, 
 	$leftOperand$, and $rightOperand$ with the provided values $op$, $vName$, 
 	$eStruct1,$ and $eStruct2$
-	\item exception: N/A
+	\item exception: $exc := \\
+	(op = ``" \Rightarrow EQS\_MISSING\_OP)$
 \end{itemize}
 
 \noindent GetOperator():
 \begin{itemize}
-	\item output: $out := operator$
+	\item output: $out := operatr$
 	\item exception: N/A
 \end{itemize}
 
@@ -1086,6 +1092,13 @@ N/A
 \noindent GetRightOperand():
 \begin{itemize}
 	\item output: $out := rightOperand$
+	\item exception: N/A
+\end{itemize}
+
+\noindent SetVariableName($vName$):
+\begin{itemize}
+	\item transition: Update state variable $variableName$ with the provided 
+	value $vName$
 	\item exception: N/A
 \end{itemize}
 
@@ -1131,7 +1144,7 @@ N/A
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
 		\multirow{4}{3cm}{OperatorStruct} & \multirow{4}{3cm}{$String$, $Int$, 
-		$Boolean^4$} & \multirow{4}{3cm}{$operatorStruct$} & 
+		$Boolean^4$} & \multirow{4}{3cm}{$OperatorStruct$} & 
 		OP\_INVALID\_PRECEDENCE, OP\_MISSING\_OP, 
 		OP\_MULTI\_TYPE, OP\_NO\_TYPE\\
 		GetOperator & - & $String$ & - \\
@@ -1170,7 +1183,7 @@ N/A
 \begin{itemize}
 	\item output: $out := new OperatorStruct(operatr$, $precedence$, $isUnary$, 
 	$isBinary$, $isTernary$, $leftAssociative)$
-	\item transition: Update state variables $operator$, $precedence$, 
+	\item transition: Update state variables $operatr$, $precedence$, 
 	$isUnary$, $isBinary$, $isTernary$, and $leftAssociative$ with the provided 
 	values $op$, $prec$, $isUnary$, $isBinary$, $isTernary$, and 
 	$isLeftAssociative$.
@@ -1189,7 +1202,7 @@ N/A
 
 \noindent GetOperator():
 \begin{itemize}
-	\item output: $out := operator$
+	\item output: $out := operatr$
 	\item exception: N/A
 \end{itemize}
 
@@ -1249,6 +1262,8 @@ N/A
 	operator. Supported operators include $<supportedOperators>$.\\
 	EQC\_INCOMPLETE\_OP & Error: An operator was found that does not have 
 	sufficient operands. \\
+	EQS\_MISSING\_OP & Error: Equation structures must be assigned an operator 
+	during initialization. \\
 	IN\_CANNOT\_READ\_FILE & Error: The file could not be read. \\	
 	IN\_EMPTY\_FILE & Error: The file is empty. \\
 	IN\_INVALID\_FILE\_TYPE & Error: Cannot read files of this type. \\
