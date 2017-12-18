@@ -828,6 +828,8 @@ N/A
 
 \section{MIS of the Output Module} 
 \label{Module_output}
+The Output module is responsible for converting data structures into 
+output-friendly formats.
 
 \subsection{Module}
 
@@ -847,8 +849,9 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		PrintInterval & $intervalStruct$ & - & - \\
-		PrintEquationTree & $equationStruct$ & - & - \\
+		\multirow{2}{3.1cm}{PrintInterval} & $IntervalStruct$, $Boolean$ & 
+		\multirow{2}{3cm}{$String$} & \multirow{2}{5cm}{-} \\
+		PrintEquationTree & $equationStruct$ & $String$ & - \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -859,13 +862,6 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct
 
 N/A
 
-\subsubsection{Environment Variables}
-
-\begin{itemize}
-	\item cmd: the command-line interface
-	\item win: a 2D sequence of pixels displayed on the screen
-\end{itemize}
-
 \subsubsection{Assumptions}
 
 \begin{itemize}
@@ -874,26 +870,54 @@ N/A
 	that this module will only be called post-process and any errors in the 
 	data structures have already been identified.
 	\item The object passed to PrintEquationTree is the root of the equation 
-	tree
+	tree.
 \end{itemize}
 
 
 \subsubsection{Access Routine Semantics}
 
-\noindent PrintIntervalList($iStruct$):
+\noindent PrintInterval($interval, withVarName$):
 \begin{itemize}
-	\item transition: If the user interface is the command-line, write the 
-	interval $iStruct$ to cmd. If the user interface is a GUI, modify win so 
-	that the interval is displayed. In both cases, the variable name of the 
-	interval must also be displayed.
+	\item output: $out := formattedInterval$ where $formattedInterval$ is a 
+	string corresponding the fields in $interval$:
+	\begin{itemize}
+		\item If $interval$ is a constant value, $formattedInterval$ is 
+		$CONST:$ with the value appended
+		\item Otherwise:
+		\begin{itemize}
+			\item If $withVarName$ is true, the $formattedInterval$ begins with 
+			the interval's variable name and `` = "
+			\item If $interval$ is closed on the left boundary, append ``$[$" 
+			to $formattedInterval$; otherwise, append ``$($"
+			\item Append the minimum and maximum boundary values from 
+			$interval$ 
+			separated by a comma (``,"); if the minimum bound has more that 12 
+			values, put the maximum boundary value on a new line
+			\item If $interval$ is closed on the right boundary, append $]$ to 
+			$formattedInterval$; otherwise, append $)$
+		\end{itemize}
+	\end{itemize}
 	\item exception: N/A
 \end{itemize}
 
-\noindent PrintEquationTree($eStruct$):
+\noindent PrintEquationTree($eqRoot$):
 \begin{itemize}
-	\item transition: If the user interface is the command-line, write the 
-	equation tree represented by $eStruct$ to cmd. If the user interface is a 
-	GUI, modify win so that the equation tree is displayed.
+	\item output: $out := formattedTree$ where $formattedTree$ is a 
+	string corresponding the formatted $eqRoot$:
+	\begin{itemize}
+		\item If $eqRoot$ is a variable, append $+- \{VAR\}$ and the variable 
+		name
+		\item If $eqRoot$ is a constant, append $+- \{CONST\}$ and the value
+		\item If $eqRoot$ is an operator node, append $+- \{<op>\}$ where $op$ 
+		is 
+		the node operator:
+		\item If $eqRoot$ is a right operand and has no left of right 
+		operands of its own, append ``   "; this will align the tree levels
+		\item If $eqRoot$ is not a right operator or has a left or right 
+		operand, append ``\textbar ";  this will align the tree levels
+		\item Append a new line character and print the trees corresponding 
+		to the left and right operands of $eqRoot$ if they exist
+	\end{itemize}
 	\item exception: N/A
 \end{itemize}
 
