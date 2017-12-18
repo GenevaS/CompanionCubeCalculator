@@ -28,7 +28,7 @@
 
 \newcommand{\progname}{Companion Cube Calculator} % PUT YOUR PROGRAM NAME HERE
 \newcommand{\prognameAbbrv}{$C^{3}$}
-\newcommand{\srsVersion}{1.1.1}
+\newcommand{\srsVersion}{2.0}
 
 \begin{document}
 
@@ -87,11 +87,12 @@ interval arithmetic.
 
 \subsection{Purpose}
 This document describes the software test plan for the \prognameAbbrv{} tool 
-and is informed by its SRS documentation (version \srsVersion{}), including a 
-description of automated testing approach, tools, and black box test cases. The 
-purpose of documenting this information is to guide the product testing for the 
-initial product release and to provide a basis for regression testing as 
-further developments are made to the \prognameAbbrv{} tool.
+and is informed by its SRS documentation (version \srsVersion{}) and resulting 
+implementation, including a description of automated testing approach, tools, 
+and test cases. The purpose of documenting this information is to guide the 
+product testing for the initial product release and to provide a basis for 
+regression testing as further developments are made to the \prognameAbbrv{} 
+tool.
 
 This document is intended for readers who wish to test the initial version of 
 the product, as well as those who want to refine and expand the tool. As 
@@ -101,9 +102,9 @@ the product do not affect its original purpose or core functionality.
 
 This test plan is intended to be used for version 1.0 of the \prognameAbbrv{} 
 tool, and will only contain test information related to the product description 
-in the product's SRS documentation (version \srsVersion{}). Any functionality 
-defined beyond the scope of the SRS document are not included in this version 
-of the test plan.
+in the product version's SRS documentation (version \srsVersion{}). Any 
+functionality defined beyond the scope of the SRS document are not included in 
+this version of the test plan.
 
 All documentation and the associated release of the tool can be found at 
 \href{https://github.com/GenevaS/CAS741}{https://github.com/GenevaS/CAS741}.
@@ -111,15 +112,17 @@ All documentation and the associated release of the tool can be found at
 \subsection{Scope}
 The \prognameAbbrv{} tool relies on interval arithmetic in the domain of real 
 numbers ($\varmathbb{R}$), which means that many of its functions can be 
-empirically tested. The tool has not yet been built, so the plan not include 
-implementation-specific tests. Instead, this plan will outline black box tests 
-that abstracts the tool into modules based on the requirements identified in 
-the SRS documentation.
+empirically tested. This plan contains testing for both specific and 
+non-specific implementation aspects of the program. The implementation-specific 
+tests are included to achieve 100\% code coverage to ensure that all code paths 
+are reachable and produce expected outcomes. Non-specific implementation 
+testing focuses on the correctness of the program with respect to its original 
+purpose and its adherence to the SRS document.
 
-The purpose of this plan is to guide the modularization of the \prognameAbbrv{} 
-tool design so that it is easy to test and maintain. It also forms the 
+The purpose of this plan is to modularize testing of the \prognameAbbrv{} 
+tool so that it is easy to maintain and improve. It also forms the 
 foundation of the kinds of behaviours that the tool should exhibit when it 
-encounters malformed  user inputs and unexpected values during its calculations.
+encounters malformed user inputs and unexpected values during its calculations.
 
 \subsection{Overview of Document}
 This document presents a general description of the \prognameAbbrv{} tool to 
@@ -129,9 +132,10 @@ description of the test plan, including the automated testing approach,
 verification tools, and non-testing based verification methods that will be 
 used. The general plan outline is followed by a description of the system test 
 which is designed to determine if the requirements from the associated SRS 
-document are satisfied. The final section describes how unit testing will be 
-implemented when the internal workings of the \prognameAbbrv{} tool are 
-established.
+document are satisfied. The final section describes implementation-specific 
+tests that were implemented to achieve 100\% code coverage.
+
+\newpage
 
 \section{Plan}
 \label{testplan_highlevel}
@@ -142,8 +146,8 @@ plan.
 	
 \subsection{Software Description}
 The \prognameAbbrv{} tool is a stand-alone application for calculating
-the mathematical range of a user-defined function given the domains of
-the function's component variables. Function ranges and variable
+the mathematical range of a user-defined equation given the domains of
+the equation's component variables. Equation ranges and variable
 domains are represented by intervals, where intervals are defined as a
 set of consecutive values bounded by a minimum and maximum value. The
 minimum and maximum values for any given interval must be defined. To
@@ -151,11 +155,12 @@ perform its calculations, the \prognameAbbrv{} tool uses interval
 arithmetic.
 
 The purpose of this product is to produce accurate results when they can be 
-found. If a result cannot be found, the tool is expected to communicate the 
-reason back to the user. Calculations must be accurate within an error range of 
-the host machine's floating point error. These tasks must be completed while 
-presenting all communications to the user in standard function and interval 
-notation.
+found with respect to the host machine's floating-point precision. If a result 
+cannot be found, the tool is expected to communicate the reason back to the 
+user. Exact results are not required, as the tested equations are expected to 
+the implemented in a software environment that has no impact on the external 
+world. These tasks must be completed while presenting all communications to the 
+user in standard function and interval notation.
 
 \subsection{Test Team}
 
@@ -173,19 +178,20 @@ human audience. These types of verifications are best handled by manual tests
 and user studies.
 
 The functional requirements tests (Section \ref{testplan_functional}) focus on 
-the behaviour that is expected at each stage of the \prognameAbbrv{} tools work 
-flow. Since these behaviours are internal to the tool with no user guidance, 
-these behaviours can be tested automatically using a series of black box unit 
-tests. Some of the non-functional requirements such as reliability and 
+the behaviour that is expected at each stage of the \prognameAbbrv{} tool's 
+work flow. Since these behaviours are internal to the tool and do not require 
+human guidance, these behaviours can be tested automatically using a series of 
+black box unit tests. Some of the non-functional requirements such as 
 robustness (Section \ref{testplan_nonfunctional}), can also be tested using 
-automated approaches because they focus on floating-point error rates and data 
-constraints.
+automated approaches because they focus on empirically testable data, such as 
+data constraints.
 
 Many of the unit tests are designed to be used as part of integration testing, 
-and the system will be progressively tested starting from gathering user inputs 
-and ending with the system's outputs. Outputs can be messages informing the 
-user of erroneous behaviours or malformed inputs, and calculated result if a no 
-errors are detected.
+and the system will be progressively tested starting from the creation of data 
+structures, to conversion processes, to input and output testing. Outputs 
+include messages informing the user of erroneous behaviours or malformed 
+inputs, and the calculated values and resulting equation tree if a no errors 
+are detected.
 
 The remaining unit tests are designed to test the correctness of the tool's 
 calculation. Some of the tests check simple, two variable equations to ensure 
@@ -204,53 +210,65 @@ test tools, including:
 \begin{itemize}
 	\item \textbf{A unit test framework and management system}\\
 	This forms the bulk of the automated testing approach and will be used for 
-	unit, integration, system, and regression testing.
-	\item \textbf{Automated GUI testing}\\
-	The selected version of Visual Studio allows developers to record a series 
-	of interactions with a GUI that can be played multiple times for testing. 
-	This can help save time by making traditionally manual test cases into 
-	automated ones. Depending on the complexity of the GUI, this tool might not 
-	be used.
-	\item \textbf{Code coverage tools that can be run ``live" as code is 
-	written}\\
+	unit, integration, system, and regression testing. The IDE can be 
+	configured so that existing unit tests are run automatically when the 
+	program is compiled.
+	\item \textbf{Code coverage tools}\\
 	The code coverage tools in Visual Studio is connected to the test 
 	management system and can help identify code that is not being run by any 
-	unit test. The IDE can be configured so that this code coverage check is 
-	run automatically while the program is being written.
+	unit test. 
 \end{itemize}
 
 \subsection{Non-Testing Based Verification}
+There are a few non-functional requirements that cannot be tested 
+automatically, but are still worth testing to verify their correctness:
 
-There are no non-testing based verification approaches in this test plan due to 
-time and team constraints.
+\begin{itemize}
+	\item Correctness can be tested using mathematical proofs to verify the 
+	correctness of equation decomposition and order of operations.
+	\item Verifiability, usability and maintainability can be verified using 
+	user studies tailored for each requirement. This plan specifically contains 
+	a user study description for the usability requirements 
+	(Appendix~\ref{appendix_userstudy}).
+\end{itemize}
+
+\newpage
 
 \section{System Test Description}
 The system testing of the \prognameAbbrv{} tool will focus on inspecting and 
-conditioning user inputs and ensuring that the \prognameAbbrv{} tool is able to 
-produce descriptive outputs for both valid and invalid inputs. 
+conditioning user inputs, verifying that the correct values are being produced 
+by program calculations, and ensuring that the \prognameAbbrv{} tool is able to 
+produce descriptive outputs for both valid and invalid inputs. These tests are 
+divided into sections based on modules so that integration testing can arise 
+naturally from the gradual addition of components. 
 
-The goal of user input inspection and conditioning tests is to be sure that the 
-\prognameAbbrv{} tool is able to identify and reject values that violate the 
-assumptions. If the tool determines that the values do not violate the 
-assumptions, it should be able to convert those values into the internal 
-representations identified in the SRS document. For the purposes of this test 
-plan, it is assumed that the user function is represented internally as 
-a parse tree.
-
-Even if the user inputs are validated and conditioned correctly, it is still 
-possible for the \prognameAbbrv{} tool to encounter invalid operations in an 
-intermediary step while calculating a result. This makes it necessary to create 
-a series of tests to determine how the tool will react to both supported and 
-unsupported operations.
-
-This test plan is meant to be executed in stages. The first stage is a 
-white-box unit test of the functionality required to get raw inputs from the 
-user. The subsequent stages are both integration and unit tests, where the test 
-checks that the behaviour produced by the new modules is both working as 
-expected and can communicate with the modules above it. The final tests in this 
-chain, which show the calculations of the \prognameAbbrv{} tool, form the basis 
-of regression testing and contains mathematical functions that will be 
-incorrectly processed if the tool does not parse them correctly.
+%The goal of user input inspection and conditioning tests is to be sure that 
+%the 
+%\prognameAbbrv{} tool is able to identify and reject values that violate the 
+%assumptions. If the tool determines that the values do not violate the 
+%assumptions, it should be able to convert those values into the internal 
+%representations identified in the SRS document. For the purposes of this test 
+%plan, it is assumed that the user function is represented internally as 
+%a parse tree.
+%
+%Even if the user inputs are validated and conditioned correctly, it is still 
+%possible for the \prognameAbbrv{} tool to encounter invalid operations in an 
+%intermediary step while calculating a result. This makes it necessary to 
+%create 
+%a series of tests to determine how the tool will react to both supported and 
+%unsupported operations.
+%
+%This test plan is meant to be executed in stages. The first stage is a 
+%white-box unit test of the functionality required to get raw inputs from the 
+%user. The subsequent stages are both integration and unit tests, where the 
+%test 
+%checks that the behaviour produced by the new modules is both working as 
+%expected and can communicate with the modules above it. The final tests in 
+%this 
+%chain, which show the calculations of the \prognameAbbrv{} tool, form the 
+%basis 
+%of regression testing and contains mathematical functions that will be 
+%incorrectly processed if the tool does not parse them correctly.
 	
 \subsection{Tests for Functional Requirements}
 \label{testplan_functional}
@@ -1650,19 +1668,19 @@ arrow and requirements appear at the head.
 			& \rref{R_Inputs} & \rref{R_conditionX} & \rref{R_verifyinputs} & 
 			\rref{R_conditionfx}& \rref{R_Calculate} &\rref{R_CalculateCompose} 
 			&\rref{R_VerifyOutput} &\rref{R_VerifyOutputConstraints} 
-			&\rref{R_Output}&\rref{R_SigFig}& NF: Usability
+			&\rref{R_Output} & NF: Usability
 			\\
 			\hline
-			\ref{tests_gettingInputs}       & X &  & X &&&&&&&&  \\ \hline
-			\ref{tests_conditioningInputs}       &  & X & X  &X&&&&&&&  \\ 
+			\ref{tests_gettingInputs}       & X &  & X &&&&&&&  \\ \hline
+			\ref{tests_conditioningInputs}       &  & X & X  &X&&&&&&  \\ 
 			\hline
-			\ref{tests_correctnessOfCalculations}       &  &  &   &&X&&X&X&& & 
+			\ref{tests_correctnessOfCalculations}       &  &  &   &&X&&X&X& & 
 			\\ 
 			\hline
-			\ref{tests_operatorComposition}       &  &  &   &&&X&X&X&& & \\ 
+			\ref{tests_operatorComposition}       &  &  &   &&&X&X&X& & \\ 
 			\hline
-			\ref{tests_outputResults}       &  &  &   &&&&&&X& X &\\ \hline
-			\ref{tests_nonfunctional_usability}       &  &  &   &&&&&&&  &X\\ 
+			\ref{tests_outputResults}       &  &  &   &&&&&& X &\\ \hline
+			\ref{tests_nonfunctional_usability}       &  &  &   &&&&&&  &X\\ 
 			\hline
 		\end{tabular}
 	\caption{Traceability Matrix Showing the Connections Between Requirements 
