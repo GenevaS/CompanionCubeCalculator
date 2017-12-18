@@ -1,5 +1,6 @@
-# Design Documentation
+# Design Documentation #
 
 The folders and files for this folder are as follows:
 
-Describe ...
+MG: The Module Guide
+MIS: The Module Interface Specification
