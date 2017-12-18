@@ -901,6 +901,9 @@ N/A
 
 \section{MIS of the Interval Data Structure Module} 
 \label{Module_intervaldatastructure}
+The Interval Data Structure represents a mathematical interval with end points 
+$minBound$ and $maxBound$. This implementation is designed to be application 
+dependant.
 
 \subsection{Module}
 
@@ -915,18 +918,23 @@ N/A
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{3cm} p{3cm} p{5cm}}
+	\begin{tabular}{p{3.8cm} p{2.5cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline		
-		IntervalStruct & $String$, $\mathbb{R}^2$ & $intervalStruct$ & 
+		IntervalStruct & $String$, $\mathbb{R}^2$, $Boolean^2$ & 
+		$IntervalStruct$ & 
 		IV\_ORD\_VIOLATED \\
 		GetVariableName & - & $String$ & - \\
 		GetMinBound & - & $\mathbb{R}$ & - \\
 		GetMaxBound & - & $\mathbb{R}$ & - \\
+		IsLeftBoundClosed & - & $Boolean$ & - \\
+		IsRightBoundClosed & - & $Boolean$ & - \\
 		SetVariableName & $String$ & - & - \\
-		SetMinBound & $\mathbb{R}$ & - & IV\_ORD\_VIOLATED \\
-		SetMaxBound & $\mathbb{R}$ & - & IV\_ORD\_VIOLATED \\
+		SetMinBound & $\mathbb{R}$ & - & IV\_MIN\_ORD\_VIOLATED \\
+		SetMaxBound & $\mathbb{R}$ & - & IV\_MAX\_ORD\_VIOLATED \\
+		SetLeftBoundClosed & $Boolean$ & - & - \\
+		SetRightBoundClosed & $Boolean$ & - & - \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -940,15 +948,19 @@ N/A
 	\item $variableName$ : $String$
 	\item $minBound : \mathbb{R}$
 	\item $maxBound : \mathbb{R}$
+	\item $isClosedLeft : Boolean$
+	\item $isClosedRight : Boolean$
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent IntervalStruct($varName, minB, maxB$):
+\noindent IntervalStruct($varName, minB, maxB, leftClosed, RightClosed$):
 \begin{itemize}
-	\item output: $out := newInterval$
-	\item transition: Update state variables $variableName$, $minBound$, and 
-	$maxBound$ with the provided values $varName$, $minB$, and $maxB$
+	\item output: $out := new IntervalStruct(variableName$, $minBound$, 
+	$maxBound$, $isClosedLeft$, $isClosedRight)$
+	\item transition: Update state variables $variableName$, $minBound$, 
+	$maxBound$, $isClosedLeft$, and $isClosedRight$ with the provided values 
+	$varName$, $minB$, $maxB$, $leftClosed$, and $rightClosed$
 	\item exception: $exc := \\
 	(minB > maxB \Rightarrow IV\_ORD\_VIOLATED)$
 \end{itemize}
@@ -971,6 +983,18 @@ N/A
 	\item exception: N/A
 \end{itemize}
 
+\noindent IsLeftBoundClosed():
+\begin{itemize}
+	\item output: $out := isClosedLeft$
+	\item exception: N/A
+\end{itemize}
+
+\noindent IsRightBoundClosed():
+\begin{itemize}
+	\item output: $out := isClosedRight$
+	\item exception: N/A
+\end{itemize}
+
 \noindent SetVariableName($varName$):
 \begin{itemize}
 	\item transition: Update state variable $variableName$ with the provided 
@@ -983,7 +1007,7 @@ N/A
 	\item transition: Update state variable $minBound$ with the provided value 
 	$minB$
 	\item exception: $exc := \\
-	(minB > maxBound \Rightarrow IV\_ORD\_VIOLATED)$
+	(minB > maxBound \Rightarrow IV\_MIN\_ORD\_VIOLATED)$
 \end{itemize}
 
 \noindent SetMaxBound($maxB$):
@@ -991,7 +1015,21 @@ N/A
 	\item transition: Update state variable $maxBound$ with the provided value 
 	$maxB$
 	\item exception: $exc := \\
-	(maxB < minBound \Rightarrow IV\_ORD\_VIOLATED)$
+	(maxB < minBound \Rightarrow IV\_MAX\_ORD\_VIOLATED)$
+\end{itemize}
+
+\noindent SetLeftBoundClosed($closed$):
+\begin{itemize}
+	\item transition: Update state variable $isClosedLeft$ with the provided 
+	value $closed$
+	\item exception: N/A
+\end{itemize}
+
+\noindent SetRightBoundClosed($closed$):
+\begin{itemize}
+	\item transition: Update state variable $isClosedRight$ with the provided 
+	value $closed$
+	\item exception: N/A
 \end{itemize}
 
 \newpage
@@ -1308,6 +1346,12 @@ N/A
 	range will only include this value.\\
 	EQC\_IMPLICIT\_MULT & Warning: Encountered an implicit multiplication of a 
 	constant value and a variable. Expanding with explicit operator. \\
+	IV\_MIN\_ORD\_VIOLATED & WARNING: Value provided for minimum bound is 
+	greater than the current maximum bound. The values have been exchanged to 
+	maintain the interval ordering. \\
+	IV\_MAX\_ORD\_VIOLATED & WARNING: Value provided for maximum bound is 
+	smaller than the current minimum bound. The values have been exchanged to 
+	maintain the interval ordering. \\
 	IV\_ORD\_VIOLATED & Warning: Value provided for intervals are not in 
 	increasing order. The values have been exchanged to maintain the interval 
 	ordering. \\
