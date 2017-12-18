@@ -2,7 +2,7 @@
  * GUI Control Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/16
+ * Updated 2017/12/18
  * This module links GUI widgets to the different modules of the 
  * Companion Cube Calculator.
  * ---------------------------------------------------------------------
@@ -59,7 +59,7 @@ namespace CompanionCubeCalculator
         /* EQUATION HEADER AND TEXTBOX FUNCTIONS */
         private void Txt_Equation_TextChanged(object sender, EventArgs e)
         {
-            if (Input.RemoveWhitespace(Txt_Equation.Text, false) != "")
+            if (ControlFlow.ConditionRawInput(Txt_Equation.Text, false) != "")
             {
                 Btn_ExtractVars.Enabled = true;
             }
@@ -74,17 +74,17 @@ namespace CompanionCubeCalculator
         /* VARIABLE EXTRACTION FUNCTION */
         private void Btn_ExtractVars_Click(object sender, EventArgs e)
         {
-            string eq = Input.RemoveWhitespace(Txt_Equation.Text, false);
+            string eq = ControlFlow.ConditionRawInput(Txt_Equation.Text, false);
             string[] variables;
             string[] varTableRow;
             bool contains = false;
 
             if (eq != "")
             {
-                if (EquationConversion.MakeEquationTree(eq) != null)
+                variables = ControlFlow.ExtractVariables(eq);
+                if (variables != null)
                 {
                     Txt_Equation.BackColor = System.Drawing.SystemColors.Window;
-                    variables = EquationConversion.GetVariableList();
 
                     if (variables.Length > 0)
                     {
@@ -137,9 +137,10 @@ namespace CompanionCubeCalculator
         /* CALCULATE BUTTON FUNCTION */
         private void Btn_Calculate_Click(object sender, EventArgs e)
         {
-            string equation = Input.RemoveWhitespace(Txt_Equation.Text, false);
+            string equation = ControlFlow.ConditionRawInput(Txt_Equation.Text, false);
             string variables = "";
             List<string> varNames = new List<string>();
+            string[] delimiters = ControlFlow.GetDelimiters();
 
             Grid_Vars.AllowUserToAddRows = false;
             foreach (DataGridViewRow var in Grid_Vars.Rows)
@@ -151,7 +152,7 @@ namespace CompanionCubeCalculator
                     {
                         if (!varNames.Contains(Regex.Replace(var.Cells[0].Value.ToString(), @"\s+", "")))
                         {
-                            variables += var.Cells[0].Value.ToString() + Regex.Unescape(Input.GetFieldDelimiter()) + var.Cells[1].Value.ToString() + Regex.Unescape(Input.GetFieldDelimiter()) + var.Cells[2].Value.ToString() + Regex.Unescape(Input.GetLineDelimiter());
+                            variables += var.Cells[0].Value.ToString() + delimiters[1] + var.Cells[1].Value.ToString() + delimiters[1] + var.Cells[2].Value.ToString() + delimiters[0];
                             varNames.Add(Regex.Replace(var.Cells[0].Value.ToString(), @"\s+", ""));
                         }
                         else
@@ -229,7 +230,7 @@ namespace CompanionCubeCalculator
             getUserFile.CheckFileExists = true;
             getUserFile.CheckPathExists = true;
 
-            string[] fileExtensions = Input.GetValidFileTypes();
+            string[] fileExtensions = ControlFlow.GetValidFileTypes();
             if(fileExtensions != null)
             {
                 string filter = fileExtensions[0] + "|" + fileExtensions[0];

@@ -2,11 +2,13 @@
  * Control Flow Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/16
+ * Updated 2017/12/18
  * Corresponds to Control Flow Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * ---------------------------------------------------------------------
  */
+
+using System.Text.RegularExpressions;
 
 namespace CompanionCubeCalculator
 {
@@ -22,13 +24,33 @@ namespace CompanionCubeCalculator
 
         public static bool Initialize()
         {
-            bool success = EquationConversion.ConfigureParser(Solver.GetValidOperators(), Solver.GetValidTerminators());
+            bool success = Consolidate.Initialize();
             if (success)
             {
                 frm_Main.UpdateLog("Parser initialized." + System.Environment.NewLine);
             }
             
             return success;
+        }
+
+        public static string ConditionRawInput(string input, bool preserveSpecialChars)
+        {
+            return Input.RemoveWhitespace(input, preserveSpecialChars);
+        }
+
+        public static string[] GetValidFileTypes()
+        {
+            return Input.GetValidFileTypes();
+        }
+
+        public static string[] GetDelimiters()
+        {
+            return new string[2] { Regex.Unescape(Input.GetLineDelimiter()), Regex.Unescape(Input.GetFieldDelimiter()) };
+        }
+
+        public static string[] ExtractVariables(string eq)
+        {
+            return Consolidate.ExtractVariablesFromEquation(eq);
         }
 
         public static string[,] GetVariableInfo()
