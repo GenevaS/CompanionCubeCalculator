@@ -63,6 +63,8 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
+December 18, 2017 & 2.0 & Updated the document to reflect the current 
+implementation \\
 December 17, 2017 & 1.2 & Updated the Control Flow and Input specifications to 
 match the resulting implementation \\
 December 7, 2017 & 1.1.1 & Revised the operator data structure with missing 
@@ -507,13 +509,13 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure})
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
 		\multirow{8}{3cm}{ConvertToIntervals} & \multirow{8}{2.3cm}{$String^3$} 
-		& \multirow{8}{3cm}{$IntervalStruct^n$} & IVC\_EMPTY\_VARNAME, \\
+		& \multirow{8}{3cm}{$IntervalStruct^n$} & IVC\_CONV\_ERR\_MAX, \\
 		& & & IVC\_CONV\_ERR\_MIN, \\
-		& & & IVC\_CONV\_ERR\_MAX, \\
+		& & & IVC\_EMPTY\_VARNAME, \\
 		& & & IVC\_MISSING\_FIELDS, \\
 		& & & IVC\_NO\_BOUNDS, \\
-		& & & IVC\_NO\_MIN, \\
 		& & & IVC\_NO\_MAX, \\
+		& & & IVC\_NO\_MIN, \\
 		& & & IVC\_TOO\_MANY\_FIELDS \\
 		\hline
 	\end{tabular}
@@ -544,19 +546,19 @@ N/A
 	sequence and creating an $IntervalStruct$ from its fields, where fields are 
 	separated by $fieldDelimiter$.
 	\item exception: $exc := \\
-	(varName = ``" \Rightarrow IVC\_EMPTY\_VARNAME)\\
+	(ToReal(max) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MAX)\\
 	|\\
 	(ToReal(min) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MIN)\\
 	|\\
-	(ToReal(max) \notin \mathbb{R} \Rightarrow IVC\_CONV\_ERR\_MAX)\\
-	|\\
-	(min = max = ``" \Rightarrow IVC\_NO\_BOUNDS)\\
+	(varName = ``" \Rightarrow IVC\_EMPTY\_VARNAME)\\
 	|\\
 	(\exists l \in tempSeq | l.numFields < 3 \Rightarrow IVC\_MISSING\_FIELDS)\\
 	|\\
-	(min = ``" \wedge max \neq ``" \Rightarrow IVC\_NO\_MIN)\\
+	(min = max = ``" \Rightarrow IVC\_NO\_BOUNDS)\\
 	|\\
 	(min \neq ``" \wedge max = ``" \Rightarrow IVC\_NO\_MAX)\\
+	|\\
+	(min = ``" \wedge max \neq ``" \Rightarrow IVC\_NO\_MIN)\\
 	|\\
 	(\exists l \in tempSeq | l.numFields > 3 \Rightarrow 
 	IVC\_TOO\_MANY\_FIELDS)$
@@ -566,6 +568,11 @@ N/A
 
 \section{MIS of the Equation Conversion Module} 
 \label{Module_equationconversion}
+The Equation Conversion module creates an equation tree given an equation 
+string using the Precedence Climbing algorithm from:
+\begin{center}
+	\href{https://www.engr.mun.ca/~theo/Misc/exp\_parsing.htm\#climbing}{https://www.engr.mun.ca/~theo/Misc/exp\_parsing.htm\#climbing}
+\end{center}
 
 \subsection{Module}
 
@@ -592,18 +599,20 @@ EquationStruct (Section~\ref{Module_equationdatastructure}), OperatorStruct (Sec
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
 		\multirow{3}{3.2cm}{ConfigureParser} & 
-		\multirow{3}{2.8cm}{$operatorStruct^n$, $String^{n\text{x}2}$} & 
-		\multirow{3}{3cm}{$Boolean$} & EQC\_NO\_OPS, EQC\_INVALID\_OP, 
+		\multirow{3}{2.8cm}{$OperatorStruct^n$, $String^{n\text{x}2}$} & 
+		\multirow{3}{3cm}{$Boolean$} & EQC\_INVALID\_OP, EQC\_NO\_OPS,  
 		EQC\_UNBALANCED\_TERMINATOR\\
+		ResetEquationConversion & - & - & - \\
 		\multirow{4}{3.2cm}{MakeEquationTree} & \multirow{4}{2.8cm}{$String$} & 
-		\multirow{4}{3cm}{$equationStruct$} & 
-		EQC\_CONST\_FUNC, \\	
+		\multirow{4}{3cm}{$EquationStruct$} & EQC\_CONST\_FUNC, \\
 		& & & EQC\_IMPLICIT\_MULT, \\
-		& & & EQC\_INCOMPLETE\_OP, \\
-		& & & EQC\_UNSUPPORTED\_OP \\
+		& & & EQC\_INCOMPLETE\_EQ, \\
+		& & & EQC\_INCOMPLETE\_OP \\
+		& & & EQC\_UNEXPECTED\_TOKEN, \\
+		IsReady & - & $Boolean$ & - \\
+		GetVariableList & - & $String^n$ & - \\
 		GetVariableToken & - & $String$ & - \\
 		GetConstToken & - & $String$ & - \\
-		GetVariableList & - & $String^n$ & - \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -613,8 +622,10 @@ EquationStruct (Section~\ref{Module_equationdatastructure}), OperatorStruct (Sec
 \subsubsection{State Variables}
 
 \begin{itemize}
+	\item $ready$ : $Boolean$
 	\item $variableList$ : $String^n$
 	\item $variableStringPattern$ : $String$
+	\item $implicitMultiplicationPattern$ : $String$
 \end{itemize}
 
 \subsubsection{Assumptions}
@@ -628,39 +639,65 @@ EquationStruct (Section~\ref{Module_equationdatastructure}), OperatorStruct (Sec
 
 \subsubsection{Access Routine Semantics}
 
-\noindent ConfigureParser($operators, terminators$):
+\noindent ConfigureParser($ops, terminators$):
 \begin{itemize}
-	\item transition: The value of $variableStringPattern$ is updated so that 
-	operators and terminators are not matched when the module is searching for 
-	variables.
-	\item output: $out := success$
+	\item transition: The value of $variableStringPattern$ and 
+	$implicitMultiplicationPattern$ are updated so that operators and 
+	terminators are not matched when the module is searching for variables. The 
+	symbols from $ops$ are used to update both state variables whereas the 
+	symbols from $terminators$ are only used to update $variableStringPattern$.
+	The state variable $ready$ is updated with the output of this access 
+	program.
+	\item output: $out := success$ where $success$ is $TRUE$ if no exceptions 
+	were encountered and $FALSE$ otherwise.
 	\item exception: $exc := \\
-	(operators = \emptyset \Rightarrow EQC\_NO\_OPS)\\
-	|\\
 	(\exists op \in operators | op.IsUnary == False \wedge op.IsBinary == False 
 	\Rightarrow EQC\_INVALID\_OP)\\
+	|\\
+	(operators = \emptyset \Rightarrow EQC\_NO\_OPS)\\
 	|\\
 	(\exists t[i][2] \in terminators | t[i][2] == "" \Rightarrow 
 	EQC\_UNBALANCED\_TERMINATOR)$
 \end{itemize}
 
-\noindent MakeEquationTree($userEquation$):
+\noindent ResetEquationConversion():
+\begin{itemize}
+	\item transition: All state variables are reset to their default values.
+	\item exception: N/A
+\end{itemize}
+
+\noindent MakeEquationTree($equationIn$):
 \begin{itemize}
 	\item transition: The value of $variableList$ is updated with new variable 
 	names as they are encountered during equation processing.
-	\item output: $out := equationTreeRoot$ \wss{Where is this output
-            defined?  I would expect it to be defined in terms of the input parameters.}
+	\item output: $out := equationTreeRoot$ where $equationTreeRoot$ is the 
+	equation tree produced by the precedence climbing algorithm. This algorithm 
+	uses a helper program $Expect(token)$, which raises an exception if the 
+	value of $token$ does not match the next character in $equationIn$. 
+	Variables in $equationIn$ are recognized using the $variableStringPattern$ 
+	state variable.\\
+	Before the algorithm executes, $equationIn$ is conditioned to expand 
+	implicit multiplication with an explicit multiplication symbol using 
+	$implicitMultiplicationPattern$.
 	\item exception: $exc := \\
-	(ToReal(userEquation) \in \mathbb{R} \Rightarrow EQC\_CONST\_FUNC)\\
+	(ToReal(equationIn) \in \mathbb{R} \Rightarrow EQC\_CONST\_FUNC)\\
 	|\\
-	(\exists subEq | subEq = \{subEq_1, subEq_2\} \wedge subEq_1 \in \mathbb{R} 
-	\wedge subEq_2 \in variableList \\ \Rightarrow EQC\_IMPLICIT\_MULT)\\
+	(\neg (equationIn.Expand(implicitMultiplicationPattern) = equationIn)\\ 
+	\Rightarrow EQC\_IMPLICIT\_MULT)\\
 	|\\
-	(\exists op \in userEquation | (NULL<op>userEquation) \vee 
+	(\neg (MakeEquationTree.Finish \wedge equationIn = "") \Rightarrow 
+	EQC\_INCOMPLETE\_EQ)\\
+	|\\
+	(\exists op \in equationIn | (NULL<op>userEquation) \vee 
 	(userEquation<op>NULL) \Rightarrow EQC\_INCOMPLETE\_OP)\\
 	|\\
-	(\exists op | op \in userEquation \wedge op \notin supportedOperations 
-	\Rightarrow EQC\_UNSUPPORTED\_OP)$
+	(\neg Expect(token) = token) \Rightarrow EQC\_UNEXPECTED\_TOKEN)$
+\end{itemize}
+
+\noindent IsReady():
+\begin{itemize}
+	\item output: $out := ready$
+	\item exception: N/A
 \end{itemize}
 
 \noindent GetVariableToken():
@@ -1403,16 +1440,15 @@ N/A
 	\toprule
 	\textbf{Message ID} & \textbf{Error Message} \\
 	\midrule
-	EQC\_NO\_OPS & Error: No operators were passed to the equation conversion 
-	module. \\ 
 	EQC\_INVALID\_OP & Error: The equation conversion module cannot parse the 
-	passed operator. \\ 
-	EQC\_UNBALANCED\_TERMINATOR & Error: An unbalanced terminator was passed to 
-	the equation conversion module.\\
-	EQC\_UNSUPPORTED\_OP & Error: The user equation contains an unsupported 
-	operator. Supported operators include $<supportedOperators>$.\\
-	EQC\_INCOMPLETE\_OP & Error: An operator was found that does not have 
-	sufficient operands. \\
+	$<token>$ operator. \\ 
+	EQC\_NO\_OPS & Error: No operators were passed to the parser. \\ 
+	EQC\_UNBALANCED\_TERMINATOR & Error: An unbalanced (left \textbar right) 
+	terminator token was encountered ($<token>$).\\
+	EQC\_INCOMPLETE\_EQ & Error: Could not find the end of the equation. \\
+	EQC\_INCOMPLETE\_OP & Error: Unrecognized sequence encountered during 
+	Atomic Equation parsing. Remaining equation = $<remainingEquationString>$.\\
+	EQC\_UNEXPECTED\_TOKEN & Error: Could not find expected token $<token>$. \\	
 	EQS\_MISSING\_OP & Error: Equation structures must be assigned an operator 
 	during initialization. \\
 	IN\_CANNOT\_READ\_FILE & Error: The file could not be read. \\	
@@ -1429,12 +1465,14 @@ N/A
 	name. \\
 	IVC\_MISSING\_FIELDS & Error: No fields found for variable (Line 
 	$<lineNumber>$). Skipping line.\\
+	IVC\_NO\_BOUNDS & Error: No values provided for either interval bound. \\
 	IVC\_TOO\_MANY\_FIELDS & Error: Encountered a variable with more than three 
 	fields (Line $<lineNumber>$). Skipping line. \\
-	IVC\_NO\_BOUNDS & Error: No values provided for either interval bound. \\
 	OP\_INVALID\_PRECEDENCE & Error: Cannot assign a precedence value less than 
 	0.\\
-	OP\_MISSING\_OP & Error: Cannot have an operator with no representative symbol. \\
+	OP\_MISSING\_OP & Error: Cannot have an operator with no representative 
+	symbol. 
+	\\
 	OP\_MULTI\_TYPE & Error: An operator cannot be overloaded to be unary, 
 	binary, and ternary. \\
 	OP\_NO\_TYPE & Error: Operators must be assigned a number of operands type. 
@@ -1452,25 +1490,22 @@ N/A
 	\bottomrule
 \end{longtable}
 
+\newpage
 
 \begin{longtable}{l p{9.5cm}}
 	\caption{Possible Warning Exceptions} \\
 	\toprule
 	\textbf{Message ID} & \textbf{Error Message} \\
 	\midrule
-	EQ\_WRONG\_OPERATOR\_TYPE & Warning: The operator must have type $string$. 
-	String type conversion has been applied.\\
-	EQ\_WRONG\_VARNAME\_TYPE & Warning: The variable name must have type 
-	$string$. String type conversion has been applied. \\
 	EQC\_CONST\_FUNC & Warning: The user equation is a constant value and the 
 	range will only include this value.\\
 	EQC\_IMPLICIT\_MULT & Warning: Encountered an implicit multiplication of a 
 	constant value and a variable. Expanding with explicit operator. \\
-	IV\_MIN\_ORD\_VIOLATED & Warning: Value provided for minimum bound is 
-	greater than the current maximum bound. The values have been exchanged to 
-	maintain the interval ordering. \\
 	IV\_MAX\_ORD\_VIOLATED & Warning: Value provided for maximum bound is 
 	smaller than the current minimum bound. The values have been exchanged to 
+	maintain the interval ordering. \\
+	IV\_MIN\_ORD\_VIOLATED & Warning: Value provided for minimum bound is 
+	greater than the current maximum bound. The values have been exchanged to 
 	maintain the interval ordering. \\
 	IV\_ORD\_VIOLATED & Warning: Value provided for intervals are not in 
 	increasing order. The values have been exchanged to maintain the interval 
@@ -1482,7 +1517,7 @@ N/A
 	SOL\_REAL\_EXPONENT & Warning: The value provided for the exponent $<N>$ is 
 	not a natural number. It has been rounded to $<Round(N)>$. \\
 	VC\_EXTRA\_VARS & Warning: Extraneous variables found in interval list 
-	($<variable list>$) \\
+	($<variable list>$). \\
 	\bottomrule
 \end{longtable}
 
