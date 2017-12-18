@@ -129,6 +129,7 @@ The following table summarizes the primitive data types used by \progname.
 \midrule
 Boolean & $\mathbb{B}$ & The set of $\{True, False\}$\\
 Integer & $\mathbb{Z}$ & Any whole number in (-$\infty$, $\infty$)\\
+Natural & $\mathbb{N}$ & Any number in $\{0, 1, 2, 3, ...\}$\\
 Real & $\mathbb{R}$ & Any number in (-$\infty$, $\infty$)\\
 \multirow{2}{1cm}{String} & \multirow{2}{1cm}{$char^n$} & A sequence of 
 alphanumeric and special characters\\
@@ -753,6 +754,8 @@ EquationConversion (Section~\ref{Module_equationconversion}), IntervalStruct
 
 \section{MIS of the Range Solver Module} 
 \label{Module_rangesolver}
+The Range Solver module contains the logic required to perform interval 
+arithmetic operations.
 
 \subsection{Module}
 
@@ -779,11 +782,14 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure}), EquationStruct
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		GetValidOperators & - & $operatorStruct^n$ & -\\
+		GetValidOperators & - & $OperatorStruct^n$ & -\\
 		GetValidTerminators & - & $String^{n\text{x}2}$ & -\\
-		\multirow{2}{3.1cm}{FindRange} & $equationStruct$, $intervalStruct^n$ & 
-		\multirow{2}{3cm}{$intervalStruct$} & 
-		\multirow{2}{5cm}{SOL\_UNSUPPORTED\_OP}\\
+		\multirow{4}{3.1cm}{FindRange} & \multirow{4}{3cm}{$EquationStruct$, 
+		$IntervalStruct^n$} & \multirow{4}{3cm}{$IntervalStruct$} & 
+		SOL\_MISSING\_VAR, \\
+		& & & SOL\_NO\_EQ, \\
+		& & & SOL\_REAL\_EXPONENT, \\
+		& & & SOL\_UNSUPPORTED\_OP \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -797,7 +803,9 @@ N/A
 \subsubsection{Assumptions}
 
 \begin{itemize}
-	\item The type of $intervalStruct^n$ accepts \texttt{NULL} as a valid value.
+	\item The structure of $EquationStruct$ is based on operator precedence.
+	\item The type of $IntervalStruct^n$ accepts \texttt{NULL} as a valid 
+	value. This supports the computation of constant value equations.
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -814,12 +822,22 @@ N/A
 	\item exception: N/A
 \end{itemize}
 
-\noindent FindRange($eStruct, ivStructList$):
+\noindent FindRange($eqRoot, intervals$):
 \begin{itemize}
-	\item output: $out := eqRange$
+	\item output: $out := range$ where $range$ is the result of performing and 
+	composing interval arithmetic operations on $eqRoot$ using the intervals 
+	from $intervals$.
 	\item exception: $exc := \\
-	((\exists op \in eStruct \wedge op \notin supportedOps) \\
-	\vee (\exists iv1, iv2 \in ivStructList \wedge \nexists op \in supportedOps 
+	(\exists varName \in eqRoot \wedge varName \notin intervals \Rightarrow 
+	SOL\_MISSING\_VAR)\\
+	|\\
+	(eqRoot = NULL \Rightarrow SOL\_NO\_EQ)\\
+	|\\
+	(\exists op \in eqRoot \wedge op = x^n \wedge n \notin \mathbb{N} 
+	\Rightarrow SOL\_REAL\_EXPONENT) \\
+	|\\
+	((\exists op \in eqRoot \wedge op \notin supportedOps) \\
+	\vee (\exists iv1, iv2 \in intervals \wedge \nexists op \in supportedOps 
 	| op(iv1, iv2) \vee op(iv2, iv1)) \\
 	\Rightarrow SOL\_UNSUPPORTED\_OP)$ 
 \end{itemize}
@@ -1346,8 +1364,13 @@ N/A
 	binary, and ternary. \\
 	OP\_NO\_TYPE & Error: Operators must be assigned a number of operands type. 
 	\\
+	SOL\_MISSING\_VAR & Error: Could not find an associated interval for 
+	variable $<varname>$. \\
+	SOL\_NO\_EQ & Error: No information was provided for the equation. \\
 	SOL\_UNSUPPORTED\_OP & Error: An unsupported operation was encountered 
-	while solving for the range of the equation.\\
+	while solving for the range of the equation (Unknown operator \textbar 
+	Mixed interval division \textbar Exponents \textbar Exponent base $<= 1$ 
+	\textbar Exponent $< 0$).\\
 	VC\_INVALID\_VARNAME & Error: Encountered a variable name with reserved 
 	characters ($+, - , *, \, \string^, (, )$). \\
 	VC\_MISSING\_VARS & Error: A variable is referenced in the user equation 
@@ -1370,10 +1393,10 @@ N/A
 	range will only include this value.\\
 	EQC\_IMPLICIT\_MULT & Warning: Encountered an implicit multiplication of a 
 	constant value and a variable. Expanding with explicit operator. \\
-	IV\_MIN\_ORD\_VIOLATED & WARNING: Value provided for minimum bound is 
+	IV\_MIN\_ORD\_VIOLATED & Warning: Value provided for minimum bound is 
 	greater than the current maximum bound. The values have been exchanged to 
 	maintain the interval ordering. \\
-	IV\_MAX\_ORD\_VIOLATED & WARNING: Value provided for maximum bound is 
+	IV\_MAX\_ORD\_VIOLATED & Warning: Value provided for maximum bound is 
 	smaller than the current minimum bound. The values have been exchanged to 
 	maintain the interval ordering. \\
 	IV\_ORD\_VIOLATED & Warning: Value provided for intervals are not in 
@@ -1383,6 +1406,8 @@ N/A
 	same value as the maximum bound. \\
 	IVC\_NO\_MAX & Warning: No maximum interval bound given. Setting it to the 
 	same value as the minimum bound. \\
+	SOL\_REAL\_EXPONENT & Warning: The value provided for the exponent $<N>$ is 
+	not a natural number. It has been rounded to $<Round(N)>$. \\
 	VC\_EXTRA\_VARS & Warning: There are more variables in the variable list 
 	than the user equation. Extraneous variables will be ignored. \\
 	\bottomrule
