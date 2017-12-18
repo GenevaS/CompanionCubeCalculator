@@ -236,6 +236,7 @@ GetVariableInfo & - & $String^{n \times 3}$ & - \\
 	\item $successCode$ : $Int$
 \end{itemize}
 
+\newpage
 \subsubsection{Access Routine Semantics}
 
 \noindent Initialize():
@@ -252,7 +253,7 @@ GetVariableInfo & - & $String^{n \times 3}$ & - \\
 	\item exception: N/A
 \end{itemize}
 
-\noindent ControlFile(fileName):
+\noindent ControlFile($fileName$):
 \begin{itemize}
 	\item output: $out := inputs$ where $inputs$ is the output of the 
 	ReadFile access program from the Input module
@@ -419,7 +420,7 @@ N/A
 
 \subsubsection{Access Routine Semantics}
 
-\noindent ReadFile(fileName):
+\noindent ReadFile($fileName$):
 \begin{itemize}
 	\item output: $out := fileContents$ where:
 	\begin{itemize}
@@ -479,9 +480,14 @@ N/A
 
 \section{MIS of the Interval Conversion Module} 
 \label{Module_intervalconversion}
-
-\wss{Why even create the intermediate string form?  Why not go directly to the
-  intervalStruct type?}
+The Interval Conversion module transforms a list of interval data and converts 
+it into a sequence of Interval Data Structures 
+(Section~\ref{Module_intervaldatastructure}). This intermediate step is 
+required so that no modules cannot directly access the conversion process and 
+must go through the Variable Consolidation 
+(Section~\ref{Module_variableconsolidation}) module instead. This design also 
+ensures that any changes to the input data format or the conversion process 
+will only affect the Variable Consolidation module.
 
 \subsection{Module}
 
@@ -496,17 +502,19 @@ IntervalStruct (Section~\ref{Module_intervaldatastructure})
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{3cm} p{2.3cm} p{3cm} p{5cm}}
+	\begin{tabular}{p{3.3cm} p{2cm} p{3cm} p{5cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
-		\multirow{6}{3cm}{MakeInterval} & \multirow{6}{2.3cm}{$String^3$} & 
-		\multirow{6}{3cm}{$intervalStruct$} & IVC\_EMPTY\_VARNAME, \\
+		\multirow{8}{3cm}{ConvertToIntervals} & \multirow{8}{2.3cm}{$String^3$} 
+		& \multirow{8}{3cm}{$IntervalStruct^n$} & IVC\_EMPTY\_VARNAME, \\
 		& & & IVC\_CONV\_ERR\_MIN, \\
 		& & & IVC\_CONV\_ERR\_MAX, \\
+		& & & IVC\_MISSING\_FIELDS, \\
 		& & & IVC\_NO\_BOUNDS, \\
 		& & & IVC\_NO\_MIN, \\
-		& & & IVC\_NO\_MAX\\
+		& & & IVC\_NO\_MAX, \\
+		& & & IVC\_TOO\_MANY\_FIELDS \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -524,11 +532,17 @@ N/A
 	(Section~\ref{Module_intervaldatastructure}) module.
 \end{itemize}
 
+\newpage
 \subsubsection{Access Routine Semantics}
 
-\noindent MakeInterval($varName, min, max$):
+\noindent ConvertToIntervals($varList, lineDelimiter, fieldDelimiter$):
 \begin{itemize}
-	\item output: $out := newInterval$ \wss{Where is newInterval defined?}
+	\item output: $out := intervals$ where $intervals$ is a sequence of 
+	$IntervalStruct$. First, the input $varList$ is converted into an temporary 
+	sequence of strings ($tempSeq$). Then, each element in the $intervals$ 
+	sequence is created by taking one of the strings from the temporary 
+	sequence and creating an $IntervalStruct$ from its fields, where fields are 
+	separated by $fieldDelimiter$.
 	\item exception: $exc := \\
 	(varName = ``" \Rightarrow IVC\_EMPTY\_VARNAME)\\
 	|\\
@@ -538,9 +552,14 @@ N/A
 	|\\
 	(min = max = ``" \Rightarrow IVC\_NO\_BOUNDS)\\
 	|\\
+	(\exists l \in tempSeq | l.numFields < 3 \Rightarrow IVC\_MISSING\_FIELDS)\\
+	|\\
 	(min = ``" \wedge max \neq ``" \Rightarrow IVC\_NO\_MIN)\\
 	|\\
-	(min \neq ``" \wedge max = ``" \Rightarrow IVC\_NO\_MAX)$
+	(min \neq ``" \wedge max = ``" \Rightarrow IVC\_NO\_MAX)\\
+	|\\
+	(\exists l \in tempSeq | l.numFields > 3 \Rightarrow 
+	IVC\_TOO\_MANY\_FIELDS)$
 \end{itemize}
 
 \newpage
@@ -666,6 +685,13 @@ EquationStruct (Section~\ref{Module_equationdatastructure}), OperatorStruct (Sec
 
 \section{MIS of the Variable Consolidation Module} 
 \label{Module_variableconsolidation}
+The Variable Consolidation module is responsible for coordinating the 
+conversion process from input values to Equation and Interval Data Structures. 
+This module is intended to be the public interface of the conversion process, 
+and the individual conversion modules should not be accessed directly. This 
+reduces the amount of maintenance required if either the conversion process 
+changes, the format of the inputs change, or any processes that use the results 
+of the conversion process.
 
 \subsection{Module}
 
@@ -676,7 +702,8 @@ Consolidate
 IntervalConversion (Section~\ref{Module_intervalconversion}), 
 EquationConversion (Section~\ref{Module_equationconversion}), IntervalStruct 
 (Section~\ref{Module_intervaldatastructure}), EquationStruct 
-(Section~\ref{Module_equationdatastructure})
+(Section~\ref{Module_equationdatastructure}), OperatorStruct 
+(Section~\ref{Module_operatordatastructure})
 
 
 \subsection{Syntax}
@@ -684,18 +711,20 @@ EquationConversion (Section~\ref{Module_equationconversion}), IntervalStruct
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-	\begin{tabular}{p{4.3cm} p{2.7cm} p{3cm} p{4.3cm}}
+	\begin{tabular}{p{5.3cm} p{3cm} p{3cm} p{4cm}}
 		\hline
 		\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 		\hline
+		Initialize & - & $Boolean$ & - \\
 		\multirow{4}{4.3cm}{ConvertAndCheckInputs} & 
-		\multirow{4}{2.3cm}{$String$, $String^n$, $operatorStruct^n$} & 
-		\multirow{4}{3cm}{-} & VC\_MISSING\_VARS, \\
-		& & & VC\_EXTRA\_VARS, \\
-		& & & VC\_NO\_FUNCTION, \\
-		& & & VC\_INVALID\_VARNAME \\
-		GetEquationStruct & - & $equationStruct$ & - \\
-		GetIntervalStructList & - & $intervalStruct^n$ & - \\
+		$String$, $String^n$, $OperatorStruct^n$, 
+		$String^{n \times 2}$, $String^2$ & 
+		\multirow{4}{3cm}{$Int$} & 
+		\multirow{4}{2.3cm}{VC\_INIT\_FAILED, VC\_EXTRA\_VARS, 
+		VC\_MISSING\_VARS}\\
+		ExtractVariablesFromEquation & $String$ & $String^n$ & - \\
+		GetEquationStruct & - & $EquationStruct$ & - \\
+		GetIntervalStructList & - & $IntervalStruct^n$ & - \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -705,37 +734,69 @@ EquationConversion (Section~\ref{Module_equationconversion}), IntervalStruct
 \subsubsection{State Variables}
 
 \begin{itemize}
-	\item $equationTreeRoot$ : $equationStruct$
-	\item $intervalList$ : $intervalStruct^n$
+	\item $equationTreeRoot$ : $EquationStruct$
+	\item $intervalList$ : $IntervalStruct^n$
 \end{itemize}
 
-\subsubsection{Assumptions}
-
-\begin{itemize}
-	\item The ConvertAndCheckInputs function will change the state variables 
-	before the GetEquationStruct or GetIntervalStructList functions are called.
-\end{itemize}
-
+\newpage
 \subsubsection{Access Routine Semantics}
 
-\noindent ConvertAndCheckInputs(eqString, varList, operators):
+\noindent Initialize():
 \begin{itemize}
-	\item transition: The state variables $equationTreeRoot$ and $intervalList$ 
-	will be assigned the values that result from a successful parse and 
-	consolidation process. \wss{How is this done?  If you cannot represent
-          it formally, maybe a pseudo code algorithm is available?}
-	\item output: N/A 
+	\item output: $out := success$ where $success$ is the value returned from 
+	the ConfigureParser access program from EquationConversion. 
+	\item exception: N/A
+\end{itemize}
+
+\noindent ConvertAndCheckInputs($eqString$, $varList$, $operators$, 
+$terminators$, $lineDelimiter$, $fieldDelimiter$):
+\begin{itemize}
+	\item output: $out := successCode$ where $successCode$ can be:
+	\begin{itemize}
+		\item 0, if the process completed normally
+		\item -1, if the ConfigureParser access program from the 
+		EquationConversion module failed (The IsReady access program returns 
+		$FALSE$)
+		\item -2, if there are variables in the equation that are not defined 
+		in the variable list
+		\item -3, if the MakeEquationTree access program from the 
+		EquationConversion module returned a \texttt{NULL} value
+	\end{itemize}
+	\item transition: 
+	\begin{itemize}
+		\item The parameters $operators$ and $terminators$ are passed as inputs 
+		to the ConfigureParser access program from the Equation Conversion 
+		module.
+		\item The state variable $equationTreeRoot$ is assigned the output 
+		from the MakeEquationTree access program from the Equation Conversion 
+		module with the input parameter $eqString$.
+		\item The state variable $intervalList$ is assigned the output from the 
+		ConvertToIntervals access program from the Interval Conversion module 
+		with the input parameters $varList$, $lineDelimiter$, and 
+		$fieldDelimiter$.
+		\item The outputs from the GetVariableList access program from the 
+		Equation Conversion module and the GetVariableNamesFromIntervals access 
+		program with the input parameter $intervalList$ are compared to ensure 
+		that enough variable definitions exist in $intervalList$ to match the 
+		existing variables in $equationTreeRoot$.
+	\end{itemize}
 	\item exception: $exc := \\
-	(\exists var | var \in eqString \wedge var \notin varList \Rightarrow 
-	VC\_MISSING\_VARS)\\
+	(EquationConversion.IsReady == FALSE \Rightarrow VC\_INIT\_FAILED)\\
 	|\\
 	(\exists var | var \notin eqString \wedge var \in varList \Rightarrow 
 	VC\_EXTRA\_VARS)\\
 	|\\
-	(eqString == ``" \Rightarrow VC\_NO\_FUNCTION)\\
-	|\\
-	(\exists varName \supset \{+, - , *, \, \string^, (, )\} \Rightarrow 
-	VC\_INVALID\_VARNAME)$
+	(\exists var | var \in eqString \wedge var \notin varList \Rightarrow 
+	VC\_MISSING\_VARS)$
+\end{itemize}
+
+\noindent ExtractVariablesFromEquation($equation$):
+\begin{itemize}
+	\item output: $out := varList$ where $varList$ is the output of the 
+	GetVariableList access program after the MakeEquationTree access program 
+	has been called. Both access programs are from the EquationConversion 
+	module.
+	\item exception: N/A
 \end{itemize}
 
 \noindent GetEquationStruct():
@@ -826,7 +887,17 @@ N/A
 \begin{itemize}
 	\item output: $out := range$ where $range$ is the result of performing and 
 	composing interval arithmetic operations on $eqRoot$ using the intervals 
-	from $intervals$.
+	from $intervals$. The cases are:
+	\begin{itemize}
+		\item If $eqRoot$ is a variable, then range is the interval from 
+		$intervals$ with that variable name ($varName$)
+		\item If $eqRoot$ is a constant, then the range is an interval with 
+		both bounds set to the constant value
+		\item If $eqRoot$ is an operator node, then the range is:\\
+		FindRange($eqRoot.LeftOperand$)$<eqRoot.Operator>$FindRange($eqRoot.RightOperand$)
+	\end{itemize}
+	
+	
 	\item exception: $exc := \\
 	(\exists varName \in eqRoot \wedge varName \notin intervals \Rightarrow 
 	SOL\_MISSING\_VAR)\\
@@ -1356,6 +1427,10 @@ N/A
 	cannot be converted to a real number.\\
 	IVC\_EMPTY\_VARNAME & Error: Intervals must have an associated variable 
 	name. \\
+	IVC\_MISSING\_FIELDS & Error: No fields found for variable (Line 
+	$<lineNumber>$). Skipping line.\\
+	IVC\_TOO\_MANY\_FIELDS & Error: Encountered a variable with more than three 
+	fields (Line $<lineNumber>$). Skipping line. \\
 	IVC\_NO\_BOUNDS & Error: No values provided for either interval bound. \\
 	OP\_INVALID\_PRECEDENCE & Error: Cannot assign a precedence value less than 
 	0.\\
@@ -1371,11 +1446,9 @@ N/A
 	while solving for the range of the equation (Unknown operator \textbar 
 	Mixed interval division \textbar Exponents \textbar Exponent base $<= 1$ 
 	\textbar Exponent $< 0$).\\
-	VC\_INVALID\_VARNAME & Error: Encountered a variable name with reserved 
-	characters ($+, - , *, \, \string^, (, )$). \\
-	VC\_MISSING\_VARS & Error: A variable is referenced in the user equation 
-	that does not exist in the variable list. \\
-	VC\_NO\_FUNC & Error: No user equation was received. \\
+	VC\_INIT\_FAILED & Error: Equation parser could not be configured. \\
+	VC\_MISSING\_VARS & Error: Cannot find intervals for variable name(s): 
+	$<variable list>$. \\
 	\bottomrule
 \end{longtable}
 
@@ -1408,8 +1481,8 @@ N/A
 	same value as the minimum bound. \\
 	SOL\_REAL\_EXPONENT & Warning: The value provided for the exponent $<N>$ is 
 	not a natural number. It has been rounded to $<Round(N)>$. \\
-	VC\_EXTRA\_VARS & Warning: There are more variables in the variable list 
-	than the user equation. Extraneous variables will be ignored. \\
+	VC\_EXTRA\_VARS & Warning: Extraneous variables found in interval list 
+	($<variable list>$) \\
 	\bottomrule
 \end{longtable}
 
