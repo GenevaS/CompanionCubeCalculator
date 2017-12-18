@@ -1517,7 +1517,7 @@ $f(V)$ chosen will be taken from the functional requirement tests
 					
 Result: The user should be able to enter in the $f(V)$ with no guidance
 					
-How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
+How test will be performed: User study (\ref{appendix_userstudy})\\
 					
 \item{test-enteringDv}
 
@@ -1532,7 +1532,7 @@ test-enteringFV)
 					
 Result: The user should be able to enter in the $D(v)$ with no guidance
 					
-How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
+How test will be performed: User study (\ref{appendix_userstudy})\\
 
 \end{enumerate}
 
@@ -1552,7 +1552,7 @@ How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
 	Result: The user should be able to find and enter the data into the GUI 
 	with no guidance
 	
-	How test will be performed: Usability questionnaire (\ref{questions_GUI})\\
+	How test will be performed: User study (\ref{appendix_userstudy})\\
 	
 	\item{test-GUIWorkflow}
 	
@@ -1567,7 +1567,7 @@ How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
 	Result: The user should be able to prompt the tool to begin processing with 
 	no guidance
 	
-	How test will be performed: Usability questionnaire (\ref{questions_GUI})\\
+	How test will be performed: User study (\ref{appendix_userstudy})\\
 	
 	\item{test-GUIPresentationOutputs}
 	
@@ -1580,7 +1580,7 @@ How test will be performed: Usability questionnaire (\ref{questions_inputs})\\
 	Result: The user should be able to find and understand the system's outputs 
 	from the GUI with no guidance
 	
-	How test will be performed: Usability questionnaire (\ref{questions_GUI})\\
+	How test will be performed: User study (\ref{appendix_userstudy})\\
 	
 \end{enumerate}
 
@@ -1712,51 +1712,82 @@ immediate problems, the modules can be used in the functional requirement tests.
 
 \newpage
 
-\section{Appendix: Usability Survey Questions}
-These surveys are designed to accompany the usability non-functional 
-requirements tests (\ref{tests_nonfunctional_usability}).
+\section{Appendix: Usability Testing}
+\label{appendix_userstudy}
+An informal user study was conducted as part of the \progname{} test suite, 
+where participants were recruited from the examiner's lab. Participants were 
+sent a compressed file containing the program, user manual, and instructions 
+and asked to complete it on their own time. The instructions file contained a 
+URL to the associated study questionnaire. 
 
-\subsection{User Questions for Entering Values into the \prognameAbbrv{} 
-Tool}
-\label{questions_inputs}
+The instructions that were sent to participants can be found at: 
 
+\begin{center}
+	\href{https://github.com/GenevaS/CAS741/tree/master/Doc/TestReport/UserStudy}{https://github.com/GenevaS/CAS741/tree/master/Doc/TestReport/UserStudy}
+\end{center}
+
+\subsection{Tasks}
+User study participants were asked to complete two tasks given the information: 
+
+$$\frac{2(x + y)^2}{3^z}$$
+
+where
+
+$$x = [1, 2], y = [3, 4], z = [5, 6]$$
+
+The first task was to input the information directly into the GUI and the 
+second task was to load the information into the program via a file.
+
+Participants were free to access the program user guide as they saw fit. 
+
+\subsection{Questionnaire}
+This survey were designed to accompany the user study. The questionnaire was 
+distributed as a Google Form.
+
+\subsubsection{Test Results (Round values as necessary)}
 \begin{enumerate}
-	\item (Likert Scale) I was able to enter in the equation $f(V)$ in a format 
-	that I was familiar with.
-	\item (Likert Scale) I was able to enter in the equation $f(V)$ in a format 
-	that I was expecting.
-	\item (Likert Scale) I found it easy to enter the $f(V)$ equations into the 
-	tool.
-	\item (Likert Scale) I was able to enter in the domains $D(v)$ in a format 
-	that I was familiar with.
-	\item (Likert Scale) I was able to enter in the domains $D(v)$ in a format 
-	that I was expecting.
-	\item (Likert Scale) I found it easy to enter the domains $D(v)$ into the 
-	tool.
-	\item (Open Response) Do you have any suggestions for improving the 
-	mathematical notation of the \prognameAbbrv{} tool?
+	\item (Long Answer) What range value did you calculate in Task 1?
+	\item (Long Answer) What was the resulting equation tree from Task 1?
+	\item (Long Answer) What range value did you calculate in Task 2?
+	\item (Long Answer) What was the resulting equation tree from Task 2?
 \end{enumerate}
 
-\subsection{User Questions for Using the \prognameAbbrv{} Tool GUI}
-\label{questions_GUI}
-
+\subsubsection{Software Usability}
+\paragraph{Task 1: Entering values directly into the GUI}
 \begin{enumerate}
+	\item (Likert Scale)I found it easy to find the input mechanism for 
+	entering 
+	the equation into the GUI.
+	
+	\item (Likert Scale) I found it easy to use the function input mechanism.
+	
 	\item (Likert Scale) I found it easy to find the input mechanism for 
-	entering $f(V)$ into the GUI.
-	\item (Likert Scale) I found it easy to enter the $f(V)$ equations into the 
+	entering variable domains into the GUI. 
+	
+	\item (Likert Scale) I found it easy to use the variable domain input 
+	mechanism. 
+\end{enumerate}
+
+\paragraph{Task 2: Loading values into the program from a file}
+\begin{enumerate}
+	\item (Likert Scale) I found it easy to find the option to load from a file.
+\end{enumerate}
+
+\paragraph{Understanding the Results}
+\begin{enumerate}
+	\item (Likert Scale) I found it easy to find the calculated range in the 
 	GUI.
-	\item (Likert Scale) I found it easy to find the input mechanism for 
-	entering $D(v)$ into the GUI.
-	\item (Likert Scale) I found it easy to enter the domains $D(v)$ into the 
-	GUI.
-	\item (Likert Scale) I found it easy to find the program's result for 
-	$R(f(V))$ in the GUI.
-	\item (Likert Scale) I found it easy to understand the program's result for 
-	$R(f(V))$ in the GUI.
+	
+	\item (Likert Scale) I found it easy to understand the calculated range. 
+	
 	\item (Likert Scale) I found it easy to understand the sequence of steps 
-	required to use the \prognameAbbrv{} tool.
-	\item (Open Response) Do you have any suggestions for improving the 
-	process flow of the \prognameAbbrv{} tool?
+	required to use the software. 
+	
+	\item (Long answer) Describe any interactions with the program that 
+	confused you during the tasks.
+	
+	\item (Long answer)  Do you have any suggestions for improving the process 
+	flow of the tool?
 \end{enumerate}
 
 
