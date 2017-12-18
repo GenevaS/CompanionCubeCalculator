@@ -2,7 +2,7 @@
  * Solver Module
  * ---------------------------------------------------------------------
  * Author: Geneva Smith (GenevaS)
- * Updated 2017/12/14
+ * Updated 2017/12/18
  * Corresponds to the Solver Module MIS from
  * https://github.com/GenevaS/CAS741/blob/master/Doc/Design/MIS/MIS.pdf
  * 
@@ -42,8 +42,18 @@ namespace CompanionCubeCalculator
         public static IntervalStruct FindRange(EquationStruct eqRoot, IntervalStruct[] intervals)
         {
             string[] varNames = GetVariableNamesFromIntervals(intervals);
+            IntervalStruct range = null;
 
-            return CalculateRange(eqRoot, intervals, varNames);
+            if(eqRoot != null)
+            {
+                range = CalculateRange(eqRoot, intervals, varNames);
+            }
+            else
+            {
+                throw new System.ArgumentException("Error: No information was provided for the equation.");
+            }
+
+            return range;
         }
 
         private static IntervalStruct CalculateRange(EquationStruct eqTree, IntervalStruct[] intervals, string[] intervalNames)
