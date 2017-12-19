@@ -2112,21 +2112,150 @@ testing is divided by modules.
 \paragraph{Interval Data Structure}
 \begin{enumerate}
 	
-	\item{unittest-intervaldatastructure}
+	\item{unittest-intervaldatastructuresetters}
 	
 	Type: Functional, Automatic, System, Regression
 	
 	Initial State: New Session
 	
-	Input: $x = [2,4]$
+	Input: $x = [3,4]$
 	
-	Output: \texttt{[2, 4]}
+	Changes: $min = 2$, $max = 5$, $leftBoundClosed = TRUE$, $rightBoundClosed 
+	= TRUE$
+	
+	Output: $x = (2,5)$
 	
 	User Message: - 
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
 	
-	Associated Module: Output\\
+	\item{unittest-intervaldatastructuresethighmin}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [3,4]$
+	
+	Changes: $min = 5$
+	
+	Output: $x = [4,5]$
+	
+	User Message: WARNING: Value provided for minimum bound is greater than the 
+	current maximum bound. The values have been exchanged to maintain the 
+	interval ordering.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-intervaldatastructuresetlowmax}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [3,4]$
+	
+	Changes: $max = -1$
+	
+	Output: $x = [-1,3]$
+	
+	User Message: WARNING: Value provided for maximum bound is smaller than the 
+	current minimum bound. The values have been exchanged to maintain the 
+	interval ordering.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-intervaldatastructuresetvarname}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [3,4]$
+	
+	Changes: $varName = y$
+	
+	Output: $y = [-1,3]$
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+\end{enumerate}
+
+\paragraph{Interval Conversion}
+\begin{enumerate}
+	
+	\item{unittest-intervalconversionmissingbounds}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: \texttt{x}
+	
+	Output: \{\}
+	
+	User Message: Error: No fields found for variable (Line n). Skipping line.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-intervalconversionemptybounds}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: \texttt{x,,}
+	
+	Output: \{\}
+	
+	User Message: Error: No values provided for either interval bound.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-intervalconversionmissingvarname}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: \texttt{3.0,4.0}
+	
+	Output: \{\}
+	
+	User Message: Error: Intervals must have an associated variable name.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-intervalconversionemptyvarname}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: \texttt{,3.0,4.0}
+	
+	Output: \{\}
+	
+	User Message: Error: Intervals must have an associated variable name.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-intervalconversiontoomanyfields}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: \texttt{x,3,4,5}
+	
+	Output: \{\}
+	
+	User Message: Error: Encountered a variable with more than three fields 
+	(Line n). Skipping line.
+	
+	How test will be performed: Unit Testing\\
 	
 \end{enumerate}
 
