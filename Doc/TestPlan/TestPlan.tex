@@ -397,6 +397,48 @@ requirement and any associated data constraints from
 
 \end{enumerate}
 
+\begin{enumerate}
+	\item{unittest-intervaldatastructuresethighmin}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $x = [3,4]$
+	
+	Changes: $min = 5$
+	
+	Output: $x = [4,5]$
+	
+	User Message: WARNING: Value provided for minimum bound is greater than the 
+	current maximum bound. The values have been exchanged to maintain the 
+	interval ordering.
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: IntervalStruct\\
+	
+	\item{unittest-intervaldatastructuresetlowmax}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $x = [3,4]$
+	
+	Changes: $max = -1$
+	
+	Output: $x = [-1,3]$
+	
+	User Message: WARNING: Value provided for maximum bound is smaller than the 
+	current minimum bound. The values have been exchanged to maintain the 
+	interval ordering.
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: IntervalStruct\\
+\end{enumerate}
+
 \paragraph{User Inputs (Incomplete Values)}
 
 \begin{enumerate}
@@ -1862,6 +1904,8 @@ arrow and requirements appear at the head.
 	\end{center}
 \end{figure}
 				
+\newpage				
+				
 \section{Unit Testing}
 		
 As shown by the system test description (Section \ref{testplan_highlevel}), the 
@@ -2021,7 +2065,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 \begin{enumerate}
 	\item{unittest-testgetlinedelimiter}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2035,7 +2079,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-testgetfielddelimiter}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2049,7 +2093,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-testgetfiletypes}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2076,7 +2120,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-intervaldatastructuresetters}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2091,45 +2135,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	How test will be performed: Unit Testing\\
 	
-	\item{unittest-intervaldatastructuresethighmin}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $x = [3,4]$
-	
-	Changes: $min = 5$
-	
-	Output: $x = [4,5]$
-	
-	User Message: WARNING: Value provided for minimum bound is greater than the 
-	current maximum bound. The values have been exchanged to maintain the 
-	interval ordering.
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{unittest-intervaldatastructuresetlowmax}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $x = [3,4]$
-	
-	Changes: $max = -1$
-	
-	Output: $x = [-1,3]$
-	
-	User Message: WARNING: Value provided for maximum bound is smaller than the 
-	current minimum bound. The values have been exchanged to maintain the 
-	interval ordering.
-	
-	How test will be performed: Unit Testing\\
-	
 	\item{unittest-intervaldatastructuresetvarname}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2150,7 +2158,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-intervalconversionmissingbounds}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2164,7 +2172,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-intervalconversionemptybounds}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2178,7 +2186,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-intervalconversionmissingvarname}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2192,7 +2200,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-intervalconversionemptyvarname}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2206,7 +2214,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-intervalconversiontoomanyfields}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2230,46 +2238,211 @@ implemented in the \texttt{EquationTests.cs} file in the \\
 are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 
 \paragraph{Equation Data Structure}
+
+\subparagraph{Constructors}
 \begin{enumerate}
 	
-	\item{unittest-intervaldatastructure}
+	\item{unittest-equationdatastructurenoop}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
-	Input: $x = [2,4]$
+	Input: $"", "", null, null$
 	
-	Output: \texttt{[2, 4]}
+	Output: \texttt{Exception}
 	
-	User Message: - 
+	User Message: Error: Equation structures must be assigned an operator 
+	during initialization.
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
 	
-	Associated Module: Output\\
+	\item{unittest-equationdatastructureconstructnulls}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $"+", "x", null, null$
+	
+	Output: \Tree[.$+:x$ [.$null$  ] [.$null$  ] ]
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-equationdatastructureconstruct}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $"+", "x",$ \Tree[.$VAR:y$ [.$null$  ] [.$null$  ] ], \Tree[.$VAR:z$ 
+	[.$null$  ] [.$null$  ] ]
+	
+	Output: \Tree[.$+:x$ [.$VAR:y$ [.$null$  ] [.$null$  ] ]  [.$VAR:z$  
+	[.$null$  ] [.$null$  ]  ] ] 
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+\end{enumerate}
+
+\subparagraph{Getters}
+\begin{enumerate}
+	
+	\item{unittest-equationdatastructuresetvarname}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $"+", "x", null, null$, $y$
+	
+	Output: \Tree[.$+:y$ [.$null$  ] [.$null$  ] ]
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-equationdatastructuresetleftop}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $"+", "x", null, null$, [.$VAR:y$ [.$null$  ] [.$null$  ] ]
+	
+	Output: \Tree[.$+:x$ [.$VAR:y$ [.$null$  ] [.$null$  ] ]  [.$null$  ] ] 
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-equationdatastructuresetrightop}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $"+", "x", null, null$, [.$VAR:z$ [.$null$  ] [.$null$  ] ]
+	
+	Output: \Tree[.$+:x$  [.$null$  ] [.$VAR:z$ [.$null$  ] [.$null$  ] ] ] 
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
 	
 \end{enumerate}
 
 \paragraph{Equation Conversion}
 \begin{enumerate}
 	
-	\item{unittest-intervaldatastructure}
+	\item{unittest-equationconversionconfignoops}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
-	Input: $x = [2,4]$
+	Input: \texttt{new OperatorStruct[] { }, Solver.GetValidTerminators()}
 	
-	Output: \texttt{[2, 4]}
+	Output: \texttt{FALSE}
 	
-	User Message: - 
+	User Message: Error: No operators were passed to the parser.
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
 	
-	Associated Module: Output\\
+	\item{unittest-equationconversionconfigunary}
 	
-	\item{unittest-input\_missingFunctionValue1}
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: \texttt{new OperatorStruct[] { new OperatorStruct("-", 5, true, 
+	false, false, false) }, Solver.GetValidTerminators()}
+	
+	Output: \texttt{TRUE}
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-equationconversionconfigbinary}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: \texttt{new OperatorStruct[] { new OperatorStruct("-", 5, false, 
+			true, false, false) }, Solver.GetValidTerminators()}
+	
+	Output: \texttt{TRUE}
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-equationconversionconfigternary}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: \texttt{new OperatorStruct[] { new OperatorStruct("\&", 5, false, 
+			false, true, false) }, Solver.GetValidTerminators()}
+	
+	Output: \texttt{FALSE}
+	
+	User Message: Error: The parser cannot process the \& operator.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-equationconversionconfigunbalancedleftterm}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: \texttt{Solver.GetValidOperators(), new string[] { "(", "" }}
+	
+	Output: \texttt{FALSE}
+	
+	User Message: Error: An unbalanced left terminator token was encountered 
+	(().
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-equationconversionconfigunbalancedrightterm}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: \texttt{Solver.GetValidOperators(), new string[] { "", ")" }}
+	
+	Output: \texttt{FALSE}
+	
+	User Message: Error: An unbalanced right terminator token was encountered 
+	()).
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-equationconversionparseunary}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: \texttt{"-x", new OperatorStruct("-", 5, true, false, false, false)}
+	
+	Output: \Tree[.$-:$ [.$VAR:x$ [.$null$  ] [.$null$  ] ] [.$null$  ]  ] 
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-equationconversion\_missingFunctionValue1}
 	
 	Type: Functional, Automatic, Unit
 	
@@ -2283,7 +2456,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	How test will be performed: Unit Test\\
 	
-	\item{unittest-input\_missingFunctionValue2}
+	\item{unittest-equationconversion\_missingFunctionValue2}
 	
 	Type: Functional, Automatic, Unit
 	
@@ -2298,7 +2471,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	How test will be performed: Unit Test\\
 	
-	\item{unittest-input\_missingFunctionValue3}
+	\item{unittest-equationconversion\_missingFunctionValue3}
 	
 	Type: Functional, Automatic, Unit
 	
@@ -2328,7 +2501,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-consolidatetestinit}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2342,7 +2515,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-consolidatetestinit}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2356,7 +2529,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-consolidatenoops}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2371,7 +2544,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-consolidatenorightterm}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2387,7 +2560,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-consolidatenoleftterm}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2460,7 +2633,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-operatordatastructureconstructor}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2474,7 +2647,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-operatordatastructuremissingsym}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2488,7 +2661,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-operatordatastructurelowprecedence}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2502,7 +2675,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-operatordatastructureoverloadedtype1}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2517,7 +2690,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-operatordatastructureoverloadedtype2}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2532,7 +2705,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-operatordatastructureoverloadedtype3}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2547,7 +2720,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-operatordatastructurenotype}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
@@ -2566,7 +2739,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-solvernoequation}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2580,7 +2753,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-solverunknownop}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2595,7 +2768,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-solvermissingintervals}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2609,7 +2782,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-solverconstantfunction}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2623,7 +2796,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-solvervariablefunction}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2637,7 +2810,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-solveradditionleftsidenull}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2652,7 +2825,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-solversubtractionleftsidenull}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2667,7 +2840,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-solvermultiplicationleftsidenull}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2682,7 +2855,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-solverdivisionleftsidenull}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2697,7 +2870,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-solverexponentleftsidenull}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2723,7 +2896,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-outputopenstructure}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2737,7 +2910,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-outputclosedleftstructure}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2751,7 +2924,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-outputclosedrightstructure}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2765,7 +2938,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-outputconstwithname}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2779,7 +2952,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-outputconstnoname}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
@@ -2793,7 +2966,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	\item{unittest-outputlongresult}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	

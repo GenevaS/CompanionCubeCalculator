@@ -19,12 +19,14 @@ namespace UnitTests_CompanionCubeCalculator
         [ExpectedException(typeof(System.ArgumentException), "Error: Equation structures must be assigned an operator during initialization.")]
         public void TestEquationStructNoOperator()
         {
+            // unittest-equationdatastructurenoop
             EquationStruct eq = new EquationStruct("", "", null, null);
         }
 
         [TestMethod]
         public void TestEquationStructConstructorWithNulls()
         {
+            // unittest-equationdatastructureconstructnulls
             EquationStruct eq = new EquationStruct("+", "x", null, null);
             Assert.AreEqual("+", eq.GetOperator());
             Assert.AreEqual("x", eq.GetVariableName());
@@ -35,6 +37,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestEquationStructConstructor()
         {
+            // unittest-equationdatastructureconstruct
             EquationStruct eq = new EquationStruct("+", "x", new EquationStruct("VAR", "y", null, null), new EquationStruct("VAR", "z", null, null));
             Assert.AreEqual("+", eq.GetOperator());
             Assert.AreEqual("x", eq.GetVariableName());
@@ -45,6 +48,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestEqSetVariableName()
         {
+            // unittest-equationdatastructuresetvarname
             EquationStruct eq = new EquationStruct("+", "x", null, null);
             eq.SetVariableName("y");
             Assert.AreEqual("y", eq.GetVariableName());
@@ -53,6 +57,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestEqSetLeftOperand()
         {
+            // unittest-equationdatastructuresetleftop
             EquationStruct eq = new EquationStruct("+", "x", null, null);
             eq.SetLeftOperand(new EquationStruct("VAR", "y", null, null));
             Assert.AreEqual("y", eq.GetLeftOperand().GetVariableName());
@@ -61,6 +66,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestEqSetRightOperand()
         {
+            // unittest-equationdatastructuresetrightop
             EquationStruct eq = new EquationStruct("+", "x", null, null);
             eq.SetRightOperand(new EquationStruct("VAR", "z", null, null));
             Assert.AreEqual("z", eq.GetRightOperand().GetVariableName());
@@ -77,6 +83,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             EquationConversion.ResetEquationConversion();
 
+            // unittest-equationconversionconfignoops
             Assert.AreEqual(false, EquationConversion.ConfigureParser(ops, Solver.GetValidTerminators()));
         }
 
@@ -87,6 +94,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             EquationConversion.ResetEquationConversion();
 
+            // unittest-equationconversionconfigunary
             Assert.AreEqual(true, EquationConversion.ConfigureParser(ops, Solver.GetValidTerminators()));
         }
 
@@ -97,6 +105,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             EquationConversion.ResetEquationConversion();
 
+            // unittest-equationconversionconfigbinary
             Assert.AreEqual(true, EquationConversion.ConfigureParser(ops, Solver.GetValidTerminators()));
         }
 
@@ -107,6 +116,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             EquationConversion.ResetEquationConversion();
 
+            // unittest-equationconversionconfigternary
             Assert.AreEqual(false, EquationConversion.ConfigureParser(ops, Solver.GetValidTerminators()));
         }
 
@@ -117,6 +127,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             EquationConversion.ResetEquationConversion();
 
+            // unittest-equationconversionconfigunbalancedleftterm
             Assert.AreEqual(false, EquationConversion.ConfigureParser(Solver.GetValidOperators(), terminators));
         }
 
@@ -127,6 +138,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             EquationConversion.ResetEquationConversion();
 
+            // unittest-equationconversionconfigunbalancedrightterm
             Assert.AreEqual(false, EquationConversion.ConfigureParser(Solver.GetValidOperators(), terminators));
         }
 
@@ -143,6 +155,7 @@ namespace UnitTests_CompanionCubeCalculator
             {
                 string constToken = EquationConversion.GetConstToken();
 
+                // unittest-equationconversionparseunary
                 EquationStruct unaryEq = EquationConversion.MakeEquationTree("-x");
                 EquationStruct targetStructure = new EquationStruct("-", "", new EquationStruct(varToken, "x", null, null), null);
 
@@ -303,15 +316,15 @@ namespace UnitTests_CompanionCubeCalculator
 
             if (EquationConversion.IsReady())
             {
-                // unittest-input missingFunctionValue1
+                // unittest-equationconversion missingFunctionValue1
                 EquationStruct incompleteEq = EquationConversion.MakeEquationTree("x+");
                 Assert.AreEqual(null, incompleteEq);
 
-                // unittest-input missingFunctionValue2
+                // unittest-equationconversion missingFunctionValue2
                 incompleteEq = EquationConversion.MakeEquationTree("*x");
                 Assert.AreEqual(null, incompleteEq);
 
-                // unittest-input missingFunctionValue3
+                // unittest-equationconversion missingFunctionValue3
                 incompleteEq = EquationConversion.MakeEquationTree("x+*y");
                 Assert.AreEqual(null, incompleteEq);
             }
