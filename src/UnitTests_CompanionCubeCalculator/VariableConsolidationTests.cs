@@ -53,6 +53,7 @@ namespace UnitTests_CompanionCubeCalculator
             EquationConversion.ResetEquationConversion();
             Consolidate.Initialize();
 
+            // unittest - consolidatesimpleinputs
             Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), Solver.GetValidTerminators(), "\n", ",");
             EquationStruct eqRoot = Consolidate.GetEquationStruct();
             IntervalStruct[] vars = Consolidate.GetIntervalStructList();
@@ -117,6 +118,8 @@ namespace UnitTests_CompanionCubeCalculator
         {
             EquationConversion.ResetEquationConversion();
             Consolidate.Initialize();
+
+            // unittest-consolidateextractvariables
             string[] vars = Consolidate.ExtractVariablesFromEquation("x+y");
 
             Assert.AreEqual(2, vars.Length);
@@ -130,6 +133,7 @@ namespace UnitTests_CompanionCubeCalculator
             EquationConversion.ResetEquationConversion();
             Consolidate.Initialize();
 
+            // unittest-consolidateincompleteequation
             int successCode = Consolidate.ConvertAndCheckInputs("", "x,2,3\n", Solver.GetValidOperators(), Solver.GetValidTerminators(), Input.GetLineDelimiter(), Input.GetFieldDelimiter());
             Assert.AreEqual(-3, successCode);
         }

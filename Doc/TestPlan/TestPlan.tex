@@ -2382,6 +2382,49 @@ testing is divided by modules.
 	
 	How test will be performed: Unit Testing\\
 	
+	\item{unittest-consolidatesimpleinputs}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + y$
+	
+	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ $x = [2,3]$, $y = [4,5]$ \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-consolidateextractvariables}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + y$
+	
+	Output: \{ $x = [2,3]$, $y = [4,5]$ \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-consolidateincompleteequation}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: \texttt{"", "x,2,3\textbackslash n"}
+	
+	Output: $successCode = -1$
+	
+	User Message: Error: Unrecognized sequence encountered during Atomic 
+	Equation parsing. Remaining equation = 
+	
+	How test will be performed: Unit Testing\\
+	
 	
 \end{enumerate}
 
