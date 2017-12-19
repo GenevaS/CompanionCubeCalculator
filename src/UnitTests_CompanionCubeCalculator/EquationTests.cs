@@ -189,15 +189,9 @@ namespace UnitTests_CompanionCubeCalculator
                 string constToken = EquationConversion.GetConstToken();
                 string varToken = EquationConversion.GetVariableToken();
 
-                EquationStruct constEq = EquationConversion.MakeEquationTree("x+42");
-                EquationStruct targetStructure = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "42", null, null));
-
-                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(constEq));
-                Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
-
                 // test-parse constantValue1 
-                constEq = EquationConversion.MakeEquationTree("4+x");
-                targetStructure = new EquationStruct("+", "", new EquationStruct(constToken, "4", null, null), new EquationStruct(varToken, "x", null, null));
+                EquationStruct constEq = EquationConversion.MakeEquationTree("4+x");
+                EquationStruct targetStructure = new EquationStruct("+", "", new EquationStruct(constToken, "4", null, null), new EquationStruct(varToken, "x", null, null));
 
                 Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(constEq));
                 Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
@@ -236,6 +230,14 @@ namespace UnitTests_CompanionCubeCalculator
 
                 Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(constEq));
                 Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
+
+                // test-parse\_constantValue6
+                constEq = EquationConversion.MakeEquationTree("x+42");
+                targetStructure = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "42", null, null));
+
+                Assert.AreEqual(PrintEquation(targetStructure), PrintEquation(constEq));
+                Assert.AreEqual(true, CheckVariableList(new string[] { "x" }, EquationConversion.GetVariableList()));
+
             }
             else
             {
@@ -301,15 +303,15 @@ namespace UnitTests_CompanionCubeCalculator
 
             if (EquationConversion.IsReady())
             {
-                // test-input missingFunctionValue1
+                // unittest-input missingFunctionValue1
                 EquationStruct incompleteEq = EquationConversion.MakeEquationTree("x+");
                 Assert.AreEqual(null, incompleteEq);
 
-                // test-input missingFunctionValue2
+                // unittest-input missingFunctionValue2
                 incompleteEq = EquationConversion.MakeEquationTree("*x");
                 Assert.AreEqual(null, incompleteEq);
 
-                //  test-input missingFunctionValue3
+                // unittest-input missingFunctionValue3
                 incompleteEq = EquationConversion.MakeEquationTree("x+*y");
                 Assert.AreEqual(null, incompleteEq);
             }

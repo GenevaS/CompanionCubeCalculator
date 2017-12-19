@@ -301,151 +301,20 @@ requirement and any associated data constraints from
 	
 	\item{test-directinput}
 	
-	Type: Functional, Automatic, Unit
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + y, x = [2,4], y = [3,5]$
-	
-	Output: Input received from direct input
-	
-	User Message: - 
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: \\
-	
-	\item{test-fileinput}
-	
-	Type: Functional, Automatic, Unit
-	
-	Initial State: New Session
-	
-	Input: File containing:
-	\begin{lstlisting}
-	x + y
-	x,2,4
-	y,3,5
-	\end{lstlisting}
-	
-	Output: \{``x+y", ``x,2,4\textbackslash ny,3,5"\}
-	
-	User Message: - 
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: Input\\
-	
-	\item{test-fileinputwithequals}
+	\textbf{Type: Functional, Automatic, Unit}
+		
+		Initial State: New Session
+		
+		Input: $f(V) = x + y, x = [2,4], y = [3,5]$
+		
+		Output: Input received from direct input
+		
+		User Message: - 
+		
+		How test will be performed: Unit Test
+		
+		Associated Module: \\
 
-	Type: Functional, Automatic, Unit
-	
-	Initial State: New Session
-	
-	Input: File containing:
-	\begin{lstlisting}
-	f(V) = x + y
-	x,2,4
-	y,3,5
-	\end{lstlisting}
-	
-	Output: \{``x+y", ``x,2,4\textbackslash ny,3,5"\}
-	
-	User Message: - 
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: Input\\
-\end{enumerate}
-	
-\paragraph{User Inputs (Bad File I/O)}
-
-\begin{enumerate}
-	
-	\item{test-emptyfile}
-	
-	Type: Functional, Automatic, Unit
-	
-	Initial State: New Session
-	
-	Input: File containing no information
-	
-	Output: \texttt{NULL}
-	
-	User Message: Error: The file is empty.
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: Input\\
-	
-	\item{test-invalidfiletype}
-	
-	Type: Functional, Automatic, Unit
-	
-	Initial State: New Session
-	
-	Input: File with an unsupported extension
-	
-	Output: \texttt{NULL}
-	
-	User Message: Error: Cannot read files of this type.
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: Input\\
-	
-	\item{test-input\_noFunctionFile}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: A file containing:
-	\begin{lstlisting}
-	x,2,4
-	y,3,5
-	\end{lstlisting}
-	
-	Output: \texttt{NULL}
-	
-	User Message: Error: The first line of the file is not an equation or the 
-	equation contains ','.
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: Input\\
-	
-	\item{test-noFile}
-	
-	Type: Functional, Automatic, Unit
-	
-	Initial State: New Session
-	
-	Input: A file that does not exist
-	
-	Output: \texttt{NULL}
-	
-	User Message: Error: The specified file does not exist.
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: Input\\
-	
-	\item{test-badFileInput}
-	
-	Type: Functional, Automatic, Unit
-	
-	Initial State: New Session
-	
-	Input: File that cannot be read
-	
-	Output: \texttt{NULL}
-	
-	User Message: Error: Cannot read files of this type.
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: Input\\
 \end{enumerate}
 	
 \paragraph{User Inputs (Function is a Constant Value)}
@@ -496,7 +365,7 @@ requirement and any associated data constraints from
 
 	\item{test-input\_noFunction}
 	
-	Type: Functional, Automatic, Integration
+	\textbf{Type: Functional, Automatic, Integration}
 	
 	Initial State: New Session
 	
@@ -512,7 +381,7 @@ requirement and any associated data constraints from
 	
 	\item{test-input\_noDomain}
 		
-	Type: Functional
+	Type: Functional, Automatic, Integration
 		
 	Initial State: New Session
 		
@@ -531,57 +400,6 @@ requirement and any associated data constraints from
 \paragraph{User Inputs (Incomplete Values)}
 
 \begin{enumerate}
-	
-	\item{test-input\_missingFunctionValue1}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x +$
-	
-	Output: \texttt{NULL}
-	
-	User Message: Error: Could not find the end of the equation. 
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: Equation Conversion\\
-	
-	\item{test-input\_missingFunctionValue2}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = *x$
-	
-	Output:	\texttt{NULL}
-	
-	User Message: Error: Unrecognized sequence encountered during Atomic 
-	Equation parsing. Remaining equation = *x.
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: Equation Conversion\\
-	
-	\item{test-input\_missingFunctionValue3}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + * y$
-	
-	Output:	\texttt{NULL}
-	
-	User Message: Error: Unrecognized sequence encountered during Atomic 
-	Equation 
-	parsing. Remaining equation = *y.
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: Equation Conversion\\
 	
 	\item{test-input\_missingMinDomainValue}
 	
@@ -716,7 +534,7 @@ requirement and any associated data constraints from
 	
 	Input: $f(V) = x\_i + y$
 	
-	Output: { x\_i, y }
+	Output: \{ x\_i, y \}
 	
 	User Message: - 
 	
@@ -990,6 +808,22 @@ satisfied.
 	
 	Associated Module: Equation Conversion\\
 	
+	\item{test-parse\_constantValue6}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + 42$
+	
+	Output: \Tree[.$+$ [.$x$  ] [.$Const:42$  ] ], \{ x \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+	
 	\item{test-parse\_implicitMultiplication}
 	
 	Type: Functional, Automatic, Integration
@@ -1027,7 +861,7 @@ satisfied.
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Equation Conversion\\
 	
 	\item{test-parse\_brackets2}
 	
@@ -1044,7 +878,7 @@ satisfied.
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Equation Conversion\\
 	
 	\item{test-parse\_brackets3}
 	
@@ -1061,7 +895,7 @@ satisfied.
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Equation Conversion\\
 	
 \end{enumerate}
 
@@ -1084,7 +918,7 @@ satisfied.
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Equation Conversion\\
 	
 	\item{test-parse\_openRightBracket}
 	
@@ -1100,7 +934,7 @@ satisfied.
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Equation Conversion\\
 	
 \end{enumerate}
 
@@ -1463,8 +1297,8 @@ requirements, and the associated data constraints from
 	
 	Associated Module: Range Solver
 	
-	Note: Ideally, the error message should also output the results calculated 
-	up until the division operation (e.g. $[-2,-1]/[-3,5]$).\\
+	\textbf{Note}: Ideally, the error message should also output the results 
+	calculated up until the division operation (e.g. $[-2,-1]/[-3,5]$).\\
 	
 \end{enumerate}
 
@@ -1500,7 +1334,7 @@ requirements, and the associated data constraints from
 	Output: \texttt{NULL}
 	
 	User Message: Error: An unsupported operation was encountered while solving 
-	for the range of the equation (Exponent base <= 1).
+	for the range of the equation (Exponent base $<=$ 1).
 	
 	How test will be performed: Unit Testing
 	
@@ -1620,7 +1454,7 @@ requirements, and the associated data constraints from
 	Output: \texttt{NULL}
 	
 	User Message: Error: An unsupported operation was encountered while solving 
-	for the range of the equation (Exponent < 0).
+	for the range of the equation (Exponent $<$ 0).
 	
 	How test will be performed: Unit Testing
 	
@@ -2060,9 +1894,131 @@ testing is divided by modules.
 \end{enumerate}
 
 \subsection{User Input Unit Tests}
+These tests are designed to exercise all code paths in the \texttt{Input.cs} 
+file in the \texttt{CompanionCubeCalculator.csproj} project file. They are 
+implemented in the \texttt{InputTests.cs} file in the 
+\texttt{UnitTests\_CompanionCubeCalculator.csproj} project file. These projects 
+are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 
+\paragraph{File I/O}
 \begin{enumerate}
 	
+	\item{unittest-fileinput}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: File containing:
+	\begin{lstlisting}
+	x + y
+	x,2,4
+	y,3,5
+	\end{lstlisting}
+	
+	Output: \{``x+y", ``x,2,4\textbackslash ny,3,5"\}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Test\\
+	
+	\item{unittest-fileinputwithequals}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: File containing:
+	\begin{lstlisting}
+	f(V) = x + y
+	x,2,4
+	y,3,5
+	\end{lstlisting}
+	
+	Output: \{``x+y", ``x,2,4\textbackslash ny,3,5"\}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Test\\
+	
+	\item{unittest-emptyfile}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: File containing no information
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: The file is empty.
+	
+	How test will be performed: Unit Test\\
+	
+	\item{unittest-invalidfiletype}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: File with an unsupported extension
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: Cannot read files of this type.
+	
+	How test will be performed: Unit Test\\
+	
+	\item{unittest-input\_noFunctionFile}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: A file containing:
+	\begin{lstlisting}
+	x,2,4
+	y,3,5
+	\end{lstlisting}
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: The first line of the file is not an equation or the 
+	equation contains ','.
+	
+	How test will be performed: Unit Test\\
+	
+	\item{unittest-noFile}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: A file that does not exist
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: The specified file does not exist.
+	
+	How test will be performed: Unit Test\\
+	
+	\item{unittest-badFileInput}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: File that cannot be read
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: Cannot read files of this type.
+	
+	How test will be performed: Unit Test\\
+\end{enumerate}
+
+\paragraph{Getters}
+\begin{enumerate}
 	\item{unittest-testgetlinedelimiter}
 	
 	Type: Functional, Automatic, System, Regression
@@ -2108,6 +2064,12 @@ testing is divided by modules.
 \end{enumerate}
 
 \subsection{Interval Data Structure and Interval Conversion Unit Tests}
+These tests are designed to exercise all code paths in the 
+\texttt{IntervalStruct.cs} and \texttt{IntervalConversion.cs}
+files in the \texttt{CompanionCubeCalculator.csproj} project file. They are 
+implemented in the \texttt{IntervalTests.cs} file in the \\
+\texttt{UnitTests\_CompanionCubeCalculator.csproj} project file. These projects 
+are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 
 \paragraph{Interval Data Structure}
 \begin{enumerate}
@@ -2260,8 +2222,14 @@ testing is divided by modules.
 \end{enumerate}
 
 \subsection{Equation Data Structure and Equation Conversion Unit Tests}
+These tests are designed to exercise all code paths in the 
+\texttt{EquationStruct.cs} and \texttt{EquationConversion.cs} 
+files in the \texttt{CompanionCubeCalculator.csproj} project file. They are 
+implemented in the \texttt{EquationTests.cs} file in the \\
+\texttt{UnitTests\_CompanionCubeCalculator.csproj} project file. These projects 
+are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 
-\paragraph{Interval Data Structure}
+\paragraph{Equation Data Structure}
 \begin{enumerate}
 	
 	\item{unittest-intervaldatastructure}
@@ -2301,9 +2269,60 @@ testing is divided by modules.
 	
 	Associated Module: Output\\
 	
+	\item{unittest-input\_missingFunctionValue1}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x +$
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: Could not find the end of the equation. 
+	
+	How test will be performed: Unit Test\\
+	
+	\item{unittest-input\_missingFunctionValue2}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $f(V) = *x$
+	
+	Output:	\texttt{NULL}
+	
+	User Message: Error: Unrecognized sequence encountered during Atomic 
+	Equation parsing. Remaining equation = *x.
+	
+	How test will be performed: Unit Test\\
+	
+	\item{unittest-input\_missingFunctionValue3}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + * y$
+	
+	Output:	\texttt{NULL}
+	
+	User Message: Error: Unrecognized sequence encountered during Atomic 
+	Equation 
+	parsing. Remaining equation = *y.
+	
+	How test will be performed: Unit Test\\
+	
 \end{enumerate}
 
 \subsection{Variable Consolidation Unit Tests}
+These tests are designed to exercise all code paths in the 
+\texttt{Consolidate.cs} 
+file in the \texttt{CompanionCubeCalculator.csproj} project file. They are 
+implemented in the \texttt{VariableConsolidationTests.cs} file in the \\
+\texttt{UnitTests\_CompanionCubeCalculator.csproj} project file. These projects 
+are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 
 \begin{enumerate}
 	
@@ -2429,6 +2448,12 @@ testing is divided by modules.
 \end{enumerate}
 
 \subsection{Operator Data Structure and Range Solver Unit Tests}
+These tests are designed to exercise all code paths in the 
+\texttt{OperatorStruct.cs} and \texttt{Solver.cs} 
+files in the \texttt{CompanionCubeCalculator.csproj} project file. They are 
+implemented in the \texttt{SolverTests.cs} file in the \\
+\texttt{UnitTests\_CompanionCubeCalculator.csproj} project file. These projects 
+are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 
 \paragraph{Operator Data Structure}
 \begin{enumerate}
@@ -2688,6 +2713,11 @@ testing is divided by modules.
 \end{enumerate}
 
 \subsection{Output Unit Tests}
+These tests are designed to exercise all code paths in the \texttt{Output.cs} 
+file in the \texttt{CompanionCubeCalculator.csproj} project file. They are 
+implemented in the \texttt{OutputTests.cs} file in the 
+\texttt{UnitTests\_CompanionCubeCalculator.csproj} project file. These projects 
+are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 
 \begin{enumerate}
 	

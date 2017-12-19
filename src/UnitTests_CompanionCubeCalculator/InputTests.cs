@@ -34,7 +34,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestGoodFile()
         {
-            // test-fileinput
+            // unittest-fileinput
             string fileName = @"TestFiles/test.txt";
             string targetEq = "x+y";
             string targetIv = "x,2,4"+ System.Environment.NewLine + "y,3,5";
@@ -44,7 +44,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(targetEq, fileContents[0]);
             Assert.AreEqual(targetIv, fileContents[1]);
 
-            // test-fileinputwithequals
+            // unittest-fileinputwithequals
             fileName = @"TestFiles/testWithEquals.txt";
             fileContents = Input.ReadFile(fileName);
 
@@ -55,7 +55,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestEmptyFile()
         {
-            // test-emptyfile
+            // unittest-emptyfile
             string fileName = @"TestFiles/testempty.txt";
 
             string[] fileContents = Input.ReadFile(fileName);
@@ -66,7 +66,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestWrongFileType()
         {
-            // test-invalidfiletype
+            // unittest-invalidfiletype
             string fileName = @"TestFiles/test.tex";
 
             string[] fileContents = Input.ReadFile(fileName);
@@ -77,7 +77,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestMissingEquation()
         {
-            // test-input\_noFunctionFile
+            // unittest-input\_noFunctionFile
             string fileName = @"TestFiles/testNoEq.txt";
 
             string[] fileContents = Input.ReadFile(fileName);
@@ -88,7 +88,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestMissingFile()
         {
-            // test-noFile
+            // unittest-noFile
             string fileName = @"null.txt";
 
             string[] fileContents = Input.ReadFile(fileName);
@@ -102,7 +102,7 @@ namespace UnitTests_CompanionCubeCalculator
             string fileName = @"TestFiles/test.txt";
             string[] fileContents;
 
-            // test-badFileInput
+            // unittest-badFileInput
             using (System.IO.Stream stream = new System.IO.FileStream(fileName, System.IO.FileMode.Open))
             {
                 fileContents = Input.ReadFile(fileName);
