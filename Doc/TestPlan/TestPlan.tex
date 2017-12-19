@@ -46,6 +46,7 @@
 \begin{tabularx}{\textwidth}{p{3.5cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
+December 19, 2017 & 2.0 & Updated plan to reflect current implementation \\
 November 13, 2017 & 1.0.1 & Addition of missing test cases\\
 October 25, 2017 & 1.0 & Initial draft completed\\
 \bottomrule
@@ -611,9 +612,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $x = [2,4], y = [3,-5]$
+	Input: \texttt{"x,2,4 \textbackslash ny,3,-5"}
 	
-	Output:	\{ x = [2,4], y = [-5,3] \}
+	Output:	$\{ x = [2,4], y = [-5,3] \}$
 	
 	User Message: WARNING: Value provided for intervals are not in increasing 
 	order.The values have been exchanged to maintain the interval ordering.
@@ -674,9 +675,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: \texttt{x+y}
+	Input: \texttt{"x+y"}
 	
-	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \texttt{\{ "x", "y" \}}
+	Output: \Tree[.$+:$ [.$VAR:x$  ] [.$VAR:y$  ] ], \texttt{\{ "x", "y" \}}
 	
 	User Message: - 
 	
@@ -690,9 +691,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x - y$
+	Input: \texttt{"x-y"}
 	
-	Output: \Tree[.$-$ [.$x$  ] [.$y$  ] ], \{ x, y \}
+	Output: \Tree[.$-:$ [.$VAR:x$  ] [.$VAR:y$  ] ], \texttt{\{ "x", "y" \}}
 	
 	User Message: - 
 	
@@ -706,9 +707,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x * y$
+	Input: \texttt{"x*y"}
 	
-	Output: \Tree[.$*$ [.$x$  ] [.$y$  ] ], \{ x, y \}
+	Output: \Tree[.$*:$ [.$VAR:x$  ] [.$VAR:y$  ] ], \texttt{\{ "x", "y" \}}
 	
 	User Message: - 
 	
@@ -722,9 +723,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$
+	Input: \texttt{"x/y"}
 	
-	Output: \Tree[.$/$ [.$x$  ] [.$y$  ] ], \{ x, y \}
+	Output: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], \texttt{\{ "x", "y" \}}
 	
 	User Message: - 
 	
@@ -738,9 +739,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = 2 ^ x$
+	Input: \texttt{"2\textasciicircum x"}
 	
-	Output: \Tree[.$\wedge$ [.$Const:2$  ] [.$x$  ]  ], \{ x \}
+	Output: \Tree[.$\wedge:$ [.$CONST:2$  ] [.$VAR:x$  ]  ], \texttt{\{ "x" \}}
 	
 	User Message: - 
 	
@@ -754,9 +755,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x ^ 2$
+	Input: \texttt{"x\textasciicircum 2"}
 	
-	Output: \Tree[.$\wedge$ [.$x$  ] [.$Const:2$  ]  ], \{ x \}
+	Output: \Tree[.$\wedge:$ [.$VAR:x$  ] [.$CONST:2$  ]  ], \texttt{\{ "x" \}}
 	
 	User Message: - 
 	
@@ -776,9 +777,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = 4 + x$
+	Input: \texttt{"4+x"}
 	
-	Output: \Tree[.$+$ [.$Const:4$  ] [.$x$  ]  ], \{ x \}
+	Output: \Tree[.$+:$ [.$CONST:4$  ] [.$VAR:x$  ]  ], \texttt{\{ "x" \}}
 	
 	User Message: - 
 	
@@ -792,9 +793,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = -4 + x$
+	Input: \texttt{"-4+x"}
 	
-	Output: \Tree[.$+$ [.$Const:-4$  ] [.$x$  ] ], \{ x \}
+	Output: \Tree[.$+:$ [.$CONST:-4$  ] [.$VAR:x$  ] ], \texttt{\{ "x" \}}
 	
 	User Message: - 
 	
@@ -808,9 +809,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / -4$
+	Input: \texttt{"x/-4"}
 	
-	Output: \Tree[.$/$ [.$x$  ] [.$Const:-4$  ] ], \{ x \}
+	Output: \Tree[.$/:$ [.$VAR:x$  ] [.$CONST:-4$  ] ], \texttt{\{ "x" \}}
 	
 	User Message: - 
 	
@@ -824,9 +825,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + 4$
+	Input: \texttt{"x+4"}
 	
-	Output: \Tree[.$+$ [.$x$ $[2,4]$ ] [.$Const:4$  ] ], \{ x \}
+	Output: \Tree[.$+:$ [.$VAR:x$  ] [.$CONST:4$  ] ], \texttt{\{ "x" \}}
 	
 	User Message: - 
 	
@@ -840,9 +841,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + -4$
+	Input: \texttt{"x+-4"}
 	
-	Output: \Tree[.$+$ [.$x$  ] [.$Const:-4$  ] ], \{ x \}
+	Output: \Tree[.$+:$ [.$VAR:x$  ] [.$CONST:-4$  ] ], \texttt{\{ "x" \}}
 	
 	User Message: - 
 	
@@ -856,9 +857,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + 42$
+	Input: \texttt{"x+42"}
 	
-	Output: \Tree[.$+$ [.$x$  ] [.$Const:42$  ] ], \{ x \}
+	Output: \Tree[.$+:$ [.$VAR:x$  ] [.$CONST:42$  ] ], \texttt{\{ "x" \}}
 	
 	User Message: - 
 	
@@ -872,9 +873,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = 4x$
+	Input: \texttt{"4x"}
 	
-	Output: \Tree[.$*$ [.$Const:4$  ] [.$x$  ] ], \{ x \}
+	Output: \Tree[.$*:$ [.$CONST:4$  ] [.$VAR:x$  ] ], \texttt{\{ "x" \}}
 	
 	User Message: Warning: Encountered an implicit multiplication of a constant 
 	value and a variable. Expanding with explicit operator.
@@ -895,9 +896,10 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + (y - z)$
+	Input: \texttt{"x+(y-z)"}
 	
-	Output: \Tree[.$+$ [.$x$  ] [.$()$ [.$-$ [.$y$ ] [.$z$ ] ] ] ]
+	Output: \Tree[.$+:$ [.$VAR:x$  ] [.$():$ [.$-:$ [.$VAR:y$ ] [.$VAR:z$ ] ] ] 
+	]
 	
 	User Message: - 
 	
@@ -911,10 +913,10 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = (x * y) - 2^z$
+	Input: \texttt{"(x*y)-2\textasciicircum z"}
 	
-	Output: \Tree[.$-$ [.$()$ [.$*$ [.$x$  ] [.$y$  ]   ]  
-	] [.$B^z$ [.$Const:2$ ] [.$z$  ]  ]	]
+	Output: \Tree[.$-:$ [.$():$ [.$*:$ [.$VAR:x$  ] [.$VAR:y$  ]   ]  
+	] [.$\wedge$ [.$CONST:2$ ] [.$VAR:z$  ]  ]	]
 
 	User Message: - 
 	
@@ -928,10 +930,10 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = w * (x / (y + z))$
+	Input: \texttt{"w*(x/(y+z))"}
 	
-	Output: \Tree[.$*$ [.$w$  ] [.$()$ [.$/$ [.$x$ ] [.$()$ [.$+$ [.$y$  ] 
-	[.$z$  ] ]]   ]  ] 	]
+	Output: \Tree[.$*:$ [.$VAR:w$  ] [.$():$ [.$/:$ [.$VAR:x$ ] [.$():$ [.$+:$ 
+	[.$VAR:y$  ] [.$VAR:z$  ] ]]   ]  ] 	]
 	
 	User Message: - 
 	
@@ -951,9 +953,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y - z)$
+	Input: \texttt{"x+y-z)"}
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: Unrecognized sequence encountered during Atomic 
 	Equation parsing. Remaining equation = )
@@ -968,9 +970,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + (y - z$
+	Input: \texttt{"x+(y-z"}
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: Could not find the end of the equation.
 	
@@ -998,7 +1000,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y$, $x = [2,4], y = [3,5]$
+	Input: \Tree[.$+:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [2,4], y = [3,5] \}$
 	
 	Output: $[5,9]$
 	
@@ -1014,7 +1016,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + 4$, $x = [2,4]$
+	Input: \Tree[.$+:$ [.$VAR:x$  ] [.$CONST:4$  ] ], $\{ x = [2,4] \}$
 	
 	Output: $[6,8]$
 	
@@ -1030,7 +1032,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x - y$, $x = [2,4], y = [3,5]$
+	Input: \Tree[.$-:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [2,4], y = [3,5] \}$
 	
 	Output: $[-1,-1]$
 	
@@ -1046,7 +1048,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x * y$, $x = [2,4], y = [3,5]$
+	Input: \Tree[.$*:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [2,4], y = [3,5] \}$
 	
 	Output: $[6,20]$
 	
@@ -1062,7 +1064,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x * y$, $x = [-1,3], y = [-3,5]$
+	Input: \Tree[.$*:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [-1,3], y = [-3,5] 
+	\}$
 	
 	Output: $[-9,15]$
 	
@@ -1078,7 +1081,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x * y$, $x = [-3,-1], y = [-5,-2]$
+	Input: \Tree[.$*:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [-3,-1], y = 
+	[-5,-2] \}$
 	
 	Output: $[2,15]$
 	
@@ -1100,7 +1104,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [2,4], y = [3,5]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [2,4], y = [3,5] \}$
 	
 	Output: $[0.4,1.3333333333333333]$
 	
@@ -1116,7 +1120,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [0,4], y = [3,5]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [0,4], y = [3,5] \}$
 	
 	Output: $[0, 1.3333333333333333]$
 	
@@ -1132,7 +1136,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [-1,4], y = [3,5]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [-1,4], y = [3,5] 
+	\}$
 	
 	Output: $[-0.3333333333333333,0.8]$
 	
@@ -1148,7 +1153,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [-2,0], y = [3,5]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [-2,0], y = [3,5]
+	\}$
 	
 	Output: $[-0.6666666666666666,0]$
 	
@@ -1164,7 +1170,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [-2,-1], y = [3,5]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [-2,-1], y = [3,5]
+	\}$
 	
 	Output: $[-0.6666666666666666,-0.2]$
 	
@@ -1180,7 +1187,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [2,4], y = [-3,-5]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [2,4], y = [-3,-5]
+	\}$
 	
 	Output: $[-0.8,-0.6666666666666666]$
 	
@@ -1196,7 +1204,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [0,4], y = [-3,-5]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [0,4], y = [-3,-5]
+	\}$
 	
 	Output: $[-0.8,0]$
 	
@@ -1212,7 +1221,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [-1,4], y = [-3,-5]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [-1,4], y = [-3,-5]
+	\}$
 	
 	Output: $[-0.8,0.2]$
 	
@@ -1228,7 +1238,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [-2,0], y = [-3,-5]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [-2,0], y = [-3,-5]
+	\}$
 	
 	Output: $[0,0.4]$
 	
@@ -1244,7 +1255,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [-2,-1], y = [-3,-5]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [-2,-1], y = [-3,-5]
+	\}$
 	
 	Output: $[0.33333333333,0.4]$
 	
@@ -1260,7 +1272,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / 0$, $x = [2,4]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$CONST:0$  ] ], $\{ x = [2,4]	\}$
 	
 	Output: \texttt{NULL}
 	
@@ -1277,9 +1289,10 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [2,4], y = [-3,5]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [2,4], y = [-3,5]
+	\}$
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: An unsupported operation was encountered while solving 
 	for the range of the equation (Mixed interval division).
@@ -1294,7 +1307,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [2,4], y = [-3,0]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [2,4], y = [-3,0]
+	\}$
 	
 	Output: \texttt{NULL}
 	
@@ -1311,7 +1325,8 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [2,4], y = [0,3]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [2,4], y = [0,3]
+	\}$
 	
 	Output: \texttt{NULL}
 	
@@ -1328,9 +1343,10 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / (y * z)$, $x = [-2,-1], y = [3,5], z = [-1,1]$
+	Input: \Tree[.$/:$ [.$VAR:x$  ] [.$():$ [.$*:$ [.$VAR:y$  ] [.$VAR:z$  ] 
+	] ]  ], $\{ x = [-2,-1], y = [3,5], z = [-1,1]	\}$
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: An unsupported operation was encountered while solving 
 	for the range of the equation (Mixed interval division).
@@ -1355,7 +1371,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = 2^x$, $x = [2,4]$
+	Input: \Tree[.$\wedge:$ [.$CONST:2$  ] [.$VAR:x$  ] ], $\{ x = [2,4] \}$
 	
 	Output: $[4,16]$
 	
@@ -1371,9 +1387,9 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = 1^x$, $x = [2,4]$
+	Input: \Tree[.$\wedge:$ [.$CONST:1$  ] [.$VAR:x$  ] ], $\{ x = [2,4] \}$
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: An unsupported operation was encountered while solving 
 	for the range of the equation (Exponent base $<=$ 1).
@@ -1394,7 +1410,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x^3$, $x = [2,4]$
+	Input: \Tree[.$\wedge:$ [.$VAR:x$  ] [.$CONST:3$  ] ], $\{ x = [2,4] \}$
 	
 	Output: $[8,64]$
 	
@@ -1410,7 +1426,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x^2$, $x = [2,4]$
+	Input: \Tree[.$\wedge:$ [.$VAR:x$  ] [.$CONST:2$  ] ], $\{ x = [2,4] \}$
 	
 	Output: $[4,16]$
 	
@@ -1426,7 +1442,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x^2$, $x = [0,4]$
+	Input: \Tree[.$\wedge:$ [.$VAR:x$  ] [.$CONST:2$  ] ], $\{ x = [0,4] \}$
 	
 	Output: $[0,16]$
 	
@@ -1442,7 +1458,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x^2$, $x = [-2,4]$
+	Input: \Tree[.$\wedge:$ [.$VAR:x$  ] [.$CONST:2$  ] ], $\{ x = [-2,4] \}$
 	
 	Output: $[0,16]$
 	
@@ -1458,7 +1474,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x^2$, $x = [-4,-2]$
+	Input: \Tree[.$\wedge:$ [.$VAR:x$  ] [.$CONST:2$  ] ], $\{ x = [-4,-2] \}$
 	
 	Output: $[4,16]$
 	
@@ -1474,7 +1490,7 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x^{2.1}$, $x = [2,4]$
+	Input: \Tree[.$\wedge:$ [.$VAR:x$  ] [.$CONST:2$  ] ], $\{ x = [2,4] \}$
 	
 	Output: $[4,16]$
 	
@@ -1491,9 +1507,9 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x^{-1}$, $x = [2,4]$
+	Input: \Tree[.$\wedge:$ [.$VAR:x$  ] [.$CONST:-1$  ] ], $\{ x = [2,4] \}$
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: An unsupported operation was encountered while solving 
 	for the range of the equation (Exponent $<$ 0).
@@ -1514,9 +1530,10 @@ requirements, and the associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x^y$, $x = [2,4], y = [3,5]$
+	Input: \Tree[.$\wedge:$ [.$VAR:x$  ] [.$VAR:y$  ] ], $\{ x = [-2,-1], y = 
+	[3,5] \}$
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: An unsupported operation was encountered while solving 
 	for the range of the equation (Exponents).
