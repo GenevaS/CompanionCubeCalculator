@@ -292,10 +292,16 @@ test fail.
 \label{tests_gettingInputs}
 This test suite is designed to determine if the \rref{R_Inputs} (Accepting 
 $f(V)$ and $D(v), v \in V$ as direct input or read from a file) functional 
-requirement and any associated data constraints from 
-\rref{R_verifyinputs} are satisfied.
+requirement and any associated data constraints from \rref{R_verifyinputs} are 
+satisfied.
 
-\paragraph{User Inputs (As Expected)}
+Data that is read from a file is converted into the same format as the inputs 
+for direct input methods, so they are not considered in the functional 
+requirements testing explicitly. Complete unit tests for file I/O related 
+functionality can be found in the User Input unit tests 
+(Section~\ref{unit_inputs}).
+
+\paragraph{User Input Tests}
 
 \begin{enumerate}
 	
@@ -305,31 +311,26 @@ requirement and any associated data constraints from
 		
 	Initial State: New Session
 		
-	Input: \texttt{x+y}, \texttt{x,2,4 \textbackslash ny,3,5}
+	Input: \texttt{"x+y"}, \texttt{"x,2,4 \textbackslash ny,3,5"}
 		
-	Output: \texttt{[5, 9]}, \\
-	\texttt{+- \{+\}\\
+	Output: \texttt{"[5, 9]"}, \\
+	\texttt{"+- \{+\}\\
 		|     +- \{VAR\} x\\
-		|     +- \{VAR\} y}
+		|     +- \{VAR\} y"}
 		
 	User Message: Range calculated successfully.
 		
 	How test will be performed: Unit Test
 		
 	Associated Module: Control Flow\\
-
-\end{enumerate}
 	
-\paragraph{User Inputs (Function is a Constant Value)}
-
-\begin{enumerate}	
 	\item{test-input\_functionAsConstant}
 	
 	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(V) = 42$
+	Input: \texttt{"42"}
 	
 	Output:	$[42,42]$
 	
@@ -340,39 +341,18 @@ requirement and any associated data constraints from
 	
 	Associated Module: Equation Conversion\\
 \end{enumerate}
-	
-\paragraph{User Inputs (Extraneous Information)}
-	
-\begin{enumerate}
-	\item{test-input\_variableNotInFunction}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + y, x = [2,3], y = [4,5], z = [6,7]$
-	
-	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ x = [2,3], y = [4,5] \}
-	
-	User Message: Warning: Extraneous variables found in interval list (z).
-	
-	How test will be performed: Unit Test
-	
-	Associated Module: Variable Consolidation\\
-	
-\end{enumerate}
-		
-\paragraph{User Inputs (Missing Values)}
+
+\paragraph{User Inputs (Missing, Incomplete, and Invalid Equation)}
 
 \begin{enumerate}
-
+	
 	\item{test-input\_noFunction}
 	
 	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: \texttt{""}, \texttt{x,2,4 \textbackslash ny,3,5}
+	Input: \texttt{""}, \texttt{"x,2,4 \textbackslash ny,3,5"}
 	
 	Output: $successCode = -3$
 	
@@ -383,69 +363,44 @@ requirement and any associated data constraints from
 	
 	Associated Module: Control Flow\\
 	
+\end{enumerate}
+
+\paragraph{User Inputs (Missing, Incomplete, and Invalid Domains)}
+
+\begin{enumerate}
+	
 	\item{test-input\_noDomain}
 		
 	Type: Functional, Automatic, Integration
 		
 	Initial State: New Session
 		
-	Input: $f(X) = x + y$, $x = [2,4]$
+	Input: \texttt{"x+y"}, \texttt{"x,2,4"}
 		
-	Output:	Success code = -2 (Variable Matching Failed)
+	Output:	$successCode = -2$
 	
 	User Message: Error: Cannot find intervals for variable name(s): y.
 		
 	How test will be performed: Unit Test
 	
 	Associated Module: Variable Consolidation\\
-
-\end{enumerate}
-
-\begin{enumerate}
-	\item{unittest-intervaldatastructuresethighmin}
 	
-	Type: Functional, Automatic, Unit
+	\item{test-input\_nonNumberInDomain}
+	
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $x = [3,4]$
+	Input: \texttt{"x+y"}, \texttt{"x,2,4 \textbackslash ny,a,5"}
 	
-	Changes: $min = 5$
+	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ \}
 	
-	Output: $x = [4,5]$
+	User Message: Error: The string provided for the minimum bound cannot be 
+	converted to a real number.
 	
-	User Message: WARNING: Value provided for minimum bound is greater than the 
-	current maximum bound. The values have been exchanged to maintain the 
-	interval ordering.
+	How test will be performed: Unit Test
 	
-	How test will be performed: Unit Testing
-	
-	Associated Module: IntervalStruct\\
-	
-	\item{unittest-intervaldatastructuresetlowmax}
-	
-	Type: Functional, Automatic, Unit
-	
-	Initial State: New Session
-	
-	Input: $x = [3,4]$
-	
-	Changes: $max = -1$
-	
-	Output: $x = [-1,3]$
-	
-	User Message: WARNING: Value provided for maximum bound is smaller than the 
-	current minimum bound. The values have been exchanged to maintain the 
-	interval ordering.
-	
-	How test will be performed: Unit Testing
-	
-	Associated Module: IntervalStruct\\
-\end{enumerate}
-
-\paragraph{User Inputs (Incomplete Values)}
-
-\begin{enumerate}
+	Associated Module: Interval Conversion\\
 	
 	\item{test-input\_missingMinDomainValue}
 	
@@ -453,11 +408,12 @@ requirement and any associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y$, $x = [,4], y = [3,5]$
+	Input: \texttt{"x+y"}, \texttt{"x,,4 \textbackslash ny,a,5"}
 	
 	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ x = [4,4], y = [3,5]\}
 	
-	User Message: - 
+	User Message: Warning: No minimum interval bound given. Setting it to the 
+	same value as the maximum bound.
 	
 	How test will be performed: Unit Test
 	
@@ -469,11 +425,12 @@ requirement and any associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $\{f(V) = x + y, x = [2,4], y = [3,]\}$
+	Input: \texttt{"x+y"}, \texttt{"x,2,4 \textbackslash ny,3,"}
 	
 	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ x = [2,4], y = [3,3]\}
 	
-	User Message: - 
+	User Message: Warning: No maximum interval bound given. Setting it to the 
+	same value as the minimum bound.
 	
 	How test will be performed: Unit Test
 	
@@ -481,26 +438,25 @@ requirement and any associated data constraints from
 	
 \end{enumerate}
 
-\paragraph{User Inputs (Non-Numerical Value in Domains)}
+\paragraph{User Inputs (Extraneous Information)}
 
 \begin{enumerate}
-	
-	\item{test-input\_nonNumberInDomain}
+	\item{test-input\_variableNotInFunction}
 	
 	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y$, $x = [2,4], y = [a,5]$
+	Input: \texttt{"x+y"}, \texttt{"x,2,4 \textbackslash ny,3,5 \textbackslash 
+	nz,6,7"}
 	
-	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ \}
+	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ x = [2,3], y = [4,5] \}
 	
-	User Message: Error: The string provided for the minimum bound cannot be 
-	converted to a real number.
+	User Message: Warning: Extraneous variables found in interval list (z).
 	
 	How test will be performed: Unit Test
 	
-	Associated Module: Interval Conversion\\
+	Associated Module: Variable Consolidation\\
 	
 \end{enumerate}
 
@@ -514,9 +470,9 @@ requirement and any associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y$
+	Input: \texttt{"x+y"}
 	
-	Output: \{ x, y \}
+	Output: \texttt{\{ "x", "y" \}}
 	
 	User Message: - 
 	
@@ -530,9 +486,9 @@ requirement and any associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x1 + y$
+	Input: \texttt{"x1+y"}
 	
-	Output: \{ x1, y \}
+	Output: \texttt{\{ "x1", "y" \}}
 	
 	User Message: - 
 	
@@ -546,9 +502,9 @@ requirement and any associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x\_ + y$
+	Input: \texttt{"x\_+y"}
 	
-	Output: \{ x\_, y \}
+	Output: \texttt{\{ "x\_", "y" \}}
 	
 	User Message: - 
 	
@@ -562,9 +518,9 @@ requirement and any associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x\_1 + y$
+	Input: \texttt{"x\_1+y"}
 	
-	Output: \{ x\_1, y \}
+	Output: \texttt{\{ "x\_1", "y" \}}
 	
 	User Message: - 
 	
@@ -578,9 +534,9 @@ requirement and any associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x\_i + y$
+	Input: \texttt{"x\_i+y"}
 	
-	Output: \{ x\_i, y \}
+	Output: \texttt{\{ "x\_i", "y" \}}
 	
 	User Message: - 
 	
@@ -594,9 +550,9 @@ requirement and any associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x'' + y$
+	Input: \texttt{"x``+y"}
 	
-	Output: \{ x'', y \}
+	Output: \texttt{\{ "x``", "y" \}}
 	
 	User Message: - 
 	
@@ -610,9 +566,9 @@ requirement and any associated data constraints from
 	
 	Initial State: New Session
 	
-	Input: $f(V) = xy + y$
+	Input: \texttt{"xy+y"}
 	
-	Output: \{ xy, y \}
+	Output: \texttt{\{ "xy", "y" \}}
 	
 	User Message: - 
 	
@@ -666,6 +622,46 @@ satisfied.
 	
 	Associated Module: Interval Data Structure\\
 	
+	\item{unittest-intervaldatastructuresethighmin}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $x = [3,4]$
+	
+	Changes: $min = 5$
+	
+	Output: $x = [4,5]$
+	
+	User Message: WARNING: Value provided for minimum bound is greater than the 
+	current maximum bound. The values have been exchanged to maintain the 
+	interval ordering.
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: IntervalStruct\\
+	
+	\item{unittest-intervaldatastructuresetlowmax}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $x = [3,4]$
+	
+	Changes: $max = -1$
+	
+	Output: $x = [-1,3]$
+	
+	User Message: WARNING: Value provided for maximum bound is smaller than the 
+	current minimum bound. The values have been exchanged to maintain the 
+	interval ordering.
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: IntervalStruct\\
+	
 \end{enumerate}
 
 \paragraph{Creating Equation Trees}
@@ -678,9 +674,9 @@ satisfied.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y$
+	Input: \texttt{x+y}
 	
-	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ x, y \}
+	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \texttt{\{ "x", "y" \}}
 	
 	User Message: - 
 	
@@ -2037,6 +2033,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 \end{enumerate}
 
 \subsection{User Input Unit Tests}
+\label{unit_inputs}
 These tests are designed to exercise all code paths in the \texttt{Input.cs} 
 file in the \texttt{CompanionCubeCalculator.csproj} project file. They are 
 implemented in the \texttt{InputTests.cs} file in the 
