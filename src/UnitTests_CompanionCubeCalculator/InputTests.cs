@@ -17,12 +17,15 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestGetters()
         {
+            // unittest-testgetlinedelimiter
             string test = Input.GetLineDelimiter();
             Assert.AreEqual(@"\r\n", test);
 
+            // unittest-testgetfielddelimiter
             test = Input.GetFieldDelimiter();
             Assert.AreEqual(",", test);
 
+            // unittest-testgetfiletypes
             string[] testFileTypes = Input.GetValidFileTypes();
             Assert.AreEqual(1, testFileTypes.Length);
             Assert.AreEqual("*.txt", testFileTypes[0]);
@@ -31,6 +34,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestGoodFile()
         {
+            // test-fileinput
             string fileName = @"TestFiles/test.txt";
             string targetEq = "x+y";
             string targetIv = "x,2,4"+ System.Environment.NewLine + "y,3,5";
@@ -40,6 +44,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(targetEq, fileContents[0]);
             Assert.AreEqual(targetIv, fileContents[1]);
 
+            // test-fileinputwithequals
             fileName = @"TestFiles/testWithEquals.txt";
             fileContents = Input.ReadFile(fileName);
 
@@ -50,6 +55,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestEmptyFile()
         {
+            // test-emptyfile
             string fileName = @"TestFiles/testempty.txt";
 
             string[] fileContents = Input.ReadFile(fileName);
@@ -60,6 +66,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestWrongFileType()
         {
+            // test-invalidfiletype
             string fileName = @"TestFiles/test.tex";
 
             string[] fileContents = Input.ReadFile(fileName);
@@ -70,6 +77,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestMissingEquation()
         {
+            // test-input\_noFunctionFile
             string fileName = @"TestFiles/testNoEq.txt";
 
             string[] fileContents = Input.ReadFile(fileName);
@@ -80,6 +88,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestMissingFile()
         {
+            // test-noFile
             string fileName = @"null.txt";
 
             string[] fileContents = Input.ReadFile(fileName);
@@ -93,6 +102,7 @@ namespace UnitTests_CompanionCubeCalculator
             string fileName = @"TestFiles/test.txt";
             string[] fileContents;
 
+            // test-badFileInput
             using (System.IO.Stream stream = new System.IO.FileStream(fileName, System.IO.FileMode.Open))
             {
                 fileContents = Input.ReadFile(fileName);

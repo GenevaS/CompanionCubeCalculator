@@ -316,6 +316,27 @@ requirement and any associated data constraints from
 	Associated Module: \\
 	
 	\item{test-fileinput}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: File containing:
+	\begin{lstlisting}
+	x + y
+	x,2,4
+	y,3,5
+	\end{lstlisting}
+	
+	Output: \{``x+y", ``x,2,4\textbackslash ny,3,5"\}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Input\\
+	
+	\item{test-fileinputwithequals}
 
 	Type: Functional, Automatic, Unit
 	
@@ -340,6 +361,75 @@ requirement and any associated data constraints from
 \paragraph{User Inputs (Bad File I/O)}
 
 \begin{enumerate}
+	
+	\item{test-emptyfile}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: File containing no information
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: The file is empty.
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Input\\
+	
+	\item{test-invalidfiletype}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: File with an unsupported extension
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: Cannot read files of this type.
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Input\\
+	
+	\item{test-input\_noFunctionFile}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: A file containing:
+	\begin{lstlisting}
+	x,2,4
+	y,3,5
+	\end{lstlisting}
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: The first line of the file is not an equation or the 
+	equation contains ','.
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Input\\
+	
+	\item{test-noFile}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: A file that does not exist
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: The specified file does not exist.
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Input\\
 	
 	\item{test-badFileInput}
 	
@@ -1938,30 +2028,203 @@ arrow and requirements appear at the head.
 	\end{center}
 \end{figure}
 				
-\section{Unit Testing Plan}
+\section{Unit Testing}
 		
 As shown by the system test description (Section \ref{testplan_highlevel}), the 
 system and integration testing of the \prognameAbbrv{} tool can be divided into 
-several unique steps. This also has implications for specific function unit 
-tests.
+several unique steps. However, these tests do not cover all possible code paths 
+such that 100\% code coverage can be achieved. The unit tests were created in 
+addition to the functional requirements tests to realize this goal. Unit 
+testing is divided by modules.
 
-The general plan for unit testing is to use the same tests from the functional 
-requirements (Section \ref{testplan_functional}) except that the expected 
-inputs are provided by the human tester rather than the module that produces 
-those values as outputs. For example if the $f(V)$ parsing function is 
-expecting an error-checked $f(V)$ from the input module, the error-checked 
-$f(V)$ would be provided by the human tester instead. If a manually synthesised 
-input produces incorrect behaviours from a function, debugging strategies can 
-be employed, including debugging statements and visual code inspections.
+\subsection{Control Flow Unit Tests}
 
-The unit testing stage is also the point where code coverage tools can be used 
-to ensure that most lines of code are being tested by the integration and 
-system tests. The goal is to have 100\% code coverage. If code is not covered 
-by the tests, it should be analysed to determine its usefulness and 
-accessibility to the rest of the program. 
+\begin{enumerate}
+	
+	\item{unittest-intervaldatastructure}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [2,4]$
+	
+	Output: \texttt{[2, 4]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Output\\
+	
+\end{enumerate}
 
-Once a section of tests have been completed and there do not appear to be any 
-immediate problems, the modules can be used in the functional requirement tests.
+\subsection{User Input Unit Tests}
+
+\begin{enumerate}
+	
+	\item{unittest-testgetlinedelimiter}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: -
+	
+	Output: \texttt{\textbackslash r\textbackslash n}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-testgetfielddelimiter}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: -
+	
+	Output: \texttt{,}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-testgetfiletypes}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: -
+	
+	Output: \texttt{*.txt}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing\\
+	
+\end{enumerate}
+
+\subsection{Interval Data Structure and Interval Conversion Unit Tests}
+
+\paragraph{Interval Data Structure}
+\begin{enumerate}
+	
+	\item{unittest-intervaldatastructure}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [2,4]$
+	
+	Output: \texttt{[2, 4]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Output\\
+	
+\end{enumerate}
+
+\subsection{Equation Data Structure and Equation Conversion Unit Tests}
+
+\paragraph{Interval Data Structure}
+\begin{enumerate}
+	
+	\item{unittest-intervaldatastructure}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [2,4]$
+	
+	Output: \texttt{[2, 4]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Output\\
+	
+\end{enumerate}
+
+\subsection{Operator Data Structure and Range Solver Unit Tests}
+
+\paragraph{Interval Data Structure}
+\begin{enumerate}
+	
+	\item{unittest-intervaldatastructure}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [2,4]$
+	
+	Output: \texttt{[2, 4]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Output\\
+	
+\end{enumerate}
+
+\subsection{Variable Consolidation Unit Tests}
+
+\paragraph{Interval Data Structure}
+\begin{enumerate}
+	
+	\item{unittest-intervaldatastructure}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [2,4]$
+	
+	Output: \texttt{[2, 4]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Output\\
+	
+\end{enumerate}
+
+
+
+\subsection{Output Unit Tests}
+
+\paragraph{Interval Data Structure}
+\begin{enumerate}
+	
+	\item{unittest-intervaldatastructure}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [2,4]$
+	
+	Output: \texttt{[2, 4]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Output\\
+	
+\end{enumerate}
+
+
 
 %\bibliographystyle{plainnat}
 

@@ -17,8 +17,13 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestPrintIntervals()
         {
+            // test - output\_printvariableintervalWithName
             IntervalStruct interval = new IntervalStruct("x", 3,5, true, true);
             Assert.AreEqual("x = [3, 5]", Output.PrintInterval(interval, true));
+
+            // test-output\_printvariableintervalNoName
+            interval = new IntervalStruct("x", 3, 5, true, true);
+            Assert.AreEqual("[3, 5]", Output.PrintInterval(interval, false));
 
             interval = new IntervalStruct("x", 3, 5, false, false);
             Assert.AreEqual("x = (3, 5)", Output.PrintInterval(interval, true));
@@ -44,12 +49,13 @@ namespace UnitTests_CompanionCubeCalculator
         {
             string varToken = EquationConversion.GetVariableToken();
 
+            // test-output\_printequationtree
             EquationStruct equation = new EquationStruct("+", "", new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), new EquationStruct(varToken, "x", null, null));
             string target = "";
             target += "+- {+}" + System.Environment.NewLine;
             target += "|   +- {/}" + System.Environment.NewLine;
-            target += "|   |  +- {VAR} y" + System.Environment.NewLine;
-            target += "|   |  +- {VAR} z" + System.Environment.NewLine;
+            target += "|   |   +- {VAR} y" + System.Environment.NewLine;
+            target += "|   |   +- {VAR} z" + System.Environment.NewLine;
             target += "|   +- {VAR} x" + System.Environment.NewLine;
 
             Assert.AreEqual(System.Text.RegularExpressions.Regex.Replace(target, @"\s+", ""), System.Text.RegularExpressions.Regex.Replace(Output.PrintEquationTree(equation), @"\s+", ""));

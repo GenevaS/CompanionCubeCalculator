@@ -142,7 +142,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(5, range.GetMinBound());
             Assert.AreEqual(9, range.GetMaxBound());
 
-            // 
+            // test-calculate additionconstant
             equation = new EquationStruct("+", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "4", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3, true, true) };
 
@@ -259,7 +259,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(-1.0 / 3, range.GetMinBound());
             Assert.AreEqual(4.0 / 3, range.GetMaxBound());
 
-            // test-calculate divisionPositiveDivisor5
+            // test-calculate divisionPositiveDivisor4
             equation = new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", -2, -1, true, true), new IntervalStruct("y", 3, 5, true, true) };
 
@@ -268,7 +268,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(-2.0 / 3, range.GetMinBound());
             Assert.AreEqual(-1.0 / 5, range.GetMaxBound());
 
-            // test-calculate divisionPositiveDivisor4
+            // test-calculate divisionPositiveDivisor5
             equation = new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", -2, 0, true, true), new IntervalStruct("y", 3, 5, true, true) };
 
@@ -322,7 +322,15 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(-1.0 / -5, range.GetMinBound());
             Assert.AreEqual(-2.0 / -3, range.GetMaxBound());
 
-            // test-parse divisionMixedIntervalDivisor 
+            // test-calculate divisionbyzero
+            equation = new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "0", null, null));
+            intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true) };
+
+            range = Solver.FindRange(equation, intervals);
+
+            Assert.AreEqual(null, range);
+
+            // test-calculate divisionMixedIntervalDivisor 
             equation = new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
 
@@ -330,7 +338,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             Assert.AreEqual(null, range);
 
-            // test-parse divisionMixedIntervalDivisorZero1
+            // test-calculate divisionMixedIntervalDivisorZero1
             equation = new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 0, true, true), new IntervalStruct("z", -1, 1, true, true) };
 
@@ -338,7 +346,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             Assert.AreEqual(null, range);
 
-            // test-parse divisionMixedIntervalDivisorZero2
+            // test-calculate divisionMixedIntervalDivisorZero2
             equation = new EquationStruct("/", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "y", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", 0, 3, true, true), new IntervalStruct("z", -1, 1, true, true) };
 
@@ -379,7 +387,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(4, range.GetMinBound());
             Assert.AreEqual(16, range.GetMaxBound());
 
-            // test-parse intervalAsExponentsInvalidBase
+            // test-calculate intervalAsExponentsInvalidBase
             equation = new EquationStruct("^", "", new EquationStruct(varToken, "1", null, null), new EquationStruct(constToken, "x", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", -4, -2, true, true) };
 
@@ -387,7 +395,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             Assert.AreEqual(null, range);
 
-            // test-parse intervalWithExponent1 
+            // test-calculate intervalWithExponent1 
             equation = new EquationStruct("^", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "3", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true) };
 
@@ -396,7 +404,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(8, range.GetMinBound());
             Assert.AreEqual(64, range.GetMaxBound());
 
-            // test-parse intervalWithExponent2
+            // test-calculate intervalWithExponent2
             equation = new EquationStruct("^", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "2", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true) };
 
@@ -405,7 +413,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(4, range.GetMinBound());
             Assert.AreEqual(16, range.GetMaxBound());
 
-            // test-parse intervalWithExponent3
+            // test-calculate intervalWithExponent3
             equation = new EquationStruct("^", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "2", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 0, 4, true, true) };
 
@@ -414,7 +422,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(0, range.GetMinBound());
             Assert.AreEqual(16, range.GetMaxBound());
 
-            // test-parse intervalWithExponent4
+            // test-calculate intervalWithExponent4
             equation = new EquationStruct("^", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "2", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", -2, 4, true, true) };
 
@@ -423,7 +431,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(0, range.GetMinBound());
             Assert.AreEqual(16, range.GetMaxBound());
 
-            // test-parse intervalWithExponent5
+            // test-calculate intervalWithExponent5
             equation = new EquationStruct("^", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "2", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", -4, -2, true, true) };
 
@@ -432,7 +440,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(4, range.GetMinBound());
             Assert.AreEqual(16, range.GetMaxBound());
 
-            // test-parse intervalWithInvalidExponent1
+            // test-calculate intervalWithInvalidExponent1
             equation = new EquationStruct("^", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "2.1", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true) };
 
@@ -441,7 +449,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(4, range.GetMinBound());
             Assert.AreEqual(16, range.GetMaxBound());
 
-            // test-parse intervalWithInvalidExponent2
+            // test-calculate intervalWithInvalidExponent2
             equation = new EquationStruct("^", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "-1", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true) };
 
@@ -449,7 +457,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             Assert.AreEqual(null, range);
 
-            // test-parse intervalWithInvalidExponent2
+            // test-calculate\_intervalsOnlyExponentiation
             equation = new EquationStruct("^", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(constToken, "y", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", 3, 5, true, true) };
 
