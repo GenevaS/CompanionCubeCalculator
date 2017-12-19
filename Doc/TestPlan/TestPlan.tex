@@ -301,19 +301,22 @@ requirement and any associated data constraints from
 	
 	\item{test-directinput}
 	
-	\textbf{Type: Functional, Automatic, Unit}
+	Type: Functional, Automatic, System, Regression
 		
-		Initial State: New Session
+	Initial State: New Session
 		
-		Input: $f(V) = x + y, x = [2,4], y = [3,5]$
+	Input: \texttt{x+y}, \texttt{x,2,4 \textbackslash ny,3,5}
 		
-		Output: Input received from direct input
+	Output: \texttt{[5, 9]}, \\
+	\texttt{+- \{+\}\\
+		|     +- \{VAR\} x\\
+		|     +- \{VAR\} y}
 		
-		User Message: - 
+	User Message: Range calculated successfully.
 		
-		How test will be performed: Unit Test
+	How test will be performed: Unit Test
 		
-		Associated Module: \\
+	Associated Module: Control Flow\\
 
 \end{enumerate}
 	
@@ -365,19 +368,20 @@ requirement and any associated data constraints from
 
 	\item{test-input\_noFunction}
 	
-	\textbf{Type: Functional, Automatic, Integration}
+	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $x = [2,4], y = [3,5]$
+	Input: \texttt{""}, \texttt{x,2,4 \textbackslash ny,3,5}
 	
-	Output: 
+	Output: $successCode = -3$
 	
-	User Message: Error: Could not find function $f(V)$ with variables $x, y$
+	User Message: Error: Unrecognized sequence encountered during Atomic 
+	Equation parsing. Remaining equation = 
 	
 	How test will be performed: Unit Test
 	
-	Associated Module: \\
+	Associated Module: Control Flow\\
 	
 	\item{test-input\_noDomain}
 		
@@ -1548,103 +1552,107 @@ The tests that follow these assume that the user input tests
 
 \begin{enumerate}
 	
-	\item{test-parse\_commutativityOfAdditionSubstraction}
+	\item{test-control\_commutativityOfAdditionSubstraction}
 	
 	Type: Functional, Automatic, System, Regression
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y - z == f(V) = (x + y) - z, x = [2,4], y = [3,5], z = 
-	[2,2]$
+	Input: \texttt{x+y-z}, \texttt{(x+y)-z}, \texttt{x,2,4 \textbackslash 
+	ny,3,5 \textbackslash n z,2,2}
 	
-	Output: True
+	Output: \texttt{x+y-z} = \texttt{(x+y)-z}
 	
 	User Message: - 
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Control Flow\\
 	
-	\item{test-parse\_commutativityOfMultiplicationDivision}
+	\item{test-control\_commutativityOfMultiplicationDivision}
 	
 	Type: Functional, Automatic, System, Regression
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x * y / z == f(V) = (x * y) / z, x = [2,4], y = [3,5], z = 
-	[2,2]$
+	Input: \texttt{x*y/z}, \texttt{(x*y)/z}, \texttt{x,2,4 \textbackslash 
+	ny,3,5 \textbackslash n z,2,2}
 	
-	Output: True
+	Output: \texttt{x*y/z} = \texttt{(x*y)/z}
 	
 	User Message: - 
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Control Flow\\
 	
-	\item{test-parse\_precedenceOfOperators1}
+	\item{test-control\_precedenceOfOperators1}
 	
 	Type: Functional, Automatic, System, Regression
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y * z == x + (y * z), x = [2,4], y = [3,5], z = [2,2]$
+	Input: \texttt{x+y*z}, \texttt{x+(y*z)}, \texttt{x,2,4 \textbackslash 
+		ny,3,5 \textbackslash n z,2,2}
 	
-	Output: True
+	Output: \texttt{x+y*z} = \texttt{x+(y*z)}
 	
 	User Message: - 
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Control Flow\\
 	
-	\item{test-parse\_precedenceOfOperators2}
+	\item{test-control\_precedenceOfOperators2}
 	
 	Type: Functional, Automatic, System, Regression
 	
 	Initial State: New Session
 	
-	Input: $f(V) = 2^x * y == (2^x) * y, x = [2,4], y = [3,5]$
+	Input: \texttt{2\textasciicircum x*y}, \texttt{(2\textasciicircum x)*y}, 
+	\texttt{x,2,4 \textbackslash ny,3,5}
 	
-	Output: True
+	Output: \texttt{2\textasciicircum x*y} = \texttt{(2\textasciicircum x)*y}
 	
 	User Message: - 
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Control Flow\\
 	
-	\item{test-parse\_precedenceOfOperators3}
+	\item{test-control\_precedenceOfOperators3}
 	
 	Type: Functional, Automatic, System, Regression
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x^2 * y == (x^2) * y, x = [2,4], y = [3,5]$
+	Input: \texttt{x\textasciicircum 2*y}, \texttt{(x\textasciicircum 2)*y}, 
+	\texttt{x,2,4 \textbackslash ny,3,5}
 	
-	Output: True
+	Output: \texttt{x\textasciicircum 2*y} = \texttt{(x\textasciicircum 2)*y}
 	
 	User Message: - 
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Control Flow\\
 	
-	\item{test-parse\_precedenceOfOperators4}
+	\item{test-control\_precedenceOfOperators4}
 	
 	Type: Functional, Automatic, System, Regression
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x * (y + z), x = [2,4], y = [3,5], z = [2,2]$
+	Input: \texttt{x*(y+z)}, \texttt{x,2,4 \textbackslash ny,3,5\textbackslash 
+	nz,2,2}
 	
-	Output: $[10, 28]$
+	Output: \texttt{[10, 28]}
 	
 	User Message: - 
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Control Flow\\
 	
 	\item{test-control\_precedenceOfOperators5}
 	\label{userstudy_task}
@@ -1653,15 +1661,33 @@ The tests that follow these assume that the user input tests
 	
 	Initial State: New Session
 	
-	Input: $f(V) = 2(x + y)^2/3^z, x = [1,2], y = [3,4], z = [5,6]$
+	Input: \texttt{2(x+y)\textasciicircum2/3\textasciicircum z}, \texttt{x,1,2 
+	\textbackslash ny,3,4\textbackslash nz,5,6}
 	
-	Output: $[0.0438957475994513, 0.296296296296296]$
+	Output: \texttt{[0.0438957475994513, \textbackslash n0.296296296296296]}
 	
 	User Message: - 
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Control Flow\\
+	
+	\item{test-control\_precedenceOfOperators6}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: \texttt{(2(x+y)\textasciicircum2)/(3\textasciicircum z)}, 
+	\texttt{x,1,2 \textbackslash ny,3,4\textbackslash nz,5,6}
+	
+	Output: \texttt{[0.0438957475994513, \textbackslash n0.296296296296296]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Control Flow\\
 	
 \end{enumerate}
 
@@ -1919,21 +1945,47 @@ testing is divided by modules.
 
 \begin{enumerate}
 	
-	\item{unittest-intervaldatastructure}
+	\item{unittest-controlinit}
 	
-	Type: Functional, Automatic, System, Regression
+	Type: Functional, Automatic, Unit
 	
 	Initial State: New Session
 	
-	Input: $x = [2,4]$
+	Input: $ControlFlow.Initialize()$
 	
-	Output: \texttt{[2, 4]}
+	Output: \texttt{TRUE}
 	
-	User Message: - 
+	User Message: Parser initialized.
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
 	
-	Associated Module: Output\\
+	\item{unittest-controlcondition}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: \texttt{x + y}, $TRUE$
+	
+	Output: \texttt{x+y}
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-controlfile}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: \texttt{TestFiles/test.txt}
+	
+	Output: \texttt{ \{ x+y, x,2,4\textbackslash ny,3,5 \} }
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
 	
 \end{enumerate}
 
