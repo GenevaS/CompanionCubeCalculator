@@ -25,21 +25,27 @@ namespace UnitTests_CompanionCubeCalculator
             interval = new IntervalStruct("x", 3, 5, true, true);
             Assert.AreEqual("[3, 5]", Output.PrintInterval(interval, false));
 
+            // unittest-outputopenstructure
             interval = new IntervalStruct("x", 3, 5, false, false);
             Assert.AreEqual("x = (3, 5)", Output.PrintInterval(interval, true));
 
+            // unittest-outputclosedleftstructure
             interval = new IntervalStruct("x", 3, 5, true, false);
             Assert.AreEqual("x = [3, 5)", Output.PrintInterval(interval, true));
 
+            // unittest-outputclosedrightstructure
             interval = new IntervalStruct("x", 3, 5, false, true);
             Assert.AreEqual("x = (3, 5]", Output.PrintInterval(interval, true));
 
+            // unittest-outputconstwithname
             interval = new IntervalStruct("", 3, 3, false, false);
             Assert.AreEqual("CONST: 3", Output.PrintInterval(interval, true));
 
+            // unittest-outputconstnoname
             interval = new IntervalStruct("", 3, 3, false, false);
             Assert.AreEqual("CONST: 3", Output.PrintInterval(interval, false));
 
+            // unittest-outputlongresult
             interval = new IntervalStruct("r", 0.333333333333, 0.66666666666666, true, true);
             Assert.AreEqual("[0.333333333333, " + System.Environment.NewLine + " 0.66666666666666]", Output.PrintInterval(interval, false));
         }

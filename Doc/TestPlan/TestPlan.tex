@@ -2284,7 +2284,28 @@ testing is divided by modules.
 
 \subsection{Operator Data Structure and Range Solver Unit Tests}
 
-\paragraph{Interval Data Structure}
+\paragraph{Equation Data Structure}
+\begin{enumerate}
+	
+	\item{unittest-intervaldatastructure}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [2,4]$
+	
+	Output: \texttt{[2, 4]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Output\\
+	
+\end{enumerate}
+
+\paragraph{Equation Conversion}
 \begin{enumerate}
 	
 	\item{unittest-intervaldatastructure}
@@ -2332,24 +2353,91 @@ testing is divided by modules.
 
 \subsection{Output Unit Tests}
 
-\paragraph{Interval Data Structure}
 \begin{enumerate}
 	
-	\item{unittest-intervaldatastructure}
+	\item{unittest-outputopenstructure}
 	
 	Type: Functional, Automatic, System, Regression
 	
 	Initial State: New Session
 	
-	Input: $x = [2,4]$
+	Input: $x = (2,4), true$
 	
-	Output: \texttt{[2, 4]}
+	Output: \texttt{x = (2, 4)}
 	
 	User Message: - 
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
 	
-	Associated Module: Output\\
+	\item{unittest-outputclosedleftstructure}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [2,4), true$
+	
+	Output: \texttt{x = [2, 4)}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-outputclosedrightstructure}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = (2,4], true$
+	
+	Output: \texttt{x = (2, 4]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-outputconstwithname}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $CONST: 3, true$
+	
+	Output: \texttt{CONST: 3}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-outputconstnoname}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $CONST: 3, false$
+	
+	Output: \texttt{CONST: 3}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-outputlongresult}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [0.333333333333, 0.66666666666666], false$
+	
+	Output: \texttt{[0.333333333333, \textbackslash n 0.66666666666666]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing\\
 	
 \end{enumerate}
 
