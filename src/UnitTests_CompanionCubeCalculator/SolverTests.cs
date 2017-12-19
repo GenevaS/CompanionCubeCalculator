@@ -17,6 +17,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestOperatorConstructor()
         {
+            // unittest-operatordatastructureconstructor
             OperatorStruct op = new OperatorStruct("+", 1, false, true, false, true);
 
             Assert.AreEqual("+", op.GetOperator());
@@ -31,6 +32,7 @@ namespace UnitTests_CompanionCubeCalculator
         [ExpectedException(typeof(System.ArgumentException), "Error: Cannot have an operator with no representative symbol.")]
         public void TestMissingOpSymbol()
         {
+            // unittest-operatordatastructuremissingsym
             OperatorStruct op = new OperatorStruct("", 1, false, true, false, true);
         }
 
@@ -38,6 +40,7 @@ namespace UnitTests_CompanionCubeCalculator
         [ExpectedException(typeof(System.ArgumentException), "Error: Precedence values must be greater than 0.")]
         public void TestLowOpPrecedence()
         {
+            // unittest-operatordatastructurelowprecedence
             OperatorStruct op = new OperatorStruct("+", 0, false, true, false, true);
         }
 
@@ -45,6 +48,7 @@ namespace UnitTests_CompanionCubeCalculator
         [ExpectedException(typeof(System.ArgumentException), "Error: An operator cannot be overloaded to be unary, binary, and ternary.")]
         public void TestOpType1()
         {
+            // unittest-operatordatastructureoverloadedtype1
             OperatorStruct op = new OperatorStruct("+", 1, true, true, false, true);
         }
 
@@ -52,6 +56,7 @@ namespace UnitTests_CompanionCubeCalculator
         [ExpectedException(typeof(System.ArgumentException), "Error: An operator cannot be overloaded to be unary, binary, and ternary.")]
         public void TestOpType2()
         {
+            // unittest-operatordatastructureoverloadedtype2
             OperatorStruct op = new OperatorStruct("+", 1, false, true, true, true);
         }
 
@@ -59,6 +64,7 @@ namespace UnitTests_CompanionCubeCalculator
         [ExpectedException(typeof(System.ArgumentException), "Error: An operator cannot be overloaded to be unary, binary, and ternary.")]
         public void TestOpType3()
         {
+            // unittest-operatordatastructureoverloadedtype3
             OperatorStruct op = new OperatorStruct("+", 1, true, false, true, true);
         }
 
@@ -66,6 +72,7 @@ namespace UnitTests_CompanionCubeCalculator
         [ExpectedException(typeof(System.ArgumentException), "Error: Operators must be assigned a number of operands type.")]
         public void TestNoOpType()
         {
+            // unittest-operatordatastructurenotype
             OperatorStruct op = new OperatorStruct("+", 1, false, false, false, true);
         }
     }
@@ -77,12 +84,14 @@ namespace UnitTests_CompanionCubeCalculator
         [ExpectedException(typeof(System.ArgumentException), "Error: No information was provided for the equation.")]
         public void TestNoEquation()
         {
+            // unittest-solvernoequation
             Solver.FindRange(null, new IntervalStruct[] { new IntervalStruct("x", 1, 2, true, true) });
         }
 
         [TestMethod]
         public void TestUnknownOp()
         {
+            // unittest-solverunknownop
             string varToken = EquationConversion.GetVariableToken();
             EquationStruct equation = new EquationStruct ("**", "", new EquationStruct(varToken, "x", null, null), new EquationStruct(varToken, "x", null, null));
             IntervalStruct[] intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3, true, true) };
@@ -95,6 +104,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestMissingIntervals()
         {
+            // unittest-solvermissingintervals
             string varToken = EquationConversion.GetVariableToken();
             EquationStruct equation = new EquationStruct(varToken, "x", null, null);
             IntervalStruct[] intervals = new IntervalStruct[] { };
@@ -110,6 +120,7 @@ namespace UnitTests_CompanionCubeCalculator
             string varToken = EquationConversion.GetVariableToken();
             string constToken = EquationConversion.GetConstToken();
 
+            // unittest-solverconstantfunction
             EquationStruct equation = new EquationStruct(constToken, "42", null, null);
             IntervalStruct[] intervals = new IntervalStruct[] { };
 
@@ -118,6 +129,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(42, range.GetMinBound());
             Assert.AreEqual(42, range.GetMaxBound());
 
+            // unittest-solvervariablefunction
             equation = new EquationStruct(varToken, "x", null, null);
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 3, true, true) };
 
@@ -151,7 +163,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(6, range.GetMinBound());
             Assert.AreEqual(7, range.GetMaxBound());
 
-            // 
+            // unittest-solveradditionleftsidenull
             equation = new EquationStruct("+", "", new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), new EquationStruct(varToken, "x", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
 
@@ -175,7 +187,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(-1, range.GetMinBound());
             Assert.AreEqual(-1, range.GetMaxBound());
 
-            // 
+            // unittest-solversubtractionleftsidenull
             equation = new EquationStruct("-", "", new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), new EquationStruct(varToken, "x", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
 
@@ -217,7 +229,7 @@ namespace UnitTests_CompanionCubeCalculator
             Assert.AreEqual(2, range.GetMinBound());
             Assert.AreEqual(15, range.GetMaxBound());
 
-            // 
+            // unittest-solvermultiplicationleftsidenull
             equation = new EquationStruct("*", "", new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), new EquationStruct(varToken, "x", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
 
@@ -363,7 +375,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             Assert.AreEqual(null, range);
 
-            // 
+            // unittest-solverdivisionleftsidenull
             equation = new EquationStruct("/", "", new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), new EquationStruct(varToken, "x", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("x", 2, 4, true, true), new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
 
@@ -465,7 +477,7 @@ namespace UnitTests_CompanionCubeCalculator
 
             Assert.AreEqual(null, range);
 
-            // 
+            // unittest-solverexponentleftsidenull
             equation = new EquationStruct("^", "", new EquationStruct("/", "", new EquationStruct(varToken, "y", null, null), new EquationStruct(varToken, "z", null, null)), new EquationStruct(constToken, "4", null, null));
             intervals = new IntervalStruct[] { new IntervalStruct("y", -3, 5, true, true), new IntervalStruct("z", -1, 1, true, true) };
 

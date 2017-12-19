@@ -2282,29 +2282,6 @@ testing is divided by modules.
 	
 \end{enumerate}
 
-\subsection{Operator Data Structure and Range Solver Unit Tests}
-
-\paragraph{Equation Data Structure}
-\begin{enumerate}
-	
-	\item{unittest-intervaldatastructure}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $x = [2,4]$
-	
-	Output: \texttt{[2, 4]}
-	
-	User Message: - 
-	
-	How test will be performed: Unit Testing
-	
-	Associated Module: Output\\
-	
-\end{enumerate}
-
 \paragraph{Equation Conversion}
 \begin{enumerate}
 	
@@ -2349,7 +2326,264 @@ testing is divided by modules.
 	
 \end{enumerate}
 
+\subsection{Operator Data Structure and Range Solver Unit Tests}
 
+\paragraph{Operator Data Structure}
+\begin{enumerate}
+	
+	\item{unittest-operatordatastructureconstructor}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $"+", 1, false, true, false, true$
+	
+	Output: $OperatorStruct(+,1,false,true,false,true)$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-operatordatastructuremissingsym}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $"", 1, false, true, false, true$
+	
+	Output: \texttt{Exception}
+	
+	User Message: Error: Cannot have an operator with no representative symbol.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-operatordatastructurelowprecedence}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $"+", 0, false, true, false, true$
+	
+	Output: \texttt{Exception}
+	
+	User Message: Error: Precedence values must be greater than 0.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-operatordatastructureoverloadedtype1}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $"+", 1, true, true, false, true$
+	
+	Output: \texttt{Exception}
+	
+	User Message: Error: An operator cannot be overloaded to be unary, binary, 
+	and ternary.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-operatordatastructureoverloadedtype2}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $"+", 1, false, true, true, true$
+	
+	Output: \texttt{Exception}
+	
+	User Message: Error: An operator cannot be overloaded to be unary, binary, 
+	and ternary.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-operatordatastructureoverloadedtype3}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $"+", 1, true, false, true, true$
+	
+	Output: \texttt{Exception}
+	
+	User Message: Error: An operator cannot be overloaded to be unary, binary, 
+	and ternary.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-operatordatastructurenotype}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $"+", 1, false, false, false, true$
+	
+	Output: \texttt{Exception}
+	
+	User Message: Error: Operators must be assigned a number of operands type.
+	
+	How test will be performed: Unit Testing\\
+	
+\end{enumerate}
+
+\paragraph{Range Solver}
+\begin{enumerate}
+	
+	\item{unittest-solvernoequation}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $null, x = [1,2]$
+	
+	Output: \texttt{Exception}
+	
+	User Message: Error: No information was provided for the equation.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-solverunknownop}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x**x, x = [2,3]$
+	
+	Output: $NULL$
+	
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Unknown operator).
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-solvermissingintervals}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x, \{ \}$
+	
+	Output: $NULL$
+	
+	User Message: Error: Could not find an associated interval for variable x.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-solverconstantfunction}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $42, \{ \}$
+	
+	Output: $[42,42]$
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-solvervariablefunction}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x, \{ x = [2,3] \}$
+	
+	Output: $[2,3]$
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-solveradditionleftsidenull}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $(y/z) + x, \{ x = [2,4], y = [-3,5], z = [-1,1] \}$
+	
+	Output: $NULL$
+	
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Mixed interval division).
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-solversubtractionleftsidenull}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $(y/z) - x, \{ x = [2,4], y = [-3,5], z = [-1,1] \}$
+	
+	Output: $NULL$
+	
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Mixed interval division).
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-solvermultiplicationleftsidenull}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $(y/z) * x, \{ x = [2,4], y = [-3,5], z = [-1,1] \}$
+	
+	Output: $NULL$
+	
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Mixed interval division).
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-solverdivisionleftsidenull}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $(y/z) / x, \{ x = [2,4], y = [-3,5], z = [-1,1] \}$
+	
+	Output: $NULL$
+	
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Mixed interval division).
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-solverexponentleftsidenull}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $(y/z) \wedge 4, \{ y = [-3,5], z = [-1,1] \}$
+	
+	Output: $NULL$
+	
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Mixed interval division).
+	
+	How test will be performed: Unit Testing\\
+
+\end{enumerate}
 
 \subsection{Output Unit Tests}
 
@@ -2440,8 +2674,6 @@ testing is divided by modules.
 	How test will be performed: Unit Testing\\
 	
 \end{enumerate}
-
-
 
 %\bibliographystyle{plainnat}
 
