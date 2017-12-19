@@ -1371,47 +1371,15 @@ requirements, and the associated data constraints from
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: Range Solver\\
+	Associated Module: Range Solver
+	
+	Note: Ideally, the error message should also output the results calculated 
+	up until the division operation (e.g. $[-2,-1]/[-3,5]$).\\
 	
 \end{enumerate}
 
 \paragraph{Correctness of Intervals as Exponents}
-\begin{enumerate}
-	
-	\item{test-parse\_intervalAsExponents}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = 2^x$, $x = [2,4]$
-	
-	Output: \Tree[.$B^x$ [.$2$ ] [.$x$ $[2,4]$ ] ]
-	
-	User Message: - 
-	
-	How test will be performed: Unit Testing
-	
-	Associated Module: \\
-	
-	\item{test-parse\_intervalAsExponentsInvalidBase}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = 1^x$, $x = [2,4]$
-	
-	Output: Error -- Cannot perform operation with an interval exponent when 
-	the base number ($B$) $\leq 1$
-	
-	User Message: - 
-	
-	How test will be performed: Unit Testing
-	
-	Associated Module: \\
-	
-\end{enumerate}
+
 
 \begin{enumerate}
 	
@@ -1429,69 +1397,32 @@ requirements, and the associated data constraints from
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_intervalAsExponentsInvalidBase}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = 1^x$, $x = [2,4]$
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Exponent base <= 1).
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
 	
 \end{enumerate}
 
 \paragraph{Correctness of Intervals as Base Numbers}
-\begin{enumerate}
-	
-	\item{test-parse\_intervalWithExponent}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x^2$, $x = [2,4]$
-	
-	Output: \Tree[.$x^N$ [.$x$ $[2,4]$ ] [.$2$ ]  ]
-	
-	User Message: - 
-	
-	How test will be performed: Unit Testing
-	
-	Associated Module: \\
-	
-	\item{test-parse\_intervalWithInvalidExponent1}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x^{2.1}$, $x = [2,4]$
-	
-	Output: Warning -- Cannot perform operation with an exponent that is not a 
-	whole number; the exponent has been rounded to 2\\
-	\Tree[.$x^N$ [.$x$ $[2,4]$ ] [.$2$ ]  ]
-	
-	User Message: - 
-	
-	How test will be performed: Unit Testing
-	
-	Associated Module: \\
-	
-	\item{test-parse\_intervalWithInvalidExponent2}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x^{-1}$, $x = [2,4]$
-	
-	Output: Error -- Cannot perform operation exponentiation with an exponent 
-	($N$) $< 0$
-	
-	User Message: - 
-	
-	How test will be performed: Unit Testing
-	
-	Associated Module: \\
-	
-\end{enumerate}
 
 \begin{enumerate}
 	
-	\item{test-parse\_intervalWithExponent1}
+	\item{test-calculate\_intervalWithExponent1}
 	
 	Type: Functional, Automatic, Integration
 	
@@ -1505,9 +1436,9 @@ requirements, and the associated data constraints from
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Range Solver\\
 	
-	\item{test-parse\_intervalWithExponent2}
+	\item{test-calculate\_intervalWithExponent2}
 	
 	Type: Functional, Automatic, Integration
 	
@@ -1521,9 +1452,9 @@ requirements, and the associated data constraints from
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Range Solver\\
 	
-	\item{test-parse\_intervalWithExponent3}
+	\item{test-calculate\_intervalWithExponent3}
 	
 	Type: Functional, Automatic, Integration
 	
@@ -1537,9 +1468,9 @@ requirements, and the associated data constraints from
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Range Solver\\
 	
-	\item{test-parse\_intervalWithExponent4}
+	\item{test-calculate\_intervalWithExponent4}
 	
 	Type: Functional, Automatic, Integration
 	
@@ -1553,9 +1484,9 @@ requirements, and the associated data constraints from
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Range Solver\\
 	
-	\item{test-parse\_intervalWithExponent5}
+	\item{test-calculate\_intervalWithExponent5}
 	
 	Type: Functional, Automatic, Integration
 	
@@ -1569,7 +1500,41 @@ requirements, and the associated data constraints from
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_intervalWithInvalidExponent1}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x^{2.1}$, $x = [2,4]$
+	
+	Output: $[4,16]$
+	
+	User Message: Warning: The value provided for the exponent 2.1 is not a 
+	natural number. It has been rounded to 2.
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_intervalWithInvalidExponent2}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x^{-1}$, $x = [2,4]$
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Exponent < 0).
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
 	
 \end{enumerate}
 
@@ -1577,7 +1542,7 @@ requirements, and the associated data constraints from
 
 \begin{enumerate}
 	
-	\item{test-parse\_intervalsOnlyExponentiation}
+	\item{test-calculate\_intervalsOnlyExponentiation}
 	
 	Type: Functional, Automatic, Integration
 	
@@ -1585,14 +1550,14 @@ requirements, and the associated data constraints from
 	
 	Input: $f(V) = x^y$, $x = [2,4], y = [3,5]$
 	
-	Output: Error -- Cannot perform exponentiation when the base number ($B$) 
-	and the exponent ($N$) are intervals
+	Output: \texttt{NULL}
 	
-	User Message: - 
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Exponents).
 	
 	How test will be performed: Unit Testing
 	
-	Associated Module: \\
+	Associated Module: Range Solver\\
 	
 \end{enumerate}
 
@@ -1717,11 +1682,6 @@ The tests that follow these assume that the user input tests
 	
 \end{enumerate}
 
-
-\paragraph{Correctness of Operator Composition}
-
-
-
 \subsubsection{Presentation of Calculations to the User}
 \label{tests_outputResults}
 This test suite is designed to test that the final functional requirement, 
@@ -1730,26 +1690,83 @@ be found), is satisfied. It is assumed that any
 inputs that do not produce a viable result have been caught previously and an 
 appropriate error or warning message was presented to the user.
 
-The tests that follow these assume that the user input tests 
-(\ref{tests_gettingInputs}), input conditioning tests 
-(\ref{tests_conditioningInputs}), component equation calculation tests 
-(\ref{tests_correctnessOfCalculations}), and operator composition tests 
-(\ref{tests_operatorComposition}) have passed.
+\paragraph{Printing Intervals}
 
+\begin{enumerate}
+	
+	\item{test-output\_printvariableintervalWithName}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [2,4]$
+	
+	Output: \texttt{x = [2, 4]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Output\\
+	
+	\item{test-output\_printvariableintervalNoName}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $x = [2,4]$
+	
+	Output: \texttt{[2, 4]}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Output\\
+	
+\end{enumerate}
 
+\paragraph{Printing Equation Trees}
+
+\begin{enumerate}
+	
+	\item{test-output\_printequationtree}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: \Tree[.$+$ [.$/$ [.$y$  ] [.$z$  ] ] [.$x$  ] ]
+	
+	Output: \\
+	\texttt{+- \{+\}\\
+		|     +- \{/\}\\
+		|     |     +- \{VAR\} y\\
+	    |     |     +- \{VAR\} z\\
+		|     +- \{VAR\} x}
+
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Output\\
+	
+\end{enumerate}
 
 \subsection{Tests for Non-Functional Requirements}
 \label{testplan_nonfunctional}
 
 Some of the non-functional requirements can be tested using the same tests as 
 their associated functional requirements. This includes correctness 
-and verifiability (\ref{tests_operatorComposition}), robustness (applicable at 
-every process stage), and reliability (\ref{tests_outputResults}). This leaves 
-the non-functional requirements of usability and maintainability to test 
-separately. 
+and verifiability (\ref{tests_operatorComposition}), and robustness (applicable 
+at every process stage). This leaves the non-functional requirements of 
+usability and maintainability to test separately. 
 
 Due to the intended audience for the initial version of the \prognameAbbrv{} 
-tool and the size of the test team, maintainability testing will not be covered.
+tool and the size of the test team, maintainability testing will not be 
+included in this test plan.
 
 \subsubsection{Usability}
 \label{tests_nonfunctional_usability}
