@@ -2305,24 +2305,83 @@ testing is divided by modules.
 
 \subsection{Variable Consolidation Unit Tests}
 
-\paragraph{Interval Data Structure}
 \begin{enumerate}
 	
-	\item{unittest-intervaldatastructure}
+	\item{unittest-consolidatetestinit}
 	
 	Type: Functional, Automatic, System, Regression
 	
 	Initial State: New Session
 	
-	Input: $x = [2,4]$
+	Input: -
 	
-	Output: \texttt{[2, 4]}
+	Output: $TRUE$
 	
-	User Message: - 
+	User Message: -
 	
-	How test will be performed: Unit Testing
+	How test will be performed: Unit Testing\\
 	
-	Associated Module: Output\\
+	\item{unittest-consolidatetestinit}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: -
+	
+	Output: $TRUE$
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-consolidatenoops}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: ConvertAndCheckInputs(\texttt{x+y}, \texttt{x,2,3 \textbackslash 
+		ny,4,5}, \{ \}, Solver.GetValidTerminators())
+	
+	Output: $successCode = -1$
+	
+	User Message: Error: No operators were passed to the parser.
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-consolidatenorightterm}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: ConvertAndCheckInputs(\texttt{x+y}, \texttt{x,2,3 \textbackslash 
+		ny,4,5}, Solver.GetValidOperators, \{ \{ ``(" \} \})
+	
+	Output: $successCode = -1$
+	
+	User Message: Error: An unbalanced left terminator token was encountered 
+	(``(")
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-consolidatenoleftterm}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: ConvertAndCheckInputs(\texttt{x+y}, \texttt{x,2,3 \textbackslash 
+		ny,4,5}, Solver.GetValidOperators, \{ \{ ``)" \} \})
+	
+	Output: $successCode = -1$
+	
+	User Message: Error: An unbalanced right terminator token was encountered 
+	(``)")
+	
+	How test will be performed: Unit Testing\\
+	
 	
 \end{enumerate}
 

@@ -17,6 +17,7 @@ namespace UnitTests_CompanionCubeCalculator
         [TestMethod]
         public void TestInit()
         {
+            // unittest-consolidatetestinit
             bool success = Consolidate.Initialize();
 
             Assert.AreEqual(true, success);
@@ -28,14 +29,17 @@ namespace UnitTests_CompanionCubeCalculator
             EquationConversion.ResetEquationConversion();
             Consolidate.Initialize();
 
+            // unittest-consolidatenoops
             OperatorStruct[] ops = new OperatorStruct[] { };
             int success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", ops, Solver.GetValidTerminators(), System.Environment.NewLine, ",");
             Assert.AreEqual(-1, success);
 
+            // unittest-consolidatenorightterm
             string[][] terminators = new string[][] { new string[] { "(", "" } };
             success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), terminators, System.Environment.NewLine, ",");
             Assert.AreEqual(-1, success);
 
+            // unittest-consolidatenoleftterm
             terminators = new string[][] { new string[] { "", ")" } };
             success = Consolidate.ConvertAndCheckInputs("x+y", "x,2,3\ny,4,5", Solver.GetValidOperators(), terminators, System.Environment.NewLine, ",");
             Assert.AreEqual(-1, success);
