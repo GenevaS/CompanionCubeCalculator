@@ -1942,6 +1942,11 @@ addition to the functional requirements tests to realize this goal. Unit
 testing is divided by modules.
 
 \subsection{Control Flow Unit Tests}
+These tests are designed to exercise all code paths in the 
+\texttt{ControlFlow.cs} file in the \texttt{CompanionCubeCalculator.csproj} 
+project file. They are implemented in the \texttt{ControlTests.cs} file in the 
+\texttt{UnitTests\_CompanionCubeCalculator.csproj} project file. These projects 
+are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 
 \begin{enumerate}
 	
@@ -1953,7 +1958,7 @@ testing is divided by modules.
 	
 	Input: $ControlFlow.Initialize()$
 	
-	Output: \texttt{TRUE}
+	Output: $TRUE$
 	
 	User Message: Parser initialized.
 	
@@ -1965,9 +1970,9 @@ testing is divided by modules.
 	
 	Initial State: New Session
 	
-	Input: \texttt{x + y}, $TRUE$
+	Input: \texttt{"x + y"}, $TRUE$
 	
-	Output: \texttt{x+y}
+	Output: \texttt{"x+y"}
 	
 	User Message: -
 	
@@ -1981,7 +1986,7 @@ testing is divided by modules.
 	
 	Input: $ControlFlow.GetValidFileTypes()$
 	
-	Output: \texttt{*.txt}
+	Output: \texttt{"*.txt"}
 	
 	User Message: -
 	
@@ -1993,9 +1998,9 @@ testing is divided by modules.
 	
 	Initial State: New Session
 	
-	Input: \texttt{ x+y }
+	Input: \texttt{ "x+y" }
 	
-	Output: \texttt{ \{ x, y \}}
+	Output: \texttt{ \{ "x", "y" \}}
 	
 	User Message: -
 	
@@ -2007,7 +2012,7 @@ testing is divided by modules.
 	
 	Initial State: New Session
 	
-	Input: \texttt{ \{ x+y, x,2,4\textbackslash ny,3,5 \} }
+	Input: \texttt{ \{ "x+y", "x,2,4\textbackslash ny,3,5" \} }
 	
 	Output: \texttt{ \{ \{ "x", "2", "4" \}, \{ "y", "3", "5" \} \}}
 	
@@ -2021,9 +2026,9 @@ testing is divided by modules.
 	
 	Initial State: New Session
 	
-	Input: \texttt{TestFiles/test.txt}
+	Input: \texttt{@"TestFiles/test.txt"}
 	
-	Output: \texttt{ \{ x+y, x,2,4\textbackslash ny,3,5 \} }
+	Output: \texttt{ \{ "x+y", "x,2,4\textbackslash ny,3,5" \} }
 	
 	User Message: -
 	
@@ -2054,7 +2059,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	y,3,5
 	\end{lstlisting}
 	
-	Output: \{``x+y", ``x,2,4\textbackslash ny,3,5"\}
+	Output: \{ "x+y", "x,2,4\textbackslash ny,3,5" \}
 	
 	User Message: - 
 	
@@ -2073,7 +2078,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	y,3,5
 	\end{lstlisting}
 	
-	Output: \{``x+y", ``x,2,4\textbackslash ny,3,5"\}
+	Output: \{ "x+y", "x,2,4\textbackslash ny,3,5" \}
 	
 	User Message: - 
 	
@@ -2087,7 +2092,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Input: File containing no information
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: The file is empty.
 	
@@ -2101,7 +2106,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Input: File with an unsupported extension
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: Cannot read files of this type.
 	
@@ -2119,7 +2124,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	y,3,5
 	\end{lstlisting}
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: The first line of the file is not an equation or the 
 	equation contains ','.
@@ -2134,7 +2139,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Input: A file that does not exist
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: The specified file does not exist.
 	
@@ -2148,7 +2153,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Input: File that cannot be read
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: Cannot read files of this type.
 	
@@ -2165,7 +2170,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Input: -
 	
-	Output: \texttt{\textbackslash r\textbackslash n}
+	Output: \texttt{"\textbackslash r\textbackslash n"}
 	
 	User Message: - 
 	
@@ -2179,7 +2184,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Input: -
 	
-	Output: \texttt{,}
+	Output: \texttt{","}
 	
 	User Message: - 
 	
@@ -2193,7 +2198,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Input: -
 	
-	Output: \texttt{*.txt}
+	Output: \texttt{"*.txt"}
 	
 	User Message: - 
 	
@@ -2218,12 +2223,12 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $x = [3,4]$
+	Input: \texttt{ "x", "3", "4"}, $False$, $False$
 	
 	Changes: $min = 2$, $max = 5$, $leftBoundClosed = TRUE$, $rightBoundClosed 
 	= TRUE$
 	
-	Output: $x = (2,5)$
+	Output: \texttt{ "x"}, $2$, $5$, $True$, $True$
 	
 	User Message: - 
 	
@@ -2235,11 +2240,11 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $x = [3,4]$
+	Input: \texttt{ "x", "3", "4"}, $False$, $False$
 	
 	Changes: $varName = y$
 	
-	Output: $y = [-1,3]$
+	Output: \texttt{ "y"}, $3$, $4$, $False$, $False$
 	
 	User Message: -
 	
@@ -2256,7 +2261,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{x}
+	Input: \texttt{"x"}
 	
 	Output: \{\}
 	
@@ -2270,9 +2275,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{x,,}
+	Input: \texttt{"x,,"}
 	
-	Output: \{\}
+	Output: \{   \}
 	
 	User Message: Error: No values provided for either interval bound.
 	
@@ -2284,9 +2289,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{3.0,4.0}
+	Input: \texttt{"3.0,4.0"}
 	
-	Output: \{\}
+	Output: \{   \}
 	
 	User Message: Error: Intervals must have an associated variable name.
 	
@@ -2298,9 +2303,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{,3.0,4.0}
+	Input: \texttt{",3.0,4.0"}
 	
-	Output: \{\}
+	Output: \{   \}
 	
 	User Message: Error: Intervals must have an associated variable name.
 	
@@ -2312,9 +2317,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{x,3,4,5}
+	Input: \texttt{"x,3,4,5"}
 	
-	Output: \{\}
+	Output: \{   \}
 	
 	User Message: Error: Encountered a variable with more than three fields 
 	(Line n). Skipping line.
@@ -2342,7 +2347,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"", "", null, null$
+	Input: \texttt{"", ""}, $NULL$, $NULL$
 	
 	Output: \texttt{Exception}
 	
@@ -2357,7 +2362,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"+", "x", null, null$
+	Input: \texttt{"+", "x"}, $NULL$, $NULL$
 	
 	Output: \Tree[.$+:x$ [.$null$  ] [.$null$  ] ]
 	
@@ -2371,8 +2376,8 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"+", "x",$ \Tree[.$VAR:y$ [.$null$  ] [.$null$  ] ], \Tree[.$VAR:z$ 
-	[.$null$  ] [.$null$  ] ]
+	Input: \texttt{"+", "x"}, \Tree[.$VAR:y$ [.$null$  ] [.$null$  ] ], 
+	\Tree[.$VAR:z$ 	[.$null$  ] [.$null$  ] ]
 	
 	Output: \Tree[.$+:x$ [.$VAR:y$ [.$null$  ] [.$null$  ] ]  [.$VAR:z$  
 	[.$null$  ] [.$null$  ]  ] ] 
@@ -2392,7 +2397,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"+", "x", null, null$, $y$
+	Input: \Tree[.$+:x$ [.$null$  ] [.$null$  ] ], \texttt{y}
 	
 	Output: \Tree[.$+:y$ [.$null$  ] [.$null$  ] ]
 	
@@ -2406,7 +2411,8 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"+", "x", null, null$, [.$VAR:y$ [.$null$  ] [.$null$  ] ]
+	Input: \Tree[.$+:x$ [.$null$  ] [.$null$  ] ], \Tree[.$VAR:y$ [.$null$  ] 
+	[.$null$  ] ]
 	
 	Output: \Tree[.$+:x$ [.$VAR:y$ [.$null$  ] [.$null$  ] ]  [.$null$  ] ] 
 	
@@ -2420,7 +2426,8 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"+", "x", null, null$, [.$VAR:z$ [.$null$  ] [.$null$  ] ]
+	Input: \Tree[.$+:x$ [.$null$  ] [.$null$  ] ], \Tree[.$VAR:z$ [.$null$  ] 
+	[.$null$  ] ]
 	
 	Output: \Tree[.$+:x$  [.$null$  ] [.$VAR:z$ [.$null$  ] [.$null$  ] ] ] 
 	
@@ -2439,9 +2446,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{new OperatorStruct[] { }, Solver.GetValidTerminators()}
+	Input: $new OperatorStruct[] \{ \}$, $Solver.GetValidTerminators()$
 	
-	Output: \texttt{FALSE}
+	Output: $FALSE$
 	
 	User Message: Error: No operators were passed to the parser.
 	
@@ -2453,10 +2460,10 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{new OperatorStruct[] { new OperatorStruct("-", 5, true, 
-	false, false, false) }, Solver.GetValidTerminators()}
+	Input: $new OperatorStruct[] \{ new OperatorStruct("-", 5, true, 
+	false, false, false) \} $, $Solver.GetValidTerminators()$
 	
-	Output: \texttt{TRUE}
+	Output: $TRUE$
 	
 	User Message: -
 	
@@ -2468,10 +2475,10 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{new OperatorStruct[] { new OperatorStruct("-", 5, false, 
-			true, false, false) }, Solver.GetValidTerminators()}
+	Input: $new OperatorStruct[] \{ new OperatorStruct("-", 5, false, 
+			true, false, false) \}$, $Solver.GetValidTerminators()$
 	
-	Output: \texttt{TRUE}
+	Output: $TRUE$
 	
 	User Message: -
 	
@@ -2483,10 +2490,10 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{new OperatorStruct[] { new OperatorStruct("\&", 5, false, 
-			false, true, false) }, Solver.GetValidTerminators()}
+	Input: $new OperatorStruct[] \{ new OperatorStruct("\&", 5, false, 
+			false, true, false) \}$, $Solver.GetValidTerminators()$
 	
-	Output: \texttt{FALSE}
+	Output: $FALSE$
 	
 	User Message: Error: The parser cannot process the \& operator.
 	
@@ -2498,9 +2505,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{Solver.GetValidOperators(), new string[] { "(", "" }}
+	Input: $Solver.GetValidOperators()$, $new string[] \{ "(", "" \}$
 	
-	Output: \texttt{FALSE}
+	Output: $FALSE$
 	
 	User Message: Error: An unbalanced left terminator token was encountered 
 	(().
@@ -2513,9 +2520,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{Solver.GetValidOperators(), new string[] { "", ")" }}
+	Input: $Solver.GetValidOperators()$, $new string[] \{ "", ")" \}$
 	
-	Output: \texttt{FALSE}
+	Output: $FALSE$
 	
 	User Message: Error: An unbalanced right terminator token was encountered 
 	()).
@@ -2528,7 +2535,8 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: \texttt{"-x", new OperatorStruct("-", 5, true, false, false, false)}
+	Input: \texttt{"-x"}, $new OperatorStruct("-", 5, true, false, false, 
+	false)$
 	
 	Output: \Tree[.$-:$ [.$VAR:x$ [.$null$  ] [.$null$  ] ] [.$null$  ]  ] 
 	
@@ -2542,9 +2550,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x +$
+	Input: \texttt{"x+"}
 	
-	Output: \texttt{NULL}
+	Output: $NULL$
 	
 	User Message: Error: Could not find the end of the equation. 
 	
@@ -2556,9 +2564,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = *x$
+	Input: \texttt{"*x"}
 	
-	Output:	\texttt{NULL}
+	Output:	$NULL$
 	
 	User Message: Error: Unrecognized sequence encountered during Atomic 
 	Equation parsing. Remaining equation = *x.
@@ -2571,13 +2579,12 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + * y$
+	Input: \texttt{"x+*y"}
 	
-	Output:	\texttt{NULL}
+	Output:	$NULL$
 	
 	User Message: Error: Unrecognized sequence encountered during Atomic 
-	Equation 
-	parsing. Remaining equation = *y.
+	Equation parsing. Remaining equation = *y.
 	
 	How test will be performed: Unit Test\\
 	
@@ -2627,8 +2634,8 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: ConvertAndCheckInputs(\texttt{x+y}, \texttt{x,2,3 \textbackslash 
-		ny,4,5}, \{ \}, Solver.GetValidTerminators())
+	Input: $ConvertAndCheckInputs(\texttt{"x+y"}, \texttt{"x,2,3 \textbackslash 
+		ny,4,5"}, \{ \},\\ Solver.GetValidTerminators())$
 	
 	Output: $successCode = -1$
 	
@@ -2642,8 +2649,8 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: ConvertAndCheckInputs(\texttt{x+y}, \texttt{x,2,3 \textbackslash 
-		ny,4,5}, Solver.GetValidOperators, \{ \{ ``(" \} \})
+	Input: $ConvertAndCheckInputs(\texttt{"x+y"}, \texttt{"x,2,3 \textbackslash 
+		ny,4,5"},\\ Solver.GetValidOperators(), \{ \{ ``(" \} \})$
 	
 	Output: $successCode = -1$
 	
@@ -2658,8 +2665,8 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: ConvertAndCheckInputs(\texttt{x+y}, \texttt{x,2,3 \textbackslash 
-		ny,4,5}, Solver.GetValidOperators, \{ \{ ``)" \} \})
+	Input: $ConvertAndCheckInputs(\texttt{"x+y"}, \texttt{"x,2,3 \textbackslash 
+		ny,4,5"},\\ Solver.GetValidOperators(), \{ \{ ``)" \} \})$
 	
 	Output: $successCode = -1$
 	
@@ -2674,7 +2681,8 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y$
+	Input: $ConvertAndCheckInputs(\texttt{"x+y"}, \texttt{"x,2,3 \textbackslash 
+		ny,4,5"}, Solver.GetValidOperators(),\\ Solver.GetValidTerminators())$
 	
 	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ $x = [2,3]$, $y = [4,5]$ \}
 	
@@ -2688,7 +2696,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y$
+	Input: $ConvertAndCheckInputs(\texttt{"x+y"}, \texttt{"x,2,3 \textbackslash 
+		ny,4,5"}, Solver.GetValidOperators(),\\ 
+		Solver.GetValidTerminators());\\ Consolidate.GetIntervalStructList()$
 	
 	Output: \{ $x = [2,3]$, $y = [4,5]$ \}
 	
@@ -2731,9 +2741,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"+", 1, false, true, false, true$
+	Input: \texttt{"+"}, $1, false, true, false, true$
 	
-	Output: $OperatorStruct(+,1,false,true,false,true)$
+	Output: $OperatorStruct(\texttt{"+"},1,false,true,false,true)$
 	
 	User Message: - 
 	
@@ -2745,7 +2755,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"", 1, false, true, false, true$
+	Input: \texttt{""}, $1, false, true, false, true$
 	
 	Output: \texttt{Exception}
 	
@@ -2759,7 +2769,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"+", 0, false, true, false, true$
+	Input: \texttt{"+"}, $0, false, true, false, true$
 	
 	Output: \texttt{Exception}
 	
@@ -2773,7 +2783,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"+", 1, true, true, false, true$
+	Input: \texttt{"+"}, $1, true, true, false, true$
 	
 	Output: \texttt{Exception}
 	
@@ -2788,7 +2798,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"+", 1, false, true, true, true$
+	Input: \texttt{"+"}, $1, false, true, true, true$
 	
 	Output: \texttt{Exception}
 	
@@ -2803,7 +2813,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"+", 1, true, false, true, true$
+	Input: \texttt{"+"}, $1, true, false, true, true$
 	
 	Output: \texttt{Exception}
 	
@@ -2818,7 +2828,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $"+", 1, false, false, false, true$
+	Input: \texttt{"+"}, $1, false, false, false, true$
 	
 	Output: \texttt{Exception}
 	
@@ -2851,7 +2861,8 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $x**x, x = [2,3]$
+	Input: \Tree[.$**:$ [.$VAR:x$ [.$null$  ] [.$null$  ] ]  [.$VAR:x$  
+	[.$null$  ] [.$null$  ]  ] ], $x = [2,3]$
 	
 	Output: $NULL$
 	
@@ -2866,7 +2877,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $x, \{ \}$
+	Input: \Tree[.$VAR:x$  [.$null$  ] [.$null$  ]  ], $\{ \}$
 	
 	Output: $NULL$
 	
@@ -2880,7 +2891,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $42, \{ \}$
+	Input: \Tree[.$CONST:42$  [.$null$  ] [.$null$  ]  ], $\{ \}$
 	
 	Output: $[42,42]$
 	
@@ -2894,7 +2905,7 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $x, \{ x = [2,3] \}$
+	Input: \Tree[.$VAR:x$  [.$null$  ] [.$null$  ]  ], $\{ x = [2,3] \}$
 	
 	Output: $[2,3]$
 	
@@ -2908,7 +2919,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $(y/z) + x, \{ x = [2,4], y = [-3,5], z = [-1,1] \}$
+	Input: \Tree[.$+:$  [.$():$ [.$/:$  [.$VAR:y$  [.$null$  ] [.$null$  ]  ] 
+	[.$VAR:z$  [.$null$  ] [.$null$  ]  ]  ]  ] [.$VAR:x$  [.$null$  ] 
+	[.$null$  ]  ]  ], \\$\{ x = [2,4], y = [-3,5], z = [-1,1] \}$
 	
 	Output: $NULL$
 	
@@ -2923,7 +2936,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $(y/z) - x, \{ x = [2,4], y = [-3,5], z = [-1,1] \}$
+	Input: \Tree[.$-:$  [.$():$ [.$/:$  [.$VAR:y$  [.$null$  ] [.$null$  ]  ] 
+	[.$VAR:z$  [.$null$  ] [.$null$  ]  ]  ]  ] [.$VAR:x$  [.$null$  ] 
+	[.$null$  ]  ]  ], \\$\{ x = [2,4], y = [-3,5], z = [-1,1] \}$
 	
 	Output: $NULL$
 	
@@ -2938,7 +2953,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $(y/z) * x, \{ x = [2,4], y = [-3,5], z = [-1,1] \}$
+	Input: \Tree[.$*:$  [.$():$ [.$/:$  [.$VAR:y$  [.$null$  ] [.$null$  ]  ] 
+	[.$VAR:z$  [.$null$  ] [.$null$  ]  ]  ]  ] [.$VAR:x$  [.$null$  ] 
+	[.$null$  ]  ]  ], \\$\{ x = [2,4], y = [-3,5], z = [-1,1] \}$
 	
 	Output: $NULL$
 	
@@ -2953,7 +2970,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $(y/z) / x, \{ x = [2,4], y = [-3,5], z = [-1,1] \}$
+	Input: \Tree[.$/:$  [.$():$ [.$/:$  [.$VAR:y$  [.$null$  ] [.$null$  ]  ] 
+	[.$VAR:z$  [.$null$  ] [.$null$  ]  ]  ]  ] [.$VAR:x$  [.$null$  ] 
+	[.$null$  ]  ]  ], \\$\{ x = [2,4], y = [-3,5], z = [-1,1] \}$
 	
 	Output: $NULL$
 	
@@ -2968,7 +2987,9 @@ are collected in the \texttt{CompanionCubeCalculator.sln} solution file.
 	
 	Initial State: New Session
 	
-	Input: $(y/z) \wedge 4, \{ y = [-3,5], z = [-1,1] \}$
+	Input: \Tree[.$\wedge:$  [.$():$ [.$/:$  [.$VAR:y$  [.$null$  ] [.$null$  
+	]  ]  [.$VAR:z$  [.$null$  ] [.$null$  ]  ]  ]  ] [.$CONST:4$  [.$null$  ] 
+	[.$null$  ]  ]  ], \\$\{ y = [-3,5], z = [-1,1] \}$
 	
 	Output: $NULL$
 	
