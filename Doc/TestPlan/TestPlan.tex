@@ -1680,6 +1680,23 @@ The tests that follow these assume that the user input tests
 	
 	Associated Module: \\
 	
+	\item{test-control\_precedenceOfOperators5}
+	\label{userstudy_task}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $f(V) = 2(x + y)^2/3^z, x = [1,2], y = [3,4], z = [5,6]$
+	
+	Output: $[0.0438957475994513, 0.296296296296296]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
 \end{enumerate}
 
 \subsubsection{Presentation of Calculations to the User}
@@ -1772,13 +1789,8 @@ included in this test plan.
 \label{tests_nonfunctional_usability}
 The tests for usability focus on the notation used to represent $f(V)$ and 
 $D(v), v \in V$ and the user's ability to use the tool intuitively without 
-external guidance or instruction.
-		
-\wss{Great to see usability testing!  Could you please give some more
-  detail on how the tests will be run.  How many participants?  How
-  will they be recruited?  What documentation will they be given?
-  etc.  What specific task or tasks will they be asked to perform?
-  How will the results of the usability tests be summarized?}
+external guidance or instruction. This testing will be completed via a user 
+study (Appendix~\ref{appendix_userstudy}).
 
 \paragraph{Use of Standard Mathematical Notation}
 
@@ -1790,9 +1802,9 @@ Type: Non-Functional, Manual, System
 					
 Initial State: New Session
 					
-Condition: The user is given a series of $f(V)$ to enter into the tool; the 
+Condition: The user is given a $f(V)$ to enter into the tool; the 
 $f(V)$ chosen will be taken from the functional requirement tests 
-(\ref{testplan_functional})
+(Operational Precedence Test, ID: ~\ref{userstudy_task})
 					
 Result: The user should be able to enter in the $f(V)$ with no guidance
 					
@@ -1813,54 +1825,20 @@ Result: The user should be able to enter in the $D(v)$ with no guidance
 					
 How test will be performed: User study (\ref{appendix_userstudy})\\
 
-\end{enumerate}
+\item{test-presentationOutputs}
 
-\paragraph{GUI Presentation and Organization}
+Type: Non-Functional, Manual, System
 
-\begin{enumerate}
-	
-	\item{test-GUIPresentationInputs}
-	
-	Type: Non-Functional, Manual, System
-	
-	Initial State: New Session
-	
-	Condition: The user will be given an input set $\{f(V), D(v) v \in V\}$ and 
-	asked to enter them into the GUI
-	
-	Result: The user should be able to find and enter the data into the GUI 
-	with no guidance
-	
-	How test will be performed: User study (\ref{appendix_userstudy})\\
-	
-	\item{test-GUIWorkflow}
-	
-	Type: Non-Functional, Manual, System
-	
-	Initial State: New Session
-	
-	Condition: The user will be shown a GUI that has an input set $\{f(V), D(v) 
-	v \in V\}$ already entered and ask them to tell the tool to compute the 
-	result
-	
-	Result: The user should be able to prompt the tool to begin processing with 
-	no guidance
-	
-	How test will be performed: User study (\ref{appendix_userstudy})\\
-	
-	\item{test-GUIPresentationOutputs}
-	
-	Type: Non-Functional, Manual, System
-	
-	Initial State: End Session
-	
-	Condition: The user will be shown a GUI that has finished its calculations
-	
-	Result: The user should be able to find and understand the system's outputs 
-	from the GUI with no guidance
-	
-	How test will be performed: User study (\ref{appendix_userstudy})\\
-	
+Initial State: End Session
+
+Condition: The user will be shown the results that the tool produces after it 
+completes its calculations
+
+Result: The user should be able to find and understand the system's outputs 
+from the GUI with no guidance
+
+How test will be performed: User study (\ref{appendix_userstudy})\\
+
 \end{enumerate}
 
 %\subsubsection{Maintainability}
