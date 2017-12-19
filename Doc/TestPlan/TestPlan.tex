@@ -1973,6 +1973,48 @@ testing is divided by modules.
 	
 	How test will be performed: Unit Testing\\
 	
+	\item{unittest-controlgetfiletypes}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: $ControlFlow.GetValidFileTypes()$
+	
+	Output: \texttt{*.txt}
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-controlextractvars}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: \texttt{ x+y }
+	
+	Output: \texttt{ \{ x, y \}}
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
+	\item{unittest-controlgetvarinfo}
+	
+	Type: Functional, Automatic, Unit
+	
+	Initial State: New Session
+	
+	Input: \texttt{ \{ x+y, x,2,4\textbackslash ny,3,5 \} }
+	
+	Output: \texttt{ \{ \{ "x", "2", "4" \}, \{ "y", "3", "5" \} \}}
+	
+	User Message: -
+	
+	How test will be performed: Unit Testing\\
+	
 	\item{unittest-controlfile}
 	
 	Type: Functional, Automatic, Unit

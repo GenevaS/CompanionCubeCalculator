@@ -31,6 +31,62 @@ namespace UnitTests_CompanionCubeCalculator
         }
 
         [TestMethod]
+        public void TestGetFileTypes()
+        {
+            // unittest-controlgetfiletypes
+            string[] fileTypes = ControlFlow.GetValidFileTypes();
+            string expectedTypes = "*.txt";
+            Assert.AreEqual(expectedTypes, fileTypes[0]);
+        }
+
+        [TestMethod]
+        public void TestExtractVars()
+        {
+            EquationConversion.ResetEquationConversion();
+            if (ControlFlow.Initialize())
+            {
+                // unittest-controlextractvars
+                string[] vars = ControlFlow.ExtractVariables("x+y");
+                Assert.AreEqual("x", vars[0]);
+                Assert.AreEqual("y", vars[1]);
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void TestGetVariableInfo()
+        {
+            if (ControlFlow.Initialize())
+            {
+                // unittest-controlgetvarinfo
+                string[] delimiters = ControlFlow.GetDelimiters();
+                string[] results = ControlFlow.ControlDirect("x+y", "x" + delimiters[1] + "2" + delimiters[1] + "4" + delimiters[0] + "y" + delimiters[1] + "3" + delimiters[1] + "5");
+                string targetRange = "[5, 9]";
+
+                Assert.AreEqual(targetRange, results[0]);
+
+                string[,] varInfo = ControlFlow.GetVariableInfo();
+
+                Assert.AreEqual(6, varInfo.Length);
+
+                Assert.AreEqual("x", varInfo[0, 0]);
+                Assert.AreEqual("2", varInfo[0, 1]);
+                Assert.AreEqual("4", varInfo[0, 2]);
+
+                Assert.AreEqual("y", varInfo[1, 0]);
+                Assert.AreEqual("3", varInfo[1, 1]);
+                Assert.AreEqual("5", varInfo[1, 2]);
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
         public void TestControlFile()
         {
             string[] delimiters = ControlFlow.GetDelimiters();
