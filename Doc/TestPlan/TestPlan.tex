@@ -23,6 +23,7 @@
 }
 \usepackage[round]{natbib}
 \usepackage{float}
+\usepackage{listings}
 
 \input{../Comments}
 
@@ -283,19 +284,16 @@ solution $R(f(V))$. Finally, the ``Presentation of Calculations to the User"
 tests ensure that the \prognameAbbrv{} tool follows the rules for significant 
 figures and precision.
 
-Each test group assumes that the groups preceding it have passed successfully, 
-adding to the confidence in the product.
+Each test case is associated with specific modules so that developers and 
+maintainers have an idea of where to being their debugging process should a 
+test fail.
 
 \subsubsection{Getting User Inputs}
 \label{tests_gettingInputs}
 This test suite is designed to determine if the \rref{R_Inputs} (Accepting 
 $f(V)$ and $D(v), v \in V$ as direct input or read from a file) functional 
-requirement is satisfied and its associated data constraints from 
-\rref{R_verifyinputs}.
-
-The initial test cases (User Inputs (As Expected)) are the white-box unit tests 
-that start the integration testing. The tests that follow these assume that 
-these tests have passed.
+requirement and any associated data constraints from 
+\rref{R_verifyinputs} are satisfied.
 
 \paragraph{User Inputs (As Expected)}
 
@@ -311,7 +309,11 @@ these tests have passed.
 	
 	Output: Input received from direct input
 	
-	How test will be performed: Unit Test\\
+	User Message: - 
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: \\
 	
 	\item{test-fileinput}
 
@@ -319,11 +321,20 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: File containing: $f(V) = x + y, x = [2,4], y = [3,5]$
+	Input: File containing:
+	\begin{lstlisting}
+	f(V) = x + y
+	x,2,4
+	y,3,5
+	\end{lstlisting}
 	
-	Output: Input received from file
+	Output: \{``x+y", ``x,2,4\textbackslash ny,3,5"\}
 	
-	How test will be performed: Unit Test\\
+	User Message: - 
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Input\\
 \end{enumerate}
 	
 \paragraph{User Inputs (Bad File I/O)}
@@ -338,9 +349,13 @@ these tests have passed.
 	
 	Input: File that cannot be read
 	
-	Output: Error -- File cannot be read
+	Output: \texttt{NULL}
 	
-	How test will be performed: Unit Test\\
+	User Message: Error: Cannot read files of this type.
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Input\\
 \end{enumerate}
 	
 \paragraph{User Inputs (Function is a Constant Value)}
@@ -352,11 +367,16 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = 34$
+	Input: $f(V) = 42$
 	
-	Output: Warning -- Function $f(V)$ does not contain any variables
+	Output:	$[42,42]$
 	
-	How test will be performed: Unit Test\\
+	User Message: Warning: The user equation is a constant value and the range 
+	will only include this value.
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Equation Conversion\\
 \end{enumerate}
 	
 \paragraph{User Inputs (Extraneous Information)}
@@ -368,12 +388,15 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y, x = [2,4], y = [3,5], z = [6,7]$
+	Input: $f(V) = x + y, x = [2,3], y = [4,5], z = [6,7]$
 	
-	Output: Warning -- Function $f(V)$ does not contain name $z$ found in 
-	variable list -\textgreater ignoring domain of $z$
+	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ x = [2,3], y = [4,5] \}
 	
-	How test will be performed: Unit Test\\
+	User Message: Warning: Extraneous variables found in interval list (z).
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Variable Consolidation\\
 	
 \end{enumerate}
 		
@@ -389,9 +412,13 @@ these tests have passed.
 	
 	Input: $x = [2,4], y = [3,5]$
 	
-	Output: Error -- Could not find function $f(V)$ with variables $x, y$
+	Output: 
 	
-	How test will be performed: Unit Test\\
+	User Message: Error: Could not find function $f(V)$ with variables $x, y$
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: \\
 	
 	\item{test-input\_noDomain}
 		
@@ -401,9 +428,13 @@ these tests have passed.
 		
 	Input: $f(X) = x + y$, $x = [2,4]$
 		
-	Output: Error -- No domain for variable $y$
+	Output:	Success code = -2 (Variable Matching Failed)
+	
+	User Message: Error: Cannot find intervals for variable name(s): y.
 		
-	How test will be performed: Unit Test\\
+	How test will be performed: Unit Test
+	
+	Associated Module: Variable Consolidation\\
 
 \end{enumerate}
 
@@ -417,12 +448,15 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x +$, $x = [2,4], y = [3,5]$
+	Input: $f(V) = x +$
 	
-	Output: Error -- Function $f(V)$ is missing an operand for ``$+$" 
-	-\textgreater domain list contains unreferenced variable $y$
+	Output: \texttt{NULL}
 	
-	How test will be performed: Unit Test\\
+	User Message: Error: Could not find the end of the equation. 
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Equation Conversion\\
 	
 	\item{test-input\_missingFunctionValue2}
 	
@@ -430,11 +464,34 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + * y$, $x = [2,4], y = [3,5]$
+	Input: $f(V) = *x$
 	
-	Output: Error -- Function $f(V)$ is missing an operand between $+$ and $*$
+	Output:	\texttt{NULL}
 	
-	How test will be performed: Unit Test\\
+	User Message: Error: Unrecognized sequence encountered during Atomic 
+	Equation parsing. Remaining equation = *x.
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Equation Conversion\\
+	
+	\item{test-input\_missingFunctionValue3}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + * y$
+	
+	Output:	\texttt{NULL}
+	
+	User Message: Error: Unrecognized sequence encountered during Atomic 
+	Equation 
+	parsing. Remaining equation = *y.
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Equation Conversion\\
 	
 	\item{test-input\_missingMinDomainValue}
 	
@@ -444,9 +501,13 @@ these tests have passed.
 	
 	Input: $f(V) = x + y$, $x = [,4], y = [3,5]$
 	
-	Output: Error -- Missing min domain value for $x$
+	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ x = [4,4], y = [3,5]\}
 	
-	How test will be performed: Unit Test\\
+	User Message: - 
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Interval Conversion\\
 	
 	\item{test-input\_missingMaxDomainValue}
 	
@@ -454,12 +515,15 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $\{f(V) = x + y, x = [2,4], y = [3,]\}$, $\{f(V) = x + y, x = 
-	[2,4], y = [3]\}$
+	Input: $\{f(V) = x + y, x = [2,4], y = [3,]\}$
 	
-	Output: Error -- Missing max domain value for $y$
+	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ x = [2,4], y = [3,3]\}
+	
+	User Message: - 
 	
 	How test will be performed: Unit Test
+	
+	Associated Module: Interval Conversion\\
 	
 \end{enumerate}
 
@@ -475,9 +539,14 @@ these tests have passed.
 	
 	Input: $f(V) = x + y$, $x = [2,4], y = [a,5]$
 	
-	Output: Error -- Non-numerical value found in the domain for variable $y$
+	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ \}
 	
-	How test will be performed: Unit Test\\
+	User Message: Error: The string provided for the minimum bound cannot be 
+	converted to a real number.
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Interval Conversion\\
 	
 \end{enumerate}
 
@@ -491,11 +560,15 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y$, $x = [2,4], y = [3,5]$
+	Input: $f(V) = x + y$
 	
-	Output: N/A
+	Output: \{ x, y \}
 	
-	How test will be performed: Unit Test\\
+	User Message: - 
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Equation Conversion\\
 	
 	\item{test-input\_multiCharacterVariableName1}
 	
@@ -503,11 +576,15 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x1 + y$, $x1 = [2,4], y = [3,5]$
+	Input: $f(V) = x1 + y$
 	
-	Output: N/A
+	Output: \{ x1, y \}
 	
-	How test will be performed: Unit Test\\
+	User Message: - 
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Equation Conversion\\
 	
 	\item{test-input\_multiCharacterVariableName2}
 	
@@ -515,11 +592,15 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x\_ + y$, $x\_ = [2,4], y = [3,5]$
+	Input: $f(V) = x\_ + y$
 	
-	Output: N/A
+	Output: \{ x\_, y \}
 	
-	How test will be performed: Unit Test\\
+	User Message: - 
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Equation Conversion\\
 	
 	\item{test-input\_multiCharacterVariableName3}
 	
@@ -527,11 +608,15 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x\_1 + y$, $x\_1 = [2,4], y = [3,5]$
+	Input: $f(V) = x\_1 + y$
 	
-	Output: N/A
+	Output: \{ x\_1, y \}
 	
-	How test will be performed: Unit Test\\
+	User Message: - 
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Equation Conversion\\
 	
 	\item{test-input\_multiCharacterVariableName4}
 	
@@ -539,11 +624,15 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x\_i + y$, $x\_i = [2,4], y = [3,5]$
+	Input: $f(V) = x\_i + y$
 	
-	Output: N/A
+	Output: { x\_i, y }
 	
-	How test will be performed: Unit Test\\
+	User Message: - 
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Equation Conversion\\
 	
 	\item{test-input\_multiCharacterVariableName5}
 	
@@ -551,11 +640,15 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x'' + y$, $x'' = [2,4], y = [3,5]$
+	Input: $f(V) = x'' + y$
 	
-	Output: N/A
+	Output: \{ x'', y \}
 	
-	How test will be performed: Unit Test\\
+	User Message: - 
+	
+	How test will be performed: Unit Test
+	
+	Associated Module: Equation Conversion\\
 	
 	\item{test-input\_multiCharacterVariableName6}
 	
@@ -563,37 +656,30 @@ these tests have passed.
 	
 	Initial State: New Session
 	
-	Input: $f(V) = xy + y$, $xy = [2,4], y = [3,5]$
+	Input: $f(V) = xy + y$
 	
-	Output: N/A
+	Output: \{ xy, y \}
 	
-	How test will be performed: Unit Test\\
+	User Message: - 
 	
-	\item{test-input\_multiCharacterVariableName7}
+	How test will be performed: Unit Test
 	
-	Type: Functional, Automatic, Integration
+	Associated Module: Equation Conversion\\
 	
-	Initial State: New Session
-	
-	Input: $f(V) = xy$, $x = [2,4], y = [3,5]$
-	
-	Output: Warning -- Found variable $xy$ that does not exist in the domain 
-	list for $f(V)$ -\textgreater expanding to multiplication $x * y$
-	
-	How test will be performed: Unit Test\\
-	
-	\item{test-input\_multiCharacterVariableName8}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = \mathit{x*} + y$, $x* = [2,4], y = [3,5]$
-	
-	Output: Error -- Variable names cannot contain the characters $\{+, - , *, 
-	\, \string^, (, )\}$
-	
-	How test will be performed: Unit Test\\
+%	\item{test-input\_multiCharacterVariableName7}
+%	
+%	Type: Functional, Automatic, Integration
+%	
+%	Initial State: New Session
+%	
+%	Input: $f(V) = xy$, $x = [2,4], y = [3,5]$
+%	
+%	Output: Warning -- Found variable $xy$ that does not exist in the domain 
+%	list for $f(V)$ -\textgreater expanding to multiplication $x * y$
+%	
+%	How test will be performed: Unit Test
+%	
+%	Associated Module: \\
 	
 \end{enumerate}
 
@@ -605,9 +691,6 @@ $f(V)$ into two-operand equations following BEDMAS rules) functional
 requirements and the associated data constraints from \rref{R_verifyinputs} are 
 satisfied.
 
-The tests that follow these assume that the user input tests 
-(\ref{tests_gettingInputs}) have passed.
-
 \paragraph{Unexpected Domain Ordering}
 
 \begin{enumerate}
@@ -618,17 +701,20 @@ The tests that follow these assume that the user input tests
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y$, $x = [2,4], y = [3,-5]$
+	Input: $x = [2,4], y = [3,-5]$
 	
-	Output: Warning -- Domain for variable $y$ is ordered highest to lowest; 
-	reordering values to be smallest to highest\\
-	\Tree[.$+$ [.$x$ $[2,4]$ ] [.$y$ $[-5,3]$ ] ]
+	Output:	\{ x = [2,4], y = [-5,3] \}
 	
-	How test will be performed: Unit Testing\\
+	User Message: WARNING: Value provided for intervals are not in increasing 
+	order.The values have been exchanged to maintain the interval ordering.
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Interval Data Structure\\
 	
 \end{enumerate}
 
-\paragraph{Addition, Subtraction, and Multiplication}
+\paragraph{Creating Equation Trees}
 
 \begin{enumerate}
 	
@@ -638,11 +724,15 @@ The tests that follow these assume that the user input tests
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x + y$, $x = [2,4], y = [3,5]$
+	Input: $f(V) = x + y$
 	
-	Output: \Tree[.$+$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
+	Output: \Tree[.$+$ [.$x$  ] [.$y$  ] ], \{ x, y \}
 	
-	How test will be performed: Unit Testing\\
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
 	
 	\item{test-parse\_subtraction}
 	
@@ -650,13 +740,341 @@ The tests that follow these assume that the user input tests
 	
 	Initial State: New Session
 	
+	Input: $f(V) = x - y$
+	
+	Output: \Tree[.$-$ [.$x$  ] [.$y$  ] ], \{ x, y \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+	
+	\item{test-parse\_multiplication}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x * y$
+	
+	Output: \Tree[.$*$ [.$x$  ] [.$y$  ] ], \{ x, y \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+
+	\item{test-parse\_division}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / y$
+	
+	Output: \Tree[.$/$ [.$x$  ] [.$y$  ] ], \{ x, y \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+	
+	\item{test-parse\_intervalexponents}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = 2 ^ x$
+	
+	Output: \Tree[.$\wedge$ [.$Const:2$  ] [.$x$  ]  ], \{ x \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+	
+	\item{test-parse\_intervalbase}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x ^ 2$
+	
+	Output: \Tree[.$\wedge$ [.$x$  ] [.$Const:2$  ]  ], \{ x \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+	
+\end{enumerate}
+
+\paragraph{Constant Values}
+
+\begin{enumerate}
+	
+	\item{test-parse\_constantValue1}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = 4 + x$
+	
+	Output: \Tree[.$+$ [.$Const:4$  ] [.$x$  ]  ], \{ x \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+	
+	\item{test-parse\_constantValue2}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = -4 + x$
+	
+	Output: \Tree[.$+$ [.$Const:-4$  ] [.$x$  ] ], \{ x \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+	
+	\item{test-parse\_constantValue3}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / -4$
+	
+	Output: \Tree[.$/$ [.$x$  ] [.$Const:-4$  ] ], \{ x \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+
+	\item{test-parse\_constantValue4}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + 4$
+	
+	Output: \Tree[.$+$ [.$x$ $[2,4]$ ] [.$Const:4$  ] ], \{ x \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+	
+	\item{test-parse\_constantValue5}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + -4$
+	
+	Output: \Tree[.$+$ [.$x$  ] [.$Const:-4$  ] ], \{ x \}
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+	
+	\item{test-parse\_implicitMultiplication}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = 4x$
+	
+	Output: \Tree[.$*$ [.$Const:4$  ] [.$x$  ] ], \{ x \}
+	
+	User Message: Warning: Encountered an implicit multiplication of a constant 
+	value and a variable. Expanding with explicit operator.
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Equation Conversion\\
+	
+\end{enumerate}
+
+\paragraph{Precedence of Brackets}
+
+\begin{enumerate}
+	
+	\item{test-parse\_brackets1}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + (y - z)$
+	
+	Output: \Tree[.$+$ [.$x$  ] [.$()$ [.$-$ [.$y$ ] [.$z$ ] ] ] ]
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_brackets2}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = (x * y) - 2^z$
+	
+	Output: \Tree[.$-$ [.$()$ [.$*$ [.$x$  ] [.$y$  ]   ]  
+	] [.$B^z$ [.$Const:2$ ] [.$z$  ]  ]	]
+
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_brackets3}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = w * (x / (y + z))$
+	
+	Output: \Tree[.$*$ [.$w$  ] [.$()$ [.$/$ [.$x$ ] [.$()$ [.$+$ [.$y$  ] 
+	[.$z$  ] ]]   ]  ] 	]
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+\end{enumerate}
+
+\paragraph{Open Brackets}
+
+\begin{enumerate}
+	
+	\item{test-parse\_openLeftBracket}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + y - z)$
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: Unrecognized sequence encountered during Atomic 
+	Equation parsing. Remaining equation = )
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_openRightBracket}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + (y - z$
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: Could not find the end of the equation.
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+\end{enumerate}
+
+\subsubsection{Correctness of Component Calculations}
+\label{tests_correctnessOfCalculations}
+This test suite is designed to determine if the \rref{R_Calculate} 
+(Solving each component equation in $f(V)$) and \rref{R_VerifyOutput} (Ensuring 
+that the calculated result is represented in closed, interval form) functional 
+requirements, and the associated data constraints from 
+\rref{R_VerifyOutputConstraints} are satisfied.
+
+\paragraph{Correctness of Addition, Subtraction, and Multiplication}
+
+\begin{enumerate}
+	
+	\item{test-calculate\_addition}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + y$, $x = [2,4], y = [3,5]$
+	
+	Output: $[5,9]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver \\
+	
+	\item{test-calculate\_additionconstant}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + 4$, $x = [2,4]$
+	
+	Output: $[6,8]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_subtraction}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
 	Input: $f(V) = x - y$, $x = [2,4], y = [3,5]$
 	
-	Output: \Tree[.$-$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
+	Output: $[-1,-1]$
 	
-	How test will be performed: Unit Testing\\
+	User Message: - 
 	
-	\item{test-parse\_multiplication1}
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_multiplication1}
 	
 	Type: Functional, Automatic, Integration
 	
@@ -664,17 +1082,53 @@ The tests that follow these assume that the user input tests
 	
 	Input: $f(V) = x * y$, $x = [2,4], y = [3,5]$
 	
-	Output: \Tree[.$*$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
+	Output: $[6,20]$
 	
-	How test will be performed: Unit Testing\\
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_multiplication2}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x * y$, $x = [-1,3], y = [-3,5]$
+	
+	Output: $[-9,15]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_multiplication3}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x * y$, $x = [-3,-1], y = [-5,-2]$
+	
+	Output: $[2,15]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
 	
 \end{enumerate}
 
-\paragraph{Division}
+\paragraph{Correctness of Division}
 
 \begin{enumerate}
 	
-	\item{test-parse\_divisionPositiveDivisor}
+	\item{test-calculate\_divisionPositiveDivisor1}
 	
 	Type: Functional, Automatic, Integration
 	
@@ -682,35 +1136,193 @@ The tests that follow these assume that the user input tests
 	
 	Input: $f(V) = x / y$, $x = [2,4], y = [3,5]$
 	
-	Output: \Tree[.$/$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ] ]
+	Output: $[0.4,1.3333333333333333]$
 	
-	How test will be performed: Unit Testing\\
+	User Message: - 
 	
-	\item{test-parse\_divisionNegativeDivisor}
-
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_divisionPositiveDivisor2}
+	
 	Type: Functional, Automatic, Integration
-
-	Initial State: New Session
-
-	Input: $f(V) = x / y$, $x = [2,4], y = [-5, -3]$
-
-	Output: \Tree[.$/$ [.$x$ $[2,4]$ ] [.$y$ $[-5,-3]$ ] ]
-
-	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_divisionMixedIntervalDivisor}
-
-	Type: Functional, Automatic, Integration
-
 	Initial State: New Session
+	
+	Input: $f(V) = x / y$, $x = [0,4], y = [3,5]$
+	
+	Output: $[0, 1.3333333333333333]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_divisionPositiveDivisor3}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / y$, $x = [-1,4], y = [3,5]$
+	
+	Output: $[-0.3333333333333333,0.8]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
 
+	\item{test-calculate\_divisionPositiveDivisor4}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / y$, $x = [-2,0], y = [3,5]$
+	
+	Output: $[-0.6666666666666666,0]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_divisionPositiveDivisor5}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / y$, $x = [-2,-1], y = [3,5]$
+	
+	Output: $[-0.6666666666666666,-0.2]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_divisionNegativeDivisor1}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / y$, $x = [2,4], y = [-3,-5]$
+	
+	Output: $[-0.8,-0.6666666666666666]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_divisionNegativeDivisor2}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / y$, $x = [0,4], y = [-3,-5]$
+	
+	Output: $[-0.8,0]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_divisionNegativeDivisor3}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / y$, $x = [-1,4], y = [-3,-5]$
+	
+	Output: $[-0.8,0.2]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_divisionNegativeDivisor4}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / y$, $x = [-2,0], y = [-3,-5]$
+	
+	Output: $[0,0.4]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_divisionNegativeDivisor5}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / y$, $x = [-2,-1], y = [-3,-5]$
+	
+	Output: $[0.33333333333,0.4]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver \\
+	
+	\item{test-calculate\_divisionbyzero}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x / 0$, $x = [2,4]$
+	
+	Output: \texttt{NULL}
+	
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Mixed interval division).
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_divisionMixedIntervalDivisor}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
 	Input: $f(V) = x / y$, $x = [2,4], y = [-3,5]$
-
-	Output: Error -- Cannot perform division with a mixed interval divisor
-
-	How test will be performed: Unit Testing\\
 	
-	\item{test-parse\_divisionMixedIntervalDivisorZero1}
+	Output: \texttt{NULL}
+	
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Mixed interval division).
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_divisionMixedIntervalDivisorZero1}
 	
 	Type: Functional, Automatic, Integration
 	
@@ -718,11 +1330,16 @@ The tests that follow these assume that the user input tests
 	
 	Input: $f(V) = x / y$, $x = [2,4], y = [-3,0]$
 	
-	Output: Error -- Cannot perform division with a mixed interval divisor
+	Output: \texttt{NULL}
 	
-	How test will be performed: Unit Testing\\
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Mixed interval division).
 	
-	\item{test-parse\_divisionMixedIntervalDivisorZero2}
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_divisionMixedIntervalDivisorZero2}
 	
 	Type: Functional, Automatic, Integration
 	
@@ -730,26 +1347,35 @@ The tests that follow these assume that the user input tests
 	
 	Input: $f(V) = x / y$, $x = [2,4], y = [0,3]$
 	
-	Output: Error -- Cannot perform division with a mixed interval divisor
+	Output: \texttt{NULL}
 	
-	How test will be performed: Unit Testing\\
-
-	\item{test-parse\_divisionMixedIntervalQuotient}
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Mixed interval division).
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
+	
+	\item{test-calculate\_mixedDivisorComponent}
 	
 	Type: Functional, Automatic, Integration
 	
 	Initial State: New Session
 	
-	Input: $f(V) = x / y$, $x = [-2,4], y = [3,5]$
+	Input: $f(V) = x / (y * z)$, $x = [-2,-1], y = [3,5], z = [-1,1]$
 	
-	Output: \Tree[.$/$ [.$x$ $[-2,4]$ ] [.$y$ $[3,5]$ ] ]
+	Output: \texttt{NULL}
 	
-	How test will be performed: Unit Testing\\
+	User Message: Error: An unsupported operation was encountered while solving 
+	for the range of the equation (Mixed interval division).
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: Range Solver\\
 	
 \end{enumerate}
 
-\paragraph{Intervals as Exponents}
-
+\paragraph{Correctness of Intervals as Exponents}
 \begin{enumerate}
 	
 	\item{test-parse\_intervalAsExponents}
@@ -762,7 +1388,11 @@ The tests that follow these assume that the user input tests
 	
 	Output: \Tree[.$B^x$ [.$2$ ] [.$x$ $[2,4]$ ] ]
 	
-	How test will be performed: Unit Testing\\
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
 	
 	\item{test-parse\_intervalAsExponentsInvalidBase}
 	
@@ -775,12 +1405,35 @@ The tests that follow these assume that the user input tests
 	Output: Error -- Cannot perform operation with an interval exponent when 
 	the base number ($B$) $\leq 1$
 	
-	How test will be performed: Unit Testing\\
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
 	
 \end{enumerate}
 
-\paragraph{Intervals as Base Numbers}
+\begin{enumerate}
+	
+	\item{test-calculate\_intervalAsExponents}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = 2^x$, $x = [2,4]$
+	
+	Output: $[4,16]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+\end{enumerate}
 
+\paragraph{Correctness of Intervals as Base Numbers}
 \begin{enumerate}
 	
 	\item{test-parse\_intervalWithExponent}
@@ -793,7 +1446,11 @@ The tests that follow these assume that the user input tests
 	
 	Output: \Tree[.$x^N$ [.$x$ $[2,4]$ ] [.$2$ ]  ]
 	
-	How test will be performed: Unit Testing\\
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
 	
 	\item{test-parse\_intervalWithInvalidExponent1}
 	
@@ -807,7 +1464,11 @@ The tests that follow these assume that the user input tests
 	whole number; the exponent has been rounded to 2\\
 	\Tree[.$x^N$ [.$x$ $[2,4]$ ] [.$2$ ]  ]
 	
-	How test will be performed: Unit Testing\\
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
 	
 	\item{test-parse\_intervalWithInvalidExponent2}
 	
@@ -820,7 +1481,95 @@ The tests that follow these assume that the user input tests
 	Output: Error -- Cannot perform operation exponentiation with an exponent 
 	($N$) $< 0$
 	
-	How test will be performed: Unit Testing\\
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+\end{enumerate}
+
+\begin{enumerate}
+	
+	\item{test-parse\_intervalWithExponent1}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x^3$, $x = [2,4]$
+	
+	Output: $[8,64]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_intervalWithExponent2}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x^2$, $x = [2,4]$
+	
+	Output: $[4,16]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_intervalWithExponent3}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x^2$, $x = [0,4]$
+	
+	Output: $[0,16]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_intervalWithExponent4}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x^2$, $x = [-2,4]$
+	
+	Output: $[0,16]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_intervalWithExponent5}
+	
+	Type: Functional, Automatic, Integration
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x^2$, $x = [-4,-2]$
+	
+	Output: $[4,16]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
 	
 \end{enumerate}
 
@@ -839,542 +1588,11 @@ The tests that follow these assume that the user input tests
 	Output: Error -- Cannot perform exponentiation when the base number ($B$) 
 	and the exponent ($N$) are intervals
 	
-	How test will be performed: Unit Testing\\
+	User Message: - 
 	
-\end{enumerate}
-
-\paragraph{Constant Values}
-
-\begin{enumerate}
+	How test will be performed: Unit Testing
 	
-	\item{test-parse\_constantValue1}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = 4 + x$, $x = [2,4]$
-	
-	Output: \Tree[.$+$ [.$Const$ $[4,4]$ ] [.$x$ $[2,4]$ ] ]
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_constantValue2}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = -4 + x$, $x = [2,4]$
-	
-	Output: \Tree[.$+$ [.$Const$ $[-4,-4]$ ] [.$x$ $[2,4]$ ] ]
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_constantValue3}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / -4$, $x = [2,4]$
-	
-	Output: \Tree[.$/$ [.$x$ $[2,4]$ ] [.$Const$ $[-4,-4]$ ] ]
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_constantValue4}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / 0$, $x = [2,4]$
-	
-	Output: Error -- No support for division by zero
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_constantValue5}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + 4$, $x = [2,4]$
-	
-	Output: \Tree[.$+$ [.$x$ $[2,4]$ ] [.$Const$ $[4,4]$ ] ]
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_implicitMultiplication}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = 4x$, $x = [2,4]$
-	
-	Output: \Tree[.$*$ [.$Const$ $[4,4]$ ] [.$x$ $[2,4]$ ] ]
-	
-	How test will be performed: Unit Testing\\
-	
-\end{enumerate}
-
-\paragraph{Precedence of Brackets}
-
-\begin{enumerate}
-	
-	\item{test-parse\_brackets1}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + (y - z)$, $x = [2,4], y = [3,5], z = [2,2]$
-	
-	Output: \Tree[.$+$ [.$x$ $[2,4]$ ] [.$()$ [.$-$ [.$[3,5]$ ] [.$[2,2]$ ] ] ] 
-	]
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_brackets2}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = (x * y) - 2^z$, $x = [2,4], y = [3,5], z = [2,2]$
-	
-	Output: \Tree[.$-$ [.$()$ [.$*$ [.$x$ $[2,4]$ ] [.$y$ $[3,5]$ ]   ]  
-	] [.$B^z$ [.$2$ ] [.$z$ $[2,2]$ ]  ]	]
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_brackets3}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = w * (x / (y + z))$, $w = [5,6], x = [2,4], y = [3,5], z = 
-	[2,2]$
-	
-	Output: \Tree[.$*$ [.$w$ $[5,6]$ ] [.$()$ [.$/$ [.$x$ 
-	$[2,4]$ ] [.$()$ [.$+$ [.$y$ $[3,5]$ ] [.$z$ $[2,2]$ ] ]]   ]  ] 	]
-	
-	How test will be performed: Unit Testing\\
-	
-\end{enumerate}
-
-\paragraph{Open Brackets}
-
-\begin{enumerate}
-	
-	\item{test-parse\_openLeftBracket}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + y - z)$, $x = [2,4], y = [3,5], z = [2,2]$
-	
-	Output: Error -- Missing ``$($" in $f(V)$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_openRightBracket}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + (y - z$, $x = [2,4], y = [3,5], z = [2,2]$
-	
-	Output: Error -- Missing ``$)$" in $f(V)$
-	
-	How test will be performed: Unit Testing\\
-	
-\end{enumerate}
-
-\paragraph{Operational Precedence Tests}
-
-\begin{enumerate}
-	
-	\item{test-parse\_commutativityOfAdditionSubstraction}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + y - z == f(V) = (x + y) - z, x = [2,4], y = [3,5], z = 
-	[2,2]$
-	
-	Output: True
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_commutativityOfMultiplicationDivision}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x * y / z == f(V) = (x * y) / z, x = [2,4], y = [3,5], z = 
-	[2,2]$
-	
-	Output: True
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_precedenceOfOperators1}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + y * z == x + (y * z), x = [2,4], y = [3,5], z = [2,2]$
-	
-	Output: True
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_precedenceOfOperators2}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $f(V) = 2^x * y == (2^x) * y, x = [2,4], y = [3,5]$
-	
-	Output: True
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_precedenceOfOperators3}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x^2 * y == (x^2) * y, x = [2,4], y = [3,5]$
-	
-	Output: True
-	
-	How test will be performed: Unit Testing\\	
-	
-	\item{test-parse\_precedenceOfOperators4}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x * (y + z), x = [2,4], y = [3,5], z = [2,2]$
-	
-	Output: $[10, 28]$
-	
-	How test will be performed: Unit Testing\\
-	
-\end{enumerate}
-
-\subsubsection{Correctness of Component Calculations}
-\label{tests_correctnessOfCalculations}
-This test suite is designed to determine if the \rref{R_Calculate} 
-(Solving each component equation in $f(V)$) and \rref{R_VerifyOutput} (Ensuring 
-that the calculated result is represented in closed, interval form) functional 
-requirements, and the associated data constraints from 
-\rref{R_VerifyOutputConstraints} are satisfied.
-
-The tests that follow these assume that the user input tests 
-(\ref{tests_gettingInputs}) and input conditioning tests 
-(\ref{tests_conditioningInputs}) have passed.
-
-\paragraph{Correctness of Addition, Subtraction, and Multiplication}
-
-\begin{enumerate}
-	
-	\item{test-calculate\_addition}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + y$, $x = [2,4], y = [3,5]$
-	
-	Output: $[5,9]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_subtraction}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x - y$, $x = [2,4], y = [3,5]$
-	
-	Output: $[-1,-1]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_multiplication1}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x * y$, $x = [2,4], y = [3,5]$
-	
-	Output: $[6,20]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_multiplication2}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x * y$, $x = [-1,3], y = [-3,5]$
-	
-	Output: $[-9,15]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_multiplication3}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x * y$, $x = [-3,-1], y = [-5,-2]$
-	
-	Output: $[2,15]$
-	
-	How test will be performed: Unit Testing\\
-	
-\end{enumerate}
-
-\paragraph{Correctness of Division}
-
-\begin{enumerate}
-	
-	\item{test-calculate\_divisionPositiveDivisor1}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / y$, $x = [2,4], y = [3,5]$
-	
-	Output: $[0.4,1.33333333333333]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_divisionPositiveDivisor2}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / y$, $x = [0,4], y = [3,5]$
-	
-	Output: $[0, 1.33333333333333]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_divisionPositiveDivisor3}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / y$, $x = [-1,4], y = [3,5]$
-	
-	Output: $[-0.33333333333,0.8]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_divisionPositiveDivisor4}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / y$, $x = [-2,-1], y = [3,5]$
-	
-	Output: $[-0.6666666666,-0.2]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_divisionPositiveDivisor5}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / y$, $x = [-2,0], y = [3,5]$
-	
-	Output: $[-0.6666666666,0]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_divisionNegativeDivisor1}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / y$, $x = [2,4], y = [-3,-5]$
-	
-	Output: $[-0.8,-0.6666666666]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_divisionNegativeDivisor2}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / y$, $x = [0,4], y = [-3,-5]$
-	
-	Output: $[-0.8,0]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_divisionNegativeDivisor3}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / y$, $x = [-1,4], y = [-3,-5]$
-	
-	Output: $[-0.8,0.2]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_divisionNegativeDivisor4}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / y$, $x = [-2,0], y = [-3,-5]$
-	
-	Output: $[0,0.4]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_divisionNegativeDivisor5}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / y$, $x = [-2,-1], y = [-3,-5]$
-	
-	Output: $[0.33333333333,0.4]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-calculate\_mixedDivisorComponent}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x / (y * z)$, $x = [-2,-1], y = [3,5], z = [-1,1]$
-	
-	Output: Error -- Cannot complete operation because a mixed interval was 
-	calculated for a divisor -\textgreater $R(f(V)) = R([-2,-1] / [-5,5])$
-	
-	How test will be performed: Unit Testing\\
-	
-\end{enumerate}
-
-\paragraph{Correctness of Intervals as Exponents}
-
-\begin{enumerate}
-	
-	\item{test-calculate\_intervalAsExponents}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = 2^x$, $x = [2,4]$
-	
-	Output: $[4,16]$
-	
-	How test will be performed: Unit Testing\\
-	
-\end{enumerate}
-
-\paragraph{Correctness of Intervals as Base Numbers}
-
-\begin{enumerate}
-	
-	\item{test-parse\_intervalWithExponent1}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x^3$, $x = [2,4]$
-	
-	Output: $[8,64]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_intervalWithExponent2}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x^2$, $x = [2,4]$
-	
-	Output: $[4,16]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_intervalWithExponent3}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x^2$, $x = [0,4]$
-	
-	Output: $[0,16]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_intervalWithExponent4}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x^2$, $x = [-2,4]$
-	
-	Output: $[0,16]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-parse\_intervalWithExponent5}
-	
-	Type: Functional, Automatic, Integration
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x^2$, $x = [-4,-2]$
-	
-	Output: $[4,16]$
-	
-	How test will be performed: Unit Testing\\
+	Associated Module: \\
 	
 \end{enumerate}
 
@@ -1395,47 +1613,120 @@ The tests that follow these assume that the user input tests
 (\ref{tests_conditioningInputs}), and component equation calculation tests 
 (\ref{tests_correctnessOfCalculations}) have passed.
 
-\paragraph{Correctness of Operator Composition}
+\paragraph{Operational Precedence Tests}
 
 \begin{enumerate}
 	
-	\item{test-parse\_multipleOperatorsInFX}
+	\item{test-parse\_commutativityOfAdditionSubstraction}
 	
-	Type: Static, Manual, Unit
-	
-	Initial State: New Session
-	
-	Input: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$, where $R(f_1(V)), R(f_2(V))$ 
-	exist
-	
-	Output: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$ by induction
-	
-	How test will be performed: Induction\\
-	
-	\item{test-parse\_multipleOperatorsInFX}
-	
-	Type: Static, Manual, Unit
+	Type: Functional, Automatic, System, Regression
 	
 	Initial State: New Session
 	
-	Input: $R(f(V)) = R(f_1(V)) <op> R(f_2(V))$, where $R(f_1(V))$ or 
-	$R(f_2(V))$ do not exist
+	Input: $f(V) = x + y - z == f(V) = (x + y) - z, x = [2,4], y = [3,5], z = 
+	[2,2]$
 	
-	Output: $R(f(V)) \neq R(f_1(V)) <op> R(f_2(V))$ by induction
+	Output: True
 	
-	How test will be performed: Induction
+	User Message: - 
 	
-	Note: This case should only apply to cases where there is a mixed interval 
-	divisor for the division operator\\
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_commutativityOfMultiplicationDivision}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x * y / z == f(V) = (x * y) / z, x = [2,4], y = [3,5], z = 
+	[2,2]$
+	
+	Output: True
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_precedenceOfOperators1}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x + y * z == x + (y * z), x = [2,4], y = [3,5], z = [2,2]$
+	
+	Output: True
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_precedenceOfOperators2}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $f(V) = 2^x * y == (2^x) * y, x = [2,4], y = [3,5]$
+	
+	Output: True
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_precedenceOfOperators3}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x^2 * y == (x^2) * y, x = [2,4], y = [3,5]$
+	
+	Output: True
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
+	
+	\item{test-parse\_precedenceOfOperators4}
+	
+	Type: Functional, Automatic, System, Regression
+	
+	Initial State: New Session
+	
+	Input: $f(V) = x * (y + z), x = [2,4], y = [3,5], z = [2,2]$
+	
+	Output: $[10, 28]$
+	
+	User Message: - 
+	
+	How test will be performed: Unit Testing
+	
+	Associated Module: \\
 	
 \end{enumerate}
 
+
+\paragraph{Correctness of Operator Composition}
+
+
+
 \subsubsection{Presentation of Calculations to the User}
 \label{tests_outputResults}
-This test suite is designed to test that the final functional requirements, 
+This test suite is designed to test that the final functional requirement, 
 \rref{R_Output} (Showing the results to the user or an error if a result cannot 
-be found) and \rref{R_SigFig} (Representing $R(f(V))$ with the most precise 
-number of significant decimal figures), are satisfied. It is assumed that any 
+be found), is satisfied. It is assumed that any 
 inputs that do not produce a viable result have been caught previously and an 
 appropriate error or warning message was presented to the user.
 
@@ -1445,54 +1736,7 @@ The tests that follow these assume that the user input tests
 (\ref{tests_correctnessOfCalculations}), and operator composition tests 
 (\ref{tests_operatorComposition}) have passed.
 
-\paragraph{Rounding For Significant Figures}
 
-\begin{enumerate}
-	
-	\item{test-equalSignificantFigures}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + y, x = [2.5,4.3], y = [3.5,5.5]$
-	
-	Output: $[6.0,9.8]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-unequalSignificantFigures}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + y, x = [2.5,4.33], y = [3.45,5.555]$
-	
-	Output: $[6.0,9.9]$
-	
-	How test will be performed: Unit Testing\\
-	
-	\item{test-significantFiguresFloatingPoint}
-	
-	Type: Functional, Automatic, System, Regression
-	
-	Initial State: New Session
-	
-	Input: $f(V) = x + y, x = [2.5343...3,4.3333..34], y = 
-	[3.5343...3,5.5343...3]$
-	
-	Output: $[6.0686...6,9.8676...6]$\\
-	Warning -- Precision of domain boundaries exceeds the floating 
-	point representation on this machine -\textgreater rounded to the most 
-	significant figure available
-	
-	How test will be performed: Unit Testing
-	
-	\textbf{Note}: Numerical values for input and output are for illustrative 
-	purposes only\\
-	
-\end{enumerate}
 
 \subsection{Tests for Non-Functional Requirements}
 \label{testplan_nonfunctional}
