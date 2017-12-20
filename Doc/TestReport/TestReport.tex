@@ -13,6 +13,14 @@
 	urlcolor=Cerulean
 }
 \usepackage[round]{natbib}
+\usepackage{float}
+
+\usepackage{xr}
+\externaldocument{../SRS/SRS}
+\newcommand{\rref}[1]{R\ref{#1}}
+
+\externaldocument{../Design/MIS/MIS}
+\newcommand{\misref}[1]{MIS: \ref{#1}}
 
 \input{../Comments}
 
@@ -45,11 +53,10 @@ Date 2 & 1.1 & Notes\\
   \toprule		
   \textbf{symbol} & \textbf{description}\\
   \midrule 
+  R & Requirement \\
   T & Test\\
   \bottomrule
 \end{tabular}\\
-
-\wss{symbols, abbreviations or acronyms -- you can reference the SRS tables if needed}
 
 \newpage
 
@@ -63,6 +70,7 @@ Date 2 & 1.1 & Notes\\
 
 \pagenumbering{arabic}
 
+\section{Introduction}
 This is the test report for the Companion Cube Calculator, a mathematical 
 tool which determines the range of a user-specified function given the domains 
 of the function's variables. The the directory for this project can be found at:
@@ -75,43 +83,136 @@ of the function's variables. The the directory for this project can be found at:
 
 The following tests have failed by verification:
 
-\begin{center}
-	\begin{longtable}{ | p{3cm} | p{3cm} | p{2cm} | p{2cm} | p{3cm} |}
-		 \hline \label{TblInputVar} 
-		ID & Input & Expected Outcome & Expected MsgID & Actual MsgID \\ \hline
-		test-control\_ precedenceOfOperators3 & \texttt{"x\textasciicircum2*y", 
-			"x,2,4\textbackslash ny,3,5"}, \texttt{"(x\textasciicircum2)*y", 
-			"x,2,4\textbackslash ny,3,5"} & $TRUE$ & - & (EQC\_ INCOMPLETE\_OP) 
+	\begin{center}
+		\begin{longtable}{ | p{3cm} | p{3cm} | p{2cm} | p{2cm} | p{3cm} |}
+			\caption{Failed Functional Test Summary} \\ \hline 
+			\label{TblInputVar} 
+			ID & Input & Expected Outcome & Expected MsgID & Actual MsgID \\ 
+			\hline
+			test-control\_ precedenceOfOperators3 & 
+			\texttt{"x\textasciicircum2*y", 
+				"x,2,4\textbackslash ny,3,5"}, 
+				\texttt{"(x\textasciicircum2)*y", 
+				"x,2,4\textbackslash ny,3,5"} & $TRUE$ & - & (EQC\_ 
+				INCOMPLETE\_OP) 
 			Error: Unrecognized sequence encountered during Atomic Equation 
 			parsing. Remaining equation = \texttt{)*y}. \\ \hline
 			
-		test-control\_ precedenceOfOperators6 & 
-		\texttt{"(2(x+y)\textasciicircum2) /(3\textasciicircum z)", 
-		"x,1,2\textbackslash ny,3,4 \textbackslash nz,5,6"} & 
-		\texttt{"[0.0438 9574759945 13, \textbackslash n 0.2962962 96296296]"} 
-		& 
-		Range calculated successfully. & (EQC\_ INCOMPLETE\_OP) Error: 
-		Unrecognized sequence 
-		encountered during Atomic Equation parsing. Remaining equation = 
-		\texttt{)/(3\textasciicircum z)}. \\ \hline
-	\end{longtable}
-\end{center}
+			test-control\_ precedenceOfOperators6 & 
+			\texttt{"(2(x+y)\textasciicircum2) /(3\textasciicircum z)", 
+				"x,1,2\textbackslash ny,3,4 \textbackslash nz,5,6"} & 
+			\texttt{"[0.0438 9574759945 13, \textbackslash n 0.2962962 
+			96296296]"} 
+			& 
+			Range calculated successfully. & (EQC\_ INCOMPLETE\_OP) Error: 
+			Unrecognized sequence 
+			encountered during Atomic Equation parsing. Remaining equation = 
+			\texttt{)/(3\textasciicircum z)}. \\ \hline
+		\end{longtable}
+	\end{center}
 
-\section{Nonfunctional Requirements Evaluation}
+
+\section{Non-Functional Requirements Evaluation}
+
 
 \subsection{Correctness}
+Correctness testing could not be completed in this project cycle due to time 
+constraints.
+
+These tests are directly related to \rref{R_conditionfx} and 
+\rref{R_CalculateCompose} (Decomposing the user equation into components and 
+recomposing the results).
 
 \subsection{Robustness}
+The robustness requirement for recognizing violated data constraints was 
+covered in the functional tests:
+
+\begin{itemize}
+	\item The constraints on supported operators are contained in the Range 
+	Solver test suite. The containment of all operator-specific information 
+	within this module made it possible to collect all of these restrictions in 
+	the same suite. This design also implicitly supported the output constraint 
+	on $R(f(V))$ because only mathematical operations that produced closed, 
+	real intervals were implemented.
+	\item The constraint of having every $D(v) \in V$ defined as a closed, real 
+	interval are contained in the Interval Conversion and Interval Data 
+	Structure modules.
+\end{itemize}
+
+These tests are directly related to \rref{R_verifyinputs} and 
+\rref{R_VerifyOutputConstraints} (Verifying that the program satisfies the 
+input and output constraints).
 
 \subsection{Verifiability}
+The verifiability requirement stated that the program must be created in a way 
+in which its calculations can be checked for correctness. By basing this design 
+on verifiable mathematical concepts and implementing the equation decomposition 
+using a grammar definition, it is possible to measure if this requirement has 
+met. However, verifiability testing could not be completed in this project 
+cycle due to time constraints.
+
+This is indirectly related to \rref{R_Output} because the outputs must be shown 
+to the program user such that they understand and have confidence in the 
+program's results.
 
 \subsection{Usability}
 		
 \subsection{Maintainability}
+The maintainability requirements focus on the extensibility of the original 
+implementation with respect to its supported mathematical operations. Support 
+for open, real intervals already exists in the Interval Conversion and Interval 
+Data Structure modules. This means that it is possible that only the Range 
+Solver module would need to be updated to add more mathematical operations. 
+However, maintainability testing could not be completed in this project cycle 
+due to time constraints.
 
 \section{Unit Testing}
+In addition to the functional requirements, unit tests were implemented to 
+achieve 100\% code coverage. The purpose of this was to ensure that all code 
+paths were being executed and to help identify program errors that were not 
+covered in the functional testing suite. Implementation files that were 
+automatically generated or that were added to implement the GUI are not covered 
+in the unit tests.
+
+
+\begin{center}
+		\begin{longtable}{ | p{2.5cm} | p{4cm} | p{2.5cm} | m{1cm} | m{1.5cm} 
+		|}
+		\caption{Unit Test Summary} \\ \hline \label{TblUnitTests} 
+		\textbf{Test Suite} & \textbf{Test File} & \textbf{Target Modules} & 
+		\textbf{Total Tests} & 
+		\textbf{Tests Passing (\%)}  \\ 
+		\hline
+		Control Flow & \texttt{ControlTests.cs} & ControlFlow 
+		(\misref{Module_controlflow}) & 6 & 100\% \\ 
+		\hline
+		
+		User Input & \texttt{InputTests.cs} &Input (\misref{Module_userinput}) 
+		& 10 & 100\% \\ \hline
+		
+		Interval & \texttt{IntervalTests.cs} &Interval Data Structure 
+		(\misref{Module_intervaldatastructure}), Interval Conversion 
+		(\misref{Module_intervalconversion}) & 7 & 100\% \\ \hline
+		
+		Equation & \texttt{EquationTests.cs} &Equation Data Structure 
+		(\misref{Module_equationdatastructure}), Equation Conversion 
+		(\misref{Module_equationconversion}) & 16 & 100\% \\ \hline
+		
+		Variable Consolidation & \texttt{VariableConsoli dationTests.cs} & 
+		Consolidate 
+		(\misref{Module_variableconsolidation}) & 8 & 100\% \\ \hline
+		
+		Solver &\texttt{SolverTests.cs} & Operator Data Structure 
+		(\misref{Module_operatordatastructure}), Solver 
+		(\misref{Module_rangesolver}) & 17 & 100\% \\ \hline
+		
+		Output & \texttt{OutputTests.cs} &Output (\misref{Module_output}) & 6 & 
+		100\% \\ \hline
+	\end{longtable}
+\end{center}
 
 \section{Changes Due to Testing}
+The test suites resulted in 
 
 \section{Automated Testing}
 		
