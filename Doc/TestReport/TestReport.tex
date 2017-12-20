@@ -40,8 +40,7 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+December 19, 2017 1 & 1.0 & Completed the initial test report\\
 \bottomrule
 \end{tabularx}
 
@@ -65,7 +64,7 @@ Date 2 & 1.1 & Notes\\
 
 \listoftables %if appropriate
 
-\listoffigures %if appropriate
+%\listoffigures %if appropriate
 
 \newpage
 
@@ -114,7 +113,11 @@ The following tests have failed by verification:
 
 
 \section{Non-Functional Requirements Evaluation}
-
+The non-functional requirements were not always easy to verify. Some, such as 
+robustness, could be adequately verified using the existing test suites. 
+Others, such as correctness and usability, required manual testing. Not all 
+non-functional requirements were verified in this project cycle due to time 
+constraints.
 
 \subsection{Correctness}
 Correctness testing could not be completed in this project cycle due to time 
@@ -176,7 +179,6 @@ functional testing suite. Implementation files that were automatically
 generated or that were added to implement the GUI are not covered in the unit 
 tests.
 
-
 \begin{center}
 		\begin{longtable}{ | p{2.5cm} | p{4cm} | p{2.5cm} | m{1cm} | m{1.5cm} 
 		|}
@@ -214,7 +216,14 @@ tests.
 \end{center}
 
 \section{Changes Due to Testing}
-The test suites resulted in 
+The test suites uncovered a number of bugs, most of which resulted in changes 
+to the equation parsing process in the Equation Conversion module 
+(\misref{Module_equationconversion}). The failed functional tests have 
+identified an additional parsing error that will be corrected in a future 
+project cycle.
+
+The user study also uncovered a number of failings, including the inability to 
+copy the range values, which will also be addressed in a future project cycle.
 
 \section{Automated Testing}
 All automated testing was performed using the unit testing framework available 
@@ -225,25 +234,26 @@ in Visual Studio 2017 (Enterprise Edition). The associated project is
 
 \begin{table}[H]
 	\centering
-		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+	\rotatebox{-90}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 			\hline
 			& \rref{R_Inputs}& \rref{R_conditionX} & \rref{R_verifyinputs}& 
 			\rref{R_conditionfx} & \rref{R_Calculate}& 
 			\rref{R_CalculateCompose}& 
 			\rref{R_VerifyOutput} & \rref{R_VerifyOutputConstraints}& 
-			\rref{R_Output}\\
+			\rref{R_Output} & NF: Robustness & NF: Usability\\
 			\hline
-			  & & & & & & &  &&\\ \hline
-			    & & & & & & & &&X\\ \hline 
-			   & & & & & & & &&\\ \hline
-			      & & & & & && &X &\\ \hline
-			     & X&X &X &X &X &X &X &&\\ \hline
-			     & & & & & & & &X&X\\ \hline
-			  & & & & & & & &&X\\ \hline
-			 & & & & & & & &&\\ \hline
-			   & & & & & & & &&\\
+			  & & & & & & &  &&&&\\ \hline
+			    & & & & & & & &&&&\\ \hline 
+			   & & & & & & & &&&&\\ \hline
+			      & & & & & &&&& & &\\ \hline
+			     & & & & &&& & & &&\\ \hline
+			     & & & & & &&& & &&\\ \hline
+			  & & & & & & &&& &&\\ \hline
+			 & & & & & & &&& &&\\ \hline
+			   & & & & & &&& & &&\\
 			\hline
-		\end{tabular}
+		\end{tabular}}
 	\caption{Traceability Matrix Showing the Connections Between Requirements 
 		and Test Suites}
 	\label{Table:R_trace}
