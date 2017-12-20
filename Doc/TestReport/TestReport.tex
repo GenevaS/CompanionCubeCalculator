@@ -235,6 +235,7 @@ in Visual Studio 2017 (Enterprise Edition). The associated project is
 \begin{table}[H]
 	\centering
 	\rotatebox{-90}{
+		\scalebox{0.85}{
 		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
 			\hline
 			& \rref{R_Inputs}& \rref{R_conditionX} & \rref{R_verifyinputs}& 
@@ -243,17 +244,15 @@ in Visual Studio 2017 (Enterprise Edition). The associated project is
 			\rref{R_VerifyOutput} & \rref{R_VerifyOutputConstraints}& 
 			\rref{R_Output} & NF: Robustness & NF: Usability\\
 			\hline
-			  & & & & & & &  &&&&\\ \hline
-			    & & & & & & & &&&&\\ \hline 
-			   & & & & & & & &&&&\\ \hline
-			      & & & & & &&&& & &\\ \hline
-			     & & & & &&& & & &&\\ \hline
-			     & & & & & &&& & &&\\ \hline
-			  & & & & & & &&& &&\\ \hline
-			 & & & & & & &&& &&\\ \hline
-			   & & & & & &&& & &&\\
+			Control Flow & X & & & & & &  &&&X&X\\ \hline
+			User Input & X & & & & & & &&&&X\\ \hline 
+			Interval & & X & X & & & & &&&X&\\ \hline
+			Equation & & & & X & &&&& &X &\\ \hline
+			Variable Consolidation & & & X &  &&& & & &&\\ \hline
+			Solver & & &X &  & X & X & X & X & &X&\\ \hline
+			Output & & & & & & &&&X &&X\\ 
 			\hline
-		\end{tabular}}
+		\end{tabular}}}
 	\caption{Traceability Matrix Showing the Connections Between Requirements 
 		and Test Suites}
 	\label{Table:R_trace}
