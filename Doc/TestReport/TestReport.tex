@@ -14,6 +14,7 @@
 }
 \usepackage[round]{natbib}
 \usepackage{float}
+\usepackage{adjustbox}
 
 \usepackage{xr}
 \externaldocument{../SRS/SRS}
@@ -168,11 +169,12 @@ due to time constraints.
 
 \section{Unit Testing}
 In addition to the functional requirements, unit tests were implemented to 
-achieve 100\% code coverage. The purpose of this was to ensure that all code 
-paths were being executed and to help identify program errors that were not 
-covered in the functional testing suite. Implementation files that were 
-automatically generated or that were added to implement the GUI are not covered 
-in the unit tests.
+achieve 100\% code coverage in all documented modules. The purpose of this was 
+to ensure that all code paths, including conditional branches, were being 
+executed and to help identify program errors that were not covered in the 
+functional testing suite. Implementation files that were automatically 
+generated or that were added to implement the GUI are not covered in the unit 
+tests.
 
 
 \begin{center}
@@ -215,12 +217,69 @@ in the unit tests.
 The test suites resulted in 
 
 \section{Automated Testing}
+All automated testing was performed using the unit testing framework available 
+in Visual Studio 2017 (Enterprise Edition). The associated project is 
+\texttt{UnitTests\_CompanionCubeCalculator.csproj}.
 		
 \section{Trace to Requirements}
+
+\begin{table}[H]
+	\centering
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			& \rref{R_Inputs}& \rref{R_conditionX} & \rref{R_verifyinputs}& 
+			\rref{R_conditionfx} & \rref{R_Calculate}& 
+			\rref{R_CalculateCompose}& 
+			\rref{R_VerifyOutput} & \rref{R_VerifyOutputConstraints}& 
+			\rref{R_Output}\\
+			\hline
+			  & & & & & & &  &&\\ \hline
+			    & & & & & & & &&X\\ \hline 
+			   & & & & & & & &&\\ \hline
+			      & & & & & && &X &\\ \hline
+			     & X&X &X &X &X &X &X &&\\ \hline
+			     & & & & & & & &X&X\\ \hline
+			  & & & & & & & &&X\\ \hline
+			 & & & & & & & &&\\ \hline
+			   & & & & & & & &&\\
+			\hline
+		\end{tabular}
+	\caption{Traceability Matrix Showing the Connections Between Requirements 
+		and Test Suites}
+	\label{Table:R_trace}
+\end{table}
 		
-\section{Trace to Modules}		
+\section{Trace to Modules}	
+	\begin{table}[H]
+		\centering
+		\rotatebox{-90}{
+			\scalebox{0.88}{
+		\begin{tabular}{|c|c|c|c|c|c|c|c|}
+			\hline
+			& Control Flow & User Input & Interval & Equation & Variable 
+			Consolidation& Solver	& Output \\
+			\hline
+			\misref{Module_controlflow}& X & & & &&&\\ \hline
+			\misref{Module_userinput}& X & X & & & && \\ \hline 
+			\misref{Module_intervalconversion}&  & & X & &X&&\\ \hline
+			\misref{Module_equationconversion}&  & & & X &X &&\\ \hline
+			\misref{Module_variableconsolidation}& X & & &&X&&\\ 
+			\hline
+			\misref{Module_rangesolver}& X & & & & &X& \\ \hline
+			\misref{Module_output}& X & & & & && X\\ \hline
+			\misref{Module_intervaldatastructure}& X & &X&&X&X &X \\ \hline
+			\misref{Module_equationdatastructure}& X & & & X&X&X&X\\\hline
+			\misref{Module_operatordatastructure}& & & &X &X &X&\\ 
+			\hline
+		\end{tabular}}}
+		\caption{Traceability Matrix Showing the Connections Between 
+		Modules	and Test Suites}
+		\label{Table:M_trace}
+	\end{table}
+
 
 \section{Code Coverage Metrics}
-
+A coverage of 100\% has been achieved for all documented modules. Code coverage 
+was not considered for additional files that were created to support the GUI.
 
 \end{document}
