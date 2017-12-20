@@ -51,8 +51,9 @@ December 19, 2017 1 & 1.0 & Completed the initial test report\\
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{l l} 
   \toprule		
-  \textbf{symbol} & \textbf{description}\\
+  \textbf{Symbol} & \textbf{Description}\\
   \midrule 
+  MIS & Module Interface Specification \\
   R & Requirement \\
   T & Test\\
   \bottomrule
@@ -160,6 +161,79 @@ to the program user such that they understand and have confidence in the
 program's results.
 
 \subsection{Usability}
+The usability requirements were verified using the informal user study 
+described in the test plan. There were five participants.
+
+All participants calculated the same range of their assigned equation within 
+nine significant figures. Differences in the values could be attributed to the 
+specifications of individual machines. Since floating-point error handing is 
+not considered an important aspect of this program, variations beyond nine 
+significant digits were not deemed unacceptable.
+
+In general, participants found it easy to find and use the input mechanisms on 
+the GUI for entering in their values directly and for loading data from a file 
+(Table~\ref{TblUserResponses}). 
+
+\begin{center}
+	\begin{longtable}{ | p{2.5cm} | p{1.5cm} | p{1.1cm} | m{1.5cm} | m{1.6cm} 
+			|m{1.5cm} |m{1.5cm} |}
+		\caption{Summary of User Responses} \\ \hline \label{TblUserResponses} 
+		& \textbf{Strongly Agree} & \textbf{Agree} & \textbf{Neutral} & 
+		\textbf{Disagree} & \textbf{Strongly Disagree} & \textbf{No Response}  
+		\\ 
+		\hline
+		Finding Equation Input Mechanism & 4 & 1 & 0 & 0 & 0 & 0 \\ 
+		\hline
+		
+		Using Equation Input Mechanism& 3 & 0 & 2 & 0 & 0 & 0 \\  \hline
+		
+		Finding Variable Input Mechanism& 5 & 0 & 0 & 0 & 0 & 0 \\  \hline
+		
+		Using Variable Input Mechanism& 4 & 0 & 1 & 0 & 0 & 0 \\  \hline
+		
+		Finding Load From File Option& 3 & 2 & 0 & 0 & 0 & 0 \\  \hline
+		
+		Finding the Calculated Range& 4 & 0 & 0 & 0 & 0 & 1 \\  \hline
+		
+		Understanding the Calculated Range& 4 & 0 & 0 & 0 & 0 & 1 \\  \hline
+		
+		Understanding the Program Workflow& 3 & 1 & 0 & 1 & 0 & 0 \\  \hline
+	\end{longtable}
+\end{center}
+
+For responses that were unfavourable towards the program's usability, a number 
+of suggestions were left to help improve the experience. The simplest 
+improvement to do is to make the range values copyable. Currently, the output 
+mechanism is a non-editable label, which does not support text selection. This 
+can be improved by changing it to a non-editable text box instead.
+
+While generally well received, one participant suggested that the ``Load from 
+File" functionality could be accessible from a button located next to the 
+equation input mechanism. This change would make it much easier to find the 
+option to do so without prompting, and its inclusion will be considered in 
+future GUI iterations.
+
+The last suggested improvement was for the variable information table. The 
+first identified problem was that a cursor does not appear until a cell is 
+triple-clicked, which is unusual for text entry fields. Another problem was 
+that text entry did not automatically move to the next cell in the table so 
+that they could enter in variables as they appeared in the task description. 
+Unfortunately, this is a limitation on the available GUI widgets and no further 
+improvements can be done within the scope of the program. If an improved table 
+entry mechanism is created for Windows GUI applications, these usability issues 
+can be addressed.
+
+Another problem that was identified for the variable data tabe was that an 
+extra row appeared at the bottom of the table even when no more variables were 
+required. They suggested an alternate such that an ``Add Variable" button is 
+required to add new table rows. Given the other work flow issues that have been 
+raised with this particular mechanism, the suggested alternative is a viable 
+option for future GUI design iterations.
+
+In addition to work flow and GUI mechanism issues, the user study also 
+uncovered an error with the program where extra, but valid, brackets were used. 
+Test cases to detect this situations have since been added to the test suite, 
+and are currently the only tests that are failing (Table~\ref{TblInputVar}).
 		
 \subsection{Maintainability}
 The maintainability requirements focus on the extensibility of the original 
